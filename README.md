@@ -1,4 +1,4 @@
 swen222-project
 ===============
 
-SWEN 222 - Awesome Adventure!
+SWEN 222 - Excellent Adventure!
