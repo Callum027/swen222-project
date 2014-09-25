@@ -27,8 +27,6 @@ public class GameWindow implements ActionListener {
 	private JWindow window;
 	private JButton quit;
 	private JFrame frame;
-	private boolean fullscreen;
-
 	/**
 	 * Is called automatically from StartWindow
 	 *
@@ -38,7 +36,6 @@ public class GameWindow implements ActionListener {
 	 *            the height of the window
 	 */
 	public GameWindow(int gameWindowX, int gameWindowY, Cursor cursor) {
-		fullscreen = false;
 		frame = new JFrame("Game frame or something");
 		frame.setSize(new Dimension(gameWindowX, gameWindowY));
 		frame.setLocationRelativeTo(null);
