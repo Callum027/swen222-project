@@ -1,4 +1,5 @@
 package game.ui;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -28,9 +29,6 @@ public class GameWindow implements ActionListener {
 	private JFrame frame;
 	private boolean fullscreen;
 
-
-
-
 	/**
 	 * Is called automatically from StartWindow
 	 *
@@ -45,25 +43,26 @@ public class GameWindow implements ActionListener {
 		frame.setSize(new Dimension(gameWindowX, gameWindowY));
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
-		frame.setLayout(new GridLayout(1,2));
+		frame.setLayout(new GridLayout(1, 2));
 		JPanel panel = new JPanel();
 		quit = new JButton("Quit");
 		panel.add(quit);
-		panel.setSize((int) (gameWindowX*0.75), gameWindowY);
+		panel.setSize((int) (gameWindowX * 0.75), gameWindowY);
 		frame.add(panel, BorderLayout.CENTER);
 		quit.addActionListener(this);
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		panel.setBackground(Color.GREEN);
-		JPanel appPanel = new JPanel(new GridLayout(2,1));
+		JPanel appPanel = new JPanel(new GridLayout(2, 1));
 		frame.add(appPanel);
 
-		InventoryPanel iP = new InventoryPanel((int)(gameWindowX*0.25), gameWindowY/2);
-		iP.setSize((int) (gameWindowX*0.25), gameWindowY/2);
-		EquipPanel eP = new EquipPanel((int)(gameWindowX*0.25), gameWindowY/2);
-		eP.setSize((int) (gameWindowX*0.25), gameWindowY/2);
+		InventoryPanel iP = new InventoryPanel((int) (gameWindowX * 0.25),
+				gameWindowY / 2);
+		iP.setSize((int) (gameWindowX * 0.25), gameWindowY / 2);
+		EquipPanel eP = new EquipPanel((int) (gameWindowX * 0.25),
+				gameWindowY / 2);
+		eP.setSize((int) (gameWindowX * 0.25), gameWindowY / 2);
 		appPanel.add(eP);
 		appPanel.add(iP);
-
 
 		frame.setCursor(cursor);
 		frame.setVisible(true);
@@ -84,18 +83,12 @@ public class GameWindow implements ActionListener {
 	}
 
 	private int getQuitCommand() {
-		if (fullscreen) {
-			window.toBack();
-			return JOptionPane.showOptionDialog(window,
-					"Are you sure you want to quit?", "Quit",
-					JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE,
-					null, null, null);
-		} else {
-			return JOptionPane.showOptionDialog(frame,
-					"Are you sure you want to quit?", "Quit",
-					JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE,
-					null, null, null);
-		}
+
+		return JOptionPane.showOptionDialog(frame,
+				"Are you sure you want to quit?", "Quit",
+				JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE,
+				null, null, null);
+
 	}
 
 }
