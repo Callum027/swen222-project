@@ -11,23 +11,14 @@ import java.util.ArrayList;
  *
  */
 public abstract class GameCharacter {
-	
-	private int x;
-	private int y;
-	private ArrayList<Item> items;
-	
-	private enum Direction{
-		NORTH, NORTH_EAST, EAST, SOUTH_EAST,
-		SOUTH, SOUTH_WEST, WEST, NORTH_WEST
-	}
 
-	public GameCharacter(int x, int y){
+	private final String name;
+	private final int x;
+	private final int y;
+	
+	public GameCharacter(int x, int y, String name) {
 		this.x = x;
 		this.y = y;
-	}
-	
-	public Tile moveTo(Tile tile){
-		this.x = tile.x;
-		return tile;
+		this.name = name; 
 	}
 }
