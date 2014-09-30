@@ -9,14 +9,14 @@ import game.world.items.Item;
 /**
  * A class for our Merchant NPC
  * Sells equipment to our player
- * @author Nick Tran 
+ * @author Nick Tran
  *
  */
 public class Merchant extends NonPlayableCharacter{
-	
+
 	private ArrayList<Equipment> wares; //the items the merchant has for sale
 	private int cats; //the currency system in our game
-	
+
 	/**
 	 * The Constructor
 	 * Calls the super constructor and initializes the cats to 0
@@ -28,7 +28,7 @@ public class Merchant extends NonPlayableCharacter{
 		super(x, y, name);
 		this.setCats(0);
 	}
-	
+
 	/**
 	 * Sells an item to the player
 	 * @param item the item to sell to the player
@@ -36,7 +36,7 @@ public class Merchant extends NonPlayableCharacter{
 	 */
 	public void sellWares(Equipment item, PlayableCharacter player){
 		player.setCats(player.getCats()-item.getWorth()); //deducts money from the player
-		player.getInventory().add(item);
+		player.getInventory()[player.getCount()] = item;
 		getWares().remove(item);
 		this.setCats(this.cats+item.getWorth()); //increase the Merchant's money
 	}
