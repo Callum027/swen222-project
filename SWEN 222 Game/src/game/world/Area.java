@@ -26,6 +26,7 @@ public class Area {
 	private final int MAXIMUM_CAPACITY = 25; //just a number to initialize the array of Items and 2D array of Tiles
 	//private int width;
 	//private int height;
+	//private int id;
 
 	/**
 	 * The constructor for the area

@@ -8,6 +8,4 @@ public interface GameClass {
 
 	public int getIntelligence();
 
-
-
 }

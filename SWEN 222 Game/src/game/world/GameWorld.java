@@ -32,4 +32,7 @@ public class GameWorld {
 		return areas;
 	}
 
+	public void setAreas(ArrayList<Area> areas){
+		this.areas = areas;
+	}
 }
