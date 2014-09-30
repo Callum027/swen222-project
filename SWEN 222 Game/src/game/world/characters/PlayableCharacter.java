@@ -4,11 +4,18 @@ import game.world.characters.classes.GameClass;
 import game.world.characters.classes.RogueClass;
 import game.world.characters.classes.WarriorClass;
 import game.world.items.Equipment;
+import game.world.items.EquippedItems;
 
 import java.util.ArrayList;
 
+/**
+ *
+ * @author Nick
+ *
+ */
 public class PlayableCharacter extends GameCharacter{
 
+	private EquippedItems equipped; //the items that is currently equipped to the player
 	private Equipment[] inventory;
 	private GameClass gameClass;
 	private int count;
@@ -64,5 +71,13 @@ public class PlayableCharacter extends GameCharacter{
 
 	public void setCount(int count) {
 		this.count = count;
+	}
+
+	public EquippedItems getEquipped() {
+		return equipped;
+	}
+
+	public void setEquipped(EquippedItems equipped) {
+		this.equipped = equipped;
 	}
 }

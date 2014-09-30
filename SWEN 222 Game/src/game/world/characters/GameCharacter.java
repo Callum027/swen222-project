@@ -13,12 +13,17 @@ import java.util.ArrayList;
 public abstract class GameCharacter {
 
 	private final String name;
-	private final int x;
-	private final int y;
+	private int x;
+	private int y;
 	
 	public GameCharacter(int x, int y, String name) {
 		this.x = x;
 		this.y = y;
 		this.name = name; 
+	}
+	
+	public void moveTo(int x, int y){
+		this.x = x;
+		this.y = y;
 	}
 }
