@@ -77,7 +77,7 @@ public class InventoryPanel extends JPanel implements MouseListener{
 		int XSelect = x/squareSize; //works out how far along the grid it is
 		int ySelect = (y/squareSize)*INVENTORY_HEIGHT;
 		/*
-		* It works out how far down the grid it is and then times it by 5
+		* It works out how far down the grid it is and then times it by INVENTORY_HEIGHT
 		* This is due to the fact that it is saved in a 1D array rather than a 2D array even though it is expressed as a 2D array
 		*/
 
