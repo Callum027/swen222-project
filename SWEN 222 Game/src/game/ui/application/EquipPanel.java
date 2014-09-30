@@ -1,8 +1,7 @@
 package game.ui.application;
 
-import game.world.items.*;
-
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -16,18 +15,17 @@ import javax.swing.JPanel;
  */
 public class EquipPanel extends JPanel implements MouseListener {
 	private final int equipSize = 5;
-	private int width;
-	private int height;
-	public static final int squareSize = 40;
+	private int width = 225;
+	private int height = 495;
+	public static final int squareSize = 45;
 
 	/**
 	 * Makes a new EquipPanel sets the width and height of the panel
 	 * @param width the width of the panel
 	 * @param height the height of the panel
 	 */
-	public EquipPanel(int width, int height) {
-		this.width = width;
-		this.height = height;
+	public EquipPanel() {
+		setPreferredSize(new Dimension(width, height));
 		addMouseListener(this);
 	}
 
@@ -40,8 +38,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 	}
 
 	/**
-	 * It is going to draw grids in a semi-organised way so you know what slot is what
-	 * At the moment it just draws some squares in a diagonal
+	 * Draws the equipment slots where they should be, ie the head slot is at the top and boot slot is at the bottom
 	 * @param g
 	 */
 	private void drawEquip(Graphics g) {
@@ -63,6 +60,12 @@ public class EquipPanel extends JPanel implements MouseListener {
 		int y = e.getY();
 		int x = e.getX();
 		System.out.println("X = "+x+" Y = "+y);
+		getEquip(x, y);
+
+	}
+
+	private void getEquip(int x, int y) {
+
 
 	}
 

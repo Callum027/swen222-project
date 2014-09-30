@@ -1,19 +1,20 @@
 package game.ui;
 
-import game.ui.application.*;
+import game.ui.application.EquipPanel;
+import game.ui.application.InventoryPanel;
 
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JPanel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 /**
  * Makes the frame that the game is going to run in
@@ -38,50 +39,27 @@ public class GameFrame implements ActionListener {
 	 */
 	public GameFrame(int gameWindowX, int gameWindowY, Cursor cursor) {
 		frame = new JFrame("Game frame or something");
-		frame.setSize(new Dimension(gameWindowX, gameWindowY));
-		frame.setLocationRelativeTo(null); //makes the frame appear in the middle of the screen rather than in the top left corner
+		//frame.setLocationRelativeTo(null); //makes the frame appear in the middle of the screen rather than in the top left corner
 		frame.setResizable(false);
-		frame.setLayout(new GridBagLayout()); //sets the frame to have a layout so that the screens are in proportion
-		GridBagConstraints c = new GridBagConstraints(); //allows for constraints to be put on the layout
+		frame.setLayout(new FlowLayout()); //sets the frame to have a layout so that the screens are in proportion
 		JPanel panel = new JPanel();
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.ipady = gameWindowY;
-		c.weightx = 3.0;
-		c.gridx = 0;
-		c.gridwidth = 2;
-		c.gridy = 1;
-		c.gridheight = 3;
 		quit = new JButton("Quit");
 		panel.add(quit);
-		panel.setSize((int) (gameWindowX * 0.75), gameWindowY);
-		frame.add(panel, c);
+		panel.setPreferredSize(new Dimension((int) (gameWindowX * 0.75), gameWindowY));
+
+		frame.add(panel);
 		quit.addActionListener(this);
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		panel.setBackground(Color.GREEN);
-
-		InventoryPanel iP = new InventoryPanel((int) (gameWindowX * 0.25),
-				gameWindowY / 2);
-		iP.setSize((int) (gameWindowX * 0.25), gameWindowY / 2);
-
-		EquipPanel eP = new EquipPanel((int) (gameWindowX * 0.25),
-				gameWindowY / 2);
-		eP.setSize((int) (gameWindowX * 0.25), gameWindowY / 2);
-		c.weightx = 1.0;
-		c.weighty = 1.0;
-		c.ipady = 480;
-		c.gridwidth = 1;
-		c.gridx = 2;
-		c.gridy = 0;
-		c.gridheight = 2;
-		frame.add(eP, c);
-		c.ipady = 240;
-		c.weighty = 0.0;
-		c.weightx = 0.5;
-		c.gridx = 2;
-		c.gridy = 2;
-		c.gridheight = 1;
-		frame.add(iP, c);
+		panel.setBackground(Color.cyan);
+		JPanel appPane  = new JPanel();
+		appPane.setLayout(new BoxLayout(appPane, BoxLayout.Y_AXIS));
+		InventoryPanel iP = new InventoryPanel();
+		EquipPanel eP = new EquipPanel();
+		appPane.add(eP);
+		appPane.add(iP);
+		frame.add(appPane);
 		frame.setCursor(cursor);
+		frame.pack();
 		frame.setVisible(true);
 	}
 

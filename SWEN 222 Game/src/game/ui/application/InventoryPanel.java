@@ -1,10 +1,7 @@
 package game.ui.application;
 
-import game.world.items.*;
-
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
 
 import javax.swing.JPanel;
@@ -19,11 +16,11 @@ import java.awt.event.MouseListener;
  */
 public class InventoryPanel extends JPanel implements MouseListener{
 
-	private int width;
-	private int height;
+	private int width = INVENTORY_WIDTH*squareSize+1;
+	private int height = INVENTORY_HEIGHT*squareSize+1;
 	public static final int INVENTORY_WIDTH = 5;
-	public static final int INVENTORY_HEIGHT = 5;
-	public static final int squareSize = 40;
+	public static final int INVENTORY_HEIGHT = 4;
+	public static final int squareSize = 45;
 
 
 	/**
@@ -31,9 +28,8 @@ public class InventoryPanel extends JPanel implements MouseListener{
 	 * @param width the width of the panel
 	 * @param height the height of the panel
 	 */
-	public InventoryPanel(int width, int height){
-		this.width=width;
-		this.height=height;
+	public InventoryPanel(){
+		setPreferredSize(new Dimension(width, height));
 		addMouseListener(this);
 
 	}
@@ -47,7 +43,7 @@ public class InventoryPanel extends JPanel implements MouseListener{
 	}
 
 	/**
-	 * Draws a grid from the size of the invetory and makes it look nice-ish in a square
+	 * Draws a grid from the size of the inventory and makes it look nice-ish in a square
 	 * @param g a Graphics object
 	 */
 	private void drawInventory(Graphics g) {
@@ -59,7 +55,7 @@ public class InventoryPanel extends JPanel implements MouseListener{
 				g.drawRect(squareSize*i, squareSize*j, squareSize, squareSize);
 			}
 		}
-
+//		g.drawString(str, x, y);
 
 	}
 
