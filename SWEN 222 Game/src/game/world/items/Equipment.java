@@ -3,9 +3,11 @@ package game.world.items;
 public class Equipment extends MoveableItem{
 
 	private int worth;
+	private int attack;
+	private int defence;
 
-	public Equipment(int x, int y, int height) {
-		super(x, y, height);
+	public Equipment(int x, int y, int height, String name) {
+		super(x, y, height, name);
 	}
 
 	public int getWorth() {
