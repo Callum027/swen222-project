@@ -8,17 +8,18 @@ import game.world.items.Equipment;
 import java.util.ArrayList;
 
 public class PlayableCharacter extends GameCharacter{
-	
-	private ArrayList<Equipment> inventory;
+
+	private Equipment[] inventory;
 	private GameClass gameClass;
+	private int count;
 	private int cats;
-	
+
 	public PlayableCharacter(int x, int y, String name, String playerClass){
 		super(x, y, name);
 		assignClass(playerClass);
-		
+
 	}
-	
+
 	public void assignClass(String playerClass){
 		switch (playerClass){
 			case "Warrior":
@@ -32,7 +33,7 @@ public class PlayableCharacter extends GameCharacter{
 				break;
 		}
 	}
-	
+
 	public GameClass getGameClass() {
 		return gameClass;
 	}
@@ -40,7 +41,7 @@ public class PlayableCharacter extends GameCharacter{
 	public void setGameClass(GameClass gameClass) {
 		this.gameClass = gameClass;
 	}
-	
+
 	public int getCats() {
 		return cats;
 	}
@@ -49,11 +50,19 @@ public class PlayableCharacter extends GameCharacter{
 		this.cats = cats;
 	}
 
-	public ArrayList<Equipment> getInventory() {
+	public Equipment[] getInventory() {
 		return inventory;
 	}
 
-	public void setInventory(ArrayList<Equipment> inventory) {
+	public void setInventory(Equipment[] inventory) {
 		this.inventory = inventory;
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
 	}
 }
