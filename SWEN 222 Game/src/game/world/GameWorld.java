@@ -9,9 +9,9 @@ import java.util.ArrayList;
  *
  */
 public class GameWorld {
-	
+
 	private ArrayList<Area> areas;
-	
+
 	/**
 	 * adds areas to the world
 	 * @param file the file that stores the grid of tiles
@@ -23,7 +23,7 @@ public class GameWorld {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Retrieves the areas that make up the game world
 	 * @return the ArrayList of areas
@@ -32,6 +32,10 @@ public class GameWorld {
 		return areas;
 	}
 
+	/**
+	 * Gives the GameWorld a new ArrayList of areas
+	 * @param areas the new ARrayList of areas
+	 */
 	public void setAreas(ArrayList<Area> areas){
 		this.areas = areas;
 	}

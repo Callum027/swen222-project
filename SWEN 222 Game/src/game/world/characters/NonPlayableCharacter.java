@@ -11,7 +11,7 @@ import game.world.items.Item;
  *
  */
 public class NonPlayableCharacter extends GameCharacter{
-	
+
 	/**
 	 * Constructor
 	 * Invokes the super constructor

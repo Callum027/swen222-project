@@ -26,7 +26,7 @@ public class Area {
 	private final int MAXIMUM_CAPACITY = 25; //just a number to initialize the array of Items and 2D array of Tiles
 	//private int width;
 	//private int height;
-	//private int id;
+	//private int id; //the unique identifier
 
 	/**
 	 * The constructor for the area
@@ -91,13 +91,17 @@ public class Area {
 	public Tile[][] getTiles(){
 		return tiles;
 	}
-	
+
 	public void setUpFloorTiles(File file){
-		
+
 	}
-	
+
 	public void setUpWallTiles(File file){
-		
+
+	}
+
+	public void setUpItems(File file){
+
 	}
 
 	/**
@@ -106,6 +110,5 @@ public class Area {
 	 */
 	public void initializeTiles(File file){
 		setUpFloorTiles(file);
-
 	}
 }
