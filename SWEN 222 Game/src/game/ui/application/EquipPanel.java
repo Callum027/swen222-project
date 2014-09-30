@@ -4,11 +4,18 @@ import game.world.items.*;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JPanel;
 
-public class EquipPanel extends JPanel {
-	private final Item[] equip = new Item[5];
+/**
+ * A simple panel that is to be used for drawing the inventory
+ * @author Harry
+ *
+ */
+public class EquipPanel extends JPanel implements MouseListener {
+	private final int equipSize = 5;
 	private int width;
 	private int height;
 	public static final int squareSize = 40;
@@ -21,11 +28,12 @@ public class EquipPanel extends JPanel {
 	public EquipPanel(int width, int height) {
 		this.width = width;
 		this.height = height;
+		addMouseListener(this);
 	}
 
 	@Override
 	public void paintComponent(Graphics g){
-		g.setColor(Color.blue);
+		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, width, height);
 		g.setColor(Color.white);
 		drawEquip(g);
@@ -37,9 +45,48 @@ public class EquipPanel extends JPanel {
 	 * @param g
 	 */
 	private void drawEquip(Graphics g) {
-		for(int i=0; i<equip.length; i++){
-			g.drawRect(squareSize*i, squareSize*i, squareSize, squareSize);
-		}
+		g.setColor(Color.white);
+		g.fillRect(width/2, 0, squareSize, squareSize);
+		g.setColor(Color.white);
+		g.fillRect(width/4, (int)(height*0.4), squareSize, squareSize);
+		g.setColor(Color.white);
+		g.fillRect((int)(width*0.75),(int) (height*0.4), squareSize, squareSize);
+		g.setColor(Color.white);
+		g.fillRect(width/2,(int) (height*0.25), squareSize, squareSize);
+		g.setColor(Color.white);
+		g.fillRect(width/2, (int) (height*0.75), squareSize, squareSize);
+
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		int y = e.getY();
+		int x = e.getX();
+		System.out.println("X = "+x+" Y = "+y);
+
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
 
 	}
 }

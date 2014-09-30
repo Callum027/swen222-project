@@ -12,7 +12,11 @@ import javax.swing.JPanel;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-
+/**
+ * A simple panel that drawing the inventory items on screen
+ * @author Harry
+ *
+ */
 public class InventoryPanel extends JPanel implements MouseListener{
 
 	private int width;
@@ -20,7 +24,6 @@ public class InventoryPanel extends JPanel implements MouseListener{
 	public static final int INVENTORY_WIDTH = 5;
 	public static final int INVENTORY_HEIGHT = 5;
 	public static final int squareSize = 40;
-	private Item[] inventory = new Item[INVENTORY_WIDTH*INVENTORY_HEIGHT];
 
 
 	/**
@@ -31,15 +34,15 @@ public class InventoryPanel extends JPanel implements MouseListener{
 	public InventoryPanel(int width, int height){
 		this.width=width;
 		this.height=height;
+		addMouseListener(this);
 
 	}
 
 	@Override
 	public void paintComponent(Graphics g){
-		g.setColor(Color.WHITE);
-		g.fillRect(0,0, width, height);
-		System.out.println("("+width+", "+height+")");
 		g.setColor(Color.black);
+		g.fillRect(0,0, width, height);
+
 		drawInventory(g);
 	}
 
@@ -50,6 +53,9 @@ public class InventoryPanel extends JPanel implements MouseListener{
 	private void drawInventory(Graphics g) {
 		for(int i =0; i<INVENTORY_WIDTH; i++){
 			for(int j=0; j<INVENTORY_HEIGHT; j++){
+				g.setColor(Color.white);
+				g.fillRect(squareSize*i, squareSize*j, squareSize, squareSize);
+				g.setColor(Color.black);
 				g.drawRect(squareSize*i, squareSize*j, squareSize, squareSize);
 			}
 		}
@@ -59,8 +65,28 @@ public class InventoryPanel extends JPanel implements MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
+		int x = e.getX();
+		int y = e.getY();
+		selectItem(x, y);
 
+	}
+
+	/**
+	 * This method is called when the mouse is clicked and determines the square in the array that the items are stored in
+	 * @param x the mouse X
+	 * @param y the mouse Y
+	 */
+	private void selectItem(int x, int y) {
+		System.out.println("X = " +x+" Y = "+y);
+		int XSelect = x/squareSize; //works out how far along the grid it is
+		int ySelect = (y/squareSize)*INVENTORY_HEIGHT;
+		/*
+		* It works out how far down the grid it is and then times it by 5
+		* This is due to the fact that it is saved in a 1D array rather than a 2D array even though it is expressed as a 2D array
+		*/
+
+		int selected = XSelect+ySelect; //adds the x and y values together and represents it as an index in the array
+		System.out.println("Selected = "+selected);
 	}
 
 	@Override

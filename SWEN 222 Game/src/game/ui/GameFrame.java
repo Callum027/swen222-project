@@ -16,8 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
- * This class is a test class and not to be used as a final product Borrowing
- * code from it for reuse is acceptable
+ * Makes the frame that the game is going to run in
  *
  * @author Harry
  *
@@ -26,24 +25,27 @@ public class GameFrame implements ActionListener {
 
 	private JButton quit;
 	private JFrame frame;
+
 	/**
-	 * Is called automatically from StartWindow
+	 * Is called automatically from Main
 	 *
 	 * @param gameWindowX
 	 *            the width of the window
 	 * @param gameWindowY
 	 *            the height of the window
+	 * @param cursor
+	 *            enables the game to run with a custom cursor
 	 */
 	public GameFrame(int gameWindowX, int gameWindowY, Cursor cursor) {
 		frame = new JFrame("Game frame or something");
 		frame.setSize(new Dimension(gameWindowX, gameWindowY));
-		frame.setLocationRelativeTo(null);
+		frame.setLocationRelativeTo(null); //makes the frame appear in the middle of the screen rather than in the top left corner
 		frame.setResizable(false);
-		frame.setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
+		frame.setLayout(new GridBagLayout()); //sets the frame to have a layout so that the screens are in proportion
+		GridBagConstraints c = new GridBagConstraints(); //allows for constraints to be put on the layout
 		JPanel panel = new JPanel();
 		c.fill = GridBagConstraints.HORIZONTAL;
-		c.ipady=gameWindowY;
+		c.ipady = gameWindowY;
 		c.weightx = 3.0;
 		c.gridx = 0;
 		c.gridwidth = 2;
@@ -94,6 +96,10 @@ public class GameFrame implements ActionListener {
 
 	}
 
+	/**
+	 * A simple command that promts the dialog box to quit the game only ever called after quit is pressed
+	 * @return an int from the dialog box that was choosen
+	 */
 	private int getQuitCommand() {
 
 		return JOptionPane.showOptionDialog(frame,
