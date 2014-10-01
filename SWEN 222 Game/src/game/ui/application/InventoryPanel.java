@@ -1,13 +1,21 @@
 package game.ui.application;
 
+import game.Main;
+import game.world.characters.PlayableCharacter;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Image;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * A simple panel that drawing the inventory items on screen
@@ -16,8 +24,8 @@ import java.awt.event.MouseListener;
  */
 public class InventoryPanel extends JPanel implements MouseListener{
 
-	private int width = INVENTORY_WIDTH*squareSize+1;
-	private int height = INVENTORY_HEIGHT*squareSize+1;
+	private int width = INVENTORY_WIDTH*squareSize+10;
+	private int height = INVENTORY_HEIGHT*squareSize+50;
 	public static final int INVENTORY_WIDTH = 5;
 	public static final int INVENTORY_HEIGHT = 4;
 	public static final int squareSize = 45;
@@ -46,7 +54,7 @@ public class InventoryPanel extends JPanel implements MouseListener{
 	 * Draws a grid from the size of the inventory and makes it look nice-ish in a square
 	 * @param g a Graphics object
 	 */
-	private void drawInventory(Graphics g) {
+	private void drawInventory(Graphics g){
 		for(int i =0; i<INVENTORY_WIDTH; i++){
 			for(int j=0; j<INVENTORY_HEIGHT; j++){
 				g.setColor(Color.white);
@@ -54,8 +62,13 @@ public class InventoryPanel extends JPanel implements MouseListener{
 				g.setColor(Color.black);
 				g.drawRect(squareSize*i, squareSize*j, squareSize, squareSize);
 			}
+
+
 		}
-//		g.drawString(str, x, y);
+		Image img = Main.getImage("cat-inv.jpg");
+		g.setColor(Color.white);
+		g.drawImage(img, 10, height-40, 30, 30, null);
+		g.drawString(""+PlayableCharacter.getCats(), 50, height-10);
 
 	}
 
