@@ -4,8 +4,10 @@ import game.world.tiles.Tile;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * A class to represent the Game World and stores the areas that make up this "world"
@@ -15,9 +17,11 @@ import java.util.Map;
 public class GameWorld {
 
 	private List<Area> areas;
+	private Set<GameStateListener> gameStates;
 
 	public GameWorld(){
 		areas = new ArrayList<Area>();
+		gameStates = new HashSet<GameStateListener>();
 	}
 
 	/**
