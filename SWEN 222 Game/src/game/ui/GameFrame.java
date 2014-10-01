@@ -8,6 +8,8 @@ import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -18,12 +20,13 @@ import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 
 /**
- * Makes the frame that the game is going to run in
- * Extends JFrame and has some panels in it
+ * Makes the frame that the game is going to run in Extends JFrame and has some
+ * panels in it
+ *
  * @author Harry
  *
  */
-public class GameFrame extends JFrame implements ActionListener {
+public class GameFrame extends JFrame implements ActionListener, KeyListener {
 
 	/**
 	 *
@@ -46,14 +49,13 @@ public class GameFrame extends JFrame implements ActionListener {
 	 *            enables the game to run with a custom cursor
 	 */
 	public GameFrame(int gameWindowX, int gameWindowY, Cursor cursor) {
-		super("SWEN 222 Game Project");
+		super("An Excellent Adventure!");
 		setResizable(false);
 		// set the frame to have a layout so that the screens are in proportion
 		setLayout(new FlowLayout());
 		render = new RenderingPanel();
 		quit = new JButton("Quit");
 		render.add(quit);
-		//render.setPreferredSize(new Dimension((int) (gameWindowX * 0.75), gameWindowY));
 		add(render);
 		quit.addActionListener(this);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -66,6 +68,7 @@ public class GameFrame extends JFrame implements ActionListener {
 		add(appPane);
 		setCursor(cursor);
 		pack();
+		addKeyListener(this);
 		setVisible(true);
 	}
 
@@ -87,15 +90,37 @@ public class GameFrame extends JFrame implements ActionListener {
 	 * @return an int from the dialog box that was chosen
 	 */
 	private int getQuitCommand() {
-
 		return JOptionPane.showOptionDialog(this,
 				"Are you sure you want to quit?", "Quit",
 				JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE,
 				null, null, null);
-
 	}
 
 	public RenderingPanel getRender() {
 		return render;
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+
+
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		System.out.println(e.getKeyCode()+"");
+		if (e.getKeyCode()==KeyEvent.VK_ESCAPE) {
+			System.out.println("WOO!");
+			openMenu();
+		}
+
+	}
+
+	private void openMenu() {
+		getQuitCommand();
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
 	}
 }
