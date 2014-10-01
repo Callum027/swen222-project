@@ -12,7 +12,7 @@ public class Furniture extends Item{
 	}
 
 	public String interact(PlayableCharacter player){
-		return "THis is a piece of furniture";
+		return "This is a piece of furniture";
 	}
 
 	public MoveableItem getItem() {
