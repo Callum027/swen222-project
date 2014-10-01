@@ -1,8 +1,11 @@
 package game.world;
 
+import game.world.tiles.Tile;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A class to represent the Game World and stores the areas that make up this "world"
@@ -30,6 +33,16 @@ public class GameWorld {
 	}
 
 	/**
+	 * Adds the specified area to the world.
+	 *
+	 * @param area - the area to be added
+	 * @return true if the add was successful
+	 */
+	public boolean addArea(Area area){
+		return areas.add(area);
+	}
+
+	/**
 	 * Retrieves the areas that make up the game world
 	 * @return the ArrayList of areas
 	 */
@@ -44,4 +57,5 @@ public class GameWorld {
 	public void setAreas(List<Area> areas){
 		this.areas = areas;
 	}
+
 }

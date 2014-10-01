@@ -22,10 +22,14 @@ import javax.swing.JPanel;
  * @author Harry
  *
  */
-public class GameFrame implements ActionListener {
+public class GameFrame extends JFrame implements ActionListener {
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private JButton quit;
-	private JFrame frame;
 
 	/**
 	 * Is called automatically from Main
@@ -38,18 +42,18 @@ public class GameFrame implements ActionListener {
 	 *            enables the game to run with a custom cursor
 	 */
 	public GameFrame(int gameWindowX, int gameWindowY, Cursor cursor) {
-		frame = new JFrame("Game frame or something");
+		super("Game frame or something");
 		//frame.setLocationRelativeTo(null); //makes the frame appear in the middle of the screen rather than in the top left corner
-		frame.setResizable(false);
-		frame.setLayout(new FlowLayout()); //sets the frame to have a layout so that the screens are in proportion
+		setResizable(false);
+		setLayout(new FlowLayout()); //sets the frame to have a layout so that the screens are in proportion
 		JPanel panel = new JPanel();
 		quit = new JButton("Quit");
 		panel.add(quit);
 		panel.setPreferredSize(new Dimension((int) (gameWindowX * 0.75), gameWindowY));
 
-		frame.add(panel);
+		add(panel);
 		quit.addActionListener(this);
-		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		panel.setBackground(Color.cyan);
 		JPanel appPane  = new JPanel();
 		appPane.setLayout(new BoxLayout(appPane, BoxLayout.Y_AXIS));
@@ -57,10 +61,10 @@ public class GameFrame implements ActionListener {
 		EquipPanel eP = new EquipPanel();
 		appPane.add(eP);
 		appPane.add(iP);
-		frame.add(appPane);
-		frame.setCursor(cursor);
-		frame.pack();
-		frame.setVisible(true);
+		add(appPane);
+		setCursor(cursor);
+		pack();
+		setVisible(true);
 	}
 
 	@Override
@@ -80,7 +84,7 @@ public class GameFrame implements ActionListener {
 	 */
 	private int getQuitCommand() {
 
-		return JOptionPane.showOptionDialog(frame,
+		return JOptionPane.showOptionDialog(this,
 				"Are you sure you want to quit?", "Quit",
 				JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE,
 				null, null, null);

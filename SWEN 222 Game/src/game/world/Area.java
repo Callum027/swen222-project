@@ -3,6 +3,7 @@ package game.world;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Scanner;
 
 import game.world.items.Item;
@@ -20,7 +21,7 @@ public class Area {
 
 	private Item[][] items; //the items located on this area
 	private GameWorld world;
-	private FloorTile[][] tiles; //the tiles that make up this area
+	private Tile[][] tiles; //the tiles that make up this area
 	private WallTile[][] northWall;
 	private WallTile[][] eastWall;
 	private WallTile[][] southWall;
@@ -40,6 +41,10 @@ public class Area {
 		this.world = world;
 		initializeTiles(file); //reads the grid of tiles from the file
 		items =  new Item[MAXIMUM_CAPACITY][MAXIMUM_CAPACITY];
+	}
+
+	public Area(Tile[][] tiles){
+		this.tiles = tiles;
 	}
 
 	/**
@@ -126,5 +131,20 @@ public class Area {
 	 */
 	public void initializeTiles(File file){
 		setUpFloorTiles(file);
+	}
+
+	public static Area parseArea(String[] data, Map<Integer, Tile> tileMap){
+		// first line contains width/height of area
+		String[] dimensions = data[0].split(", ");
+		int width = Integer.parseInt(dimensions[0]);
+		int height = Integer.parseInt(dimensions[1]);
+		Tile[][] tiles = new FloorTile[height][width];
+		for(int i = 1; i < height; i++){
+			String[] line = data[1].split(", ");
+			for(int j = 0; j < line.length; j++){
+				tiles[i][j] = tileMap.get(line[j]);
+			}
+		}
+		return new Area(tiles);
 	}
 }
