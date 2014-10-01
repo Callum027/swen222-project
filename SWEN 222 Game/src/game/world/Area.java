@@ -46,6 +46,13 @@ public class Area {
 	public Area(Tile[][] tiles){
 		this.tiles = tiles;
 	}
+	/**@author Tsun
+	 * filler constructor to test parser, will fix later.
+	 * @param tiles
+	 */
+	public Area(int[][] tiles) {
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * Getter method for the GameWorld
