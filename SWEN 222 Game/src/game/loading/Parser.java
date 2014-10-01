@@ -4,7 +4,6 @@ import game.world.Area;
 import game.world.GameWorld;
 import game.world.tiles.Tile;
 
-import java.awt.List;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Map;
@@ -21,7 +20,6 @@ public class Parser {
 	// probably obsolete but will leave in for now in case i need it later
 	public GameWorld parseWorld(Scanner scan) {
 		try {
-			scan.useDelimiter("\\s*(?=<)|(?<=>)\\s*");
 			if (!scan.hasNext())
 				throw new ParserError("Empty xml file.");
 			// shouldn't get here if there is no next.
@@ -80,7 +78,7 @@ public class Parser {
 			if (!scan.hasNext())
 				throw new ParserError("No Dimension closing Declaration");
 			if (!scan.next().equals("</Dimension>"))
-				throw new ParserError("No closing declaration for Dimension.");
+				throw new ParserError("Invalid declaration, should be closing Dimension.");
 			// parse in the tiles, for now am using a 2d int array
 			// Area area = new Area(parseTiles(scan));
 			// temp array for holding tiles
