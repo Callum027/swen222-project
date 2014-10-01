@@ -34,7 +34,7 @@ public class Main {
 //			"1, 1, 1, 1, 1, 1, 1, 1, 1, 1", "1, 1, 1, 1, 1, 1, 1, 1, 1, 1",
 //			"1, 1, 1, 1, 1, 1, 1, 1, 1, 1", "1, 1, 1, 1, 1, 1, 1, 1, 1, 1",
 //			"1, 1, 1, 1, 1, 1, 1, 1, 1, 1", "1, 1, 1, 1, 1, 1, 1, 1, 1, 1" };
-	private String areaFile = "Area.xml";
+	private String areaFile = "src/game/loading/Area.xml";
 	private GameFrame gameWindow;
 	private static final String IMAGE_PATH = "ui/graphics/";
 

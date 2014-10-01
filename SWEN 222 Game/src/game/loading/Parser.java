@@ -56,17 +56,16 @@ public class Parser {
 		int yMax;
 		try {
 			Scanner scan = new Scanner(new File(fileName));
-			scan.useDelimiter("\\s*(?=<)|(?<=>)\\s*");
 			// check Scanner isn't empty
 			if (!scan.hasNext())
 				throw new ParserError("Empty xml file.");
 			// open Area declaration
-			if (!scan.next().equals("Area"))
+			if (!scan.next().equals("<Area>"))
 				throw new ParserError("Invalid declaration, should be an Area.");
 			// check there is a dimension declaration
 			if (!scan.hasNext())
 				throw new ParserError("No Dimension Declaration");
-			if (!scan.next().equals("Dimension"))
+			if (!scan.next().equals("<Dimension>"))
 				throw new ParserError(
 						"Invalid declaration, should be a Dimension.");
 			// find the width/x for the area
@@ -80,7 +79,7 @@ public class Parser {
 			// close the dimension
 			if (!scan.hasNext())
 				throw new ParserError("No Dimension closing Declaration");
-			if (!scan.next().equals("Dimension"))
+			if (!scan.next().equals("</Dimension>"))
 				throw new ParserError("No closing declaration for Dimension.");
 			// parse in the tiles, for now am using a 2d int array
 			// Area area = new Area(parseTiles(scan));
@@ -96,8 +95,9 @@ public class Parser {
 			// close Area declaration
 			if (!scan.hasNext())
 				throw new ParserError("No Area closing declaration.");
-			if (!scan.next().equals("Area"))
-				throw new ParserError("Invalid declaration, should be an Area close.");
+			if (!scan.next().equals("</Area>"))
+				throw new ParserError(
+						"Invalid declaration, should be an Area close.");
 			scan.close();
 			return new Area(tiles);
 		} catch (ParserError pError) {
