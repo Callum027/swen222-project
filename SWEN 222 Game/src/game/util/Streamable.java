@@ -1,5 +1,6 @@
 package game.util;
 
+import java.io.IOException;
 import java.io.OutputStream;
 
 /**
@@ -18,5 +19,5 @@ public interface Streamable {
 	 * @param os Output stream
 	 * @return True if succeeded, false otherwise
 	 */
-	public boolean write(OutputStream os);
+	public void write(OutputStream os) throws IOException;
 }

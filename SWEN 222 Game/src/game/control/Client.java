@@ -1,4 +1,5 @@
 package game.control;
+
 import game.util.GamePacket;
 import game.world.GameEvent;
 import game.world.GameEventListener;
@@ -7,6 +8,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 
 /**
@@ -19,7 +21,7 @@ import java.net.UnknownHostException;
  */
 public class Client extends Thread implements GameEventListener {
 	private Socket socket;
-	private boolean closing = false;
+	private Boolean closing = new Boolean(false);
 	
 	/**
 	 * Connect to the local server on the default port.
@@ -76,8 +78,8 @@ public class Client extends Thread implements GameEventListener {
 	}
 	
 	public void close() {
-		synchronized ((Boolean)closing) {
-			closing = true;
+		synchronized (closing) {
+			closing = new Boolean(true);
 		}
 	}
 
@@ -86,8 +88,8 @@ public class Client extends Thread implements GameEventListener {
 	 * server when it happens.
 	 */
 	public void gameEventOccurred(GameEvent ge) {
-		synchronized ((Boolean)closing) {
-			if (!closing) {
+		synchronized (closing) {
+			if (!closing.booleanValue()) {
 				try {
 					// Get the output stream of the socket.
 					OutputStream os = socket.getOutputStream();
@@ -97,33 +99,14 @@ public class Client extends Thread implements GameEventListener {
 					
 					// Write the game event as the payload!
 					//os.write(ge.toByteArray());
+				} catch (SocketException e) {
+					System.err.println("client: closing connection: " + e.getMessage());
+					close();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 		}
-	}
-	
-	/**
-	 * Test main method to try a connection to a server.
-	 * 
-	 * @param args Optional arguments, host and port in that order
-	 */
-	public static void main(String[] args)
-	{
-		String host = (args.length > 1) ? args[1] : null;
-		int port  = (args.length > 2) ? Integer.parseInt(args[2]) : Server.DEFAULT_PORT;
-		
-		// Make a connection to the server.
-		Client c = new Client(host, port);
-		
-		System.out.println("client: calling gameEventOccurred");
-
-		// Manual call to gameEventOccurred!
-		c.gameEventOccurred(null);
-		
-		// Close the connection.
-		c.close();
 	}
 }

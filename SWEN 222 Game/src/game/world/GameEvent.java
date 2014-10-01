@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import game.util.GamePacket;
 import game.util.Streamable;
 import game.world.events.InteractEvent;
 import game.world.events.MoveEvent;
@@ -29,7 +28,7 @@ public abstract class GameEvent implements Streamable {
 	 * @param is Input stream
 	 * @return Game event
 	 */
-	public static GameEvent read(InputStream is)
+	public static GameEvent read(InputStream is) throws IOException
 	{
 		// Get the packet type from the stream.
 		GameEvent.Type t = GameEvent.Type.read(is);
@@ -45,7 +44,7 @@ public abstract class GameEvent implements Streamable {
 		}
 	}
 	
-	public abstract boolean write(OutputStream is);
+	public abstract void write(OutputStream is) throws IOException;
 
 	/**
 	 * A Type enumeration system to uniquely identify GameEvents,
@@ -99,27 +98,12 @@ public abstract class GameEvent implements Streamable {
 		 * @param is InputStream
 		 * @return GameEvent.Type
 		 */
-		public static Type read(InputStream is) {
-			try {
-				return getTypeFromID((byte)is.read());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			return null;
+		public static Type read(InputStream is) throws IOException {
+			return getTypeFromID((byte)is.read());
 		}
 		
-		public boolean write(OutputStream os) {
-			try {
-				os.write((int)id);
-				return true;
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			return false;
+		public void write(OutputStream os) throws IOException {
+			os.write((int)id);
 		}
 	}
 }
