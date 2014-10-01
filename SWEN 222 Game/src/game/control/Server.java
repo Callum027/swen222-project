@@ -51,10 +51,12 @@ public class Server extends Thread {
 	public boolean setPort(int port) {
 		try {
 			serverSocket = new ServerSocket(port);
-		} catch (BindException e) {
+		}
+		catch (BindException e) {
 			System.err.println("server: unable to bind server socket: " + e.getMessage());
 			return false;
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			System.err.println("server: unhandled, unknown IOException");
 			e.printStackTrace();
 			return false;
@@ -73,21 +75,21 @@ public class Server extends Thread {
 			
 		// Enter the main loop, accepting new connections from clients
 		// as they come.
-		synchronized (closing) {
+		try {
 			while (!closing.booleanValue()) {
-				try {
+				synchronized (closing) {
 					Socket clientSocket = serverSocket.accept();
 					ServerConnection sc = new ServerConnection(clientSocket);
 	
 					serverConnections.add(sc);
 					sc.start();
 				}
-				catch (IOException e) {
-					System.err.println("server: unhandled, unknown IOException");
-					e.printStackTrace();
-					close();
-				}
 			}
+		}
+		catch (IOException e) {
+			System.err.println("server: unhandled, unknown IOException");
+			e.printStackTrace();
+			close();
 		}
 		
 		// We have exited the main server loop. This only happens when
@@ -104,7 +106,8 @@ public class Server extends Thread {
 		
 		try {
 			serverSocket.close();
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			System.err.println("server: unhandled, unknown IOException");
 			e.printStackTrace();
 		}
@@ -140,8 +143,8 @@ public class Server extends Thread {
 				InputStream is = clientSocket.getInputStream();
 				OutputStream os = clientSocket.getOutputStream();
 				
-				synchronized (closing) {
-					while (!closing.booleanValue()) {
+				while (!closing.booleanValue()) {
+					synchronized (closing) {
 						// Read a new GamePacket from the client.
 						GamePacket gp = GamePacket.read(is);
 						
@@ -165,10 +168,12 @@ public class Server extends Thread {
 				// Exited the server connection loop, which means
 				// we have to close the client socket.
 				clientSocket.close();
-			} catch (SocketException e) {
+			}
+			catch (SocketException e) {
 				System.err.println("server: closing connection: " + e.getMessage());
 				close();
-			} catch (IOException e) {
+			}
+			catch (IOException e) {
 				System.err.println("server: unhandled, unknown IOException");
 				e.printStackTrace();
 				close();
