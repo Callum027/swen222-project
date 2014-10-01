@@ -18,6 +18,7 @@ public class GameWorld {
 
 	private List<Area> areas;
 	private Set<GameStateListener> gameStates;
+	private int commit;
 
 	public GameWorld(){
 		areas = new ArrayList<Area>();
