@@ -1,5 +1,6 @@
 package game.world.events;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -16,17 +17,21 @@ public class InteractEvent extends GameEvent {
 		return GameEvent.Type.INTERACT;
 	}
 	
-	public static InteractEvent read(InputStream is) {
+	/**
+	 * Read an InteractEvent from the input stream.
+	 * 
+	 * @param is Input stream
+	 * @return InteractEvent
+	 * @throws IOException
+	 */
+	public static InteractEvent read(InputStream is) throws IOException {
 		return new InteractEvent();
 	}
 	
-	public boolean write(OutputStream os) {
+	public void write(OutputStream os) throws IOException {
 		// Write the type header of this event to the output stream.
-		if (!getType().write(os))
-			return false;
+		getType().write(os);
 		
 		// Write the changes this event causes to the output stream.
-		
-		return true;
 	}
 }

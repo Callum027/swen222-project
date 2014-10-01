@@ -6,23 +6,44 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class GamePacket implements Streamable {	
+public class GamePacket implements Streamable {
 	// The packet type, and payload in object form.
 	private final GamePacket.Type type;
 	private final Streamable payload;
 	
-	// All of the possible payloads. These get filled
-	
+
+	/**
+	 * Initialise a GamePacket with a type and a streamable payload.
+	 * 
+	 * @param t Type
+	 * @param s Payload
+	 */
 	public GamePacket(GamePacket.Type t, Streamable s) {
+		if (t == null)
+			throw new IllegalArgumentException("GamePacket.Type is null");
+		
+		if (s == null)
+			throw new IllegalArgumentException("Streamable is null");
+		
 		type = t;
 		payload = s;
 	}
 	
+	/**
+	 * Returns the type of game packet.
+	 * 
+	 * @return Game packet
+	 */
 	public GamePacket.Type getType()
 	{
 		return type;
 	}
 	
+	/**
+	 * Returns the payload object for this GamePacket.
+	 * 
+	 * @return Payload
+	 */
 	public Streamable getPayload()
 	{
 		return payload;
@@ -34,7 +55,7 @@ public class GamePacket implements Streamable {
 	 * @param is Input stream
 	 * @return Game packet
 	 */
-	public static GamePacket read(InputStream is)
+	public static GamePacket read(InputStream is) throws IOException
 	{
 		Streamable s = null;
 		GamePacket.Type t = null;
@@ -58,9 +79,11 @@ public class GamePacket implements Streamable {
 		return new GamePacket(t, s);
 	}
 	
-	public boolean write(OutputStream os)
+	public void write(OutputStream os) throws IOException
 	{
-		return true;
+		// Yep, it's as simple as calling write() to the type and the payload.
+		type.write(os);
+		payload.write(os);
 	}
 
 	/**
@@ -114,27 +137,12 @@ public class GamePacket implements Streamable {
 		 * @param is InputStream
 		 * @return GamePacket.Type
 		 */
-		public static Type read(InputStream is) {
-			try {
-				return getTypeFromID((byte)is.read());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			return null;
+		public static Type read(InputStream is) throws IOException {
+			return getTypeFromID((byte)is.read());
 		}
 		
-		public boolean write(OutputStream os) {
-			try {
-				os.write((int)id);
-				return true;
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			return false;
+		public void write(OutputStream os) throws IOException {
+			os.write((int)id);
 		}
 	}
 }
