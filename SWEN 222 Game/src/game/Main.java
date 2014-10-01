@@ -15,9 +15,11 @@ import java.util.Scanner;
 import javax.imageio.ImageIO;
 
 import game.control.Player;
+import game.loading.Parser;
 import game.ui.*;
 import game.world.Area;
 import game.world.GameWorld;
+import game.world.items.Furniture;
 import game.world.tiles.FloorTile;
 import game.world.tiles.Tile;
 import game.world.tiles.WallTile;
@@ -26,22 +28,25 @@ public class Main {
 
 	// temporary while we are waiting for Chris to do data storage
 	private String[] tilesFile = new String[] { "1, FloorTile, floor_tile3.png" };
-	private String[] areaFile = new String[] { "10, 10",
-			"1, 1, 1, 1, 1, 1, 1, 1, 1, 1", "1, 1, 1, 1, 1, 1, 1, 1, 1, 1",
-			"1, 1, 1, 1, 1, 1, 1, 1, 1, 1", "1, 1, 1, 1, 1, 1, 1, 1, 1, 1",
-			"1, 1, 1, 1, 1, 1, 1, 1, 1, 1", "1, 1, 1, 1, 1, 1, 1, 1, 1, 1",
-			"1, 1, 1, 1, 1, 1, 1, 1, 1, 1", "1, 1, 1, 1, 1, 1, 1, 1, 1, 1",
-			"1, 1, 1, 1, 1, 1, 1, 1, 1, 1", "1, 1, 1, 1, 1, 1, 1, 1, 1, 1" };
-
+//	private String[] areaFile = new String[] { "10, 10",
+//			"1, 1, 1, 1, 1, 1, 1, 1, 1, 1", "1, 1, 1, 1, 1, 1, 1, 1, 1, 1",
+//			"1, 1, 1, 1, 1, 1, 1, 1, 1, 1", "1, 1, 1, 1, 1, 1, 1, 1, 1, 1",
+//			"1, 1, 1, 1, 1, 1, 1, 1, 1, 1", "1, 1, 1, 1, 1, 1, 1, 1, 1, 1",
+//			"1, 1, 1, 1, 1, 1, 1, 1, 1, 1", "1, 1, 1, 1, 1, 1, 1, 1, 1, 1",
+//			"1, 1, 1, 1, 1, 1, 1, 1, 1, 1", "1, 1, 1, 1, 1, 1, 1, 1, 1, 1" };
+	private String areaFile = "Area.xml";
 	private GameFrame gameWindow;
 	private static final String IMAGE_PATH = "ui/graphics/";
 
 	public Main() {
 		Map<Integer, Tile> tileMap = createTileMap(tilesFile);
 		gameWindow = new GameFrame(1280, 720, Cursor.getDefaultCursor());
-		Area area = Area.parseArea(areaFile, tileMap);
+		Area area = Parser.parseArea(areaFile, tileMap);
 		GameWorld gameWorld = new GameWorld();
 		gameWorld.addArea(area);
+		Image shelfImage = getImage("shelf.png");
+		Furniture shelf = new Furniture(3, 5, 2, "shelf", shelfImage, null);
+		area.addItem(shelf, shelf.getX(), shelf.getY());
 		gameWindow.getRender().setArea(area);
 		gameWindow.getRender().repaint();
 	}
