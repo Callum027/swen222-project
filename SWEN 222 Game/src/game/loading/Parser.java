@@ -93,6 +93,11 @@ public class Parser {
 					tiles[x][y] = tileMap.get(scan.nextInt());
 				}
 			}
+			// close Area declaration
+			if (!scan.hasNext())
+				throw new ParserError("No Area closing declaration.");
+			if (!scan.next().equals("Area"))
+				throw new ParserError("Invalid declaration, should be an Area close.");
 			scan.close();
 			return new Area(tiles);
 		} catch (ParserError pError) {
