@@ -9,8 +9,10 @@ import java.awt.event.MouseListener;
 import javax.swing.JPanel;
 
 /**
- * A simple panel that is to be used for drawing the inventory
- * Also can determine what equip slot was selected so it can return a related int value for what slot on the character it was
+ * A simple panel that is to be used for drawing the inventory Also can
+ * determine what equip slot was selected so it can return a related int value
+ * for what slot on the character it was
+ *
  * @author Harry
  *
  */

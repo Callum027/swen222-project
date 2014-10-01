@@ -10,6 +10,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -18,12 +20,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
- * Makes the frame that the game is going to run in
- * Extends JFrame and has some panels in it
+ * Makes the frame that the game is going to run in Extends JFrame and has some
+ * panels in it
+ *
  * @author Harry
  *
  */
-public class GameFrame extends JFrame implements ActionListener {
+public class GameFrame extends JFrame implements ActionListener, KeyListener {
 
 	/**
 	 *
@@ -48,6 +51,7 @@ public class GameFrame extends JFrame implements ActionListener {
 	public GameFrame(int gameWindowX, int gameWindowY, Cursor cursor) {
 		super("Game frame or something");
 		setResizable(false);
+
 		setLayout(new FlowLayout()); // sets the frame to have a layout so that
 										// the screens are in proportion
 		render = new RenderingPanel();
@@ -67,6 +71,7 @@ public class GameFrame extends JFrame implements ActionListener {
 		add(appPane);
 		setCursor(cursor);
 		pack();
+		addKeyListener(this);
 		setVisible(true);
 	}
 
@@ -88,15 +93,37 @@ public class GameFrame extends JFrame implements ActionListener {
 	 * @return an int from the dialog box that was choosen
 	 */
 	private int getQuitCommand() {
-
 		return JOptionPane.showOptionDialog(this,
 				"Are you sure you want to quit?", "Quit",
 				JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE,
 				null, null, null);
-
 	}
 
 	public RenderingPanel getRender() {
 		return render;
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+
+
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		System.out.println(e.getKeyCode()+"");
+		if (e.getKeyCode()==KeyEvent.VK_ESCAPE) {
+			System.out.println("WOO!");
+			openMenu();
+		}
+
+	}
+
+	private void openMenu() {
+		getQuitCommand();
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
 	}
 }
