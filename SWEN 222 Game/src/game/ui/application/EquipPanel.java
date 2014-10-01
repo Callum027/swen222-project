@@ -112,7 +112,6 @@ public class EquipPanel extends JPanel implements MouseListener {
 				&& x < width / 2 + squareSize) {
 			equip = FEET_SLOT;
 		}
-		System.out.println("Equip = " + equip);
 	}
 
 	@Override

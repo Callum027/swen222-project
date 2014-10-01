@@ -16,9 +16,9 @@ import javax.swing.JPanel;
 /**
  * A simple panel that drawing the inventory items on screen Also can determine
  * what inventory slot was selected so it can return the value for the array
- *
+ * 
  * @author Harry
- *
+ * 
  */
 public class InventoryPanel extends JPanel implements MouseListener {
 
@@ -27,18 +27,22 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	public static final int INVENTORY_WIDTH = 5;
 	public static final int INVENTORY_HEIGHT = 4;
 	public static final int squareSize = 45;
-	private MovableItem[] items;
+	private MovableItem[] items = new MovableItem[1];
+	private int cats = 0;
 
 	/**
 	 * Makes a new InventoryPanel which extends JPanel and sets the width and
 	 * height fields so that the panel can be a certain size
-	 *
+	 * 
 	 * @param width
 	 *            the width of the panel
 	 * @param height
 	 *            the height of the panel
 	 */
 	public InventoryPanel() {
+
+		items[0] = new MovableItem(0, 0, squareSize, "cat",
+				Main.getImage("cat-inv.jpg"));
 		setPreferredSize(new Dimension(width, height));
 		addMouseListener(this);
 
@@ -49,17 +53,17 @@ public class InventoryPanel extends JPanel implements MouseListener {
 		g.setColor(Color.black);
 		g.fillRect(0, 0, width, height);
 
-		drawInventory(g);
+		drawBlankInventory(g);
 	}
 
 	/**
 	 * Draws a grid from the size of the inventory and makes it look nice-ish in
 	 * a square
-	 *
+	 * 
 	 * @param g
 	 *            a Graphics object
 	 */
-	private void drawInventory(Graphics g) {
+	private void drawBlankInventory(Graphics g) {
 		for (int i = 0; i < INVENTORY_WIDTH; i++) {
 			for (int j = 0; j < INVENTORY_HEIGHT; j++) {
 				g.setColor(Color.white);
@@ -72,8 +76,24 @@ public class InventoryPanel extends JPanel implements MouseListener {
 		}
 		Image img = Main.getImage("cat-inv.jpg");
 		g.setColor(Color.white);
-		g.drawImage(img, 10, height - 50, 45, 45, null);
-		g.drawString("" + PlayableCharacter.getCats(), 65, height - 10);
+		g.drawImage(img, 10, height - 50, null);
+		g.drawString("" + cats, 65, height - 10);
+		drawInventoryItems(g);
+	}
+
+	private void drawInventoryItems(Graphics g) {
+		for (int i = 0; i < items.length; i++) {
+			int j = 0;
+			int k = 0;
+			items[0].draw(g, j, k);
+			j++;
+			if (j == INVENTORY_WIDTH) {
+				j = 0;
+				k++;
+			}
+
+		}
+
 	}
 
 	@Override
@@ -86,14 +106,14 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	/**
 	 * This method is called when the mouse is clicked and determines the square
 	 * in the array that the items are stored in
-	 *
+	 * 
 	 * @param x
 	 *            the mouse X
 	 * @param y
 	 *            the mouse Y
 	 */
 	private void selectItem(int x, int y) {
-		System.out.println("X = " + x + " Y = " + y);
+
 		int XSelect = x / squareSize; // works out how far along the grid it is
 		int ySelect = (y / squareSize) * INVENTORY_WIDTH;
 		/*
@@ -111,7 +131,9 @@ public class InventoryPanel extends JPanel implements MouseListener {
 		if (selected > INVENTORY_HEIGHT * INVENTORY_WIDTH) {
 			selected = -1;
 		}
-		System.out.println("Selected = " + selected);
+		if (selected >= 0 && selected < items.length) {
+			System.out.println("Selected = " + items[selected].getName());
+		}
 	}
 
 	@Override
@@ -136,6 +158,14 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public MovableItem[] getItems() {
+		return items;
+	}
+
+	public void setItems(MovableItem[] items) {
+		this.items = items;
 	}
 
 }

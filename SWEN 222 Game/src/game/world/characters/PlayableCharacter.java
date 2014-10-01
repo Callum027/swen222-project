@@ -19,7 +19,7 @@ public class PlayableCharacter extends GameCharacter{
 	private Equipment[] inventory;
 	private GameClass gameClass; //either Warrior, Mage or Rogue
 	private int count;
-	private static int cats = 100; //the amount of money/points the player has
+	private int cats = 100; //the amount of money/points the player has
 
 	/**
 	 * The constructor: invokes the assignClass method and gives the player a class
@@ -72,7 +72,7 @@ public class PlayableCharacter extends GameCharacter{
 	 * Retrieves the cats which is the score AND the currency of the game
 	 * @return the amount of cats the player has
 	 */
-	public static int getCats() {
+	public int getCats() {
 		return cats;
 	}
 

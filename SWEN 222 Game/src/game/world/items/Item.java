@@ -94,10 +94,10 @@ public abstract class Item {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	/**
 	 * Draw this item on the specified graphics object
-	 * 
+	 *
 	 * @param g - graphics object
 	 * @param x - x position to draw to
 	 * @param y - y position to draw to
