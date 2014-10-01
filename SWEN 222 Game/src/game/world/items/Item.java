@@ -1,5 +1,8 @@
 package game.world.items;
 
+import java.awt.Graphics;
+import java.awt.Image;
+
 /**
  * A class for all the items including furniture, chests (containers) and moveable items (anything you can pick up)
  * @author Nick Tran
@@ -11,6 +14,7 @@ public abstract class Item {
 	private int y;
 	private String name;
 	private int height; //how much room the item takes up on the area
+	private Image image;
 
 	/**
 	 * THe constructor
@@ -19,11 +23,12 @@ public abstract class Item {
 	 * @param height the size of the item
 	 * @param name the name of the item
 	 */
-	public Item(int x, int y, int height, String name){
+	public Item(int x, int y, int height, String name, Image image){
 		this.setHeight(height);
 		this.setX(x);
 		this.setY(y);
 		this.setName(name);
+		this.image = image;
 	}
 
 	/**
@@ -88,5 +93,16 @@ public abstract class Item {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	/**
+	 * Draw this item on the specified graphics object
+	 * 
+	 * @param g - graphics object
+	 * @param x - x position to draw to
+	 * @param y - y position to draw to
+	 */
+	public void draw(Graphics g, int x, int y){
+		g.drawImage(image, x, y, null);
 	}
 }

@@ -18,6 +18,7 @@ import game.control.Player;
 import game.ui.*;
 import game.world.Area;
 import game.world.GameWorld;
+import game.world.items.Furniture;
 import game.world.tiles.FloorTile;
 import game.world.tiles.Tile;
 import game.world.tiles.WallTile;
@@ -42,6 +43,9 @@ public class Main {
 		Area area = Area.parseArea(areaFile, tileMap);
 		GameWorld gameWorld = new GameWorld();
 		gameWorld.addArea(area);
+		Image shelfImage = getImage("shelf.png");
+		Furniture shelf = new Furniture(3, 5, 2, "shelf", shelfImage, null);
+		area.addItem(shelf, shelf.getX(), shelf.getY());
 		gameWindow.getRender().setArea(area);
 		gameWindow.getRender().repaint();
 	}
