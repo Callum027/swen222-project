@@ -3,6 +3,9 @@ package game.control;
 import game.net.GamePacket;
 import game.world.GameEvent;
 import game.world.GameEventListener;
+import game.world.GameState;
+import game.world.GameStateBroadcaster;
+import game.world.GameStateListener;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,6 +26,7 @@ import java.net.UnknownHostException;
 public class Client extends Thread implements GameEventListener {
 	private Socket socket = null;
 	private Boolean closing = new Boolean(false);
+	public GameStateBroadcaster gsb = new GameStateBroadcaster();
 	
 	/**
 	 * Connect to the local host on the default port.
@@ -96,6 +100,17 @@ public class Client extends Thread implements GameEventListener {
 					
 					// Read a game packet from the server.
 					GamePacket gp = GamePacket.read(is);
+					
+					switch (gp.getType())
+					{
+						// We have received a game state update. Broadcast it to all clients.
+						case STATE:
+							GameState gs = (GameState)gp.getPayload();
+							gsb.broadcastGameState(gs);
+							break;
+						default:
+							break;
+					}
 				}
 			}
 			
@@ -148,5 +163,15 @@ public class Client extends Thread implements GameEventListener {
 			e.printStackTrace();
 			close();
 		}
+	}
+	
+	/**
+	 * Add a game state listener to this client.
+	 * 
+	 * @param gsl Game state listener
+	 */
+	public void addGameStateListener(GameStateListener gsl)
+	{
+		gsb.addGameEventListener(gsl);
 	}
 }

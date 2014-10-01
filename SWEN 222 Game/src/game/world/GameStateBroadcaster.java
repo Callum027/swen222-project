@@ -9,7 +9,7 @@ import java.util.Set;
  * @author Callum
  *
  */
-public abstract class GameStateBroadcaster {
+public class GameStateBroadcaster {
 	private Set<GameStateListener> gameStateListeners = new HashSet<GameStateListener>();
 	
 	/**

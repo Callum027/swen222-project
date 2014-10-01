@@ -9,7 +9,7 @@ import java.util.Set;
  * @author Callum
  *
  */
-public abstract class GameEventBroadcaster {
+public class GameEventBroadcaster {
 	private Set<GameEventListener> gameEventListeners = new HashSet<GameEventListener>();
 	
 	/**
