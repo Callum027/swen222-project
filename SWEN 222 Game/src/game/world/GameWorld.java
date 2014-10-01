@@ -14,15 +14,12 @@ import java.util.Set;
  * @author Nick Tran
  *
  */
-public class GameWorld {
+public class GameWorld extends GameEventBroadcaster{
 
 	private List<Area> areas;
-	private Set<GameStateListener> gameStates;
-	private int commit;
 
 	public GameWorld(){
 		areas = new ArrayList<Area>();
-		gameStates = new HashSet<GameStateListener>();
 	}
 
 	/**
