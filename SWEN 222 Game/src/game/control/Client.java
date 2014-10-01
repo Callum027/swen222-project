@@ -94,11 +94,8 @@ public class Client extends Thread implements GameEventListener {
 					// Get the output stream of the socket.
 					OutputStream os = socket.getOutputStream();
 					
-					// Write the game packet header.
+					// Pack the game event into a game packet, and send it off!
 					new GamePacket(GamePacket.Type.EVENT, ge).write(os);
-					
-					// Write the game event as the payload!
-					//os.write(ge.toByteArray());
 				} catch (SocketException e) {
 					System.err.println("client: closing connection: " + e.getMessage());
 					close();

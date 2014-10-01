@@ -1,6 +1,7 @@
 package game.control;
 
 import game.util.GamePacket;
+import game.world.GameEvent;
 import game.world.GameWorld;
 
 import java.io.IOException;
@@ -144,11 +145,20 @@ public class Server extends Thread {
 						// Read a new GamePacket from the client.
 						GamePacket gp = GamePacket.read(is);
 						
-						System.out.println("server: GamePacket read... type: " + gp.getType());
-						
-						// Update the game world.
-						
-						// Send the updated game state to the rest of the clients.
+						// Determine the next action according to the contents of the GamePacket.
+						switch (gp.getType())
+						{
+							// We have received a game event from a client.
+							case EVENT:
+								GameEvent ge = (GameEvent)gp.getPayload();
+								
+								System.out.println("server: received an EVENT packet from " + clientSocket.getInetAddress());
+								System.out.println("        EVENT type: " + ge.getType());
+								
+								// Update the game world.
+								// Send the updated game state to the rest of the clients.
+								break;
+						}
 					}
 				}
 				

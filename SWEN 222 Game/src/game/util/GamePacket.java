@@ -95,7 +95,18 @@ public class GamePacket implements Streamable {
 	 */
 	public enum Type implements Streamable {
 		// All of the known possible game packet types.
-		EVENT(0);
+		// This should be the first packet sent, used to establish communications.
+		HELLO(0),
+		// Tells the peer to close their connection.
+		QUIT(1),
+		// Acknowledgement reply after a communication was sent.
+		ACK(2),
+		// Join a game.
+		JOIN(3),
+		// Game state transfers.
+		STATE(4),
+		// Game event updates.
+		EVENT(5);
 		
 		// The unique ID of the event.
 		private final byte id;
