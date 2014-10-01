@@ -93,7 +93,7 @@ public class Client extends Thread implements GameEventListener {
 					OutputStream os = socket.getOutputStream();
 					
 					// Write the game packet header.
-					os.write(new GamePacket(GamePacket.Type.EVENT).toByteArray());
+					new GamePacket(GamePacket.Type.EVENT, ge).write(os);
 					
 					// Write the game event as the payload!
 					//os.write(ge.toByteArray());

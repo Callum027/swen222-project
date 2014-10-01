@@ -1,6 +1,13 @@
 package game.world;
 
-import game.util.ByteArrayConvertible;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import game.util.GamePacket;
+import game.util.Streamable;
+import game.world.events.InteractEvent;
+import game.world.events.MoveEvent;
 
 /**
  * Represent game events using a standard interface, so they can be
@@ -9,24 +16,36 @@ import game.util.ByteArrayConvertible;
  * @author Callum
  *
  */
-public abstract class GameEvent implements ByteArrayConvertible {
-	
-	/**
-	 * Convert a byte array to a GameEvent object.
-	 * 
-	 * @param bytes Byte array to convert
-	 * @return GameEvent version of byte array
-	 */
-	public GameEvent fromByteArray(byte[] bytes)
-	{
-		return null;
-	}
-	
+public abstract class GameEvent implements Streamable {
 	/**
 	 * Get the GameEvent.Type associated with this GameEvent.
 	 * @return game event type
 	 */
-	public abstract GameEvent.Type getGameEventType();
+	public abstract GameEvent.Type getType();
+	
+	/**
+	 * Read a game event from the input stream.
+	 * 
+	 * @param is Input stream
+	 * @return Game event
+	 */
+	public static GameEvent read(InputStream is)
+	{
+		// Get the packet type from the stream.
+		GameEvent.Type t = GameEvent.Type.read(is);
+			
+		switch (t)
+		{
+			case MOVE:
+				return MoveEvent.read(is);
+			case INTERACT:
+				return InteractEvent.read(is);
+			default:
+				return null;
+		}
+	}
+	
+	public abstract boolean write(OutputStream is);
 
 	/**
 	 * A Type enumeration system to uniquely identify GameEvents,
@@ -35,20 +54,20 @@ public abstract class GameEvent implements ByteArrayConvertible {
 	 * @author Callum
 	 *
 	 */
-	public enum Type {
+	public enum Type implements Streamable {
 		// All of the known possible game events.
 		MOVE(0),
 		INTERACT(1);
 		
 		// The unique ID of the event.
-		private final int id;
+		private final byte id;
 		
 		/*
 		 * construct a GameEvent.Type object.
 		 * @param i ID number
 		 */
 		private Type(int i) {
-			id = i;
+			id = (byte)i;
 		}
 		
 		/**
@@ -56,8 +75,51 @@ public abstract class GameEvent implements ByteArrayConvertible {
 		 * 
 		 * @return type ID
 		 */
-		public int getID() {
+		public byte getID() {
 			return id;
+		}
+		
+		/**
+		 * Return the GameEvent.Type version of a given ID.
+		 * 
+		 * @param id ID to convert
+		 * @return GameEvent.Type version
+		 */
+		public static Type getTypeFromID(byte id) {
+			for (Type t: values())		
+				if (t.getID() == id)
+					return t;
+			
+			return null;
+		}
+		
+		/**
+		 * Read a GameEvent.Type from the input stream. Returns null if it fails.
+		 * 
+		 * @param is InputStream
+		 * @return GameEvent.Type
+		 */
+		public static Type read(InputStream is) {
+			try {
+				return getTypeFromID((byte)is.read());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return null;
+		}
+		
+		public boolean write(OutputStream os) {
+			try {
+				os.write((int)id);
+				return true;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return false;
 		}
 	}
 }

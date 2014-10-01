@@ -140,10 +140,8 @@ public class Server extends Thread {
 				OutputStream os = clientSocket.getOutputStream();
 				
 				while (!closing) {
-					// Listen for new game packets from the client.
-					byte[] gpBytes = new byte[GamePacket.byteArraySize()];
-					is.read(gpBytes);
-					GamePacket gp = GamePacket.fromByteArray(gpBytes);
+					// Read a new GamePacket from the client.
+					GamePacket gp = GamePacket.read(is);
 					
 					System.out.println("server: GamePacket read... type: " + gp.getType());
 					
