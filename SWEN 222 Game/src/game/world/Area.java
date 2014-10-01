@@ -1,7 +1,9 @@
 package game.world;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import game.world.items.Item;
 import game.world.tiles.FloorTile;
@@ -93,7 +95,21 @@ public class Area {
 	}
 
 	public void setUpFloorTiles(File file){
+		try{
+			Scanner scan = new Scanner(file);
+			// first line contains width/height of area
+			String[] dimensions = scan.nextLine().split(", ");
+			int width = Integer.parseInt(dimensions[0]);
+			int height = Integer.parseInt(dimensions[1]);
+			tiles = new FloorTile[height][width];
+			for(int i = 0; i < height; i++){
+				String[] line = scan.nextLine().split(", ");
+				for(int j = 0; j < line.length; j++){
 
+				}
+			}
+			scan.close();
+		}catch(IOException e){System.out.println(e);}
 	}
 
 	public void setUpWallTiles(File file){

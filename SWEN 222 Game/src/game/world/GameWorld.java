@@ -2,6 +2,7 @@ package game.world;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A class to represent the Game World and stores the areas that make up this "world"
@@ -10,7 +11,11 @@ import java.util.ArrayList;
  */
 public class GameWorld {
 
-	private ArrayList<Area> areas;
+	private List<Area> areas;
+
+	public GameWorld(){
+		areas = new ArrayList<Area>();
+	}
 
 	/**
 	 * adds areas to the world
@@ -28,7 +33,7 @@ public class GameWorld {
 	 * Retrieves the areas that make up the game world
 	 * @return the ArrayList of areas
 	 */
-	public ArrayList<Area> getAreas(){
+	public List<Area> getAreas(){
 		return areas;
 	}
 
@@ -36,7 +41,7 @@ public class GameWorld {
 	 * Gives the GameWorld a new ArrayList of areas
 	 * @param areas the new ARrayList of areas
 	 */
-	public void setAreas(ArrayList<Area> areas){
+	public void setAreas(List<Area> areas){
 		this.areas = areas;
 	}
 }
