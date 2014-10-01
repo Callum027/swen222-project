@@ -41,6 +41,8 @@ public class Main {
 		Area area = Area.parseArea(areaFile, tileMap);
 		GameWorld gameWorld = new GameWorld();
 		gameWorld.addArea(area);
+		gameWindow.getRender().setArea(area);
+		gameWindow.getRender().repaint();
 	}
 
 	public File createFile(String[] data, String pathname) {

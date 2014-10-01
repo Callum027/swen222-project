@@ -139,10 +139,10 @@ public class Area {
 		int width = Integer.parseInt(dimensions[0]);
 		int height = Integer.parseInt(dimensions[1]);
 		Tile[][] tiles = new FloorTile[height][width];
-		for(int i = 1; i < height; i++){
+		for(int i = 0; i < height; i++){
 			String[] line = data[1].split(", ");
 			for(int j = 0; j < line.length; j++){
-				tiles[i][j] = tileMap.get(line[j]);
+				tiles[i][j] = tileMap.get(Integer.parseInt(line[j]));
 			}
 		}
 		return new Area(tiles);
