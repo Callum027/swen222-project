@@ -3,7 +3,11 @@ package game;
 import java.awt.Cursor;
 import java.awt.Image;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -17,13 +21,39 @@ import game.world.tiles.WallTile;
 
 public class Main {
 
+	private String[] tilesFile = new String[]{"1, FloorTile, floor_tile3.png"};
+	private String[] areaFile = new String[]{"10, 10", "1, 1, 1, 1, 1, 1, 1, 1, 1, 1",
+											 "1, 1, 1, 1, 1, 1, 1, 1, 1, 1",
+											 "1, 1, 1, 1, 1, 1, 1, 1, 1, 1",
+											 "1, 1, 1, 1, 1, 1, 1, 1, 1, 1",
+											 "1, 1, 1, 1, 1, 1, 1, 1, 1, 1",
+											 "1, 1, 1, 1, 1, 1, 1, 1, 1, 1",
+											 "1, 1, 1, 1, 1, 1, 1, 1, 1, 1",
+											 "1, 1, 1, 1, 1, 1, 1, 1, 1, 1",
+											 "1, 1, 1, 1, 1, 1, 1, 1, 1, 1",
+											 "1, 1, 1, 1, 1, 1, 1, 1, 1, 1"};
+
 	private GameFrame gameWindow;
 	private static final String IMAGE_PATH = "ui/graphics/";
 
 	public Main() {
-		File tiles = new File("tiles.txt");
-		Map<Integer, Tile> tileMap = createTileMap(tiles);
+		Map<Integer, Tile> tileMap = createTileMap(tilesFile);
 		gameWindow = new GameFrame(1280, 720, Cursor.getDefaultCursor());
+	}
+
+	public File createFile(String[] data, String pathname){
+		File file = new File(pathname);
+		try {
+			@SuppressWarnings("resource")
+			PrintWriter write = new PrintWriter(file);
+			for(int i = 0; i < data.length; i++){
+				write.println(data[i]);
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return file;
 	}
 
 	/**
@@ -43,25 +73,21 @@ public class Main {
 	 * @return
 	 * 			--- mapping of integers to tiles
 	 */
-	public Map<Integer, Tile> createTileMap(File file){
+	public Map<Integer, Tile> createTileMap(String[] data){
 		Map<Integer, Tile> tileMap = new HashMap<Integer, Tile>();
-		try{
-			Scanner scan = new Scanner(file);
-			while(scan.hasNextLine()){
-				String[] line = scan.nextLine().split(", ");
-				int id = Integer.parseInt(line[0]);
-				Image image = getImage(line[2]);
-				Tile tile = null;
-				if(line[1].equals("Floor")){
-					tile = new FloorTile(image);
-				}
-				else if(line[1].equals("Wall")){
-					tile = new WallTile(image);
-				}
-				tileMap.put(id, tile);
+		for(int i = 0; i < data.length; i++){
+			String[] line = data[i].split(", ");
+			int id = Integer.parseInt(line[0]);
+			Image image = getImage(line[2]);
+			Tile tile = null;
+			if(line[1].equals("FloorTile")){
+				tile = new FloorTile(image);
 			}
-			scan.close();
-		}catch(IOException e){System.out.println(e);}
+			else if(line[1].equals("WallTile")){
+				tile = new WallTile(image);
+			}
+			tileMap.put(id, tile);
+		}
 		return tileMap;
 	}
 
