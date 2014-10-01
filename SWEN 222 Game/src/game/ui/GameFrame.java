@@ -2,6 +2,7 @@ package game.ui;
 
 import game.ui.application.EquipPanel;
 import game.ui.application.InventoryPanel;
+import game.ui.rendering.RenderingPanel;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -30,6 +31,9 @@ public class GameFrame extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
 
 	private JButton quit;
+	private RenderingPanel render;
+	private EquipPanel equip;
+	private InventoryPanel inventory;
 
 	/**
 	 * Is called automatically from Main
@@ -43,24 +47,21 @@ public class GameFrame extends JFrame implements ActionListener {
 	 */
 	public GameFrame(int gameWindowX, int gameWindowY, Cursor cursor) {
 		super("Game frame or something");
-		//frame.setLocationRelativeTo(null); //makes the frame appear in the middle of the screen rather than in the top left corner
 		setResizable(false);
 		setLayout(new FlowLayout()); //sets the frame to have a layout so that the screens are in proportion
-		JPanel panel = new JPanel();
+		render = new RenderingPanel();
 		quit = new JButton("Quit");
-		panel.add(quit);
-		panel.setPreferredSize(new Dimension((int) (gameWindowX * 0.75), gameWindowY));
-
-		add(panel);
+		render.add(quit);
+		render.setPreferredSize(new Dimension((int) (gameWindowX * 0.75), gameWindowY));
+		add(render);
 		quit.addActionListener(this);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		panel.setBackground(Color.cyan);
 		JPanel appPane  = new JPanel();
 		appPane.setLayout(new BoxLayout(appPane, BoxLayout.Y_AXIS));
-		InventoryPanel iP = new InventoryPanel();
-		EquipPanel eP = new EquipPanel();
-		appPane.add(eP);
-		appPane.add(iP);
+		inventory = new InventoryPanel();
+		equip = new EquipPanel();
+		appPane.add(equip);
+		appPane.add(inventory);
 		add(appPane);
 		setCursor(cursor);
 		pack();

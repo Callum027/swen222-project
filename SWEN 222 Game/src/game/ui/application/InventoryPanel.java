@@ -67,8 +67,8 @@ public class InventoryPanel extends JPanel implements MouseListener{
 		}
 		Image img = Main.getImage("cat-inv.jpg");
 		g.setColor(Color.white);
-		g.drawImage(img, 10, height-40, 30, 30, null);
-		g.drawString(""+PlayableCharacter.getCats(), 50, height-10);
+		g.drawImage(img, 10, height-50, 45, 45, null);
+		g.drawString(""+PlayableCharacter.getCats(), 65, height-10);
 
 	}
 
@@ -88,13 +88,16 @@ public class InventoryPanel extends JPanel implements MouseListener{
 	private void selectItem(int x, int y) {
 		System.out.println("X = " +x+" Y = "+y);
 		int XSelect = x/squareSize; //works out how far along the grid it is
-		int ySelect = (y/squareSize)*INVENTORY_HEIGHT;
+		int ySelect = (y/squareSize)*INVENTORY_WIDTH;
 		/*
 		* It works out how far down the grid it is and then times it by INVENTORY_HEIGHT
 		* This is due to the fact that it is saved in a 1D array rather than a 2D array even though it is expressed as a 2D array
 		*/
 
 		int selected = XSelect+ySelect; //adds the x and y values together and represents it as an index in the array
+		if(selected>INVENTORY_HEIGHT*INVENTORY_WIDTH){
+			selected = -1;
+		}
 		System.out.println("Selected = "+selected);
 	}
 
