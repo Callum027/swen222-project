@@ -4,6 +4,7 @@ import game.world.Area;
 import game.world.tiles.FloorTile;
 import game.world.tiles.Tile;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
@@ -43,6 +44,8 @@ public class RenderingPanel extends JPanel{
 	 */
 	@Override
 	public void paintComponent(Graphics g){
+		g.setColor(Color.gray);
+		g.fillRect(0, 0, WIDTH, HEIGHT);
 		if(area != null){
 			Tile[][] tiles = area.getTiles();
 			int length = (tiles.length * tiles[0].length) - 1;
