@@ -8,10 +8,16 @@ import game.world.GameEvent;
  * @author Callum
  *
  */
-public class MoveEvent implements GameEvent {
+public class MoveEvent extends GameEvent {
 
 	public Type getGameEventType() {
 		return Type.MOVE;
+	}
+
+	@Override
+	public byte[] toByteArray() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

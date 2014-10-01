@@ -1,8 +1,11 @@
 package game.control;
 
+import game.util.GamePacket;
 import game.world.GameWorld;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -27,6 +30,11 @@ public class Server extends Thread {
 	private ServerSocket serverSocket;
 	private List<ServerConnection> serverConnections;
 	
+	/**
+	 * Open a server on the default port, with the given GameWorld.
+	 * 
+	 * @param w GameWorld to open a server for
+	 */
 	public Server(GameWorld w) {
 		closing = false;
 		world = w;
@@ -35,6 +43,11 @@ public class Server extends Thread {
 		setupServerSocket(DEFAULT_PORT);
 	}
 	
+	/**
+	 * Open a server on the specified port, with the given GameWorld.
+	 * @param w GameWorld to open a server for
+	 * @param port Port to listen on
+	 */
 	public Server(GameWorld w, int port) {
 		closing = false;
 		world = w;
@@ -122,17 +135,25 @@ public class Server extends Thread {
 		}
 		
 		public void run() {
-			while (!closing) {
-				// Listen for new game events from the client.
-				
-				// Update the game world.
-				
-				// Send the updated game state to the rest of the clients.
-			}
-			
-			// Exited the server connection loop, which means
-			// we have to close the client socket.
 			try {
+				InputStream is = clientSocket.getInputStream();
+				OutputStream os = clientSocket.getOutputStream();
+				
+				while (!closing) {
+					// Listen for new game packets from the client.
+					byte[] gpBytes = new byte[GamePacket.byteArraySize()];
+					is.read(gpBytes);
+					GamePacket gp = GamePacket.fromByteArray(gpBytes);
+					
+					System.out.println("server: GamePacket read... type: " + gp.getType());
+					
+					// Update the game world.
+					
+					// Send the updated game state to the rest of the clients.
+				}
+				
+				// Exited the server connection loop, which means
+				// we have to close the client socket.
 				clientSocket.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -143,5 +164,21 @@ public class Server extends Thread {
 		public void close() {
 			closing = true;
 		}
+	}
+	
+	/**
+	 * Test main method to try a connection to a server.
+	 * 
+	 * @param args Optional arguments, host and port in that order
+	 */
+	public static void main(String[] args)
+	{
+		int port  = (args.length > 1) ? Integer.parseInt(args[1]) : Server.DEFAULT_PORT;
+		
+		// Make a connection to the server.
+		Server s = new Server(null, port);
+		s.start();
+		
+		System.out.println("server: listening on port " + port);
 	}
 }

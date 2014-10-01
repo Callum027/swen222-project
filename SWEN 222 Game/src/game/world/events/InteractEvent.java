@@ -8,10 +8,16 @@ import game.world.GameEvent;
  * @author Callum
  *
  */
-public class InteractEvent implements GameEvent {
+public class InteractEvent extends GameEvent {
 
 	public Type getGameEventType() {
 		return Type.INTERACT;
+	}
+
+	@Override
+	public byte[] toByteArray() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
