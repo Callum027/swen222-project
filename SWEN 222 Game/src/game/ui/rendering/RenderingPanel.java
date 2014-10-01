@@ -44,7 +44,7 @@ public class RenderingPanel extends JPanel{
 	 */
 	@Override
 	public void paintComponent(Graphics g){
-		g.setColor(Color.gray);
+		g.setColor(new Color(150, 150, 150));
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		if(area != null){
 			Tile[][] tiles = area.getTiles();

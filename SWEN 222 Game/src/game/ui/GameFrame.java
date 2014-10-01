@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 
 /**
  * Makes the frame that the game is going to run in
- *
+ * Extends JFrame and has some panels in it
  * @author Harry
  *
  */
@@ -48,15 +48,17 @@ public class GameFrame extends JFrame implements ActionListener {
 	public GameFrame(int gameWindowX, int gameWindowY, Cursor cursor) {
 		super("Game frame or something");
 		setResizable(false);
-		setLayout(new FlowLayout()); //sets the frame to have a layout so that the screens are in proportion
+		setLayout(new FlowLayout()); // sets the frame to have a layout so that
+										// the screens are in proportion
 		render = new RenderingPanel();
 		quit = new JButton("Quit");
 		render.add(quit);
-		render.setPreferredSize(new Dimension((int) (gameWindowX * 0.75), gameWindowY));
+		render.setPreferredSize(new Dimension((int) (gameWindowX * 0.75),
+				gameWindowY));
 		add(render);
 		quit.addActionListener(this);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		JPanel appPane  = new JPanel();
+		JPanel appPane = new JPanel();
 		appPane.setLayout(new BoxLayout(appPane, BoxLayout.Y_AXIS));
 		inventory = new InventoryPanel();
 		equip = new EquipPanel();
@@ -80,7 +82,9 @@ public class GameFrame extends JFrame implements ActionListener {
 	}
 
 	/**
-	 * A simple command that promts the dialog box to quit the game only ever called after quit is pressed
+	 * A simple command that promts the dialog box to quit the game only ever
+	 * called after quit is pressed
+	 *
 	 * @return an int from the dialog box that was choosen
 	 */
 	private int getQuitCommand() {
@@ -92,4 +96,7 @@ public class GameFrame extends JFrame implements ActionListener {
 
 	}
 
+	public RenderingPanel getRender() {
+		return render;
+	}
 }

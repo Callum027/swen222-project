@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 
 /**
  * A simple panel that is to be used for drawing the inventory
- *
+ * Also can determine what equip slot was selected so it can return a related int value for what slot on the character it was
  * @author Harry
  *
  */
@@ -85,23 +85,29 @@ public class EquipPanel extends JPanel implements MouseListener {
 	 *            the mouse Y
 	 */
 	private void getEquip(int x, int y) {
-		int equip =-1;
-		if(y>=0 && y<squareSize && x>=width/2 && x<width/2+squareSize){
+		int equip = -1;
+		if (y >= 0 && y < squareSize && x >= width / 2
+				&& x < width / 2 + squareSize) {
 			equip = HEAD_SLOT;
-		}
-		else if(y>=(int)(height*0.4) && y<(int)(height*0.4)+squareSize && x>=width/4 && x<width/4+squareSize){
+		} else if (y >= (int) (height * 0.4)
+				&& y < (int) (height * 0.4) + squareSize && x >= width / 4
+				&& x < width / 4 + squareSize) {
 			equip = MAIN_HAND;
-		}
-		else if(y>=(int)(height*0.4) && y<(int) (height*0.4)+squareSize && x>=(int)(width*0.75) && x<(int)(width*0.75)+squareSize){
+		} else if (y >= (int) (height * 0.4)
+				&& y < (int) (height * 0.4) + squareSize
+				&& x >= (int) (width * 0.75)
+				&& x < (int) (width * 0.75) + squareSize) {
 			equip = OFF_HAND;
-		}
-		else if(y>=(int) (height*0.25) && y<(int) (height*0.25)+squareSize && x>=(width/2) && x<width/2+squareSize){
+		} else if (y >= (int) (height * 0.25)
+				&& y < (int) (height * 0.25) + squareSize && x >= (width / 2)
+				&& x < width / 2 + squareSize) {
 			equip = CHEST_SLOT;
-		}
-		else if(y>=(int) (height*0.75) && y<(int) (height*0.75)+squareSize && x>=(width/2) && x<width/2+squareSize){
+		} else if (y >= (int) (height * 0.75)
+				&& y < (int) (height * 0.75) + squareSize && x >= (width / 2)
+				&& x < width / 2 + squareSize) {
 			equip = FEET_SLOT;
 		}
-		System.out.println("Equip = "+equip);
+		System.out.println("Equip = " + equip);
 	}
 
 	@Override
