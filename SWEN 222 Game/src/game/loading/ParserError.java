@@ -4,6 +4,7 @@ package game.loading;
  * @author Tsun
  *
  */
+@SuppressWarnings("serial")
 public class ParserError extends Exception {
 	private String message;
 public ParserError(String msg){
