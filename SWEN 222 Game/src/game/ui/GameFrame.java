@@ -4,9 +4,7 @@ import game.ui.application.EquipPanel;
 import game.ui.application.InventoryPanel;
 import game.ui.rendering.RenderingPanel;
 
-import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +14,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 
 /**
  * Makes the frame that the game is going to run in
@@ -46,15 +46,14 @@ public class GameFrame extends JFrame implements ActionListener {
 	 *            enables the game to run with a custom cursor
 	 */
 	public GameFrame(int gameWindowX, int gameWindowY, Cursor cursor) {
-		super("Game frame or something");
+		super("SWEN 222 Game Project");
 		setResizable(false);
-		setLayout(new FlowLayout()); // sets the frame to have a layout so that
-										// the screens are in proportion
+		// set the frame to have a layout so that the screens are in proportion
+		setLayout(new FlowLayout());
 		render = new RenderingPanel();
 		quit = new JButton("Quit");
 		render.add(quit);
-		render.setPreferredSize(new Dimension((int) (gameWindowX * 0.75),
-				gameWindowY));
+		//render.setPreferredSize(new Dimension((int) (gameWindowX * 0.75), gameWindowY));
 		add(render);
 		quit.addActionListener(this);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -82,10 +81,10 @@ public class GameFrame extends JFrame implements ActionListener {
 	}
 
 	/**
-	 * A simple command that promts the dialog box to quit the game only ever
+	 * A simple command that prompts the dialog box to quit the game only ever
 	 * called after quit is pressed
 	 *
-	 * @return an int from the dialog box that was choosen
+	 * @return an int from the dialog box that was chosen
 	 */
 	private int getQuitCommand() {
 

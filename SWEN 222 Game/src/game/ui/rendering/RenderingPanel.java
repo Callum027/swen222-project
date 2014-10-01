@@ -1,6 +1,7 @@
 package game.ui.rendering;
 
 import game.world.Area;
+import game.world.items.Item;
 import game.world.tiles.FloorTile;
 import game.world.tiles.Tile;
 
@@ -22,13 +23,12 @@ public class RenderingPanel extends JPanel implements MouseListener{
 	private final int WIDTH = 960;
 	private final int HEIGHT = 720;
 	private Area area;
-	private Polygon[][] boundingBoxes;
+	private Polygon[][] tileBoundingBoxes;
+	private Polygon[][] itemBoundingBoxes;
 
 	private int areaLength;
 	private int areaWidth;
 	private int areaHeight;
-	private int startX;
-	private int startY;
 
 	/**
 	 * Constructor:
@@ -55,24 +55,37 @@ public class RenderingPanel extends JPanel implements MouseListener{
 		areaHeight = ((areaLength - 1) * (FloorTile.HEIGHT / 2)) - 135;
 
 		calculateBoundingBoxes();
-		System.out.println();
 	}
 
 	public void calculateBoundingBoxes(){
-		boundingBoxes = new Polygon[area.getTiles().length][area.getTiles()[0].length];
-
+		tileBoundingBoxes = new Polygon[area.getTiles().length][area.getTiles()[0].length];
+		itemBoundingBoxes = new Polygon[area.getTiles().length][area.getTiles()[0].length];
+		
 		int dx = (FloorTile.WIDTH / 2) + 1;
 		int dy = FloorTile.HEIGHT / 2;
 		int startX = ((WIDTH - areaWidth) / 2) + ((area.getTiles().length - 1) * dx);
 		int startY = (HEIGHT - areaHeight) / 2;
 
-		for(int i = 0; i < boundingBoxes.length; i++){
+		for(int i = 0; i < tileBoundingBoxes.length; i++){
 			int x = startX - (dx * i);
 			int y = startY + (dy * i);
-			for(int j = 0; j < boundingBoxes[i].length; j++){
+			for(int j = 0; j < tileBoundingBoxes[i].length; j++){
+				// calculate x and y points for bounding box of tile
 				int[] xPoints = new int[]{x, x + (FloorTile.WIDTH / 2), x + FloorTile.WIDTH, x + (FloorTile.WIDTH / 2)};
 				int[] yPoints = new int[]{y + (FloorTile.HEIGHT / 2), y, y + (FloorTile.HEIGHT / 2), y + FloorTile.HEIGHT};
-				boundingBoxes[i][j] = new Polygon(xPoints, yPoints, xPoints.length);
+				tileBoundingBoxes[i][j] = new Polygon(xPoints, yPoints, xPoints.length);
+				
+				// calculate x and y point for bounding box of item
+				if(area.getItems()[i][j] != null){
+					int itemHeight = area.getItems()[i][j].getHeight();
+					int itemY = y - (itemHeight * FloorTile.HEIGHT);
+					xPoints = new int[]{x, x + (FloorTile.WIDTH / 2), x + FloorTile.WIDTH, x + FloorTile.WIDTH, x + (FloorTile.WIDTH / 2), x};
+					yPoints = new int[]{itemY + (FloorTile.HEIGHT/2), itemY, itemY + (FloorTile.HEIGHT/2),
+							itemY + ((itemHeight+1)*FloorTile.HEIGHT) - (FloorTile.HEIGHT/2), itemY + ((itemHeight+1)*FloorTile.HEIGHT),
+							itemY + ((itemHeight+1)*FloorTile.HEIGHT) - (FloorTile.HEIGHT/2)};
+					itemBoundingBoxes[i][j] = new Polygon(xPoints, yPoints, xPoints.length);
+				}
+				
 				x += dx;
 				y += dy;
 			}
@@ -81,14 +94,25 @@ public class RenderingPanel extends JPanel implements MouseListener{
 
 	public Point findPosition(int x, int y){
 		Point p = new Point(x, y);
-		for(int i = 0; i < boundingBoxes.length; i++){
-			for(int j = 0; j < boundingBoxes[i].length; j++){
-				if(boundingBoxes[i][j].contains(p)){
+		for(int i = 0; i < tileBoundingBoxes.length; i++){
+			for(int j = 0; j < tileBoundingBoxes[i].length; j++){
+				if(tileBoundingBoxes[i][j].contains(p)){
 					return new Point(j, i);
 				}
 			}
 		}
 		return null;
+	}
+	
+	public void findItem(int x, int y){
+		Point p = new Point(x, y);
+		for(int i = 0; i < tileBoundingBoxes.length; i++){
+			for(int j = 0; j < tileBoundingBoxes[i].length; j++){
+				if(area.getItems()[i][j] != null && itemBoundingBoxes[i][j].contains(p)){
+					System.out.println(area.getItems()[i][j].getName());
+				}
+			}
+		}
 	}
 
 	public int calculateXPosition(int drawX){
@@ -114,14 +138,15 @@ public class RenderingPanel extends JPanel implements MouseListener{
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		if(area != null){
 			Tile[][] tiles = area.getTiles();
-			drawFloors(g, tiles);
+			Item[][] items = area.getItems();
+			drawFloors(g, tiles, items);
 		}
 	}
 
 	/**
 	 *
 	 */
-	private void drawFloors(Graphics g, Tile[][] tiles){
+	private void drawFloors(Graphics g, Tile[][] tiles, Item[][] items){
 		int dx = (FloorTile.WIDTH / 2) + 1;
 		int dy = FloorTile.HEIGHT / 2;
 		int startX = ((WIDTH - areaWidth) / 2) + ((tiles.length - 1) * dx);
@@ -130,10 +155,23 @@ public class RenderingPanel extends JPanel implements MouseListener{
 			int x = startX - (dx * i);
 			int y = startY + (dy * i);
 			for(int j = 0; j < tiles[i].length; j++){
-				System.out.println("Drawing tile at ("+x+", "+y+")");
+				//System.out.println("Drawing tile at ("+x+", "+y+")");
 				tiles[i][j].draw(g, x, y);
+				if(items[i][j] != null){
+					items[i][j].draw(g, x, y - (items[i][j].getHeight() * FloorTile.HEIGHT));
+				}
 				x += dx;
 				y += dy;
+			}
+		}
+	}
+	
+	public void drawBoxes(Graphics g, Item[][] items){
+		for(int i = 0; i < items.length; i++){
+			for(int j = 0; j < items[0].length; j++){
+				if(items[i][j] != null){
+					g.fillPolygon(itemBoundingBoxes[i][j]);
+				}
 			}
 		}
 	}
@@ -150,6 +188,7 @@ public class RenderingPanel extends JPanel implements MouseListener{
 		else{
 			System.out.println("Position not on board.");
 		}
+		findItem(e.getX(), e.getY());
 
 	}
 

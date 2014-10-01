@@ -45,6 +45,7 @@ public class Area {
 
 	public Area(Tile[][] tiles){
 		this.tiles = tiles;
+		items = new Item[tiles.length][tiles[0].length];
 	}
 	
 	/**

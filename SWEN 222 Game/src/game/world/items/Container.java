@@ -1,5 +1,7 @@
 package game.world.items;
 
+import java.awt.Image;
+
 /**
  * A container is an item that contains movable items and cats.
  * Containers can be opened by the player to grab the items and the cats
@@ -18,8 +20,8 @@ public class Container extends Item{
 	 * @param height the height/size of the container
 	 * @param name the name of the container
 	 */
-	public Container(int x, int y, int height, String name) {
-		super(x, y, height, name);
+	public Container(int x, int y, int height, String name, Image image) {
+		super(x, y, height, name, image);
 	}
 
 	/**

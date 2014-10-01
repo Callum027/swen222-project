@@ -6,8 +6,10 @@ import game.world.GameWorld;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -24,11 +26,11 @@ public class Server extends Thread {
 	public static final int DEFAULT_PORT = 19642;
 	
 	/* Controls whether or not the server is closing down. */
-	private boolean closing;
+	private Boolean closing = new Boolean(false);
 	
 	private GameWorld world;
-	private ServerSocket serverSocket;
-	private List<ServerConnection> serverConnections;
+	private ServerSocket serverSocket = null;
+	private List<ServerConnection> serverConnections = new ArrayList<ServerConnection>();
 	
 	/**
 	 * Open a server on the default port, with the given GameWorld.
@@ -36,57 +38,54 @@ public class Server extends Thread {
 	 * @param w GameWorld to open a server for
 	 */
 	public Server(GameWorld w) {
-		closing = false;
 		world = w;
-		serverConnections = new ArrayList<ServerConnection>();
-		
-		setupServerSocket(DEFAULT_PORT);
 	}
-	
-	/**
-	 * Open a server on the specified port, with the given GameWorld.
-	 * @param w GameWorld to open a server for
-	 * @param port Port to listen on
-	 */
-	public Server(GameWorld w, int port) {
-		closing = false;
-		world = w;
-		serverConnections = new ArrayList<ServerConnection>();
-		
-		setupServerSocket(port);
-	}
-	
+
 	/*
 	 * Private helper method for the constructors, to set up the server socket
 	 * with a given port number.
 	 * 
 	 * @param port Port number to listen on
 	 */
-	private void setupServerSocket(int port) {
+	public boolean setPort(int port) {
 		try {
 			serverSocket = new ServerSocket(port);
+		} catch (BindException e) {
+			System.err.println("server: unable to bind server socket: " + e.getMessage());
+			return false;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.err.println("server: unhandled, unknown IOException");
 			e.printStackTrace();
+			return false;
 		}
+		
+		return true;
 	}
 	
 	/**
 	 * Start the main server loop.
 	 */
 	public void run() {
+		// Don't run if the server socket hasn't been binded yet.
+		if (serverSocket == null)
+			return;
+			
 		// Enter the main loop, accepting new connections from clients
 		// as they come.
-		while (!closing) {
-			try {
-				Socket clientSocket = serverSocket.accept();
-				ServerConnection sc = new ServerConnection(clientSocket);
-
-				serverConnections.add(sc);
-				sc.start();
-			}
-			catch (IOException e) {
-				e.printStackTrace();
+		synchronized (closing) {
+			while (!closing.booleanValue()) {
+				try {
+					Socket clientSocket = serverSocket.accept();
+					ServerConnection sc = new ServerConnection(clientSocket);
+	
+					serverConnections.add(sc);
+					sc.start();
+				}
+				catch (IOException e) {
+					System.err.println("server: unhandled, unknown IOException");
+					e.printStackTrace();
+					close();
+				}
 			}
 		}
 		
@@ -105,7 +104,7 @@ public class Server extends Thread {
 		try {
 			serverSocket.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.err.println("server: unhandled, unknown IOException");
 			e.printStackTrace();
 		}
 	}
@@ -115,7 +114,9 @@ public class Server extends Thread {
 	 * for new connections. The server cannot be used after this.
 	 */
 	public void close() {
-		closing = true;
+		synchronized (closing) {
+			closing = new Boolean(true);
+		}
 	}
 	
 	/*
@@ -126,11 +127,10 @@ public class Server extends Thread {
 	 *
 	 */
 	private class ServerConnection extends Thread {
-		private boolean closing;
+		private Boolean closing = new Boolean(false);
 		private final Socket clientSocket;
 		
 		public ServerConnection(Socket cs) {
-			closing = false;
 			clientSocket = cs;
 		}
 		
@@ -139,44 +139,36 @@ public class Server extends Thread {
 				InputStream is = clientSocket.getInputStream();
 				OutputStream os = clientSocket.getOutputStream();
 				
-				while (!closing) {
-					// Read a new GamePacket from the client.
-					GamePacket gp = GamePacket.read(is);
-					
-					System.out.println("server: GamePacket read... type: " + gp.getType());
-					
-					// Update the game world.
-					
-					// Send the updated game state to the rest of the clients.
+				synchronized (closing) {
+					while (!closing.booleanValue()) {
+						// Read a new GamePacket from the client.
+						GamePacket gp = GamePacket.read(is);
+						
+						System.out.println("server: GamePacket read... type: " + gp.getType());
+						
+						// Update the game world.
+						
+						// Send the updated game state to the rest of the clients.
+					}
 				}
 				
 				// Exited the server connection loop, which means
 				// we have to close the client socket.
 				clientSocket.close();
+			} catch (SocketException e) {
+				System.err.println("server: closing connection: " + e.getMessage());
+				close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				System.err.println("server: unhandled, unknown IOException");
 				e.printStackTrace();
+				close();
 			}
 		}
 		
 		public void close() {
-			closing = true;
+			synchronized (closing) {
+				closing = new Boolean(true);
+			}
 		}
-	}
-	
-	/**
-	 * Test main method to try a connection to a server.
-	 * 
-	 * @param args Optional arguments, host and port in that order
-	 */
-	public static void main(String[] args)
-	{
-		int port  = (args.length > 1) ? Integer.parseInt(args[1]) : Server.DEFAULT_PORT;
-		
-		// Make a connection to the server.
-		Server s = new Server(null, port);
-		s.start();
-		
-		System.out.println("server: listening on port " + port);
 	}
 }
