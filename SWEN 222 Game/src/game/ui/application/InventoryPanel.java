@@ -2,6 +2,7 @@ package game.ui.application;
 
 import game.Main;
 import game.world.characters.PlayableCharacter;
+import game.world.items.MovableItem;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -26,6 +27,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	public static final int INVENTORY_WIDTH = 5;
 	public static final int INVENTORY_HEIGHT = 4;
 	public static final int squareSize = 45;
+	private MovableItem[] items;
 
 	/**
 	 * Makes a new InventoryPanel which extends JPanel and sets the width and

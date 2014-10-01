@@ -1,5 +1,7 @@
 package game.ui.application;
 
+import game.world.items.*;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -26,6 +28,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 	public static final int CHEST_SLOT = 3;
 	public static final int FEET_SLOT = 4;
 	public static final int squareSize = 45;
+	private EquippedItems items;
 
 	/**
 	 * Makes a new EquipPanel sets the width and height of the panel
@@ -134,5 +137,13 @@ public class EquipPanel extends JPanel implements MouseListener {
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public EquippedItems getItems() {
+		return items;
+	}
+
+	public void setItems(EquippedItems items) {
+		this.items = items;
 	}
 }

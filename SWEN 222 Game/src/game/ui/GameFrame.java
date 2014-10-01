@@ -49,20 +49,13 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 	 *            enables the game to run with a custom cursor
 	 */
 	public GameFrame(int gameWindowX, int gameWindowY, Cursor cursor) {
-		super("SWEN 222 Game Project");
+		super("An Excellent Adventure!");
 		setResizable(false);
-<<<<<<< HEAD
-
-		setLayout(new FlowLayout()); // sets the frame to have a layout so that
-										// the screens are in proportion
-=======
 		// set the frame to have a layout so that the screens are in proportion
 		setLayout(new FlowLayout());
->>>>>>> feaae0f36a709631d0d20938bd2125ce0c69cf81
 		render = new RenderingPanel();
 		quit = new JButton("Quit");
 		render.add(quit);
-		//render.setPreferredSize(new Dimension((int) (gameWindowX * 0.75), gameWindowY));
 		add(render);
 		quit.addActionListener(this);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
