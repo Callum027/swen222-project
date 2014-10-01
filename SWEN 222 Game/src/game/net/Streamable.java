@@ -1,4 +1,4 @@
-package game.util;
+package game.net;
 
 import java.io.IOException;
 import java.io.OutputStream;

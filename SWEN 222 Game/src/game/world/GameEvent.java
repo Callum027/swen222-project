@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import game.util.Streamable;
+import game.net.Streamable;
 import game.world.events.InteractEvent;
 import game.world.events.MoveEvent;
 

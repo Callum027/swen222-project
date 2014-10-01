@@ -1,6 +1,5 @@
 package game.net;
 
-import game.util.Streamable;
 import game.world.GameEvent;
 
 import java.io.IOException;
