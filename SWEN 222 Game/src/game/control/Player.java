@@ -1,5 +1,5 @@
 package game.control;
 
-public class Player {
+public class Player{
 
 }

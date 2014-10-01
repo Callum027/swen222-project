@@ -14,6 +14,7 @@ import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 
+import game.control.Player;
 import game.ui.*;
 import game.world.Area;
 import game.world.GameWorld;
