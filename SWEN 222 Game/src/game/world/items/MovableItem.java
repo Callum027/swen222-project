@@ -5,7 +5,7 @@ package game.world.items;
  * @author Nick Tran
  *
  */
-public class MoveableItem extends Item{
+public class MovableItem extends Item{
 
 	/**
 	 * The Constructor
@@ -14,7 +14,7 @@ public class MoveableItem extends Item{
 	 * @param height the height (size) of the item
 	 * @param name the anme of the item
 	 */
-	public MoveableItem(int x, int y, int height, String name) {
+	public MovableItem(int x, int y, int height, String name) {
 		super(x, y, height, name);
 	}
 

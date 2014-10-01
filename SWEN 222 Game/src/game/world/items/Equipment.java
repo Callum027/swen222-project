@@ -1,6 +1,6 @@
 package game.world.items;
 
-public class Equipment extends MoveableItem{
+public class Equipment extends MovableItem{
 
 	private int worth;
 	private int attack;

@@ -9,7 +9,7 @@ import game.world.characters.PlayableCharacter;
  */
 public class Furniture extends Item{
 
-	private MoveableItem item; //you can get items by interacting with certain pieces of furniture
+	private MovableItem item; //you can get items by interacting with certain pieces of furniture
 
 	/**
 	 * The Constructor
@@ -19,7 +19,7 @@ public class Furniture extends Item{
 	 * @param name the name of the furniture
 	 * @param item the item you can get from interacting with the furniture
 	 */
-	public Furniture(int x, int y, int height, String name, MoveableItem item) {
+	public Furniture(int x, int y, int height, String name, MovableItem item) {
 		super(x, y, height, name);
 		this.setItem(item);
 	}
@@ -37,7 +37,7 @@ public class Furniture extends Item{
 	 * Retrieves the item that the furniture contains
 	 * @return the item in the furniture
 	 */
-	public MoveableItem getItem() {
+	public MovableItem getItem() {
 		return item;
 	}
 
@@ -45,7 +45,7 @@ public class Furniture extends Item{
 	 * Sets a new item to be given to the player by the furniture
 	 * @param item the new item that's given to the player
 	 */
-	public void setItem(MoveableItem item) {
+	public void setItem(MovableItem item) {
 		this.item = item;
 	}
 }
