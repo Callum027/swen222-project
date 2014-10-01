@@ -45,8 +45,9 @@ public class Area {
 
 	public Area(Tile[][] tiles){
 		this.tiles = tiles;
+		items = new Item[tiles.length][tiles[0].length];
 	}
-
+	
 	/**
 	 * Getter method for the GameWorld
 	 * @return the world that contains this area
@@ -133,18 +134,18 @@ public class Area {
 		setUpFloorTiles(file);
 	}
 
-	public static Area parseArea(String[] data, Map<Integer, Tile> tileMap){
-		// first line contains width/height of area
-		String[] dimensions = data[0].split(", ");
-		int width = Integer.parseInt(dimensions[0]);
-		int height = Integer.parseInt(dimensions[1]);
-		Tile[][] tiles = new FloorTile[height][width];
-		for(int i = 0; i < height; i++){
-			String[] line = data[1].split(", ");
-			for(int j = 0; j < line.length; j++){
-				tiles[i][j] = tileMap.get(Integer.parseInt(line[j]));
-			}
-		}
-		return new Area(tiles);
-	}
+//	public static Area parseArea(String[] data, Map<Integer, Tile> tileMap){
+//		// first line contains width/height of area
+//		String[] dimensions = data[0].split(", ");
+//		int width = Integer.parseInt(dimensions[0]);
+//		int height = Integer.parseInt(dimensions[1]);
+//		Tile[][] tiles = new FloorTile[height][width];
+//		for(int i = 0; i < height; i++){
+//			String[] line = data[1].split(", ");
+//			for(int j = 0; j < line.length; j++){
+//				tiles[i][j] = tileMap.get(Integer.parseInt(line[j]));
+//			}
+//		}
+//		return new Area(tiles);
+//	}
 }

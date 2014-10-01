@@ -1,5 +1,13 @@
 package game.world;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import game.net.Streamable;
+import game.world.events.InteractEvent;
+import game.world.events.MoveEvent;
+
 /**
  * Represent game events using a standard interface, so they can be
  * easily communicated between nodes in a network.
@@ -7,12 +15,36 @@ package game.world;
  * @author Callum
  *
  */
-public interface GameEvent {
+public abstract class GameEvent implements Streamable {
 	/**
 	 * Get the GameEvent.Type associated with this GameEvent.
 	 * @return game event type
 	 */
-	public GameEvent.Type getGameEventType();
+	public abstract GameEvent.Type getType();
+	
+	/**
+	 * Read a game event from the input stream.
+	 * 
+	 * @param is Input stream
+	 * @return Game event
+	 */
+	public static GameEvent read(InputStream is) throws IOException
+	{
+		// Get the packet type from the stream.
+		GameEvent.Type t = GameEvent.Type.read(is);
+			
+		switch (t)
+		{
+			case MOVE:
+				return MoveEvent.read(is);
+			case INTERACT:
+				return InteractEvent.read(is);
+			default:
+				return null;
+		}
+	}
+	
+	public abstract void write(OutputStream is) throws IOException;
 
 	/**
 	 * A Type enumeration system to uniquely identify GameEvents,
@@ -21,20 +53,20 @@ public interface GameEvent {
 	 * @author Callum
 	 *
 	 */
-	public enum Type {
+	public enum Type implements Streamable {
 		// All of the known possible game events.
-		MOVE(1),
-		INTERACT(2);
+		MOVE(0),
+		INTERACT(1);
 		
 		// The unique ID of the event.
-		private final int id;
+		private final byte id;
 		
 		/*
 		 * construct a GameEvent.Type object.
 		 * @param i ID number
 		 */
 		private Type(int i) {
-			id = i;
+			id = (byte)i;
 		}
 		
 		/**
@@ -42,8 +74,36 @@ public interface GameEvent {
 		 * 
 		 * @return type ID
 		 */
-		public int getID() {
+		public byte getID() {
 			return id;
+		}
+		
+		/**
+		 * Return the GameEvent.Type version of a given ID.
+		 * 
+		 * @param id ID to convert
+		 * @return GameEvent.Type version
+		 */
+		public static Type getTypeFromID(byte id) {
+			for (Type t: values())		
+				if (t.getID() == id)
+					return t;
+			
+			return null;
+		}
+		
+		/**
+		 * Read a GameEvent.Type from the input stream. Returns null if it fails.
+		 * 
+		 * @param is InputStream
+		 * @return GameEvent.Type
+		 */
+		public static Type read(InputStream is) throws IOException {
+			return getTypeFromID((byte)is.read());
+		}
+		
+		public void write(OutputStream os) throws IOException {
+			os.write((int)id);
 		}
 	}
 }
