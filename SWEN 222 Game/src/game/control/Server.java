@@ -1,6 +1,6 @@
 package game.control;
 
-import game.util.GamePacket;
+import game.net.GamePacket;
 import game.world.GameEvent;
 import game.world.GameWorld;
 

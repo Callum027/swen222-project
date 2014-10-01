@@ -1,6 +1,6 @@
 package game.control;
 
-import game.util.GamePacket;
+import game.net.GamePacket;
 import game.world.GameEvent;
 import game.world.GameEventListener;
 
@@ -62,11 +62,13 @@ public class Client extends Thread implements GameEventListener {
 		try {
 			socket = new Socket(InetAddress.getByName(host), port);
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
+			System.err.println("client: error: unknown host");
 			e.printStackTrace();
+			close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.err.println("client: unhandled, unknown IOException");
 			e.printStackTrace();
+			close();
 		}
 	}
 	
@@ -100,8 +102,9 @@ public class Client extends Thread implements GameEventListener {
 					System.err.println("client: closing connection: " + e.getMessage());
 					close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
+					System.err.println("client: unhandled, unknown IOException");
 					e.printStackTrace();
+					close();
 				}
 			}
 		}
