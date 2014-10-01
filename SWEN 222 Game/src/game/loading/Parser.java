@@ -4,7 +4,6 @@ import game.world.Area;
 import game.world.GameWorld;
 import game.world.tiles.Tile;
 
-import java.awt.List;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Map;
