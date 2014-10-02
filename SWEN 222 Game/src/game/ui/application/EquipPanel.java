@@ -71,6 +71,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 				.getImage("cat-inv.png"), 0, 400, 400));
 		setPreferredSize(new Dimension(width, height));
 		addMouseListener(this);
+		getStats();
 	}
 
 	@Override
@@ -86,6 +87,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 	 * the top and boot slot is at the bottom
 	 *
 	 * @param g
+	 *            the graphics component
 	 */
 	private void drawBlankEquip(Graphics g) {
 		g.setColor(Color.white);
@@ -102,18 +104,33 @@ public class EquipPanel extends JPanel implements MouseListener {
 		drawStats(g);
 	}
 
+	/**
+	 * A method to draw the HP, Attack and Defence stats underneath the
+	 * equipment slots
+	 *
+	 * @param g
+	 *            the graphics component
+	 */
 	private void drawStats(Graphics g) {
-		getStats();
 		g.drawString("HP: " + hp, HP_X, HP_Y);
 		g.drawString("Attack: " + attack, ATTACK_X, ATTACK_Y);
 		g.drawString("Defence: " + defence, DEFENCE_X, DEFENCE_Y);
 	}
 
+	/**
+	 * Just calls the the other get stats methods done like this so it can
+	 * easily add in other get'stat' methods if needed
+	 */
 	private void getStats() {
-		attack = getAttack();
+		attack = getTotalAttack();
 		defence = getDefence();
 	}
 
+	/**
+	 * Adds up the defence for all the equiped items
+	 *
+	 * @return the total defence value
+	 */
 	private int getDefence() {
 		int def = 0;
 		if (items.getHead() != null) {
@@ -134,7 +151,12 @@ public class EquipPanel extends JPanel implements MouseListener {
 		return def;
 	}
 
-	private int getAttack() {
+	/**
+	 * Used to get the total attack value of the all equipment
+	 *
+	 * @return the attack value of the total equipment
+	 */
+	private int getTotalAttack() {
 		int at = 0;
 		if (items.getHead() != null) {
 			at += items.getHead().getAttack();
@@ -154,6 +176,13 @@ public class EquipPanel extends JPanel implements MouseListener {
 		return at;
 	}
 
+	/**
+	 * Draws the equiped items of the character if they have an item equiped in
+	 * the slot
+	 *
+	 * @param g
+	 *            the Graphics component
+	 */
 	private void drawEquipmentItems(Graphics g) {
 		if (items.getHead() != null) {
 			items.getHead().draw(g, HEAD_X, HEAD_Y);
@@ -176,7 +205,8 @@ public class EquipPanel extends JPanel implements MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		int y = e.getY();
 		int x = e.getX();
-		getEquip(x, y);
+		int equip = findEquip(x, y);
+		selectEquip(equip);
 
 	}
 
@@ -188,7 +218,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 	 * @param y
 	 *            the mouse Y
 	 */
-	private void getEquip(int x, int y) {
+	private int findEquip(int x, int y) {
 		int equip = -1;
 		if (y >= HEAD_Y && y < HEAD_Y + squareSize && x >= HEAD_X
 				&& x < HEAD_X + squareSize) {
@@ -206,6 +236,16 @@ public class EquipPanel extends JPanel implements MouseListener {
 				&& x < BOOTS_X + squareSize) {
 			equip = FEET_SLOT;
 		}
+		return equip;
+	}
+
+	/**
+	 * Selects the equpipment found by the findEquip method
+	 *
+	 * @param equip
+	 *            the value of the equipment slot
+	 */
+	private void selectEquip(int equip) {
 		switch (equip) {
 		case HEAD_SLOT:
 			if (items.getHead() == null) {
@@ -250,6 +290,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 		default:
 			break;
 		}
+
 	}
 
 	@Override
@@ -260,27 +301,92 @@ public class EquipPanel extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
+		int y = e.getY();
+		int x = e.getX();
+		int equip = findEquip(x, y);
+		equipStats(equip);
+		repaint();
+
+	}
+
+	/**
+	 * gets the stats for the equiped item that the mouse is hovering over
+	 *
+	 * @param equip
+	 *            the value of the slot of the equiped item
+	 */
+	private void equipStats(int equip) {
+		switch (equip) {
+		case HEAD_SLOT:
+			if (items.getHead() == null) {
+			} else {
+				attack = items.getHead().getAttack();
+				defence = items.getHead().getDefence();
+			}
+			break;
+		case MAIN_HAND:
+			if (items.getMainHand() == null) {
+			} else {
+				attack = items.getMainHand().getAttack();
+			}
+			break;
+		case OFF_HAND:
+			if (items.getoffHand() == null) {
+			} else {
+				attack = items.getoffHand().getAttack();
+				defence = items.getoffHand().getDefence();
+			}
+			break;
+		case CHEST_SLOT:
+			if (items.getBody() == null) {
+			} else {
+				attack = items.getBody().getAttack();
+				defence = items.getBody().getDefence();
+			}
+			break;
+		case FEET_SLOT:
+			if (items.getBoots() == null) {
+				System.out.println("No items equiped on feet");
+			} else {
+				attack = items.getBoots().getAttack();
+				defence = items.getBoots().getDefence();
+			}
+			break;
+		default:
+			break;
+		}
 
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
+		getStats();
 
 	}
 
+	/**
+	 * gets the equiped items that the panel has
+	 *
+	 * @return the equiped items
+	 */
 	public EquippedItems getItems() {
 		return items;
 	}
 
+	/**
+	 * sets the items for the panel so it can draw them appropriatly also calls
+	 * getStats again so it updates the total stats
+	 *
+	 * @param items
+	 *            the equipedItems
+	 */
 	public void setItems(EquippedItems items) {
 		this.items = items;
+		getStats();
 	}
 }
