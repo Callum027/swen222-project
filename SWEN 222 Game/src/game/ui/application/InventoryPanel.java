@@ -1,6 +1,7 @@
 package game.ui.application;
 
 import game.Main;
+import game.ui.GameFrame;
 import game.world.items.MovableItem;
 
 import java.awt.Color;
@@ -26,8 +27,10 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	public static final int INVENTORY_WIDTH = 5;
 	public static final int INVENTORY_HEIGHT = 4;
 	public static final int squareSize = 45;
-	private MovableItem[] items = new MovableItem[1];
+	private MovableItem[] items = new MovableItem[INVENTORY_HEIGHT
+			* INVENTORY_WIDTH];
 	private int cats = 0;
+	private MovableItem itemSelected;
 
 	/**
 	 * Makes a new InventoryPanel which extends JPanel and sets the width and
@@ -77,17 +80,34 @@ public class InventoryPanel extends JPanel implements MouseListener {
 		drawInventoryItems(g);
 	}
 
+	/**
+	 * Iterates through the whole inventory drawing the items in it
+	 *
+	 * @param g
+	 */
 	private void drawInventoryItems(Graphics g) {
+		int j = 0;
+		int k = 0;
 		for (int i = 0; i < items.length; i++) {
-			int j = 0;
-			int k = 0;
-			items[0].draw(g, j, k);
+
+			if (items[i] != null) {
+				items[i].draw(g, j * squareSize, k * squareSize);
+			}
 			j++;
 			if (j == INVENTORY_WIDTH) {
 				j = 0;
 				k++;
 			}
 		}
+		/*
+		for(int i = 0; i < INVENTORY_WIDTH; i++){
+			for(int j = 0; j < INVENTORY_HEIGHT; j++){
+				if(items[i*j] != null){
+					items[i*j].draw(g, i * squareSize, j * squareSize);
+				}
+			}
+		}
+		*/
 	}
 
 	@Override
@@ -95,17 +115,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 
 	}
 
-	/**
-	 * This method is called when the mouse is clicked and determines the square
-	 * in the array that the items are stored in
-	 *
-	 * @param x
-	 *            the mouse X
-	 * @param y
-	 *            the mouse Y
-	 */
-	private void selectItem(int x, int y) {
-
+	private int findInventorySquare(int x, int y) {
 		int XSelect = x / squareSize; // works out how far along the grid it is
 		int ySelect = (y / squareSize) * INVENTORY_WIDTH;
 		/*
@@ -121,10 +131,25 @@ public class InventoryPanel extends JPanel implements MouseListener {
 		 * array
 		 */
 		if (selected > INVENTORY_HEIGHT * INVENTORY_WIDTH) {
-			selected = -1;
+			// this is to make sure that the place clicked is in the inventory
+			selected = -1; // if it's not then set it to -1
 		}
-		if (selected >= 0 && selected < items.length) {
-			System.out.println("Selected: " + items[selected].toString());
+		return selected;
+	}
+
+	/**
+	 * This method is called when the mouse is clicked and determines the square
+	 * in the array that the items are stored in
+	 *
+	 * @param x
+	 *            the mouse X
+	 * @param y
+	 *            the mouse Y
+	 */
+	private void selectItem(int inv) {
+		if (inv >= 0 && inv < items.length) {
+			itemSelected = items[inv];
+			items[inv] = null;
 		}
 	}
 
@@ -132,26 +157,35 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	public void mousePressed(MouseEvent e) {
 		int x = e.getX();
 		int y = e.getY();
-		selectItem(x, y);
-
+		int inv = findInventorySquare(x, y);
+		selectItem(inv);
+		System.out.println("Item: " + itemSelected.toString());
+		itemSelected.setX(x);
+		itemSelected.setY(y);
+		repaint();
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		int x = e.getX();
 		int y = e.getY();
-		dropItem(x,y);
-
+		itemSelected.setX(x);
+		itemSelected.setY(y);
+		System.out.println("X = " + itemSelected.getX() + "Y = " + itemSelected.getY());
+		int inv = findInventorySquare(x, y);
+		dropItem(inv);
+		repaint();
 	}
 
 	/**
 	 * This method will drop the item, into an inventory slot
+	 *
 	 * @param x
 	 * @param y
 	 */
-	private void dropItem(int x, int y) {
-		// TODO Auto-generated method stub
-
+	private void dropItem(int inv) {
+		items[inv] = itemSelected;
+		itemSelected = null;
 	}
 
 	@Override

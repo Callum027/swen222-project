@@ -3,6 +3,7 @@ package game.ui;
 import game.ui.application.EquipPanel;
 import game.ui.application.InventoryPanel;
 import game.ui.rendering.RenderingPanel;
+import game.world.items.MovableItem;
 
 import java.awt.Cursor;
 import java.awt.FlowLayout;
@@ -37,6 +38,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 	private RenderingPanel render;
 	private EquipPanel equip;
 	private InventoryPanel inventory;
+	public static MovableItem selectedItem;
 
 	/**
 	 * Is called automatically from Main
