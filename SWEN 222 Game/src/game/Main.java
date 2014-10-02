@@ -26,23 +26,9 @@ import game.world.tiles.WallTile;
 
 public class Main {
 
-<<<<<<< HEAD
-
-	private String[] tilesFile = new String[] { "1, FloorTile, floor_tile3.png" };
-	private String areaFile = "src/game/loading/Area.xml";
-	private GameFrame gameWindow;
-=======
-	// temporary while we are waiting for Chris to do data storage
 	private static String[] tilesFile = new String[] { "1, FloorTile, floor_tile3.png" };
-//	private String[] areaFile = new String[] { "10, 10",
-//			"1, 1, 1, 1, 1, 1, 1, 1, 1, 1", "1, 1, 1, 1, 1, 1, 1, 1, 1, 1",
-//			"1, 1, 1, 1, 1, 1, 1, 1, 1, 1", "1, 1, 1, 1, 1, 1, 1, 1, 1, 1",
-//			"1, 1, 1, 1, 1, 1, 1, 1, 1, 1", "1, 1, 1, 1, 1, 1, 1, 1, 1, 1",
-//			"1, 1, 1, 1, 1, 1, 1, 1, 1, 1", "1, 1, 1, 1, 1, 1, 1, 1, 1, 1",
-//			"1, 1, 1, 1, 1, 1, 1, 1, 1, 1", "1, 1, 1, 1, 1, 1, 1, 1, 1, 1" };
 	private static String areaFile = "src/game/loading/Area.xml";
 	private static GameFrame gameWindow;
->>>>>>> a28c6733631bd4f8ca0cec2fbaf887074448b520
 	private static final String IMAGE_PATH = "ui/graphics/";
 	private static GameWorld gameWorld = new GameWorld();
 
