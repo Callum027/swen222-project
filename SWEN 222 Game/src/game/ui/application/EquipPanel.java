@@ -29,16 +29,25 @@ public class EquipPanel extends JPanel implements MouseListener {
 	public static final int CHEST_SLOT = 3;
 	public static final int FEET_SLOT = 4;
 	public static final int squareSize = 45;
-	private final int HEAD_X = width / 2;
-	private final int HEAD_Y = 0;
-	private final int BODY_X = width / 2;
+	private final int HEAD_X = (int) (width * 0.5);
+	private final int HEAD_Y = (int) (height * 0.1);
+	private final int BODY_X = (int) (width * 0.5);
 	private final int BODY_Y = (int) (height * 0.25);
 	private final int MAIN_X = width / 4;
-	private final int MAIN_Y = (int) (height * 0.4);
+	private final int MAIN_Y = (int) (height * 0.25);
 	private final int OFF_X = (int) (width * 0.75);
-	private final int OFF_Y = (int) (height * 0.4);
+	private final int OFF_Y = (int) (height * 0.25);
 	private final int BOOTS_X = width / 2;
-	private final int BOOTS_Y = (int) (height * 0.75);
+	private final int BOOTS_Y = (int) (height * 0.5);
+	private final int HP_X = (int) (width * 0.2);
+	private final int HP_Y = (int) (height * 0.6666);
+	private final int ATTACK_X = (int) (width * 0.2);
+	private final int ATTACK_Y = (int) (height * 0.7);
+	private final int DEFENCE_X = (int) (width * 0.2);
+	private final int DEFENCE_Y = (int) (height * 0.75);
+	private int hp = 100;
+	private int attack = 0;
+	private int defence = 0;
 	private EquippedItems items = new EquippedItems();
 
 	/**
@@ -90,6 +99,59 @@ public class EquipPanel extends JPanel implements MouseListener {
 		g.setColor(Color.white);
 		g.fillRect(BOOTS_X, BOOTS_Y, squareSize, squareSize);
 		drawEquipmentItems(g);
+		drawStats(g);
+	}
+
+	private void drawStats(Graphics g) {
+		getStats();
+		g.drawString("HP: " + hp, HP_X, HP_Y);
+		g.drawString("Attack: " + attack, ATTACK_X, ATTACK_Y);
+		g.drawString("Defence: " + defence, DEFENCE_X, DEFENCE_Y);
+	}
+
+	private void getStats() {
+		attack = getAttack();
+		defence = getDefence();
+	}
+
+	private int getDefence() {
+		int def = 0;
+		if (items.getHead() != null) {
+			def += items.getHead().getDefence();
+		}
+		if (items.getBody() != null) {
+			def += items.getBody().getDefence();
+		}
+		if (items.getMainHand() != null) {
+			def += items.getMainHand().getDefence();
+		}
+		if (items.getoffHand() != null) {
+			def += items.getoffHand().getDefence();
+		}
+		if (items.getBoots() != null) {
+			def += items.getBoots().getDefence();
+		}
+		return def;
+	}
+
+	private int getAttack() {
+		int at = 0;
+		if (items.getHead() != null) {
+			at += items.getHead().getAttack();
+		}
+		if (items.getBody() != null) {
+			at += items.getBody().getAttack();
+		}
+		if (items.getMainHand() != null) {
+			at += items.getMainHand().getAttack();
+		}
+		if (items.getoffHand() != null) {
+			at += items.getoffHand().getAttack();
+		}
+		if (items.getBoots() != null) {
+			at += items.getBoots().getAttack();
+		}
+		return at;
 	}
 
 	private void drawEquipmentItems(Graphics g) {
@@ -128,25 +190,20 @@ public class EquipPanel extends JPanel implements MouseListener {
 	 */
 	private void getEquip(int x, int y) {
 		int equip = -1;
-		if (y >= 0 && y < squareSize && x >= width / 2
-				&& x < width / 2 + squareSize) {
+		if (y >= HEAD_Y && y < HEAD_Y + squareSize && x >= HEAD_X
+				&& x < HEAD_X + squareSize) {
 			equip = HEAD_SLOT;
-		} else if (y >= (int) (height * 0.4)
-				&& y < (int) (height * 0.4) + squareSize && x >= width / 4
-				&& x < width / 4 + squareSize) {
+		} else if (y >= MAIN_Y && y < MAIN_Y + squareSize && x >= MAIN_X
+				&& x < MAIN_X + squareSize) {
 			equip = MAIN_HAND;
-		} else if (y >= (int) (height * 0.4)
-				&& y < (int) (height * 0.4) + squareSize
-				&& x >= (int) (width * 0.75)
-				&& x < (int) (width * 0.75) + squareSize) {
+		} else if (y >= OFF_Y && y < OFF_Y + squareSize && x >= OFF_X
+				&& x < OFF_X + squareSize) {
 			equip = OFF_HAND;
-		} else if (y >= (int) (height * 0.25)
-				&& y < (int) (height * 0.25) + squareSize && x >= (width / 2)
-				&& x < width / 2 + squareSize) {
+		} else if (y >= BODY_Y && y < BODY_Y + squareSize && x >= BODY_X
+				&& x < BODY_X + squareSize) {
 			equip = CHEST_SLOT;
-		} else if (y >= (int) (height * 0.75)
-				&& y < (int) (height * 0.75) + squareSize && x >= (width / 2)
-				&& x < width / 2 + squareSize) {
+		} else if (y >= BOOTS_Y && y < BOOTS_Y + squareSize && x >= BOOTS_X
+				&& x < BOOTS_X + squareSize) {
 			equip = FEET_SLOT;
 		}
 		switch (equip) {
