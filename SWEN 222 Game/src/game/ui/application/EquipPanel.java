@@ -56,6 +56,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 	private EquippedItems items = new EquippedItems();
 	private Equipment equipSelected;
 	private int previousSelected = -1;
+	private InventoryPanel inventory;
 
 	/**
 	 * Makes a new EquipPanel sets the width and height of the panel
@@ -65,7 +66,8 @@ public class EquipPanel extends JPanel implements MouseListener {
 	 * @param height
 	 *            the height of the panel
 	 */
-	public EquipPanel() {
+	public EquipPanel(InventoryPanel inventory) {
+		this.inventory = inventory;
 		items.equipHead(new Equipment(0, 0, squareSize, "Cat Hat", Main
 				.getImage("cat-inv.png"), 0, 100, 100));
 		items.equipMainHand(new Equipment(0, 0, squareSize, "Cat Sword", Main
@@ -77,6 +79,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 		setPreferredSize(new Dimension(width, height));
 		addMouseListener(this);
 		getStats();
+
 	}
 
 	@Override
@@ -483,7 +486,10 @@ public class EquipPanel extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		getStats();
+		System.out.println("Mouse exited");
+		inventory.addItem(equipSelected);
+		equipSelected = null;
+		previousSelected = -1;
 	}
 
 	/**

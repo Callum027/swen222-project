@@ -73,8 +73,7 @@ public class Main {
 		}
 	}
 
-
-	public static GameWorld getGameWorld(){
+	public static GameWorld getGameWorld() {
 		return gameWorld;
 	}
 

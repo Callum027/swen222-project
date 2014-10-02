@@ -64,7 +64,8 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 		JPanel appPane = new JPanel();
 		appPane.setLayout(new BoxLayout(appPane, BoxLayout.Y_AXIS));
 		inventory = new InventoryPanel();
-		equip = new EquipPanel();
+		equip = new EquipPanel(inventory);
+		inventory.setEquip(equip);
 		appPane.add(equip);
 		appPane.add(inventory);
 		add(appPane);

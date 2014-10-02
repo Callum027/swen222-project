@@ -2,6 +2,7 @@ package game.ui.application;
 
 import game.Main;
 import game.ui.GameFrame;
+import game.world.items.Equipment;
 import game.world.items.MovableItem;
 
 import java.awt.Color;
@@ -31,6 +32,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 			* INVENTORY_WIDTH];
 	private int cats = 0;
 	private MovableItem itemSelected;
+	private EquipPanel equip;
 
 	/**
 	 * Makes a new InventoryPanel which extends JPanel and sets the width and
@@ -206,6 +208,18 @@ public class InventoryPanel extends JPanel implements MouseListener {
 
 	public void setItems(MovableItem[] items) {
 		this.items = items;
+	}
+
+	public void setEquip(EquipPanel equip) {
+		this.equip=equip;
+
+	}
+
+	public void addItem(MovableItem item) {
+		System.out.println("Add item");
+		itemSelected = item;
+		System.out.println("itemSelected = "+itemSelected);
+
 	}
 
 }
