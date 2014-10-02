@@ -17,7 +17,7 @@ import java.util.Scanner;
  * @author Tsun
  *
  */
-public class Parser {
+public class ParserIterative {
 	// probably obsolete but will leave in for now in case i need it later
 	public GameWorld parseWorld(Scanner scan) {
 		try {
