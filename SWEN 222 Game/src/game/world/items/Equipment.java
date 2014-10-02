@@ -78,4 +78,9 @@ public class Equipment extends MovableItem{
 		this.defence = defence;
 	}
 
+	public String toString(){
+		String str = super.getName()+"\nAttack: "+attack+"\nDefence: "+defence+"\nWorth: "+worth;
+		return str;
+	}
+
 }
