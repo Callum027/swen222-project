@@ -12,7 +12,7 @@ public class Equipment extends MovableItem{
 
 	private int attack; //the attack increase that the equipment gives
 	private int defence; //the defence increase that the equipment gives
-	private int slot[];
+	private int slot;
 
 	/**
 	 * The Constructor:
@@ -24,7 +24,7 @@ public class Equipment extends MovableItem{
 	 * @param defence the defence stat of the equipment
 	 * @param worth how much you can buy the weapon for from the merchant
 	 */
-	public Equipment(int x, int y, int height, String name, Image image, int attack, int defence, int worth, int slot[]) {
+	public Equipment(int x, int y, int height, String name, Image image, int attack, int defence, int worth, int slot) {
 		super(x, y, height, name, image, worth);
 		this.setSlot(slot);
 		this.attack = attack;
@@ -72,13 +72,13 @@ public class Equipment extends MovableItem{
 
 
 
-	public int[] getSlot() {
+	public int getSlot() {
 		return slot;
 	}
 
 
 
-	public void setSlot(int slot[]) {
+	public void setSlot(int slot) {
 		this.slot = slot;
 	}
 

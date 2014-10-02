@@ -1,8 +1,8 @@
 package game.ui.application;
 
 import game.Main;
-import game.ui.GameFrame;
-import game.world.items.*;
+import game.world.items.Equipment;
+import game.world.items.EquippedItems;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -68,19 +68,14 @@ public class EquipPanel extends JPanel implements MouseListener {
 	 */
 	public EquipPanel(InventoryPanel inventory) {
 		this.inventory = inventory;
-		int slot[] = new int[1];
-		slot[0] = HEAD_SLOT;
 		items.equipHead(new Equipment(0, 0, squareSize, "Cat Hat", Main
-				.getImage("cat-inv.png"), 0, 100, 100, slot));
-		slot[0] = MAIN_HAND;
+				.getImage("cat-inv.png"), 0, 100, 100, HEAD_SLOT));
 		items.equipMainHand(new Equipment(0, 0, squareSize, "Cat Sword", Main
-				.getImage("cat-inv.png"), 50, 0, 50, slot));
-		slot[0] = CHEST_SLOT;
+				.getImage("cat-inv.png"), 50, 0, 50, MAIN_HAND));
 		items.equipBody(new Equipment(0, 0, squareSize, "Cat Brestplate", Main
-				.getImage("cat-inv.png"), 0, 300, 300, slot));
-		slot[0] = FEET_SLOT;
+				.getImage("cat-inv.png"), 0, 300, 300, CHEST_SLOT));
 		items.equipBoots(new Equipment(0, 0, squareSize, "Cat Boots", Main
-				.getImage("cat-inv.png"), 0, 400, 400, slot));
+				.getImage("cat-inv.png"), 0, 400, 400, FEET_SLOT));
 		setPreferredSize(new Dimension(width, height));
 		addMouseListener(this);
 		getStats();
@@ -285,7 +280,6 @@ public class EquipPanel extends JPanel implements MouseListener {
 						+ items.getoffHand().toString());
 				equipSelected = items.getoffHand();
 				items.equipOffHand(null);
-				;
 			}
 			break;
 		case CHEST_SLOT:
@@ -431,12 +425,12 @@ public class EquipPanel extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		int y = e.getY();
-		int x = e.getX();
-		System.out.println("Y = " + y + "X = " + x);
-		int equip = findEquip(x, y);
-		equipStats(equip);
-		repaint();
+		// int y = e.getY();
+		// int x = e.getX();
+		// System.out.println("Y = " + y + "X = " + x);
+		// int equip = findEquip(x, y);
+		// equipStats(equip);
+		// repaint();
 
 	}
 
@@ -524,53 +518,52 @@ public class EquipPanel extends JPanel implements MouseListener {
 	}
 
 	public int addEquip(Equipment equipment) {
-		int slot[] = equipment.getSlot();
-		for (int i = 0; i < slot.length; i++) {
-			switch (i) {
-			case HEAD_SLOT:
-				if (items.getHead() == null) {
-					items.equipHead(equipment);
-					repaint();
-					return HEAD_SLOT;
-				} else {
-					continue;
-				}
-			case MAIN_HAND:
-				if (items.getMainHand() == null) {
-					items.equipMainHand(equipment);
-					repaint();
-					return MAIN_HAND;
-				} else {
-					continue;
-				}
-			case OFF_HAND:
-				if (items.getoffHand() == null) {
-					items.equipOffHand(equipment);
-					repaint();
-					return OFF_HAND;
-				} else {
-					continue;
-				}
-			case CHEST_SLOT:
-				if (items.getBody() == null) {
-					items.equipBody(equipment);
-					repaint();
-					return CHEST_SLOT;
-				} else {
-					continue;
-				}
-			case FEET_SLOT:
-				if (items.getBoots() == null) {
-					items.equipBoots(equipment);
-					repaint();
-					return FEET_SLOT;
-				} else {
-					continue;
-				}
-			default:
+		int slot = equipment.getSlot();
+		switch (slot) {
+		case HEAD_SLOT:
+			if (items.getHead() == null) {
+				items.equipHead(equipment);
+				repaint();
+				return HEAD_SLOT;
+			} else {
 				break;
 			}
+		case MAIN_HAND:
+			if (items.getMainHand() == null) {
+				items.equipMainHand(equipment);
+				repaint();
+				return MAIN_HAND;
+			} else {
+				break;
+			}
+		case OFF_HAND:
+			if (items.getoffHand() == null) {
+				items.equipOffHand(equipment);
+				repaint();
+				return OFF_HAND;
+			} else {
+				break;
+			}
+		case CHEST_SLOT:
+			if (items.getBody() == null) {
+				items.equipBody(equipment);
+				repaint();
+				return CHEST_SLOT;
+			} else {
+				break;
+			}
+		case FEET_SLOT:
+			if (items.getBoots() == null) {
+				items.equipBoots(equipment);
+				repaint();
+				return FEET_SLOT;
+			} else {
+				break;
+			}
+		default:
+			break;
 		}
+
 		return -1;
 	}
 }

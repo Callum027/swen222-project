@@ -1,7 +1,6 @@
 package game.ui.application;
 
 import game.Main;
-import game.ui.GameFrame;
 import game.world.items.Equipment;
 import game.world.items.MovableItem;
 
@@ -102,11 +101,6 @@ public class InventoryPanel extends JPanel implements MouseListener {
 				k++;
 			}
 		}
-		/*
-		 * for(int i = 0; i < INVENTORY_WIDTH; i++){ for(int j = 0; j <
-		 * INVENTORY_HEIGHT; j++){ if(items[i*j] != null){ items[i*j].draw(g, i
-		 * * squareSize, j * squareSize); } } }
-		 */
 	}
 
 	@Override
@@ -159,7 +153,9 @@ public class InventoryPanel extends JPanel implements MouseListener {
 		int y = e.getY();
 		int inv = findInventorySquare(x, y);
 		selectItem(inv);
-		System.out.println("Item: " + itemSelected.toString());
+		if (itemSelected != null) {
+			System.out.println("Item: " + itemSelected.toString());
+		}
 		repaint();
 	}
 
@@ -168,10 +164,10 @@ public class InventoryPanel extends JPanel implements MouseListener {
 		int x = e.getX();
 		int y = e.getY();
 		int inv = findInventorySquare(x, y);
-		//if (inv < 0) {
-			dropItem(inv);
-			repaint();
-		//}
+		// if (inv < 0) {
+		dropItem(inv);
+		repaint();
+		// }
 		itemSelected = null;
 		previousSlot = -1;
 	}
@@ -183,9 +179,12 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	 * @param y
 	 */
 	private void dropItem(int inv) {
-		if (items[inv] == null) {
-			items[inv] = itemSelected;
-			itemSelected = null;
+		if (inv >= 0) {
+			if (items[inv] == null) {
+				items[inv] = itemSelected;
+				itemSelected = null;
+			}
+
 		} else {
 			returnItem();
 		}
@@ -215,6 +214,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 				returnItem();
 			}
 		}
+		repaint();
 	}
 
 	public MovableItem[] getItems() {
