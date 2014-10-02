@@ -23,8 +23,8 @@ public abstract class GameCharacter {
 	 * @param name the name of the character
 	 */
 	public GameCharacter(int x, int y, String name) {
-		this.x = x;
-		this.y = y;
+		this.setX(x);
+		this.setY(y);
 		this.name = name;
 	}
 
@@ -34,7 +34,27 @@ public abstract class GameCharacter {
 	 * @param y the new y coordinate
 	 */
 	public void moveTo(int x, int y){
+		this.setX(x);
+		this.setY(y);
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
 		this.x = x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
 		this.y = y;
 	}
 }
