@@ -18,7 +18,7 @@ import game.world.tiles.WallTile;
  *
  */
 public class Area {
-
+	private String name;
 	private Item[][] items; //the items located on this area
 	private GameWorld world;
 	private Tile[][] tiles; //the tiles that make up this area
@@ -46,6 +46,10 @@ public class Area {
 	public Area(Tile[][] tiles){
 		this.tiles = tiles;
 		items = new Item[tiles.length][tiles[0].length];
+	}
+
+	public Area(String n) {
+		name = n;
 	}
 
 	/**

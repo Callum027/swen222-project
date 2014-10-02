@@ -17,7 +17,7 @@ import java.util.Scanner;
  * @author Tsun
  *
  */
-public class Parser {
+public class ParserIterative {
 	// probably obsolete but will leave in for now in case i need it later
 	public GameWorld parseWorld(Scanner scan) {
 		try {
@@ -59,7 +59,9 @@ public class Parser {
 			// open Area declaration
 			if (!scan.next().equals("<Area>"))
 				throw new ParserError("Invalid declaration, should be an Area.");
-
+			scan.next();
+			scan.next();
+			scan.next();
 			// check there is a dimension declaration
 			if (!scan.hasNext())
 				throw new ParserError("No Dimension Declaration");

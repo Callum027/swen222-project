@@ -15,7 +15,7 @@ import java.util.Scanner;
 import javax.imageio.ImageIO;
 
 import game.control.Player;
-import game.loading.Parser;
+import game.loading.ParserIterative;
 import game.ui.*;
 import game.world.Area;
 import game.world.GameWorld;
@@ -81,7 +81,7 @@ public class Main {
 	public static void main(String arr[]) {
 		Map<Integer, Tile> tileMap = createTileMap(tilesFile);
 		gameWindow = new GameFrame(1280, 720, Cursor.getDefaultCursor());
-		Area area = Parser.parseArea(areaFile, tileMap);
+		Area area = ParserIterative.parseArea(areaFile, tileMap);
 		gameWorld.addArea(area);
 		Image shelfImage = getImage("shelf.png");
 		Furniture shelf = new Furniture(3, 5, 2, "shelf", shelfImage, null);
