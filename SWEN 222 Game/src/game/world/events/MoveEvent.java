@@ -50,5 +50,18 @@ public class MoveEvent extends GameEvent {
 
 		// Write the changes this event causes to the output stream.
 		player.write(os);
+
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public PlayableCharacter getPlayer(){
+		return player;
 	}
 }

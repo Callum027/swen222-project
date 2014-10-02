@@ -1,6 +1,7 @@
 package game.world;
 
 import game.world.characters.PlayableCharacter;
+import game.world.events.MoveEvent;
 import game.world.tiles.Tile;
 
 import java.io.File;
@@ -15,7 +16,7 @@ import java.util.Set;
  * @author Nick Tran
  *
  */
-public class GameWorld extends GameEventBroadcaster{
+public class GameWorld implements GameEventListener{
 
 	private List<Area> areas;
 	private List<PlayableCharacter> players;
@@ -66,6 +67,15 @@ public class GameWorld extends GameEventBroadcaster{
 	 */
 	public void setAreas(List<Area> areas){
 		this.areas = areas;
+	}
+
+	@Override
+	public void gameEventOccurred(GameEvent ge) {
+		if (ge instanceof MoveEvent){
+			MoveEvent move = (MoveEvent) ge;
+			PlayableCharacter player = move.getPlayer();
+			player.moveTo(move.getX(), move.getY());
+		}
 	}
 
 }
