@@ -120,6 +120,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 	 *            the graphics component
 	 */
 	private void drawStats(Graphics g) {
+		getStats();
 		g.drawString("HP: " + hp, HP_X, HP_Y);
 		g.drawString("Attack: " + attack, ATTACK_X, ATTACK_Y);
 		g.drawString("Defence: " + defence, DEFENCE_X, DEFENCE_Y);
@@ -337,7 +338,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 	private void dropEquip(int equip) {
 		switch (equip) {
 		case HEAD_SLOT:
-			if (items.getHead() == null) {
+			if (items.getHead() == null && equipSelected.getSlot()==HEAD_SLOT) {
 				items.equipHead(equipSelected);
 				equipSelected = null;
 				previousSelected = -1;
@@ -346,7 +347,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 			}
 			break;
 		case MAIN_HAND:
-			if (items.getMainHand() == null) {
+			if (items.getMainHand() == null && equipSelected.getSlot()==MAIN_HAND) {
 				items.equipMainHand(equipSelected);
 				equipSelected = null;
 				previousSelected = -1;
@@ -355,7 +356,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 			}
 			break;
 		case OFF_HAND:
-			if (items.getoffHand() == null) {
+			if (items.getoffHand() == null&& equipSelected.getSlot()==OFF_HAND) {
 				items.equipOffHand(equipSelected);
 				equipSelected = null;
 				previousSelected = -1;
@@ -364,7 +365,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 			}
 			break;
 		case CHEST_SLOT:
-			if (items.getBody() == null) {
+			if (items.getBody() == null && equipSelected.getSlot()==CHEST_SLOT) {
 				items.equipBody(equipSelected);
 				equipSelected = null;
 				previousSelected = -1;
@@ -373,7 +374,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 			}
 			break;
 		case FEET_SLOT:
-			if (items.getBoots() == null) {
+			if (items.getBoots() == null&& equipSelected.getSlot()==FEET_SLOT) {
 				items.equipBoots(equipSelected);
 				equipSelected = null;
 				previousSelected = -1;
