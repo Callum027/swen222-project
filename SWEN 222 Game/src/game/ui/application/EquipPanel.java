@@ -55,7 +55,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 	private int defence = 0;
 	private EquippedItems items = new EquippedItems();
 	private Equipment equipSelected;
-	private int previousSelected;
+	private int previousSelected = -1;
 
 	/**
 	 * Makes a new EquipPanel sets the width and height of the panel
@@ -385,32 +385,36 @@ public class EquipPanel extends JPanel implements MouseListener {
 		}
 	}
 
+	/**
+	 * This method returns the item to the slot that it was taken from if the
+	 * slot that it was tried to put in is not a valid slot
+	 */
 	private void returnItem() {
-		switch (previousSelected){
+		switch (previousSelected) {
 		case HEAD_SLOT:
 			items.equipHead(equipSelected);
-			equipSelected=null;
-			previousSelected=-1;
+			equipSelected = null;
+			previousSelected = -1;
 			break;
 		case MAIN_HAND:
 			items.equipMainHand(equipSelected);
-			equipSelected=null;
-			previousSelected=-1;
+			equipSelected = null;
+			previousSelected = -1;
 			break;
 		case OFF_HAND:
 			items.equipOffHand(equipSelected);
-			equipSelected=null;
-			previousSelected=-1;
+			equipSelected = null;
+			previousSelected = -1;
 			break;
 		case CHEST_SLOT:
 			items.equipBody(equipSelected);
-			equipSelected=null;
-			previousSelected=-1;
+			equipSelected = null;
+			previousSelected = -1;
 			break;
 		case FEET_SLOT:
 			items.equipBoots(equipSelected);
-			equipSelected=null;
-			previousSelected=-1;
+			equipSelected = null;
+			previousSelected = -1;
 			break;
 		default:
 			break;
