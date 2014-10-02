@@ -10,6 +10,7 @@ import game.world.GameStateListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
@@ -25,8 +26,10 @@ import java.net.UnknownHostException;
  */
 public class Client extends Thread implements GameEventListener {
 	private Socket socket = null;
-	private Boolean closing = new Boolean(false);
 	public GameStateBroadcaster gsb = new GameStateBroadcaster();
+	
+	private boolean interruptible = false;
+	private Boolean closing = new Boolean(false);
 	
 	/**
 	 * Connect to the local host on the default port.
@@ -70,8 +73,11 @@ public class Client extends Thread implements GameEventListener {
 			return true;
 		}
 		catch (UnknownHostException e) {
-			System.err.println("client: error: unknown host");
-			e.printStackTrace();
+			System.err.println("client: error looking up host: unknown host");
+			close();
+		}
+		catch (ConnectException e) {
+			System.err.println("client: error connecting: " + e.getMessage());
 			close();
 		}
 		catch (IOException e) {
@@ -94,23 +100,31 @@ public class Client extends Thread implements GameEventListener {
 		
 		try {
 			while (!closing.booleanValue()) {
-				synchronized (closing) {
-					// Get the output stream of the socket.
-					InputStream is = socket.getInputStream();
-					
-					// Read a game packet from the server.
-					GamePacket gp = GamePacket.read(is);
-					
-					switch (gp.getType())
-					{
-						// We have received a game state update. Broadcast it to all clients.
-						case STATE:
-							GameState gs = (GameState)gp.getPayload();
-							gsb.broadcastGameState(gs);
-							break;
-						default:
-							break;
-					}
+				// Get the output stream of the socket.
+				InputStream is = socket.getInputStream();
+				
+				// Mark the main loop as interruptible while we block on I/O.
+				interruptible = true;
+				
+				// Read a game packet from the server.
+				GamePacket gp = GamePacket.read(is);
+				
+				// Unmark the main loop as interruptible, as we are done waiting.
+				interruptible = false;
+				
+				// If the thread was interrupted, continue and wait for the next packet.
+				if (Thread.interrupted())
+					continue;
+				
+				switch (gp.getType())
+				{
+					// We have received a game state update. Broadcast it to all clients.
+					case STATE:
+						GameState gs = (GameState)gp.getPayload();
+						gsb.broadcastGameState(gs);
+						break;
+					default:
+						break;
 				}
 			}
 			
@@ -134,9 +148,8 @@ public class Client extends Thread implements GameEventListener {
 	 * cannot be used after this is called.
 	 */
 	public void close() {
-		synchronized (closing) {
 			closing = new Boolean(true);
-		}
+			// TODO: Send a close packet to the server
 	}
 
 	/**
@@ -144,14 +157,12 @@ public class Client extends Thread implements GameEventListener {
 	 */
 	public void gameEventOccurred(GameEvent ge) {
 		try {
-			if (!closing.booleanValue()) {
-				synchronized (closing) {
-					// Get the output stream of the socket.
-					OutputStream os = socket.getOutputStream();
-					
-					// Pack the game event into a game packet, and send it off!
-					new GamePacket(GamePacket.Type.EVENT, ge).write(os);
-				}
+			if (socket != null && !closing.booleanValue()) {
+				// Get the output stream of the socket.
+				OutputStream os = socket.getOutputStream();
+				
+				// Pack the game event into a game packet, and send it off!
+				new GamePacket(GamePacket.Type.EVENT, ge).write(os);
 			}
 		}
 		catch (SocketException e) {
