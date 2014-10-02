@@ -203,10 +203,6 @@ public class EquipPanel extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		int y = e.getY();
-		int x = e.getX();
-		int equip = findEquip(x, y);
-		selectEquip(equip);
 
 	}
 
@@ -295,7 +291,10 @@ public class EquipPanel extends JPanel implements MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
+		int y = e.getY();
+		int x = e.getX();
+		int equip = findEquip(x, y);
+		selectEquip(equip);
 
 	}
 
@@ -308,6 +307,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 	public void mouseEntered(MouseEvent e) {
 		int y = e.getY();
 		int x = e.getX();
+		System.out.println("Y = " + y + "X = " + x);
 		int equip = findEquip(x, y);
 		equipStats(equip);
 		repaint();
