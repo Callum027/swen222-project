@@ -2,6 +2,7 @@ package game.loading;
 
 import game.world.Area;
 import game.world.GameWorld;
+import game.world.items.Item;
 import game.world.tiles.Tile;
 
 import java.io.File;
@@ -65,7 +66,18 @@ public class Parser {
 			if (!scan.next().equals("<Dimension>"))
 				throw new ParserError(
 						"Invalid declaration, should be a Dimension.");
-			Tile[][] tiles = parseEmptyMap(scan, tileMap);
+			Area area = new Area(parseEmptyMap(scan, tileMap));
+			if (!scan.hasNext())
+				throw new ParserError("No ItemMap declaration.");
+			if (!scan.next().equals("<ItemMap>"))
+				throw new ParserError(
+						"Invalid declaration, should be an ItemMap.");
+				area.addItems(parseItemMap(scan));
+			if (!scan.hasNext())
+				throw new ParserError("No Area closing declaration.");
+			if (!scan.next().equals("</Area>"))
+				throw new ParserError(
+						"Invalid declaration, should be an Area close.");
 			// close Area declaration
 			if (!scan.hasNext())
 				throw new ParserError("No Area closing declaration.");
@@ -73,7 +85,7 @@ public class Parser {
 				throw new ParserError(
 						"Invalid declaration, should be an Area close.");
 			scan.close();
-			return new Area(tiles);
+			return area;
 		} catch (ParserError pError) {
 			System.out.println("Parser Error: " + pError.getMessage());
 		} catch (FileNotFoundException e) {
@@ -81,6 +93,48 @@ public class Parser {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	private static Item[][] parseItemMap(Scanner scan) {
+		try{
+			if (!scan.hasNextInt())
+				throw new ParserError("number of items not specified.");
+			int size = scan.nextInt();
+			for(int i = 0; i < size; i++){
+				if (!scan.next().equals("<Item>"))
+					throw new ParserError(
+							"Invalid declaration, should be an Item.");
+				if (!scan.hasNext())
+					throw new ParserError("no Furniture open.");
+				if (!scan.next().equals("<Furniture>"))
+					throw new ParserError(
+							"Invalid declaration, should be an Furniture.");
+				if (!scan.hasNextInt())
+					throw new ParserError("No x value for the furniture.");
+				int x = scan.nextInt();
+				if (!scan.hasNextInt())
+					throw new ParserError("No y value for the furniture.");
+				int y = scan.nextInt();
+				if (!scan.hasNextInt())
+					throw new ParserError("No height value for the furniture.");
+				int height = scan.nextInt();
+				if (!scan.hasNext())
+					throw new ParserError("No name for the furniture.");
+				String itemName = scan.next();
+				if (!scan.hasNext())
+					throw new ParserError("no Furniture close.");
+				if (!scan.next().equals("</Furniture>"))
+					throw new ParserError(
+							"Invalid declaration, should be an Furniture close.");
+				if (!scan.next().equals("</Item>"))
+					throw new ParserError(
+							"Invalid declaration, should be an Item close.");
+			}
+		}catch (ParserError pError) {
+			System.out.println("Parser Error: " + pError.getMessage());
+		}
+		return null;
+
 	}
 
 	private static Tile[][] parseEmptyMap(Scanner scan, Map<Integer, Tile> tileMap) {

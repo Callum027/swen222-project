@@ -47,7 +47,7 @@ public class Area {
 		this.tiles = tiles;
 		items = new Item[tiles.length][tiles[0].length];
 	}
-	
+
 	/**
 	 * Getter method for the GameWorld
 	 * @return the world that contains this area
@@ -68,6 +68,15 @@ public class Area {
 			return true;
 		}
 		return false;
+	}
+	public boolean addItems(Item[][] itemMap){
+		for(int y = 0; y < itemMap.length; y++){
+			for(int x = 0; x < itemMap[y].length; x++){
+				if(items[x][y] == null){ items[x][y] = itemMap[x][y];}
+				else{ return false;}
+			}
+		}
+	return false;
 	}
 
 	/**
