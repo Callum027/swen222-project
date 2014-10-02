@@ -33,6 +33,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	private int cats = 0;
 	private MovableItem itemSelected;
 	private EquipPanel equip;
+	private int previousSlot = -1;
 
 	/**
 	 * Makes a new InventoryPanel which extends JPanel and sets the width and
@@ -148,6 +149,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 		if (inv >= 0 && inv < items.length) {
 			itemSelected = items[inv];
 			items[inv] = null;
+			previousSlot = inv;
 		}
 	}
 
@@ -158,8 +160,6 @@ public class InventoryPanel extends JPanel implements MouseListener {
 		int inv = findInventorySquare(x, y);
 		selectItem(inv);
 		System.out.println("Item: " + itemSelected.toString());
-		itemSelected.setX(x);
-		itemSelected.setY(y);
 		repaint();
 	}
 
@@ -167,13 +167,13 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	public void mouseReleased(MouseEvent e) {
 		int x = e.getX();
 		int y = e.getY();
-		itemSelected.setX(x);
-		itemSelected.setY(y);
-		System.out.println("X = " + itemSelected.getX() + "Y = "
-				+ itemSelected.getY());
 		int inv = findInventorySquare(x, y);
-		dropItem(inv);
-		repaint();
+		//if (inv < 0) {
+			dropItem(inv);
+			repaint();
+		//}
+		itemSelected = null;
+		previousSlot = -1;
 	}
 
 	/**
@@ -183,8 +183,16 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	 * @param y
 	 */
 	private void dropItem(int inv) {
-		items[inv] = itemSelected;
-		itemSelected = null;
+		if (items[inv] == null) {
+			items[inv] = itemSelected;
+			itemSelected = null;
+		} else {
+			returnItem();
+		}
+	}
+
+	private void returnItem() {
+		dropItem(previousSlot);
 	}
 
 	@Override
@@ -195,8 +203,18 @@ public class InventoryPanel extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		if (itemSelected != null) {
+			int i = -1;
+			if (itemSelected instanceof Equipment) {
+				i = equip.addEquip((Equipment) itemSelected);
+			}
+			if (i != -1) {
+				itemSelected = null;
+				previousSlot = -1;
+			} else {
+				returnItem();
+			}
+		}
 	}
 
 	public MovableItem[] getItems() {

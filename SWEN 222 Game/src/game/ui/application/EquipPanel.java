@@ -68,14 +68,19 @@ public class EquipPanel extends JPanel implements MouseListener {
 	 */
 	public EquipPanel(InventoryPanel inventory) {
 		this.inventory = inventory;
+		int slot[] = new int[1];
+		slot[0] = HEAD_SLOT;
 		items.equipHead(new Equipment(0, 0, squareSize, "Cat Hat", Main
-				.getImage("cat-inv.png"), 0, 100, 100));
+				.getImage("cat-inv.png"), 0, 100, 100, slot));
+		slot[0] = MAIN_HAND;
 		items.equipMainHand(new Equipment(0, 0, squareSize, "Cat Sword", Main
-				.getImage("cat-inv.png"), 50, 0, 50));
+				.getImage("cat-inv.png"), 50, 0, 50, slot));
+		slot[0] = CHEST_SLOT;
 		items.equipBody(new Equipment(0, 0, squareSize, "Cat Brestplate", Main
-				.getImage("cat-inv.png"), 0, 300, 300));
+				.getImage("cat-inv.png"), 0, 300, 300, slot));
+		slot[0] = FEET_SLOT;
 		items.equipBoots(new Equipment(0, 0, squareSize, "Cat Boots", Main
-				.getImage("cat-inv.png"), 0, 400, 400));
+				.getImage("cat-inv.png"), 0, 400, 400, slot));
 		setPreferredSize(new Dimension(width, height));
 		addMouseListener(this);
 		getStats();
@@ -486,14 +491,14 @@ public class EquipPanel extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		System.out.println("Mouse exited");
-		int i = inventory.addItem(equipSelected);
-		if (i != -1) {
-			equipSelected = null;
-			previousSelected = -1;
-		}
-		else{
-			returnItem();
+		if (equipSelected != null) {
+			int i = inventory.addItem(equipSelected);
+			if (i != -1) {
+				equipSelected = null;
+				previousSelected = -1;
+			} else {
+				returnItem();
+			}
 		}
 	}
 
@@ -516,5 +521,56 @@ public class EquipPanel extends JPanel implements MouseListener {
 	public void setItems(EquippedItems items) {
 		this.items = items;
 		getStats();
+	}
+
+	public int addEquip(Equipment equipment) {
+		int slot[] = equipment.getSlot();
+		for (int i = 0; i < slot.length; i++) {
+			switch (i) {
+			case HEAD_SLOT:
+				if (items.getHead() == null) {
+					items.equipHead(equipment);
+					repaint();
+					return HEAD_SLOT;
+				} else {
+					continue;
+				}
+			case MAIN_HAND:
+				if (items.getMainHand() == null) {
+					items.equipMainHand(equipment);
+					repaint();
+					return MAIN_HAND;
+				} else {
+					continue;
+				}
+			case OFF_HAND:
+				if (items.getoffHand() == null) {
+					items.equipOffHand(equipment);
+					repaint();
+					return OFF_HAND;
+				} else {
+					continue;
+				}
+			case CHEST_SLOT:
+				if (items.getBody() == null) {
+					items.equipBody(equipment);
+					repaint();
+					return CHEST_SLOT;
+				} else {
+					continue;
+				}
+			case FEET_SLOT:
+				if (items.getBoots() == null) {
+					items.equipBoots(equipment);
+					repaint();
+					return FEET_SLOT;
+				} else {
+					continue;
+				}
+			default:
+				break;
+			}
+		}
+		return -1;
 	}
 }
