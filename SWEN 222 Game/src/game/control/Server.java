@@ -54,20 +54,28 @@ public class Server extends Thread {
 		return true;
 	}
 	
+	/*
+	 * Bind the server socket.
+	 * 
+	 * @return True if binding succeeded
+	 */
 	private boolean bind() {
 		try {
-			serverSocket = new ServerSocket(port);
-			return true;
+			if (serverSocket == null)
+			{
+				serverSocket = new ServerSocket(port);
+				return true;
+			}
 		}
 		catch (BindException e) {
 			System.err.println("server: unable to bind server socket: " + e.getMessage());
-			return false;
 		}
 		catch (IOException e) {
 			System.err.println("server: unhandled, unknown IOException");
 			e.printStackTrace();
-			return false;
 		}
+		
+		return false;
 	}
 	
 	/**
