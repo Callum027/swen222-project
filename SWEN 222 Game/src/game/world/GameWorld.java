@@ -1,5 +1,6 @@
 package game.world;
 
+import game.world.characters.PlayableCharacter;
 import game.world.tiles.Tile;
 
 import java.io.File;
@@ -17,9 +18,11 @@ import java.util.Set;
 public class GameWorld extends GameEventBroadcaster{
 
 	private List<Area> areas;
+	private List<PlayableCharacter> players;
 
 	public GameWorld(){
 		areas = new ArrayList<Area>();
+		players = new ArrayList<PlayableCharacter>();
 	}
 
 	/**
@@ -28,10 +31,11 @@ public class GameWorld extends GameEventBroadcaster{
 	 * @return true is the add was successful
 	 */
 	public boolean addArea(File file){
-		if (areas.add(new Area(this, file))){
-			return true;
-		}
-		return false;
+		return areas.add(new Area(this, file));
+	}
+
+	public boolean addPlayers(PlayableCharacter player){
+		return players.add(player);
 	}
 
 	/**
@@ -50,6 +54,10 @@ public class GameWorld extends GameEventBroadcaster{
 	 */
 	public List<Area> getAreas(){
 		return areas;
+	}
+
+	public PlayableCharacter getPlayer(int id){
+		return players.get(id);
 	}
 
 	/**

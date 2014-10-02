@@ -26,39 +26,25 @@ import game.world.tiles.WallTile;
 
 public class Main {
 
+<<<<<<< HEAD
 
 	private String[] tilesFile = new String[] { "1, FloorTile, floor_tile3.png" };
 	private String areaFile = "src/game/loading/Area.xml";
 	private GameFrame gameWindow;
+=======
+	// temporary while we are waiting for Chris to do data storage
+	private static String[] tilesFile = new String[] { "1, FloorTile, floor_tile3.png" };
+//	private String[] areaFile = new String[] { "10, 10",
+//			"1, 1, 1, 1, 1, 1, 1, 1, 1, 1", "1, 1, 1, 1, 1, 1, 1, 1, 1, 1",
+//			"1, 1, 1, 1, 1, 1, 1, 1, 1, 1", "1, 1, 1, 1, 1, 1, 1, 1, 1, 1",
+//			"1, 1, 1, 1, 1, 1, 1, 1, 1, 1", "1, 1, 1, 1, 1, 1, 1, 1, 1, 1",
+//			"1, 1, 1, 1, 1, 1, 1, 1, 1, 1", "1, 1, 1, 1, 1, 1, 1, 1, 1, 1",
+//			"1, 1, 1, 1, 1, 1, 1, 1, 1, 1", "1, 1, 1, 1, 1, 1, 1, 1, 1, 1" };
+	private static String areaFile = "src/game/loading/Area.xml";
+	private static GameFrame gameWindow;
+>>>>>>> a28c6733631bd4f8ca0cec2fbaf887074448b520
 	private static final String IMAGE_PATH = "ui/graphics/";
-
-	public Main() {
-		Map<Integer, Tile> tileMap = createTileMap(tilesFile);
-		gameWindow = new GameFrame(1280, 720, Cursor.getDefaultCursor());
-		Area area = Parser.parseArea(areaFile, tileMap);
-		GameWorld gameWorld = new GameWorld();
-		gameWorld.addArea(area);
-		Image shelfImage = getImage("shelf.png");
-		Furniture shelf = new Furniture(3, 5, 2, "shelf", shelfImage, null);
-		area.addItem(shelf, shelf.getX(), shelf.getY());
-		gameWindow.getRender().setArea(area);
-		gameWindow.getRender().repaint();
-	}
-
-	public File createFile(String[] data, String pathname) {
-		File file = new File(pathname);
-		try {
-			@SuppressWarnings("resource")
-			PrintWriter write = new PrintWriter(file);
-			for (int i = 0; i < data.length; i++) {
-				write.println(data[i]);
-			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return file;
-	}
+	private static GameWorld gameWorld = new GameWorld();
 
 	/**
 	 * Creates a tile map which maps a unique integer value to a unique tile, to
@@ -74,7 +60,7 @@ public class Main {
 	 *            --- contains data about the tiles
 	 * @return --- mapping of integers to tiles
 	 */
-	public Map<Integer, Tile> createTileMap(String[] data) {
+	public static Map<Integer, Tile> createTileMap(String[] data) {
 		Map<Integer, Tile> tileMap = new HashMap<Integer, Tile>();
 		for (int i = 0; i < data.length; i++) {
 			String[] line = data[i].split(", ");
@@ -101,7 +87,20 @@ public class Main {
 		}
 	}
 
+
+	public static GameWorld getGameWorld(){
+		return gameWorld;
+	}
+
 	public static void main(String arr[]) {
-		new Main();
+		Map<Integer, Tile> tileMap = createTileMap(tilesFile);
+		gameWindow = new GameFrame(1280, 720, Cursor.getDefaultCursor());
+		Area area = Parser.parseArea(areaFile, tileMap);
+		gameWorld.addArea(area);
+		Image shelfImage = getImage("shelf.png");
+		Furniture shelf = new Furniture(3, 5, 2, "shelf", shelfImage, null);
+		area.addItem(shelf, shelf.getX(), shelf.getY());
+		gameWindow.getRender().setArea(area);
+		gameWindow.getRender().repaint();
 	}
 }

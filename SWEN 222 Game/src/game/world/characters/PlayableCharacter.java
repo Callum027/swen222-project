@@ -1,5 +1,7 @@
 package game.world.characters;
 
+import game.Main;
+import game.net.NetIO;
 import game.net.Streamable;
 import game.world.characters.classes.GameClass;
 import game.world.characters.classes.RogueClass;
@@ -34,11 +36,11 @@ public class PlayableCharacter extends GameCharacter implements Streamable{
 	 * @param name the name of the player
 	 * @param playerClass the class of the player
 	 */
-	public PlayableCharacter(int x, int y, String name, String playerClass){
+	public PlayableCharacter(int x, int y, String name, String playerClass, int uid){
 		super(x, y, name);
 		assignClass(playerClass); //gives the player a class (behaviour)
 		this.playerClass = playerClass;
-
+		this.uid = uid;
 	}
 
 	/**
@@ -141,11 +143,12 @@ public class PlayableCharacter extends GameCharacter implements Streamable{
 
 	@Override
 	public void write(OutputStream os) throws IOException {
-		
+		NetIO.writeByte(os, (byte)uid);
 
 	}
 
-	public PlayableCharacter read(InputStream is) throws IOException {
-		return new PlayableCharacter(super.getX(), super.getY(), super.getName(), playerClass);
+	public static PlayableCharacter read(InputStream is) throws IOException {
+		byte id = NetIO.readByte(is);
+		return Main.getGameWorld().getPlayer(id);
 	}
 }

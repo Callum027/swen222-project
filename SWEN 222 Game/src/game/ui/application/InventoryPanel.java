@@ -1,7 +1,6 @@
 package game.ui.application;
 
 import game.Main;
-import game.world.characters.PlayableCharacter;
 import game.world.items.MovableItem;
 
 import java.awt.Color;
@@ -22,8 +21,8 @@ import javax.swing.JPanel;
  */
 public class InventoryPanel extends JPanel implements MouseListener {
 
-	private int width = INVENTORY_WIDTH * squareSize + 10;
-	private int height = INVENTORY_HEIGHT * squareSize + 50;
+	private final int width = INVENTORY_WIDTH * squareSize + 10;
+	private final int height = INVENTORY_HEIGHT * squareSize + 50;
 	public static final int INVENTORY_WIDTH = 5;
 	public static final int INVENTORY_HEIGHT = 4;
 	public static final int squareSize = 45;
@@ -40,19 +39,16 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	 *            the height of the panel
 	 */
 	public InventoryPanel() {
-
 		items[0] = new MovableItem(0, 0, squareSize, "cat",
 				Main.getImage("cat-inv.png"), 9001);
 		setPreferredSize(new Dimension(width, height));
 		addMouseListener(this);
-
 	}
 
 	@Override
 	public void paintComponent(Graphics g) {
 		g.setColor(Color.black);
 		g.fillRect(0, 0, width, height);
-
 		drawBlankInventory(g);
 	}
 
@@ -96,9 +92,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		int x = e.getX();
-		int y = e.getY();
-		selectItem(x, y);
+
 	}
 
 	/**
@@ -136,12 +130,26 @@ public class InventoryPanel extends JPanel implements MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
+		int x = e.getX();
+		int y = e.getY();
+		selectItem(x, y);
 
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		int x = e.getX();
+		int y = e.getY();
+		dropItem(x,y);
+
+	}
+
+	/**
+	 * This method will drop the item, into an inventory slot
+	 * @param x
+	 * @param y
+	 */
+	private void dropItem(int x, int y) {
 		// TODO Auto-generated method stub
 
 	}

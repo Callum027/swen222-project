@@ -21,8 +21,8 @@ import javax.swing.JPanel;
  */
 public class EquipPanel extends JPanel implements MouseListener {
 	private final int equipSize = 5;
-	private int width = 235;
-	private int height = 495;
+	private final int width = 235;
+	private final int height = 495;
 	public static final int HEAD_SLOT = 0;
 	public static final int OFF_HAND = 2;
 	public static final int MAIN_HAND = 1;
