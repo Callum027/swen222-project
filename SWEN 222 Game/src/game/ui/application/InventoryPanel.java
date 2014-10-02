@@ -42,7 +42,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	public InventoryPanel() {
 
 		items[0] = new MovableItem(0, 0, squareSize, "cat",
-				Main.getImage("cat-inv.jpg"), 9001);
+				Main.getImage("cat-inv.png"), 9001);
 		setPreferredSize(new Dimension(width, height));
 		addMouseListener(this);
 
@@ -74,7 +74,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 						squareSize);
 			}
 		}
-		Image img = Main.getImage("cat-inv.jpg");
+		Image img = Main.getImage("cat-inv.png");
 		g.setColor(Color.white);
 		g.drawImage(img, 10, height - 50, null);
 		g.drawString("" + cats, 65, height - 10);
@@ -91,9 +91,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 				j = 0;
 				k++;
 			}
-
 		}
-
 	}
 
 	@Override

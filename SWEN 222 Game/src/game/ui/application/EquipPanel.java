@@ -51,15 +51,15 @@ public class EquipPanel extends JPanel implements MouseListener {
 	 */
 	public EquipPanel() {
 		items.equipHead(new Equipment(0, 0, squareSize, "Cat Hat", Main
-				.getImage("cat-inv.jpg"), 0, 100, 100));
+				.getImage("cat-inv.png"), 0, 100, 100));
 		items.equipMainHand(new Equipment(0, 0, squareSize, "Cat Sword", Main
-				.getImage("cat-inv.jpg"), 50, 0, 50));
+				.getImage("cat-inv.png"), 50, 0, 50));
 		items.equipOffHand(new Equipment(0, 0, squareSize, "Cat Shield", Main
-				.getImage("cat-inv.jpg"), 0, 200, 200));
+				.getImage("cat-inv.png"), 0, 200, 200));
 		items.equipBody(new Equipment(0, 0, squareSize, "Cat Brestplate", Main
-				.getImage("cat-inv.jpg"), 0, 300, 300));
+				.getImage("cat-inv.png"), 0, 300, 300));
 		items.equipBoots(new Equipment(0, 0, squareSize, "Cat Boots", Main
-				.getImage("cat-inv.jpg"), 0, 400, 400));
+				.getImage("cat-inv.png"), 0, 400, 400));
 		setPreferredSize(new Dimension(width, height));
 		addMouseListener(this);
 	}
