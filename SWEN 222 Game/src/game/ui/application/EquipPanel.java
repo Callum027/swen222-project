@@ -356,7 +356,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 			break;
 		case OFF_HAND:
 			if (items.getoffHand() == null) {
-				items.equipMainHand(equipSelected);
+				items.equipOffHand(equipSelected);
 				equipSelected = null;
 				previousSelected = -1;
 			} else {
