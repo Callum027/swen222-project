@@ -4,7 +4,6 @@ import game.net.GamePacket;
 import game.world.GameEvent;
 import game.world.GameEventBroadcaster;
 import game.world.GameEventListener;
-import game.world.GameWorld;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,33 +27,37 @@ public class Server extends Thread {
 	/** The default port the server listens on, if none is specified. */
 	public static final int DEFAULT_PORT = 19642;
 	
+	/* The actual port the server will use. */
+	private int port = DEFAULT_PORT;
+	
 	/* Controls whether or not the server is closing down. */
 	private Boolean closing = new Boolean(false);
-	
-	private GameWorld world;
+
 	private ServerSocket serverSocket = null;
 	private List<ServerConnection> serverConnections = new ArrayList<ServerConnection>();
 	
 	private GameEventBroadcaster geb = new GameEventBroadcaster();
-	
-	/**
-	 * Open a server on the default port, with the given GameWorld.
-	 * 
-	 * @param w GameWorld to open a server for
-	 */
-	public Server(GameWorld w) {
-		world = w;
-	}
 
-	/*
+	/**
 	 * Private helper method for the constructors, to set up the server socket
-	 * with a given port number.
+	 * with a given port number. Can only be applied if the server is not running.
 	 * 
-	 * @param port Port number to listen on
+	 * @param p Port number to listen on
+	 * @return True if the port was changed
 	 */
-	public boolean setPort(int port) {
+	public boolean setPort(int p) {
+		if (serverSocket == null) {
+			port = p;
+			return true;
+		}
+		
+		return true;
+	}
+	
+	private boolean bind() {
 		try {
 			serverSocket = new ServerSocket(port);
+			return true;
 		}
 		catch (BindException e) {
 			System.err.println("server: unable to bind server socket: " + e.getMessage());
@@ -65,16 +68,14 @@ public class Server extends Thread {
 			e.printStackTrace();
 			return false;
 		}
-		
-		return true;
 	}
 	
 	/**
 	 * Start the main server loop.
 	 */
 	public void run() {
-		// Don't run if the server socket hasn't been binded yet.
-		if (serverSocket == null)
+		// Bind the server socket.
+		if (!bind())
 			return;
 			
 		// Enter the main loop, accepting new connections from clients
