@@ -4,6 +4,7 @@ import game.Main;
 import game.net.NetIO;
 import game.net.Streamable;
 import game.world.characters.classes.GameClass;
+import game.world.characters.classes.MageClass;
 import game.world.characters.classes.RogueClass;
 import game.world.characters.classes.WarriorClass;
 import game.world.items.Equipment;
@@ -35,14 +36,24 @@ public class PlayableCharacter extends GameCharacter implements Streamable{
 	 * @param name the name of the player
 	 * @param playerClass the class of the player
 	 */
-	public PlayableCharacter(int x, int y, String name, int uid){
+	public PlayableCharacter(int x, int y, String name, int uid, int playerClass){
 		super(x, y, name);
-		assignClass(); //gives the player a class (behaviour)
+		assignClass(playerClass); //gives the player a class (behaviour)
 		this.uid = uid;
 	}
 
-	public void assignClass(){
-
+	public void assignClass(int playerClass){
+		switch (playerClass){
+			case 1:
+				gameClass = new WarriorClass();
+				break;
+			case 2:
+				gameClass = new RogueClass();
+				break;
+			case 3:
+				gameClass = new MageClass();
+				break;
+		}
 	}
 
 	/**
