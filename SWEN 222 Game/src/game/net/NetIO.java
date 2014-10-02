@@ -2,9 +2,7 @@ package game.net;
 
 import java.io.IOException;
 import java.io.OutputStream;
-
-import org.omg.CORBA_2_3.portable.InputStream;
-
+import java.io.InputStream;
 
 public class NetIO {
 	/** Size of a byte on network input/output. */
