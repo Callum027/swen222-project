@@ -73,11 +73,6 @@ public class Parser {
 				throw new ParserError(
 						"Invalid declaration, should be an ItemMap.");
 				area.addItems(parseItemMap(scan));
-			if (!scan.hasNext())
-				throw new ParserError("No Area closing declaration.");
-			if (!scan.next().equals("</Area>"))
-				throw new ParserError(
-						"Invalid declaration, should be an Area close.");
 			// close Area declaration
 			if (!scan.hasNext())
 				throw new ParserError("No Area closing declaration.");
@@ -100,7 +95,10 @@ public class Parser {
 			if (!scan.hasNextInt())
 				throw new ParserError("number of items not specified.");
 			int size = scan.nextInt();
+
 			for(int i = 0; i < size; i++){
+				if (!scan.hasNext())
+					throw new ParserError("no Item open.");
 				if (!scan.next().equals("<Item>"))
 					throw new ParserError(
 							"Invalid declaration, should be an Item.");
@@ -130,10 +128,15 @@ public class Parser {
 					throw new ParserError(
 							"Invalid declaration, should be an Item close.");
 			}
+			if (!scan.hasNext())
+				throw new ParserError("no ItemMap close.");
+			if (!scan.next().equals("</ItemMap>"))
+				throw new ParserError(
+						"Invalid declaration, should be an ItemMap close.");
 		}catch (ParserError pError) {
 			System.out.println("Parser Error: " + pError.getMessage());
 		}
-		return null;
+		return new Item[10][10];
 
 	}
 
