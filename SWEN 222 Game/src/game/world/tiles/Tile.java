@@ -2,6 +2,7 @@ package game.world.tiles;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Polygon;
 
 /**
  * A Tile represents an abstract tile in the game. Tiles are
@@ -26,6 +27,21 @@ public abstract class Tile {
 	public Tile(Image image){
 		this.image = image;
 	}
+
+	/**
+	 * Returns a bounding box in the form of a Polygon for this
+	 * Tile. The specified x, y coordinates are in relation to
+	 * the top left x, y coordinates where the image for this Tile
+	 * will be drawn.
+	 *
+	 * @param x
+	 * 		--- top left x of Tile image
+	 * @param y
+	 * 		--- top left y of Tile image
+	 * @return
+	 * 		--- bounding box of Tile
+	 */
+	public abstract Polygon getBoundingBox(int x, int y);
 
 	/**
 	 * Draws this tile to the specified graphics pane,

@@ -1,6 +1,7 @@
 package game.world.tiles;
 
 import java.awt.Image;
+import java.awt.Polygon;
 
 /**
  * A WallTile represents a wall tile in the game. It is used
@@ -25,5 +26,22 @@ public class WallTile extends Tile{
 	 */
 	public WallTile(Image image){
 		super(image);
+	}
+
+	/**
+	 * Returns a bounding box in the form of a Polygon for this
+	 * Tile. The specified x, y coordinates are in relation to
+	 * the top left x, y coordinates where the image for this Tile
+	 * will be drawn.
+	 *
+	 * @param x
+	 * 		--- top left x of Tile image
+	 * @param y
+	 * 		--- top left y of Tile image
+	 * @return
+	 * 		--- bounding box of Tile
+	 */
+	public Polygon getBoundingBox(int x, int y){
+		return null;
 	}
 }

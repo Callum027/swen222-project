@@ -76,8 +76,7 @@ public class RenderingPanel extends JPanel implements MouseListener {
 		tileBoundingBoxes = new Polygon[area.getTiles().length][area.getTiles()[0].length];
 		itemBoundingBoxes = new Polygon[area.getTiles().length][area.getTiles()[0].length];
 
-		int startX = ((WIDTH - areaWidth) / 2)
-				+ ((area.getTiles().length - 1) * DX);
+		int startX = ((WIDTH - areaWidth) / 2) + ((area.getTiles().length - 1) * DX);
 		int startY = (HEIGHT - areaHeight) / 2;
 
 		for (int i = 0; i < tileBoundingBoxes.length; i++) {
