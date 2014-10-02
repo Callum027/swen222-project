@@ -35,6 +35,8 @@ public class RenderingPanel extends JPanel implements MouseListener {
 	private int areaLength;
 	private int areaWidth;
 	private int areaHeight;
+	private int startX;
+	private int startY;
 
 	private Furniture test;
 
@@ -61,10 +63,12 @@ public class RenderingPanel extends JPanel implements MouseListener {
 	public void setArea(Area area) {
 		this.area = area;
 
+		// calculate constant values that are use for rendering
 		areaLength = (area.getTiles().length + area.getTiles()[0].length) - 1;
-		areaWidth = (((areaLength - 1) * ((FloorTile.WIDTH / 2) + 1)))
-				+ FloorTile.WIDTH;
+		areaWidth = (((areaLength - 1) * ((FloorTile.WIDTH / 2) + 1))) + FloorTile.WIDTH;
 		areaHeight = ((areaLength - 1) * (FloorTile.HEIGHT / 2)) - 135;
+		startX = ((WIDTH - areaWidth) / 2) + ((area.getTiles().length - 1) * DX);
+		startY = (HEIGHT - areaHeight) / 2;
 
 		calculateBoundingBoxes();
 	}
@@ -76,36 +80,24 @@ public class RenderingPanel extends JPanel implements MouseListener {
 		tileBoundingBoxes = new Polygon[area.getTiles().length][area.getTiles()[0].length];
 		itemBoundingBoxes = new Polygon[area.getTiles().length][area.getTiles()[0].length];
 
-		int startX = ((WIDTH - areaWidth) / 2) + ((area.getTiles().length - 1) * DX);
-		int startY = (HEIGHT - areaHeight) / 2;
-
 		for (int i = 0; i < tileBoundingBoxes.length; i++) {
 			int x = startX - (DX * i);
 			int y = startY + (DY * i);
 			for (int j = 0; j < tileBoundingBoxes[i].length; j++) {
-				// calculate x and y points for bounding box of tile
-				int[] xPoints = new int[] { x, x + (FloorTile.WIDTH / 2),
-						x + FloorTile.WIDTH, x + (FloorTile.WIDTH / 2) };
-				int[] yPoints = new int[] { y + (FloorTile.HEIGHT / 2), y,
-						y + (FloorTile.HEIGHT / 2), y + FloorTile.HEIGHT };
-				tileBoundingBoxes[i][j] = new Polygon(xPoints, yPoints,
-						xPoints.length);
+				tileBoundingBoxes[i][j] = area.getTiles()[i][j].getBoundingBox(x, y);
 
 				// calculate x and y point for bounding box of item
 				if (area.getItems()[i][j] != null) {
 					int itemHeight = area.getItems()[i][j].getHeight();
 					int itemY = y - (itemHeight * FloorTile.HEIGHT);
-					xPoints = new int[] { x, x + (FloorTile.WIDTH / 2),
-							x + FloorTile.WIDTH, x + FloorTile.WIDTH,
+					int[] xPoints = new int[] { x, x + (FloorTile.WIDTH / 2), x + FloorTile.WIDTH, x + FloorTile.WIDTH,
 							x + (FloorTile.WIDTH / 2), x };
-					yPoints = new int[] { itemY + DY, itemY, itemY + DY,
+					int[] yPoints = new int[] { itemY + DY, itemY, itemY + DY,
 							itemY + ((itemHeight + 1) * FloorTile.HEIGHT) - DY,
 							itemY + ((itemHeight + 1) * FloorTile.HEIGHT),
 							itemY + ((itemHeight + 1) * FloorTile.HEIGHT) - DY };
-					itemBoundingBoxes[i][j] = new Polygon(xPoints, yPoints,
-							xPoints.length);
+					itemBoundingBoxes[i][j] = new Polygon(xPoints, yPoints, xPoints.length);
 				}
-
 				x += DX;
 				y += DY;
 			}
@@ -153,16 +145,12 @@ public class RenderingPanel extends JPanel implements MouseListener {
 
 	// not used currently (doesn't work)
 	public int calculateXPosition(int drawX) {
-		int dx = (FloorTile.WIDTH / 2) + 1;
-		int startX = ((WIDTH - areaWidth) / 2)
-				+ ((area.getTiles().length - 1) * dx);
-		int x = (startX - drawX) / dx;
+		int x = (startX - drawX) / DX;
 		return x;
 	}
 
 	// not used currently (doesn't work)
 	public int calculateYPosition(int drawY) {
-		int startY = (HEIGHT - areaHeight) / 2;
 		int y = (drawY - startY) / DY;
 		return y;
 	}
@@ -180,9 +168,6 @@ public class RenderingPanel extends JPanel implements MouseListener {
 			drawFloors(g, tiles, items);
 
 			// draw test
-			int startX = ((WIDTH - areaWidth) / 2)
-					+ ((area.getTiles().length - 1) * DX);
-			int startY = (HEIGHT - areaHeight) / 2;
 			int x = startX - (DX * test.getY());
 			int y = startY + (DY * test.getY())
 					- (test.getHeight() * FloorTile.HEIGHT);
@@ -194,8 +179,6 @@ public class RenderingPanel extends JPanel implements MouseListener {
 	 * Draw the floor of the current area to the render panel.
 	 */
 	private void drawFloors(Graphics g, Tile[][] tiles, Item[][] items) {
-		int startX = ((WIDTH - areaWidth) / 2) + ((tiles.length - 1) * DX);
-		int startY = (HEIGHT - areaHeight) / 2;
 		for (int i = 0; i < tiles.length; i++) {
 			// work out coordinates to draw tile
 			int x = startX - (DX * i);
