@@ -1,5 +1,6 @@
 package game.ui.application;
 
+import game.Main;
 import game.world.items.*;
 
 import java.awt.Color;
@@ -28,7 +29,17 @@ public class EquipPanel extends JPanel implements MouseListener {
 	public static final int CHEST_SLOT = 3;
 	public static final int FEET_SLOT = 4;
 	public static final int squareSize = 45;
-	private EquippedItems items;
+	private final int HEAD_X = width / 2;
+	private final int HEAD_Y = 0;
+	private final int BODY_X = width / 2;
+	private final int BODY_Y = (int) (height * 0.25);
+	private final int MAIN_X = width / 4;
+	private final int MAIN_Y = (int) (height * 0.4);
+	private final int OFF_X = (int) (width * 0.75);
+	private final int OFF_Y = (int) (height * 0.4);
+	private final int BOOTS_X = width / 2;
+	private final int BOOTS_Y = (int) (height * 0.75);
+	private EquippedItems items = new EquippedItems();
 
 	/**
 	 * Makes a new EquipPanel sets the width and height of the panel
@@ -39,6 +50,16 @@ public class EquipPanel extends JPanel implements MouseListener {
 	 *            the height of the panel
 	 */
 	public EquipPanel() {
+		items.equipHead(new Equipment(0, 0, squareSize,
+				"Cat Hat", Main.getImage("cat-inv.jpg"), 0, 100, 100));
+		items.equipMainHand(new Equipment(0, 0, squareSize,
+				"Cat Sword", Main.getImage("cat-inv.jpg"), 50, 0, 50));
+		items.equipOffHand(new Equipment(0, 0, squareSize,
+				"Cat Shield", Main.getImage("cat-inv.jpg"), 0, 200, 200));
+		items.equipBody(new Equipment(0, 0, squareSize,
+				"Cat Brestplate", Main.getImage("cat-inv.jpg"), 0, 300, 300));
+		items.equipBoots(new Equipment(0, 0, squareSize,
+				"Cat Boots", Main.getImage("cat-inv.jpg"), 0, 400, 400));
 		setPreferredSize(new Dimension(width, height));
 		addMouseListener(this);
 	}
@@ -48,7 +69,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, width, height);
 		g.setColor(Color.white);
-		drawEquip(g);
+		drawBlankEquip(g);
 	}
 
 	/**
@@ -57,26 +78,43 @@ public class EquipPanel extends JPanel implements MouseListener {
 	 *
 	 * @param g
 	 */
-	private void drawEquip(Graphics g) {
+	private void drawBlankEquip(Graphics g) {
 		g.setColor(Color.white);
-		g.fillRect(width / 2, 0, squareSize, squareSize);
+		g.fillRect(HEAD_X, HEAD_Y, squareSize, squareSize);
 		g.setColor(Color.white);
-		g.fillRect(width / 4, (int) (height * 0.4), squareSize, squareSize);
+		g.fillRect(MAIN_X, MAIN_Y, squareSize, squareSize);
 		g.setColor(Color.white);
-		g.fillRect((int) (width * 0.75), (int) (height * 0.4), squareSize,
+		g.fillRect(OFF_X, OFF_Y, squareSize,
 				squareSize);
 		g.setColor(Color.white);
-		g.fillRect(width / 2, (int) (height * 0.25), squareSize, squareSize);
+		g.fillRect(BODY_X, BODY_Y, squareSize, squareSize);
 		g.setColor(Color.white);
-		g.fillRect(width / 2, (int) (height * 0.75), squareSize, squareSize);
+		g.fillRect(BOOTS_X, BOOTS_Y, squareSize, squareSize);
+		drawEquipmentItems(g);
+	}
 
+	private void drawEquipmentItems(Graphics g) {
+		if (items.getHead() != null) {
+			items.getHead().draw(g, HEAD_X, HEAD_Y);
+		}
+		if(items.getMainHand() != null){
+			items.getMainHand().draw(g, MAIN_X, MAIN_Y);
+		}
+		if(items.getoffHand() != null){
+			items.getoffHand().draw(g, OFF_X, OFF_Y);
+		}
+		if(items.getBody() != null){
+			items.getBody().draw(g, BODY_X, BODY_Y);
+		}
+		if(items.getBoots()!=null){
+			items.getBoots().draw(g, BOOTS_X, BOOTS_Y);
+		}
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		int y = e.getY();
 		int x = e.getX();
-		System.out.println("X = " + x + " Y = " + y);
 		getEquip(x, y);
 
 	}
@@ -111,6 +149,66 @@ public class EquipPanel extends JPanel implements MouseListener {
 				&& y < (int) (height * 0.75) + squareSize && x >= (width / 2)
 				&& x < width / 2 + squareSize) {
 			equip = FEET_SLOT;
+		}
+		switch (equip) {
+		case HEAD_SLOT:
+			if (items.getHead() == null) {
+				System.out.println(" No item equiped on head");
+			} else {
+				System.out.println(" Equiped item on head "
+						+ items.getHead().getName() + "\n Attack: "
+						+ items.getHead().getAttack() + "\n Defence: "
+						+ items.getHead().getDefence() + "\n Worth: "
+						+ items.getHead().getWorth());
+			}
+			break;
+		case MAIN_HAND:
+			if (items.getMainHand() == null) {
+				System.out.println(" No item equiped in main hand");
+			} else {
+				System.out.println(" Equiped item in main hand "
+						+ items.getMainHand().getName() + "\n Attack: "
+						+ items.getMainHand().getAttack() + "\n Defence: "
+						+ items.getMainHand().getDefence() + "\n Worth: "
+						+ items.getMainHand().getWorth());
+			}
+			break;
+		case OFF_HAND:
+			if (items.getoffHand() == null) {
+				System.out.println("No item equiped in off hand");
+			} else {
+				System.out.println("Equiped item in off hand "
+						+ items.getoffHand().getName() + "\n Attack: "
+						+ items.getoffHand().getAttack() + "\n Defence: "
+						+ items.getoffHand().getDefence() + "\n Worth: "
+						+ items.getoffHand().getWorth());
+			}
+			break;
+		case CHEST_SLOT:
+			if (items.getBody() == null) {
+				System.out.println("No items equiped on chest");
+			} else {
+				System.out.println("Equiped item on chest "
+						+ items.getBody().getName() + items.getBody().getName()
+						+ "\n Attack: " + items.getBody().getAttack()
+						+ "\n Defence: " + items.getBody().getDefence()
+						+ "\n Worth: " + items.getBody().getWorth());
+			}
+			break;
+		case FEET_SLOT:
+			if (items.getBoots() == null) {
+				System.out.println("No items equiped on feet");
+			} else {
+				System.out.println("Equiped item on feet "
+						+ items.getBoots().getName()
+						+ items.getoffHand().getName() + "\n Attack: "
+						+ items.getBoots().getAttack() + "\n Defence: "
+						+ items.getBoots().getDefence() + "\n Worth: "
+						+ items.getBoots().getWorth());
+			}
+			break;
+		default:
+			break;
 		}
 	}
 
