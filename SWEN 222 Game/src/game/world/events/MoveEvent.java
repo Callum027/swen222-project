@@ -20,7 +20,12 @@ public class MoveEvent extends GameEvent {
 	private final int x;
 	private final int y;
 
-	public MoveEvent(int x, int y, PlayableCharacter player) {
+
+	public MoveEvent(int x, int y, PlayableCharacter player){
+		if (player == null)
+			throw new IllegalArgumentException("player is null");
+
+
 		this.x = x;
 		this.y = y;
 		this.player = player;
@@ -51,7 +56,6 @@ public class MoveEvent extends GameEvent {
 
 		// Write the changes this event causes to the output stream.
 		player.write(os);
-
 	}
 
 	public int getX() {

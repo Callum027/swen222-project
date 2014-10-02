@@ -54,15 +54,14 @@ public class Server extends Thread {
 		return true;
 	}
 	
-	/*
+	/**
 	 * Bind the server socket.
 	 * 
 	 * @return True if binding succeeded
 	 */
-	private boolean bind() {
+	public boolean bind() {
 		try {
-			if (serverSocket == null)
-			{
+			if (serverSocket == null) {
 				serverSocket = new ServerSocket(port);
 				return true;
 			}
@@ -82,21 +81,19 @@ public class Server extends Thread {
 	 * Start the main server loop.
 	 */
 	public void run() {
-		// Bind the server socket.
-		if (!bind())
+		// Return if the server socket didn't bind.
+		if (serverSocket == null)
 			return;
 			
 		// Enter the main loop, accepting new connections from clients
 		// as they come.
 		try {
 			while (!closing.booleanValue()) {
-				synchronized (closing) {
-					Socket clientSocket = serverSocket.accept();
-					ServerConnection sc = new ServerConnection(clientSocket);
-	
-					serverConnections.add(sc);
-					sc.start();
-				}
+				Socket clientSocket = serverSocket.accept();
+				ServerConnection sc = new ServerConnection(clientSocket);
+
+				serverConnections.add(sc);
+				sc.start();
 			}
 		}
 		catch (IOException e) {
@@ -131,9 +128,8 @@ public class Server extends Thread {
 	 * for new connections. The server cannot be used after this.
 	 */
 	public void close() {
-		synchronized (closing) {
-			closing = new Boolean(true);
-		}
+		closing = new Boolean(true);
+		// TODO: tell the client to close the connection
 	}
 	
 	public void addGameEventListener(GameEventListener gel) {
@@ -152,6 +148,9 @@ public class Server extends Thread {
 		private final Socket clientSocket;
 		
 		public ServerConnection(Socket cs) {
+			if (cs == null)
+				throw new IllegalArgumentException();
+			
 			clientSocket = cs;
 		}
 		
@@ -161,28 +160,26 @@ public class Server extends Thread {
 				OutputStream os = clientSocket.getOutputStream();
 				
 				while (!closing.booleanValue()) {
-					synchronized (closing) {
-						// Read a new GamePacket from the client.
-						GamePacket gp = GamePacket.read(is);
-						
-						// Determine the next action according to the contents of the GamePacket.
-						switch (gp.getType())
-						{
-							// We have received a game event from a client.
-							case EVENT:
-								GameEvent ge = (GameEvent)gp.getPayload();
-								
-								System.out.println("server: received an EVENT packet from " + clientSocket.getInetAddress());
-								System.out.println("        EVENT type: " + ge.getType());
-								
-								// Update the game world.
-								geb.broadcastGameEvent(ge);
-								
-								// TODO: Send the updated game state to the rest of the clients.
-								break;
-							default:
-								break;
-						}
+					// Read a new GamePacket from the client.
+					GamePacket gp = GamePacket.read(is);
+					
+					// Determine the next action according to the contents of the GamePacket.
+					switch (gp.getType())
+					{
+						// We have received a game event from a client.
+						case EVENT:
+							GameEvent ge = (GameEvent)gp.getPayload();
+							
+							System.out.println("server: received an EVENT packet from " + clientSocket.getInetAddress());
+							System.out.println("        EVENT type: " + ge.getType());
+							
+							// Update the game world.
+							geb.broadcastGameEvent(ge);
+							
+							// TODO: Send the updated game state to the rest of the clients.
+							break;
+						default:
+							break;
 					}
 				}
 				
