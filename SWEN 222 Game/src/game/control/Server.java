@@ -2,6 +2,8 @@ package game.control;
 
 import game.net.GamePacket;
 import game.world.GameEvent;
+import game.world.GameEventBroadcaster;
+import game.world.GameEventListener;
 import game.world.GameWorld;
 
 import java.io.IOException;
@@ -32,6 +34,8 @@ public class Server extends Thread {
 	private GameWorld world;
 	private ServerSocket serverSocket = null;
 	private List<ServerConnection> serverConnections = new ArrayList<ServerConnection>();
+	
+	private GameEventBroadcaster geb = new GameEventBroadcaster();
 	
 	/**
 	 * Open a server on the default port, with the given GameWorld.
@@ -123,6 +127,10 @@ public class Server extends Thread {
 		}
 	}
 	
+	public void addGameEventListener(GameEventListener gel) {
+		geb.addGameEventListener(gel);
+	}
+	
 	/*
 	 * A private helper class which separates direct communication with
 	 * clients from the main server thread.
@@ -159,7 +167,11 @@ public class Server extends Thread {
 								System.out.println("        EVENT type: " + ge.getType());
 								
 								// Update the game world.
-								// Send the updated game state to the rest of the clients.
+								geb.broadcastGameEvent(ge);
+								
+								// TODO: Send the updated game state to the rest of the clients.
+								break;
+							default:
 								break;
 						}
 					}
