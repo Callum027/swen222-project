@@ -191,7 +191,9 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	}
 
 	private void returnItem() {
-		dropItem(previousSlot);
+		if (previousSlot != -1) {
+			dropItem(previousSlot);
+		}
 	}
 
 	@Override
