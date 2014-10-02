@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import game.net.NetIO;
 import game.world.GameEvent;
 import game.world.characters.PlayableCharacter;
 
@@ -37,6 +38,9 @@ public class MoveEvent extends GameEvent {
 	 * @throws IOException
 	 */
 	public static MoveEvent read(InputStream is) throws IOException {
+		int x = NetIO.readInt(is);
+		int y = NetIO.readInt(is);
+		PlayableCharacter player = PlayableCharacter.read(is);
 		return new MoveEvent(x, y, player);
 	}
 
@@ -45,6 +49,6 @@ public class MoveEvent extends GameEvent {
 		getType().write(os);
 
 		// Write the changes this event causes to the output stream.
-		player.moveTo(x, y);
+		player.write(os);
 	}
 }
