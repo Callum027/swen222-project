@@ -102,14 +102,10 @@ public class InventoryPanel extends JPanel implements MouseListener {
 			}
 		}
 		/*
-		for(int i = 0; i < INVENTORY_WIDTH; i++){
-			for(int j = 0; j < INVENTORY_HEIGHT; j++){
-				if(items[i*j] != null){
-					items[i*j].draw(g, i * squareSize, j * squareSize);
-				}
-			}
-		}
-		*/
+		 * for(int i = 0; i < INVENTORY_WIDTH; i++){ for(int j = 0; j <
+		 * INVENTORY_HEIGHT; j++){ if(items[i*j] != null){ items[i*j].draw(g, i
+		 * * squareSize, j * squareSize); } } }
+		 */
 	}
 
 	@Override
@@ -173,7 +169,8 @@ public class InventoryPanel extends JPanel implements MouseListener {
 		int y = e.getY();
 		itemSelected.setX(x);
 		itemSelected.setY(y);
-		System.out.println("X = " + itemSelected.getX() + "Y = " + itemSelected.getY());
+		System.out.println("X = " + itemSelected.getX() + "Y = "
+				+ itemSelected.getY());
 		int inv = findInventorySquare(x, y);
 		dropItem(inv);
 		repaint();
@@ -211,14 +208,20 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	}
 
 	public void setEquip(EquipPanel equip) {
-		this.equip=equip;
+		this.equip = equip;
 
 	}
 
-	public void addItem(MovableItem item) {
-		System.out.println("Add item");
-		itemSelected = item;
-		System.out.println("itemSelected = "+itemSelected);
+	public int addItem(MovableItem item) {
+		for (int i = 0; i < items.length; i++) {
+			if (items[i] == null) {
+				items[i] = item;
+				repaint();
+				return i;
+			}
+		}
+		repaint();
+		return -1;
 
 	}
 

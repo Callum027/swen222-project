@@ -487,9 +487,14 @@ public class EquipPanel extends JPanel implements MouseListener {
 	@Override
 	public void mouseExited(MouseEvent e) {
 		System.out.println("Mouse exited");
-		inventory.addItem(equipSelected);
-		equipSelected = null;
-		previousSelected = -1;
+		int i = inventory.addItem(equipSelected);
+		if (i != -1) {
+			equipSelected = null;
+			previousSelected = -1;
+		}
+		else{
+			returnItem();
+		}
 	}
 
 	/**
