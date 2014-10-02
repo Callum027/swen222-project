@@ -16,9 +16,9 @@ import javax.swing.JPanel;
 /**
  * A simple panel that drawing the inventory items on screen Also can determine
  * what inventory slot was selected so it can return the value for the array
- * 
+ *
  * @author Harry
- * 
+ *
  */
 public class InventoryPanel extends JPanel implements MouseListener {
 
@@ -33,7 +33,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	/**
 	 * Makes a new InventoryPanel which extends JPanel and sets the width and
 	 * height fields so that the panel can be a certain size
-	 * 
+	 *
 	 * @param width
 	 *            the width of the panel
 	 * @param height
@@ -42,7 +42,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	public InventoryPanel() {
 
 		items[0] = new MovableItem(0, 0, squareSize, "cat",
-				Main.getImage("cat-inv.jpg"));
+				Main.getImage("cat-inv.jpg"), 9001);
 		setPreferredSize(new Dimension(width, height));
 		addMouseListener(this);
 
@@ -59,7 +59,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	/**
 	 * Draws a grid from the size of the inventory and makes it look nice-ish in
 	 * a square
-	 * 
+	 *
 	 * @param g
 	 *            a Graphics object
 	 */
@@ -106,7 +106,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	/**
 	 * This method is called when the mouse is clicked and determines the square
 	 * in the array that the items are stored in
-	 * 
+	 *
 	 * @param x
 	 *            the mouse X
 	 * @param y
@@ -132,7 +132,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 			selected = -1;
 		}
 		if (selected >= 0 && selected < items.length) {
-			System.out.println("Selected = " + items[selected].getName());
+			System.out.println("Selected: " + items[selected].toString());
 		}
 	}
 

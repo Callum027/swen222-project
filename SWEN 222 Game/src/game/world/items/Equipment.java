@@ -9,7 +9,7 @@ import java.awt.Image;
  */
 public class Equipment extends MovableItem{
 
-	private int worth; //how much you can buy the weapon for
+
 	private int attack; //the attack increase that the equipment gives
 	private int defence; //the defence increase that the equipment gives
 
@@ -24,27 +24,12 @@ public class Equipment extends MovableItem{
 	 * @param worth how much you can buy the weapon for from the merchant
 	 */
 	public Equipment(int x, int y, int height, String name, Image image, int attack, int defence, int worth) {
-		super(x, y, height, name, image);
+		super(x, y, height, name, image, worth);
 		this.attack = attack;
 		this.defence = defence;
-		this.worth = worth;
 	}
 
-	/**
-	 * Gets the value of the item
-	 * @return the value of the item
-	 */
-	public int getWorth() {
-		return worth;
-	}
 
-	/**
-	 * Sets the value of the item
-	 * @param worth the new value of the item
-	 */
-	public void setWorth(int worth) {
-		this.worth = worth;
-	}
 
 	/**
 	 * Gets the attack stat of the equipment
@@ -79,7 +64,7 @@ public class Equipment extends MovableItem{
 	}
 
 	public String toString(){
-		String str = super.getName()+"\nAttack: "+attack+"\nDefence: "+defence+"\nWorth: "+worth;
+		String str = super.getName()+"\nAttack: "+attack+"\nDefence: "+defence+"\nWorth: "+super.getWorth();
 		return str;
 	}
 
