@@ -1,6 +1,8 @@
 package game.ui.rendering;
 
+import game.Main;
 import game.world.Area;
+import game.world.items.Furniture;
 import game.world.items.Item;
 import game.world.tiles.FloorTile;
 import game.world.tiles.Tile;
@@ -8,10 +10,6 @@ import game.world.tiles.Tile;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.event.MouseEvent;
@@ -34,6 +32,8 @@ public class RenderingPanel extends JPanel implements MouseListener {
 	private int areaWidth;
 	private int areaHeight;
 
+	private Furniture test;
+
 	/**
 	 * Constructor:
 	 *
@@ -42,6 +42,8 @@ public class RenderingPanel extends JPanel implements MouseListener {
 		super();
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		addMouseListener(this);
+
+		test = new Furniture(0, 0, 2, "temp", Main.getImage("temp_character.png"), null);
 	}
 
 	/**
@@ -62,6 +64,9 @@ public class RenderingPanel extends JPanel implements MouseListener {
 		calculateBoundingBoxes();
 	}
 
+	/**
+	 * Calculates the bounding boxes for each tile in the game.
+	 */
 	public void calculateBoundingBoxes() {
 		tileBoundingBoxes = new Polygon[area.getTiles().length][area.getTiles()[0].length];
 		itemBoundingBoxes = new Polygon[area.getTiles().length][area.getTiles()[0].length];
@@ -110,6 +115,14 @@ public class RenderingPanel extends JPanel implements MouseListener {
 		}
 	}
 
+	/**
+	 * Find the position in the area that the player has clicked on,
+	 * based on the coordinates of their click. Returns null if they
+	 * have not clicked in the area.
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	public Point findPosition(int x, int y) {
 		Point p = new Point(x, y);
 		for (int i = 0; i < tileBoundingBoxes.length; i++) {
@@ -122,6 +135,11 @@ public class RenderingPanel extends JPanel implements MouseListener {
 		return null;
 	}
 
+	/**
+	 * Find out if the user has clicked on an item
+	 * @param x
+	 * @param y
+	 */
 	public void findItem(int x, int y) {
 		Point p = new Point(x, y);
 		for (int i = 0; i < tileBoundingBoxes.length; i++) {
@@ -134,6 +152,7 @@ public class RenderingPanel extends JPanel implements MouseListener {
 		}
 	}
 
+	// not used currently (doesn't work)
 	public int calculateXPosition(int drawX) {
 		int dx = (FloorTile.WIDTH / 2) + 1;
 		int startX = ((WIDTH - areaWidth) / 2)
@@ -142,6 +161,7 @@ public class RenderingPanel extends JPanel implements MouseListener {
 		return x;
 	}
 
+	// not used currently (doesn't work)
 	public int calculateYPosition(int drawY) {
 		int dy = FloorTile.HEIGHT / 2;
 		int startY = (HEIGHT - areaHeight) / 2;
@@ -150,7 +170,7 @@ public class RenderingPanel extends JPanel implements MouseListener {
 	}
 
 	/**
-	 *
+	 * Paints the current area to the render panel
 	 */
 	@Override
 	public void paintComponent(Graphics g) {
@@ -160,11 +180,20 @@ public class RenderingPanel extends JPanel implements MouseListener {
 			Tile[][] tiles = area.getTiles();
 			Item[][] items = area.getItems();
 			drawFloors(g, tiles, items);
+
+			// draw test
+			int dx = (FloorTile.WIDTH / 2) + 1;
+			int dy = FloorTile.HEIGHT / 2;
+			int startX = ((WIDTH - areaWidth) / 2) + ((area.getTiles().length - 1) * dx);
+			int startY = (HEIGHT - areaHeight) / 2;
+			int x = startX - (dx * test.getY());
+			int y = startY + (dy * test.getY())-(test.getHeight() * FloorTile.HEIGHT);
+			test.draw(g, x, y);
 		}
 	}
 
 	/**
-	 *
+	 * Draw the floor of the current area to the render panel.
 	 */
 	private void drawFloors(Graphics g, Tile[][] tiles, Item[][] items) {
 		int dx = (FloorTile.WIDTH / 2) + 1;
@@ -172,14 +201,14 @@ public class RenderingPanel extends JPanel implements MouseListener {
 		int startX = ((WIDTH - areaWidth) / 2) + ((tiles.length - 1) * dx);
 		int startY = (HEIGHT - areaHeight) / 2;
 		for (int i = 0; i < tiles.length; i++) {
+			// work out coordinates to draw tile
 			int x = startX - (dx * i);
 			int y = startY + (dy * i);
 			for (int j = 0; j < tiles[i].length; j++) {
 				// System.out.println("Drawing tile at ("+x+", "+y+")");
 				tiles[i][j].draw(g, x, y);
 				if (items[i][j] != null) {
-					items[i][j].draw(g, x, y
-							- (items[i][j].getHeight() * FloorTile.HEIGHT));
+					items[i][j].draw(g, x, y-(items[i][j].getHeight() * FloorTile.HEIGHT));
 				}
 				x += dx;
 				y += dy;
@@ -187,6 +216,11 @@ public class RenderingPanel extends JPanel implements MouseListener {
 		}
 	}
 
+	/**
+	 * Draw the bounding boxes surrounding each item.
+	 * @param g
+	 * @param items
+	 */
 	public void drawBoxes(Graphics g, Item[][] items) {
 		for (int i = 0; i < items.length; i++) {
 			for (int j = 0; j < items[0].length; j++) {
@@ -205,6 +239,9 @@ public class RenderingPanel extends JPanel implements MouseListener {
 		Point p = findPosition(e.getX(), e.getY());
 		if (p != null) {
 			System.out.println("Area position: (" + p.x + ", " + p.y + ")");
+			test.setX(p.x);
+			test.setY(p.y);
+			repaint();
 		} else {
 			System.out.println("Position not on board.");
 		}
