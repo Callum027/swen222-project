@@ -24,7 +24,6 @@ public class PlayableCharacter extends GameCharacter implements Streamable{
 	private EquippedItems equipped; //the items that is currently equipped to the player
 	private Equipment[] inventory;
 	private GameClass gameClass; //either Warrior, Mage or Rogue
-	private String playerClass;
 	private int count;
 	private int cats = 100; //the amount of money/points the player has
 	private int uid;
@@ -36,29 +35,14 @@ public class PlayableCharacter extends GameCharacter implements Streamable{
 	 * @param name the name of the player
 	 * @param playerClass the class of the player
 	 */
-	public PlayableCharacter(int x, int y, String name, String playerClass, int uid){
+	public PlayableCharacter(int x, int y, String name, int uid){
 		super(x, y, name);
-		assignClass(playerClass); //gives the player a class (behaviour)
-		this.playerClass = playerClass;
+		assignClass(); //gives the player a class (behaviour)
 		this.uid = uid;
 	}
 
-	/**
-	 * The player is assigned a class based on the String that is given.
-	 * @param playerClass the String that was given
-	 */
-	public void assignClass(String playerClass){
-		switch (playerClass){
-			case "Warrior":
-				setGameClass(new WarriorClass());
-				break;
-			case "Rogue":
-				setGameClass(new RogueClass());
-				break;
-			case "Mage":
-				setGameClass(new RogueClass());
-				break;
-		}
+	public void assignClass(){
+
 	}
 
 	/**
