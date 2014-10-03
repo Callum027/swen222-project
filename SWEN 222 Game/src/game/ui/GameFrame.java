@@ -52,7 +52,6 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 	 */
 	public GameFrame(int gameWindowX, int gameWindowY, Cursor cursor) {
 		super("An Excellent Adventure!");
-		setResizable(false);
 		// set the frame to have a layout so that the screens are in proportion
 		setLayout(new FlowLayout());
 		render = new RenderingPanel();
@@ -70,6 +69,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 		appPane.add(inventory);
 		add(appPane);
 		setCursor(cursor);
+		setResizable(false);
 		pack();
 		addKeyListener(this);
 		setVisible(true);
@@ -103,9 +103,12 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 		return render;
 	}
 
+	// key listener methods
+
 	@Override
 	public void keyTyped(KeyEvent e) {
-
+		System.out.println("key typed");
+		System.out.println(e.getKeyChar());
 
 	}
 

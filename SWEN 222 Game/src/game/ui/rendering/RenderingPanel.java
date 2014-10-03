@@ -167,7 +167,7 @@ public class RenderingPanel extends JPanel implements MouseListener {
 			drawFloors(g, tiles, items);
 
 			// draw test
-			int x = startX - (FloorTile.WIDTH * (test.getX() + test.getY()));
+			int x = startX - (DX * test.getY()) + (test.getX() * DX);
 			int y = startY + (DY * (test.getX() + test.getY())) - (test.getHeight() * FloorTile.HEIGHT);
 			test.draw(g, x, y);
 		}
