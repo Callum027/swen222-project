@@ -167,8 +167,8 @@ public class RenderingPanel extends JPanel implements MouseListener {
 			drawFloors(g, tiles, items);
 
 			// draw test
-			int x = startX - (DX * test.getY()) + (test.getX() * DX);
-			int y = startY + (DY * test.getY()) - (test.getHeight() * FloorTile.HEIGHT)  + (test.getX() * DY);
+			int x = startX - (FloorTile.WIDTH * (test.getX() + test.getY()));
+			int y = startY + (DY * (test.getX() + test.getY())) - (test.getHeight() * FloorTile.HEIGHT);
 			test.draw(g, x, y);
 		}
 	}
@@ -186,10 +186,6 @@ public class RenderingPanel extends JPanel implements MouseListener {
 				tiles[i][j].draw(g, x, y);
 				if (items[i][j] != null) {
 					items[i][j].draw(g, x, y - (items[i][j].getHeight() * FloorTile.HEIGHT));
-				}
-
-				if(test.getX() == j && test.getY() == i){
-					//test.draw(g, x, y - (test.getHeight() * FloorTile.HEIGHT));
 				}
 				x += DX;
 				y += DY;
@@ -220,10 +216,10 @@ public class RenderingPanel extends JPanel implements MouseListener {
 		System.out.println("Clicked: (" + e.getX() + ", " + e.getY() + ")");
 		Point p = findPosition(e.getX(), e.getY());
 		if (p != null) {
-			System.out.println("Area position: (" + p.x + ", " + p.y + ")");
+			//System.out.println("Area position: (" + p.x + ", " + p.y + ")");
 			test.setX(p.x);
 			test.setY(p.y);
-			System.out.println("Test position: (" + test.getX() + ", " + test.getY() + ")");
+			//System.out.println("Test position: (" + test.getX() + ", " + test.getY() + ")");
 			repaint();
 		} else {
 			System.out.println("Position not on board.");
