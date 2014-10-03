@@ -14,6 +14,7 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Comparator;
 
 import javax.swing.JPanel;
 
@@ -250,5 +251,20 @@ public class RenderingPanel extends JPanel implements MouseListener {
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 
+	}
+
+	private class NorthComparator implements Comparator<Item>{
+
+		private int length;
+
+		public NorthComparator(int width, int height){
+			length = width + height - 1;
+		}
+
+		public int compare(Item o1, Item o2){
+			int i = length - o1.getX() - o1.getY();
+			int j = length - o2.getX() - o2.getY();
+			return i - j;
+		}
 	}
 }
