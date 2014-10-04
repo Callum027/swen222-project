@@ -1,6 +1,5 @@
 package game.world.tiles;
 
-import java.awt.Image;
 import java.awt.Polygon;
 
 /**
@@ -24,8 +23,8 @@ public class FloorTile extends Tile{
 	 * @param image
 	 * 			--- image associated with this floor tile
 	 */
-	public FloorTile(Image image){
-		super(image);
+	public FloorTile(String filename){
+		super(filename);
 	}
 
 	/**

@@ -1,6 +1,7 @@
 package game.ui.rendering;
 
 import game.Main;
+import game.ui.GameFrame;
 import game.world.Area;
 import game.world.items.Furniture;
 import game.world.items.Item;
@@ -12,8 +13,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Comparator;
@@ -40,6 +39,7 @@ public class RenderingPanel extends JPanel implements MouseListener{
 	private int areaHeight;
 	private int startX;
 	private int startY;
+	private int direction;
 
 	private Furniture test;
 
@@ -47,8 +47,9 @@ public class RenderingPanel extends JPanel implements MouseListener{
 	 * Constructor:
 	 *
 	 */
-	public RenderingPanel() {
+	public RenderingPanel(int direction) {
 		super();
+		this.direction = direction;
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		addMouseListener(this);
 		test = new Furniture(0, 0, 2, "temp", Main.getImage("temp_character.png"), null);
@@ -72,6 +73,10 @@ public class RenderingPanel extends JPanel implements MouseListener{
 		startY = (HEIGHT - areaHeight) / 2;
 
 		calculateBoundingBoxes();
+	}
+	
+	public void setDirection(int direction){
+		this.direction = direction;
 	}
 
 	/**
@@ -179,16 +184,69 @@ public class RenderingPanel extends JPanel implements MouseListener{
 	 * Draw the floor of the current area to the render panel.
 	 */
 	private void drawFloors(Graphics g, Tile[][] tiles, Item[][] items) {
+		if(direction == GameFrame.NORTH){
+			drawNorthFloorLayout(g, tiles);
+		}
+		else if(direction == GameFrame.EAST){
+			drawEastFloorLayout(g, tiles);
+		}
+		else if(direction == GameFrame.SOUTH){
+			drawSouthFloorLayout(g, tiles);
+		}
+		else if(direction == GameFrame.WEST){
+			drawWestFloorLayout(g, tiles);
+		}
+	}
+	
+	private void drawNorthFloorLayout(Graphics g, Tile[][] tiles){
 		for (int i = 0; i < tiles.length; i++) {
 			// work out coordinates to draw tile
 			int x = startX - (DX * i);
 			int y = startY + (DY * i);
 			for (int j = 0; j < tiles[i].length; j++) {
 				// System.out.println("Drawing tile at ("+x+", "+y+")");
-				tiles[i][j].draw(g, x, y);
-				if (items[i][j] != null) {
-					items[i][j].draw(g, x, y - (items[i][j].getHeight() * FloorTile.HEIGHT));
-				}
+				tiles[i][j].draw(g, x, y, direction);
+				//if (items[i][j] != null) {
+				//	items[i][j].draw(g, x, y - (items[i][j].getHeight() * FloorTile.HEIGHT));
+				//}
+				x += DX;
+				y += DY;
+			}
+		}
+	}
+	
+	private void drawEastFloorLayout(Graphics g, Tile[][] tiles){
+		for(int i = 0; i < tiles.length; i++){
+			int x = startX - (DX * i);
+			int y = startY + (DY * i);
+			for(int j = tiles[i].length - 1; j >= 0; j--){
+				tiles[i][j].draw(g, x, y, direction);
+				x += DX;
+				y += DY;
+			}
+		}
+	}
+	
+	private void drawSouthFloorLayout(Graphics g, Tile[][] tiles){
+		//for(int i = tiles.length - 1; i >= 0; i--){
+		for (int i = 0; i < tiles.length; i++) {
+			int x = startX - (DX * i);
+			int y = startY + (DY * i);
+			for(int j = tiles[i].length - 1; j >= 0; j--){
+				tiles[i][j].draw(g, x, y, direction);
+				x += DX;
+				y += DY;
+			}
+		}
+	}
+	
+	private void drawWestFloorLayout(Graphics g, Tile[][] tiles){
+		//for(int i = tiles.length - 1; i >= 0; i--){
+		for (int i = 0; i < tiles.length; i++) {
+			int x = startX - (DX * i);
+			int y = startY + (DY * i);
+			for(int j = 0; j < tiles[i].length; j++){
+				tiles[i][j].draw(g, x, y, direction);
 				x += DX;
 				y += DY;
 			}

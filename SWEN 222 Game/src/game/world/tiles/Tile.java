@@ -1,5 +1,7 @@
 package game.world.tiles;
 
+import game.Main;
+
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Polygon;
@@ -14,7 +16,8 @@ import java.awt.Polygon;
 public abstract class Tile {
 
 	// fields
-	private Image image;
+	private final String[] directions = new String[]{"North", "East", "South", "West"};
+	private Image[] image;
 
 	/**
 	 * Constructor:
@@ -24,8 +27,12 @@ public abstract class Tile {
 	 * @param image
 	 * 			--- image associated with this tile
 	 */
-	public Tile(Image image){
-		this.image = image;
+	public Tile(String filename){
+		this.image = new Image[directions.length];
+		for(int i = 0; i < directions.length; i++){
+			image[i] = Main.getImage(filename+"_"+directions[i]+".png");
+		}
+		
 	}
 
 	/**
@@ -55,7 +62,7 @@ public abstract class Tile {
 	 * @param y
 	 * 			--- y position to draw tile
 	 */
-	public void draw(Graphics g, int x, int y){
-		g.drawImage(image, x, y, null);
+	public void draw(Graphics g, int x, int y, int direction){
+		g.drawImage(image[direction], x, y, null);
 	}
 }

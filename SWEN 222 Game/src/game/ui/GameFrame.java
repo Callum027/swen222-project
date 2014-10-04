@@ -36,10 +36,10 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
 	
-	private static final int NORTH = 0;
-	private static final int EAST = 1;
-	private static final int SOUTH = 2;
-	private static final int WEST = 3;
+	public static final int NORTH = 0;
+	public static final int EAST = 1;
+	public static final int SOUTH = 2;
+	public static final int WEST = 3;
 
 	private RenderingPanel render;
 	private EquipPanel equip;
@@ -64,7 +64,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 		direction = NORTH;
 		// set the frame to have a layout so that the screens are in proportion
 		setLayout(new FlowLayout());
-		render = new RenderingPanel();
+		render = new RenderingPanel(direction);
 		add(render);
 		JPanel appPane = new JPanel();
 		appPane.setLayout(new BoxLayout(appPane, BoxLayout.Y_AXIS));
@@ -152,6 +152,21 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 		else if(e.getKeyCode() == KeyEvent.VK_D){
 			System.out.println("pressed D");
 			direction = (direction == WEST) ? NORTH : direction + 1;
+		}
+		render.setDirection(direction);
+		render.repaint();
+		
+		if(direction == NORTH){
+			System.out.println("facing north");
+		}
+		if(direction == EAST){
+			System.out.println("facing east");
+		}
+		if(direction == SOUTH){
+			System.out.println("facing south");
+		}
+		else if(direction == WEST){
+			System.out.println("facing west");
 		}
 	}
 

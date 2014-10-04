@@ -26,7 +26,7 @@ import game.world.tiles.WallTile;
 
 public class Main {
 
-	private static String[] tilesFile = new String[] { "1, FloorTile, floor_tile3.png" };
+	private static String[] tilesFile = new String[] { "1, FloorTile, floor_tile3" };
 	private static String areaFile = "src/game/loading/Area.xml";
 	private static GameFrame gameWindow;
 	private static final String IMAGE_PATH = "ui/graphics/";
@@ -51,12 +51,12 @@ public class Main {
 		for (int i = 0; i < data.length; i++) {
 			String[] line = data[i].split(", ");
 			int id = Integer.parseInt(line[0]);
-			Image image = getImage(line[2]);
+			//Image image = getImage(line[2]);
 			Tile tile = null;
 			if (line[1].equals("FloorTile")) {
-				tile = new FloorTile(image);
+				tile = new FloorTile(line[2]);
 			} else if (line[1].equals("WallTile")) {
-				tile = new WallTile(image);
+				tile = new WallTile(line[2]);
 			}
 			tileMap.put(id, tile);
 		}
