@@ -12,13 +12,15 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Comparator;
 
 import javax.swing.JPanel;
 
-public class RenderingPanel extends JPanel implements MouseListener {
+public class RenderingPanel extends JPanel implements MouseListener{
 
 	private static final long serialVersionUID = 1L;
 
@@ -49,7 +51,6 @@ public class RenderingPanel extends JPanel implements MouseListener {
 		super();
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		addMouseListener(this);
-
 		test = new Furniture(0, 0, 2, "temp", Main.getImage("temp_character.png"), null);
 	}
 

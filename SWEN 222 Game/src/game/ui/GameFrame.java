@@ -9,12 +9,17 @@ import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -29,16 +34,19 @@ import javax.swing.JTextPane;
  */
 public class GameFrame extends JFrame implements ActionListener, KeyListener {
 
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = 1L;
+	
+	private static final int NORTH = 0;
+	private static final int EAST = 1;
+	private static final int SOUTH = 2;
+	private static final int WEST = 3;
 
-	private JButton quit;
 	private RenderingPanel render;
 	private EquipPanel equip;
 	private InventoryPanel inventory;
 	public static MovableItem selectedItem;
+	
+	private int direction;
 
 	/**
 	 * Is called automatically from Main
@@ -52,14 +60,12 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 	 */
 	public GameFrame(int gameWindowX, int gameWindowY, Cursor cursor) {
 		super("An Excellent Adventure!");
+		setupMenuBar();
+		direction = NORTH;
 		// set the frame to have a layout so that the screens are in proportion
 		setLayout(new FlowLayout());
 		render = new RenderingPanel();
-		quit = new JButton("Quit");
-		render.add(quit);
 		add(render);
-		quit.addActionListener(this);
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		JPanel appPane = new JPanel();
 		appPane.setLayout(new BoxLayout(appPane, BoxLayout.Y_AXIS));
 		inventory = new InventoryPanel();
@@ -68,65 +74,88 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 		appPane.add(equip);
 		appPane.add(inventory);
 		add(appPane);
-		setCursor(cursor);
-		setResizable(false);
-		pack();
 		addKeyListener(this);
+		setCursor(cursor);
+		setFocusable(true);
+		setResizable(false);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		pack();
 		setVisible(true);
 	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == quit) {
-			int quit = getQuitCommand();
-			if (quit == JOptionPane.YES_OPTION) {
-				System.exit(0);
-			}
-		}
-
+	
+	public RenderingPanel getRender() {
+		return render;
+	}
+	
+	/**
+	 * Sets up the menu bar at the top of the GameFrame.
+	 */
+	private void setupMenuBar(){
+		JMenuBar menu = new JMenuBar();
+		JMenu file = new JMenu("File");
+		JMenuItem quit = new JMenuItem("Quit");
+		quit.addActionListener(this);
+		file.add(quit);
+		menu.add(file);
+		setJMenuBar(menu);
 	}
 
 	/**
-	 * A simple command that prompts the dialog box to quit the game only ever
-	 * called after quit is pressed
-	 *
-	 * @return an int from the dialog box that was chosen
+	 * Used to prompt the user with the decision to quit the game.
+	 * If they choose yes, the game is exited.
 	 */
-	private int getQuitCommand() {
-		return JOptionPane.showOptionDialog(this,
-				"Are you sure you want to quit?", "Quit",
-				JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE,
-				null, null, null);
-	}
-
-	public RenderingPanel getRender() {
-		return render;
+	private void quitGame() {
+		int result = JOptionPane.showOptionDialog(this, "Are you sure you want to quit?", "Quit",
+						JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE,
+						null, null, null);
+		if(result == JOptionPane.YES_OPTION){
+			System.exit(0);
+		}
 	}
 
 	// key listener methods
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-		System.out.println("key typed");
-		System.out.println(e.getKeyChar());
+	public void actionPerformed(ActionEvent e) {
+		Object source = e.getSource();
+		String action = null;
+		if(source instanceof JMenuItem){
+			action = ((JMenuItem)source).getText();
+		}
+		if (action.equals("Quit")) {
+			quitGame();
+		}
+	
+	}
 
+	@Override
+	public void keyTyped(KeyEvent e) {
+		System.out.println(e.getKeyCode()+"");
+		if (e.getKeyCode()==KeyEvent.VK_ESCAPE) {
+			System.out.println("WOO!");
+			//openMenu();
+		}
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		System.out.println(e.getKeyCode()+"");
-		if (e.getKeyCode()==KeyEvent.VK_ESCAPE) {
-			System.out.println("WOO!");
-			openMenu();
+		if(e.getKeyCode() == KeyEvent.VK_W){
+			direction = NORTH;
 		}
-
+		else if(e.getKeyCode() == KeyEvent.VK_A){
+			System.out.println("pressed A");
+			direction = (direction == NORTH) ? WEST : direction - 1;
+		}
+		else if(e.getKeyCode() == KeyEvent.VK_S){
+			direction = SOUTH;
+		}
+		else if(e.getKeyCode() == KeyEvent.VK_D){
+			System.out.println("pressed D");
+			direction = (direction == WEST) ? NORTH : direction + 1;
+		}
 	}
 
-	private void openMenu() {
-		getQuitCommand();
-	}
+	// unneeded method
+	public void keyReleased(KeyEvent e) {}
 
-	@Override
-	public void keyReleased(KeyEvent e) {
-	}
 }
