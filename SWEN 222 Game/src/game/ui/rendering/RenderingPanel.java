@@ -267,4 +267,46 @@ public class RenderingPanel extends JPanel implements MouseListener {
 			return i - j;
 		}
 	}
+	
+	private class EastComparator implements Comparator<Item>{
+		
+		private int length;
+		
+		public EastComparator(int width, int height){
+			length = width + height - 1;
+		}
+		
+		public int compare(Item o1, Item o2){
+			
+			return 0;
+		}
+	}
+	
+	private class SouthComparator implements Comparator<Item>{
+		
+		private int length;
+		
+		public SouthComparator(int width, int height){
+			length = width + height - 1;
+		}
+		
+		public int compare(Item o1, Item o2){
+			
+			return 0;
+		}
+	}
+	
+	private class WestComparator implements Comparator<Item>{
+		
+		private int length;
+		
+		public WestComparator(int width, int height){
+			length = width + height - 1;
+		}
+		
+		public int compare(Item o1, Item o2){
+			
+			return 0;
+		}
+	}
 }
