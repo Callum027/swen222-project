@@ -13,10 +13,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.Polygon;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -29,14 +29,12 @@ public class RenderingPanel extends JPanel implements MouseListener{
 	// fields
 	private final int WIDTH = 960;
 	private final int HEIGHT = 720;
-
 	private final int DX = (FloorTile.WIDTH / 2) + 1;
 	private final int DY = FloorTile.HEIGHT / 2;
 
 	private Area area;
-	//private Polygon[][] tileBoundingBoxes;
 	private List<BoundingBox> tileBoundingBoxes;
-	private Polygon[][] itemBoundingBoxes;
+	private List<BoundingBox> itemBoundingBoxes;
 
 	private int areaLength;
 	private int areaWidth;
@@ -72,8 +70,37 @@ public class RenderingPanel extends JPanel implements MouseListener{
 		//calculateBoundingBoxes();
 	}
 	
+	/**
+	 * Set the direction of the game view to the specified
+	 * direction. The specified value must be equal to a valid
+	 * direction as defined by the GameFrame class. Therefore the value
+	 * must be equal to either NORTH, EAST, SOUTH or WEST.
+	 *  
+	 * @param direction
+	 * 				--- the direction of the game view
+	 */
 	public void setDirection(int direction){
-		this.direction = direction;
+		if(direction >= GameFrame.NORTH && direction <= GameFrame.WEST){
+			this.direction = direction;
+		}
+	}
+
+	private void calculateBoundingBoxes(Tile[][] tiles){
+		tileBoundingBoxes = new ArrayList<BoundingBox>();
+		for(int i = 0; i < tiles.length; i++){
+			for(int j = 0; j < tiles[0].length; j++){
+				
+			}
+		}
+	}
+	
+	private Point rotatePosition(Point p, int width, int height, int count){
+		if(count < direction){
+			p.x = (direction % 2 == 0) ? width - 1 - p.x : height - 1 - p.x;
+			p.y = p.x;
+			rotatePosition(p, width, height, count + 1);
+		}
+		return p;
 	}
 	
 	/**
@@ -152,13 +179,14 @@ public class RenderingPanel extends JPanel implements MouseListener{
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		if (area != null) {
 			Tile[][] tiles = area.getTiles();
-			Item[][] items = area.getItems();
+			List<Item> items = area.getItems();
 			drawFloors(g, tiles, items);
 
 			// draw test
-			//int x = startX - (DX * test.getY()) + (test.getX() * DX);
-			//int y = startY + (DY * (test.getX() + test.getY())) - (test.getHeight() * FloorTile.HEIGHT);
-			//test.draw(g, x, y);
+			Point draw = rotatePosition(new Point(test.getX(), test.getY()), area.getTiles().length, area.getTiles()[0].length, 0);
+			int x = startX - (DX * draw.y) + (draw.x * DX);
+			int y = startY + (DY * (draw.x + draw.y)) - (test.getHeight() * FloorTile.HEIGHT);
+			test.draw(g, x, y);
 			//drawTileBoxes(g);
 		}
 	}
@@ -166,19 +194,25 @@ public class RenderingPanel extends JPanel implements MouseListener{
 	/**
 	 * Draw the floor of the current area to the render panel.
 	 */
-	private void drawFloors(Graphics g, Tile[][] tiles, Item[][] items) {
+	private void drawFloors(Graphics g, Tile[][] tiles, List<Item> items){
+		Comparator<Item> comp = null;
 		if(direction == GameFrame.NORTH){
+			comp = new NorthComparator(tiles.length, tiles[0].length);
 			drawNorthFloorLayout(g, tiles);
 		}
 		else if(direction == GameFrame.EAST){
+			comp = new EastComparator(tiles.length, tiles[0].length);
 			drawEastFloorLayout(g, tiles);
 		}
 		else if(direction == GameFrame.SOUTH){
+			comp = new SouthComparator(tiles.length, tiles[0].length);
 			drawSouthFloorLayout(g, tiles);
 		}
 		else if(direction == GameFrame.WEST){
+			comp = new WestComparator(tiles.length, tiles[0].length);
 			drawWestFloorLayout(g, tiles);
 		}
+		Collections.sort(items, comp);
 	}
 	
 	/**
@@ -275,6 +309,14 @@ public class RenderingPanel extends JPanel implements MouseListener{
 		}
 	}
 	
+	private void setupItemBoundingBoxes(List<Item> items){
+		itemBoundingBoxes = new ArrayList<BoundingBox>();
+		for(Item item : items){
+			Point p = new Point(item.getX(), item.getY());
+			//itemBoundingBoxes.add(item.getBoundingBox(x, y, p));
+		}
+	}
+	
 	
 
 	/**
@@ -283,7 +325,7 @@ public class RenderingPanel extends JPanel implements MouseListener{
 	 * @param g
 	 * @param items
 	 */
-	public void drawBoxes(Graphics g, Item[][] items) {
+	/*public void drawBoxes(Graphics g, Item[][] items) {
 		for (int i = 0; i < items.length; i++) {
 			for (int j = 0; j < items[0].length; j++) {
 				if (items[i][j] != null) {
@@ -291,7 +333,7 @@ public class RenderingPanel extends JPanel implements MouseListener{
 				}
 			}
 		}
-	}
+	}*/
 	
 	@Override
 	public void repaint(){

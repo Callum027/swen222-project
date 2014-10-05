@@ -1,7 +1,11 @@
 package game.world.items;
 
+import game.world.BoundingBox;
+import game.world.tiles.FloorTile;
+
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
 
 /**
  * A class for all the items including furniture, chests (containers) and
@@ -126,5 +130,14 @@ public abstract class Item {
 	 */
 	public void draw(Graphics g, int x, int y) {
 		g.drawImage(image, x, y, null);
+	}
+	
+	public BoundingBox getBoundingBox(int x, int y, Point p){
+		int itemY = y - (height * FloorTile.HEIGHT);
+		int dy = FloorTile.HEIGHT / 2;
+		int[] xPoints = new int[] { x, x + (FloorTile.WIDTH / 2), x + FloorTile.WIDTH, x + FloorTile.WIDTH, x + (FloorTile.WIDTH / 2), x };
+		int[] yPoints = new int[] { itemY + dy, itemY, itemY + dy, itemY + ((height + 1) * FloorTile.HEIGHT) - dy,
+				itemY + ((height + 1) * FloorTile.HEIGHT), itemY + ((height + 1) * FloorTile.HEIGHT) - dy };
+		return new BoundingBox(xPoints, yPoints, xPoints.length, p);
 	}
 }
