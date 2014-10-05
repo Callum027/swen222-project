@@ -76,11 +76,16 @@ public class RenderingPanel extends JPanel implements MouseListener{
 		this.direction = direction;
 	}
 	
+	/**
+	 * Calculates the constant values that are used regularly in rendering
+	 * the Area view. 
+	 */
 	private void calculateConstants(){
 		areaLength = (area.getTiles().length + area.getTiles()[0].length) - 1;
 		areaWidth = (((areaLength - 1) * ((FloorTile.WIDTH / 2) + 1))) + FloorTile.WIDTH;
 		areaHeight = ((areaLength - 1) * (FloorTile.HEIGHT / 2)) - 135;
 		startX = (WIDTH - areaWidth) / 2;
+		// adjust start x so that the rendered outcome is centered in the graphics pane
 		if(direction == GameFrame.NORTH || direction == GameFrame.SOUTH){
 			startX += ((area.getTiles().length - 1) * DX);
 		}
@@ -126,22 +131,9 @@ public class RenderingPanel extends JPanel implements MouseListener{
 	 * the coordinates of their click. Returns null if they have not clicked in
 	 * the area.
 	 *
-	 * @param x
-	 * @param y
-	 * @return
+	 * @param p : the point where the mouse click occured
+	 * @return the position that the click corresponds to, null if not in area 
 	 */
-	public Point findPosition(int x, int y) {
-		//Point p = new Point(x, y);
-		//(int i = 0; i < tileBoundingBoxes.length; i++) {
-		//	for (int j = 0; j < tileBoundingBoxes[i].length; j++) {
-		//		if (tileBoundingBoxes[i][j].contains(p)) {
-		//			return new Point(j, i);
-		//		}
-		//	}
-		//}
-		return null;
-	}
-	
 	public Point findPosition(Point p){
 		for(BoundingBox box : tileBoundingBoxes){
 			if(box.contains(p)){
@@ -149,36 +141,6 @@ public class RenderingPanel extends JPanel implements MouseListener{
 			}
 		}
 		return null;
-	}
-
-	/**
-	 * Find out if the user has clicked on an item
-	 *
-	 * @param x
-	 * @param y
-	 */
-	/*public void findItem(int x, int y) {
-		Point p = new Point(x, y);
-		for (int i = 0; i < tileBoundingBoxes.length; i++) {
-			for (int j = 0; j < tileBoundingBoxes[i].length; j++) {
-				if (area.getItems()[i][j] != null
-						&& itemBoundingBoxes[i][j].contains(p)) {
-					System.out.println(area.getItems()[i][j].getName());
-				}
-			}
-		}
-	}*/
-
-	// not used currently (doesn't work)
-	public int calculateXPosition(int drawX) {
-		int x = (startX - drawX) / DX;
-		return x;
-	}
-
-	// not used currently (doesn't work)
-	public int calculateYPosition(int drawY) {
-		int y = (drawY - startY) / DY;
-		return y;
 	}
 
 	/**
@@ -219,6 +181,15 @@ public class RenderingPanel extends JPanel implements MouseListener{
 		}
 	}
 	
+	/**
+	 * Draws the floor layout of the area when the game view is facing
+	 * north. 
+	 * 
+	 * @param g
+	 * 			--- the graphics pane to draw onto
+	 * @param tiles
+	 * 			--- tiles representing the floor layout
+	 */
 	private void drawNorthFloorLayout(Graphics g, Tile[][] tiles){
 		tileBoundingBoxes = new ArrayList<BoundingBox>();
 		for(int i = 0; i < tiles.length; i++){
@@ -233,6 +204,15 @@ public class RenderingPanel extends JPanel implements MouseListener{
 		}
 	}
 	
+	/**
+	 * Draws the floor layout of the area when the game view is facing
+	 * east. 
+	 * 
+	 * @param g
+	 * 			--- the graphics pane to draw onto
+	 * @param tiles
+	 * 			--- tiles representing the floor layout
+	 */
 	private void drawEastFloorLayout(Graphics g, Tile[][] tiles){
 		tileBoundingBoxes = new ArrayList<BoundingBox>();
 		int startI = tiles[0].length - 1;
@@ -248,6 +228,15 @@ public class RenderingPanel extends JPanel implements MouseListener{
 		}
 	}
 	
+	/**
+	 * Draws the floor layout of the area when the game view is facing
+	 * south. 
+	 * 
+	 * @param g
+	 * 			--- the graphics pane to draw onto
+	 * @param tiles
+	 * 			--- tiles representing the floor layout
+	 */
 	private void drawSouthFloorLayout(Graphics g, Tile[][] tiles){
 		tileBoundingBoxes = new ArrayList<BoundingBox>();
 		int startI = tiles.length - 1;
@@ -263,6 +252,15 @@ public class RenderingPanel extends JPanel implements MouseListener{
 		}
 	}
 	
+	/**
+	 * Draws the floor layout of the area when the game view is facing
+	 * west. 
+	 * 
+	 * @param g
+	 * 			--- the graphics pane to draw onto
+	 * @param tiles
+	 * 			--- tiles representing the floor layout
+	 */
 	private void drawWestFloorLayout(Graphics g, Tile[][] tiles){
 		tileBoundingBoxes = new ArrayList<BoundingBox>();
 		for(int i = 0; i < tiles[0].length; i++){
@@ -277,62 +275,7 @@ public class RenderingPanel extends JPanel implements MouseListener{
 		}
 	}
 	
-	/*
-	private void drawNorthFloorLayout(Graphics g, Tile[][] tiles){
-		for (int i = 0; i < tiles.length; i++) {
-			// work out coordinates to draw tile
-			int x = startX - (DX * i);
-			int y = startY + (DY * i);
-			for (int j = 0; j < tiles[i].length; j++) {
-				// System.out.println("Drawing tile at ("+x+", "+y+")");
-				//System.out.println("Position ("+j+", "+i+") drawn at ("+x+", "+y+")");
-				tiles[i][j].draw(g, x, y, direction);
-				//if (items[i][j] != null) {
-				//	items[i][j].draw(g, x, y - (items[i][j].getHeight() * FloorTile.HEIGHT));
-				//}
-				x += DX;
-				y += DY;
-			}
-		}
-	}
 	
-	private void drawEastFloorLayout(Graphics g, Tile[][] tiles){
-		//for(int i = tiles[0].length - 1; i >= 0; i--){
-		for(int i = 0; i < tiles[0].length; i++){
-			int x = startX - (DX * i);
-			int y = startY + (DY * i);
-			for(int j = 0; j < tiles.length; j++){
-				tiles[j][i].draw(g, x, y, direction);
-				x += DX;
-				y += DY;
-			}
-		}
-	}
-	
-	private void drawSouthFloorLayout(Graphics g, Tile[][] tiles){
-		//for(int i = tiles.length - 1; i >= 0; i--){
-		for (int i = 0; i < tiles.length; i++) {
-			int x = startX - (DX * i);
-			int y = startY + (DY * i);
-			for(int j = tiles[i].length - 1; j >= 0; j--){
-				tiles[i][j].draw(g, x, y, direction);
-				x += DX;
-				y += DY;
-			}
-		}
-	}
-	
-	private void drawWestFloorLayout(Graphics g, Tile[][] tiles){
-		for(int i = 0; i < tiles[0].length; i++){
-			int x = startX - (DX * i); 
-			int y = startY + (DY * i);
-			for(int j = tiles.length - 1; j >= 0; j--){
-				tiles[j][i].draw(g, x, y, direction);
-				x += DX;
-				y += DY;
-			}
-		}
-	}
 
 	/**
 	 * Draw the bounding boxes surrounding each item.
@@ -350,20 +293,10 @@ public class RenderingPanel extends JPanel implements MouseListener{
 		}
 	}
 	
-	/*private void drawTileBoxes(Graphics g){
-		for(int i = 0; i < tileBoundingBoxes.length; i++){
-			for(int j = 0; j < tileBoundingBoxes[i].length; j++){
-				g.setColor(new Color(255, 50, 64));
-				g.fillPolygon(tileBoundingBoxes[i][j]);
-			}
-		}
-	}*/
-	
 	@Override
 	public void repaint(){
 		if(area != null){
 			calculateConstants();
-			//calculateBoundingBoxes();
 		}
 		super.repaint();
 	}
@@ -373,7 +306,6 @@ public class RenderingPanel extends JPanel implements MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		System.out.println("Clicked: (" + e.getX() + ", " + e.getY() + ")");
-		//Point p = findPosition(e.getX(), e.getY());
 		Point p = findPosition(new Point(e.getX(), e.getY()));
 		if (p != null) {
 			System.out.println("Area position: (" + p.x + ", " + p.y + ")");
@@ -388,38 +320,48 @@ public class RenderingPanel extends JPanel implements MouseListener{
 
 	}
 
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
+	// unneeded mouse listener methods
+	public void mousePressed(MouseEvent e){}
+	public void mouseReleased(MouseEvent e){}
+	public void mouseEntered(MouseEvent e){}
+	public void mouseExited(MouseEvent e){}
+	
+	// comparators for sorting items
+	
+	/**
+	 * A private class that is used to sort Items in an area so that
+	 * when the game view is facing north, the items are ordered from
+	 * closest to furtherest away.
+	 * 
+	 * @author David Sheridan
+	 *
+	 */
 	private class NorthComparator implements Comparator<Item>{
-
+		
+		// field
 		private int length;
-
+		
+		/**
+		 * Constructor:
+		 * Constructs a NorthComparator, which takes a width and
+		 * height so that the length of the area can be calculated.
+		 * 
+		 * @param width
+		 * 			--- width of area
+		 * @param height
+		 * 			--- height of area
+		 */
 		public NorthComparator(int width, int height){
 			length = width + height - 1;
 		}
-
+		
+		/**
+		 * Compares two Items to determine which one is closer while
+		 * the game view is facing north. Returns a negative integer if
+		 * Item o1 is closer than o2, zero if item o1 is at the same distance
+		 * as o2 and a position integer if o1 is further away than o2.
+		 * 
+		 */
 		public int compare(Item o1, Item o2){
 			int i = length - o1.getX() - o1.getY();
 			int j = length - o2.getX() - o2.getY();
@@ -427,42 +369,120 @@ public class RenderingPanel extends JPanel implements MouseListener{
 		}
 	}
 	
+	/**
+	 * A private class that is used to sort Items in an area so that
+	 * when the game view is facing east, the items are ordered from
+	 * closest to furtherest away.
+	 * 
+	 * @author David Sheridan
+	 *
+	 */
 	private class EastComparator implements Comparator<Item>{
 		
+		// field
 		private int length;
 		
+		/**
+		 * Constructor:
+		 * Constructs a EastComparator, which takes a width and
+		 * height so that the length of the area can be calculated.
+		 * 
+		 * @param width
+		 * 			--- width of area
+		 * @param height
+		 * 			--- height of area
+		 */
 		public EastComparator(int width, int height){
 			length = width + height - 1;
 		}
 		
+		/**
+		 * Compares two Items to determine which one is closer while
+		 * the game view is facing east. Returns a negative integer if
+		 * Item o1 is closer than o2, zero if item o1 is at the same distance
+		 * as o2 and a position integer if o1 is further away than o2.
+		 * 
+		 */
 		public int compare(Item o1, Item o2){
 			
 			return 0;
 		}
 	}
 	
+	/**
+	 * A private class that is used to sort Items in an area so that
+	 * when the game view is facing south, the items are ordered from
+	 * closest to furtherest away.
+	 * 
+	 * @author David Sheridan
+	 *
+	 */
 	private class SouthComparator implements Comparator<Item>{
 		
+		// field
 		private int length;
 		
+		/**
+		 * Constructor:
+		 * Constructs a SouthComparator, which takes a width and
+		 * height so that the length of the area can be calculated.
+		 * 
+		 * @param width
+		 * 			--- width of area
+		 * @param height
+		 * 			--- height of area
+		 */
 		public SouthComparator(int width, int height){
 			length = width + height - 1;
 		}
 		
+		/**
+		 * Compares two Items to determine which one is closer while
+		 * the game view is facing south. Returns a negative integer if
+		 * Item o1 is closer than o2, zero if item o1 is at the same distance
+		 * as o2 and a position integer if o1 is further away than o2.
+		 * 
+		 */
 		public int compare(Item o1, Item o2){
 			
 			return 0;
 		}
 	}
 	
+	/**
+	 * A private class that is used to sort Items in an area so that
+	 * when the game view is facing west, the items are ordered from
+	 * closest to furtherest away.
+	 * 
+	 * @author David Sheridan
+	 *
+	 */
 	private class WestComparator implements Comparator<Item>{
 		
+		// field
 		private int length;
 		
+		/**
+		 * Constructor:
+		 * Constructs a WestComparator, which takes a width and
+		 * height so that the length of the area can be calculated.
+		 * 
+		 * @param width
+		 * 			--- width of area
+		 * @param height
+		 * 			--- height of area
+		 */
 		public WestComparator(int width, int height){
 			length = width + height - 1;
 		}
 		
+		/**
+		 * Compares two Items to determine which one is closer while
+		 * the game view is facing west. Returns a negative integer if
+		 * Item o1 is closer than o2, zero if item o1 is at the same distance
+		 * as o2 and a position integer if o1 is further away than o2.
+		 * 
+		 */
 		public int compare(Item o1, Item o2){
 			
 			return 0;
