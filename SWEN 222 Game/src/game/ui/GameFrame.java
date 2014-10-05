@@ -130,7 +130,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		System.out.println(e.getKeyCode()+"");
+		//System.out.println(e.getKeyCode()+"");
 		if (e.getKeyCode()==KeyEvent.VK_ESCAPE) {
 			System.out.println("WOO!");
 			//openMenu();
@@ -144,18 +144,18 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 		}
 		else if(e.getKeyCode() == KeyEvent.VK_A){
 			//System.out.println("pressed A");
-			direction = (direction == NORTH) ? WEST : direction - 1;
+			direction = (direction == WEST) ? NORTH : direction + 1;
 		}
 		else if(e.getKeyCode() == KeyEvent.VK_S){
 			direction = SOUTH;
 		}
 		else if(e.getKeyCode() == KeyEvent.VK_D){
 			//System.out.println("pressed D");
-			direction = (direction == WEST) ? NORTH : direction + 1;
+			direction = (direction == NORTH) ? WEST : direction - 1;
 		}
 		render.setDirection(direction);
 		render.repaint();
-		/*
+		
 		if(direction == NORTH){
 			System.out.println("facing north");
 		}
@@ -168,7 +168,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 		else if(direction == WEST){
 			System.out.println("facing west");
 		}
-		*/
+		
 	}
 
 	// unneeded method

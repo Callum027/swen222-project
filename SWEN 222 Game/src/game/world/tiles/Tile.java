@@ -1,9 +1,11 @@
 package game.world.tiles;
 
 import game.Main;
+import game.world.BoundingBox;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Polygon;
 
 /**
@@ -31,6 +33,7 @@ public abstract class Tile {
 		this.image = new Image[directions.length];
 		for(int i = 0; i < directions.length; i++){
 			image[i] = Main.getImage(filename+"_"+directions[i]+".png");
+			//image[i] = Main.getImage(filename+".png");
 		}
 		
 	}
@@ -48,7 +51,7 @@ public abstract class Tile {
 	 * @return
 	 * 		--- bounding box of Tile
 	 */
-	public abstract Polygon getBoundingBox(int x, int y);
+	public abstract BoundingBox getBoundingBox(int x, int y, Point p);
 
 	/**
 	 * Draws this tile to the specified graphics pane,

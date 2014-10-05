@@ -1,5 +1,8 @@
 package game.world.tiles;
 
+import game.world.BoundingBox;
+
+import java.awt.Point;
 import java.awt.Polygon;
 
 /**
@@ -40,7 +43,7 @@ public class WallTile extends Tile{
 	 * @return
 	 * 		--- bounding box of Tile
 	 */
-	public Polygon getBoundingBox(int x, int y){
+	public BoundingBox getBoundingBox(int x, int y, Point p){
 		return null;
 	}
 }

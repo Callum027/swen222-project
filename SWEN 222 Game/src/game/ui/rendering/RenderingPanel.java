@@ -3,6 +3,7 @@ package game.ui.rendering;
 import game.Main;
 import game.ui.GameFrame;
 import game.world.Area;
+import game.world.BoundingBox;
 import game.world.items.Furniture;
 import game.world.items.Item;
 import game.world.tiles.FloorTile;
@@ -15,7 +16,9 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -31,7 +34,8 @@ public class RenderingPanel extends JPanel implements MouseListener{
 	private final int DY = FloorTile.HEIGHT / 2;
 
 	private Area area;
-	private Polygon[][] tileBoundingBoxes;
+	//private Polygon[][] tileBoundingBoxes;
+	private List<BoundingBox> tileBoundingBoxes;
 	private Polygon[][] itemBoundingBoxes;
 
 	private int areaLength;
@@ -65,7 +69,7 @@ public class RenderingPanel extends JPanel implements MouseListener{
 	public void setArea(Area area) {
 		this.area = area;
 		calculateConstants();
-		calculateBoundingBoxes();
+		//calculateBoundingBoxes();
 	}
 	
 	public void setDirection(int direction){
@@ -89,8 +93,8 @@ public class RenderingPanel extends JPanel implements MouseListener{
 	/**
 	 * Calculates the bounding boxes for each tile in the game.
 	 */
-	public void calculateBoundingBoxes() {
-		tileBoundingBoxes = new Polygon[area.getTiles().length][area.getTiles()[0].length];
+	/*public void calculateBoundingBoxes() {
+		//tileBoundingBoxes = new Polygon[area.getTiles().length][area.getTiles()[0].length];
 		itemBoundingBoxes = new Polygon[area.getTiles().length][area.getTiles()[0].length];
 
 		for (int i = 0; i < tileBoundingBoxes.length; i++) {
@@ -115,7 +119,7 @@ public class RenderingPanel extends JPanel implements MouseListener{
 				y += DY;
 			}
 		}
-	}
+	}*/
 
 	/**
 	 * Find the position in the area that the player has clicked on, based on
@@ -127,12 +131,21 @@ public class RenderingPanel extends JPanel implements MouseListener{
 	 * @return
 	 */
 	public Point findPosition(int x, int y) {
-		Point p = new Point(x, y);
-		for (int i = 0; i < tileBoundingBoxes.length; i++) {
-			for (int j = 0; j < tileBoundingBoxes[i].length; j++) {
-				if (tileBoundingBoxes[i][j].contains(p)) {
-					return new Point(j, i);
-				}
+		//Point p = new Point(x, y);
+		//(int i = 0; i < tileBoundingBoxes.length; i++) {
+		//	for (int j = 0; j < tileBoundingBoxes[i].length; j++) {
+		//		if (tileBoundingBoxes[i][j].contains(p)) {
+		//			return new Point(j, i);
+		//		}
+		//	}
+		//}
+		return null;
+	}
+	
+	public Point findPosition(Point p){
+		for(BoundingBox box : tileBoundingBoxes){
+			if(box.contains(p)){
+				return box.getPosition();
 			}
 		}
 		return null;
@@ -144,7 +157,7 @@ public class RenderingPanel extends JPanel implements MouseListener{
 	 * @param x
 	 * @param y
 	 */
-	public void findItem(int x, int y) {
+	/*public void findItem(int x, int y) {
 		Point p = new Point(x, y);
 		for (int i = 0; i < tileBoundingBoxes.length; i++) {
 			for (int j = 0; j < tileBoundingBoxes[i].length; j++) {
@@ -154,7 +167,7 @@ public class RenderingPanel extends JPanel implements MouseListener{
 				}
 			}
 		}
-	}
+	}*/
 
 	// not used currently (doesn't work)
 	public int calculateXPosition(int drawX) {
@@ -181,10 +194,10 @@ public class RenderingPanel extends JPanel implements MouseListener{
 			drawFloors(g, tiles, items);
 
 			// draw test
-			int x = startX - (DX * test.getY()) + (test.getX() * DX);
-			int y = startY + (DY * (test.getX() + test.getY())) - (test.getHeight() * FloorTile.HEIGHT);
+			//int x = startX - (DX * test.getY()) + (test.getX() * DX);
+			//int y = startY + (DY * (test.getX() + test.getY())) - (test.getHeight() * FloorTile.HEIGHT);
 			//test.draw(g, x, y);
-			drawTileBoxes(g);
+			//drawTileBoxes(g);
 		}
 	}
 
@@ -206,6 +219,65 @@ public class RenderingPanel extends JPanel implements MouseListener{
 		}
 	}
 	
+	private void drawNorthFloorLayout(Graphics g, Tile[][] tiles){
+		tileBoundingBoxes = new ArrayList<BoundingBox>();
+		for(int i = 0; i < tiles.length; i++){
+			int x = startX - (DX * i);
+			int y = startY + (DY * i);
+			for(int j = 0; j < tiles[i].length; j++){
+				tiles[i][j].draw(g, x, y, direction);
+				tileBoundingBoxes.add(tiles[i][j].getBoundingBox(x, y, new Point(i, j)));
+				x += DX;
+				y += DY;
+			}
+		}
+	}
+	
+	private void drawEastFloorLayout(Graphics g, Tile[][] tiles){
+		tileBoundingBoxes = new ArrayList<BoundingBox>();
+		int startI = tiles[0].length - 1;
+		for(int i = startI; i >= 0; i--){
+			int x = startX - (DX * (startI - i));
+			int y = startY + (DY * (startI - i));
+			for(int j = 0; j < tiles.length; j++){
+				tiles[j][i].draw(g, x, y, direction);
+				tileBoundingBoxes.add(tiles[j][i].getBoundingBox(x, y, new Point(j, i)));
+				x += DX;
+				y += DY;
+			}
+		}
+	}
+	
+	private void drawSouthFloorLayout(Graphics g, Tile[][] tiles){
+		tileBoundingBoxes = new ArrayList<BoundingBox>();
+		int startI = tiles.length - 1;
+		for(int i = startI; i >= 0; i--){
+			int x = startX - (DX * (startI - i));
+			int y = startY + (DY * (startI - i));
+			for(int j = tiles[i].length - 1; j >= 0; j--){
+				tiles[i][j].draw(g, x, y, direction);
+				tileBoundingBoxes.add(tiles[i][j].getBoundingBox(x, y, new Point(i, j)));
+				x += DX;
+				y += DY;
+			}
+		}
+	}
+	
+	private void drawWestFloorLayout(Graphics g, Tile[][] tiles){
+		tileBoundingBoxes = new ArrayList<BoundingBox>();
+		for(int i = 0; i < tiles[0].length; i++){
+			int x = startX - (DX * i);
+			int y = startY + (DY * i);
+			for(int j = tiles.length - 1; j >= 0; j--){
+				tiles[j][i].draw(g, x, y, direction);
+				tileBoundingBoxes.add(tiles[j][i].getBoundingBox(x, y, new Point(j, i)));
+				x += DX;
+				y += DY;
+			}
+		}
+	}
+	
+	/*
 	private void drawNorthFloorLayout(Graphics g, Tile[][] tiles){
 		for (int i = 0; i < tiles.length; i++) {
 			// work out coordinates to draw tile
@@ -278,20 +350,20 @@ public class RenderingPanel extends JPanel implements MouseListener{
 		}
 	}
 	
-	private void drawTileBoxes(Graphics g){
+	/*private void drawTileBoxes(Graphics g){
 		for(int i = 0; i < tileBoundingBoxes.length; i++){
 			for(int j = 0; j < tileBoundingBoxes[i].length; j++){
 				g.setColor(new Color(255, 50, 64));
 				g.fillPolygon(tileBoundingBoxes[i][j]);
 			}
 		}
-	}
+	}*/
 	
 	@Override
 	public void repaint(){
 		if(area != null){
 			calculateConstants();
-			calculateBoundingBoxes();
+			//calculateBoundingBoxes();
 		}
 		super.repaint();
 	}
@@ -301,7 +373,8 @@ public class RenderingPanel extends JPanel implements MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		System.out.println("Clicked: (" + e.getX() + ", " + e.getY() + ")");
-		Point p = findPosition(e.getX(), e.getY());
+		//Point p = findPosition(e.getX(), e.getY());
+		Point p = findPosition(new Point(e.getX(), e.getY()));
 		if (p != null) {
 			System.out.println("Area position: (" + p.x + ", " + p.y + ")");
 			test.setX(p.x);
@@ -311,7 +384,7 @@ public class RenderingPanel extends JPanel implements MouseListener{
 		} else {
 			System.out.println("Position not on board.");
 		}
-		findItem(e.getX(), e.getY());
+		//findItem(e.getX(), e.getY());
 
 	}
 
