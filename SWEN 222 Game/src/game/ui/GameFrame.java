@@ -143,19 +143,19 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 			direction = NORTH;
 		}
 		else if(e.getKeyCode() == KeyEvent.VK_A){
-			System.out.println("pressed A");
+			//System.out.println("pressed A");
 			direction = (direction == NORTH) ? WEST : direction - 1;
 		}
 		else if(e.getKeyCode() == KeyEvent.VK_S){
 			direction = SOUTH;
 		}
 		else if(e.getKeyCode() == KeyEvent.VK_D){
-			System.out.println("pressed D");
+			//System.out.println("pressed D");
 			direction = (direction == WEST) ? NORTH : direction + 1;
 		}
 		render.setDirection(direction);
 		render.repaint();
-		
+		/*
 		if(direction == NORTH){
 			System.out.println("facing north");
 		}
@@ -168,6 +168,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 		else if(direction == WEST){
 			System.out.println("facing west");
 		}
+		*/
 	}
 
 	// unneeded method

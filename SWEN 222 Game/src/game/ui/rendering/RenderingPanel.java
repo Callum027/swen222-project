@@ -64,19 +64,26 @@ public class RenderingPanel extends JPanel implements MouseListener{
 	 */
 	public void setArea(Area area) {
 		this.area = area;
-
-		// calculate constant values that are use for rendering
-		areaLength = (area.getTiles().length + area.getTiles()[0].length) - 1;
-		areaWidth = (((areaLength - 1) * ((FloorTile.WIDTH / 2) + 1))) + FloorTile.WIDTH;
-		areaHeight = ((areaLength - 1) * (FloorTile.HEIGHT / 2)) - 135;
-		startX = ((WIDTH - areaWidth) / 2) + ((area.getTiles().length - 1) * DX);
-		startY = (HEIGHT - areaHeight) / 2;
-
+		calculateConstants();
 		calculateBoundingBoxes();
 	}
 	
 	public void setDirection(int direction){
 		this.direction = direction;
+	}
+	
+	private void calculateConstants(){
+		areaLength = (area.getTiles().length + area.getTiles()[0].length) - 1;
+		areaWidth = (((areaLength - 1) * ((FloorTile.WIDTH / 2) + 1))) + FloorTile.WIDTH;
+		areaHeight = ((areaLength - 1) * (FloorTile.HEIGHT / 2)) - 135;
+		startX = (WIDTH - areaWidth) / 2;
+		if(direction == GameFrame.NORTH || direction == GameFrame.SOUTH){
+			startX += ((area.getTiles().length - 1) * DX);
+		}
+		else if(direction == GameFrame.EAST || direction == GameFrame.WEST){
+			startX += ((area.getTiles()[0].length - 1) * DX);
+		}
+		startY = (HEIGHT - areaHeight) / 2;	
 	}
 
 	/**
@@ -176,7 +183,8 @@ public class RenderingPanel extends JPanel implements MouseListener{
 			// draw test
 			int x = startX - (DX * test.getY()) + (test.getX() * DX);
 			int y = startY + (DY * (test.getX() + test.getY())) - (test.getHeight() * FloorTile.HEIGHT);
-			test.draw(g, x, y);
+			//test.draw(g, x, y);
+			drawTileBoxes(g);
 		}
 	}
 
@@ -205,6 +213,7 @@ public class RenderingPanel extends JPanel implements MouseListener{
 			int y = startY + (DY * i);
 			for (int j = 0; j < tiles[i].length; j++) {
 				// System.out.println("Drawing tile at ("+x+", "+y+")");
+				//System.out.println("Position ("+j+", "+i+") drawn at ("+x+", "+y+")");
 				tiles[i][j].draw(g, x, y, direction);
 				//if (items[i][j] != null) {
 				//	items[i][j].draw(g, x, y - (items[i][j].getHeight() * FloorTile.HEIGHT));
@@ -216,11 +225,12 @@ public class RenderingPanel extends JPanel implements MouseListener{
 	}
 	
 	private void drawEastFloorLayout(Graphics g, Tile[][] tiles){
-		for(int i = 0; i < tiles.length; i++){
+		//for(int i = tiles[0].length - 1; i >= 0; i--){
+		for(int i = 0; i < tiles[0].length; i++){
 			int x = startX - (DX * i);
 			int y = startY + (DY * i);
-			for(int j = tiles[i].length - 1; j >= 0; j--){
-				tiles[i][j].draw(g, x, y, direction);
+			for(int j = 0; j < tiles.length; j++){
+				tiles[j][i].draw(g, x, y, direction);
 				x += DX;
 				y += DY;
 			}
@@ -241,12 +251,11 @@ public class RenderingPanel extends JPanel implements MouseListener{
 	}
 	
 	private void drawWestFloorLayout(Graphics g, Tile[][] tiles){
-		//for(int i = tiles.length - 1; i >= 0; i--){
-		for (int i = 0; i < tiles.length; i++) {
-			int x = startX - (DX * i);
+		for(int i = 0; i < tiles[0].length; i++){
+			int x = startX - (DX * i); 
 			int y = startY + (DY * i);
-			for(int j = 0; j < tiles[i].length; j++){
-				tiles[i][j].draw(g, x, y, direction);
+			for(int j = tiles.length - 1; j >= 0; j--){
+				tiles[j][i].draw(g, x, y, direction);
 				x += DX;
 				y += DY;
 			}
@@ -268,6 +277,24 @@ public class RenderingPanel extends JPanel implements MouseListener{
 			}
 		}
 	}
+	
+	private void drawTileBoxes(Graphics g){
+		for(int i = 0; i < tileBoundingBoxes.length; i++){
+			for(int j = 0; j < tileBoundingBoxes[i].length; j++){
+				g.setColor(new Color(255, 50, 64));
+				g.fillPolygon(tileBoundingBoxes[i][j]);
+			}
+		}
+	}
+	
+	@Override
+	public void repaint(){
+		if(area != null){
+			calculateConstants();
+			calculateBoundingBoxes();
+		}
+		super.repaint();
+	}
 
 	// Mouse Listener Methods
 
@@ -276,7 +303,7 @@ public class RenderingPanel extends JPanel implements MouseListener{
 		System.out.println("Clicked: (" + e.getX() + ", " + e.getY() + ")");
 		Point p = findPosition(e.getX(), e.getY());
 		if (p != null) {
-			//System.out.println("Area position: (" + p.x + ", " + p.y + ")");
+			System.out.println("Area position: (" + p.x + ", " + p.y + ")");
 			test.setX(p.x);
 			test.setY(p.y);
 			//System.out.println("Test position: (" + test.getX() + ", " + test.getY() + ")");

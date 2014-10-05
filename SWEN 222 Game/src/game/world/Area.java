@@ -70,9 +70,9 @@ public class Area {
 		return false;
 	}
 	public boolean addItems(Item[][] itemMap){
-		for(int y = 0; y < itemMap.length; y++){
-			for(int x = 0; x < itemMap[y].length; x++){
-				if(items[x][y] == null){ items[x][y] = itemMap[x][y];}
+		for(int y = 0; y < itemMap.length && y < items.length; y++){
+			for(int x = 0; x < itemMap[y].length && x < items[y].length; x++){
+				if(items[y][x] == null){ items[y][x] = itemMap[y][x];}
 				else{ return false;}
 			}
 		}
