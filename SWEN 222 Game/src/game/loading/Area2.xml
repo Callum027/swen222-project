@@ -1,0 +1,19 @@
+<Area>
+<Dimension> 10 5 </Dimension>
+<EmptyMap>
+1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1
+</EmptyMap>
+<ItemMap>
+    1
+    <Item>
+    <Furniture>
+        5 3 2 Shelf
+    </Furniture>
+    </Item>
+</ItemMap>
+
+</Area>
