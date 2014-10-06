@@ -18,9 +18,12 @@ private static String next;
 				error("The Area File is empty.");
 			}
 			next = scan.next();
-			gobble(scan, "<Area>");
-			Area newArea = parseArea(scan, tileMap);
-
+			if(!gobble(scan, "<Area>")){
+				error("Missing Area Declaration.");
+			}
+			Area newArea = new Area();
+			parseArea(newArea, scan, tileMap);
+			scan.close();
 			return newArea;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -31,9 +34,29 @@ private static String next;
 		return null;
 	}
 
-	private static Area parseArea(Scanner scan, Map<Integer, Tile> tileMap) {
-
+	private static Area parseArea(Area newArea, Scanner scan, Map<Integer, Tile> tileMap) throws ParserError {
+		if(gobble(scan, "</Area>")){
+			return newArea;
+		}
+		if(gobble(scan, "<ID>")){
+			int id = parseInt(scan);
+			newArea.setAreaID(id);
+		}
 		return null;
+	}
+
+	private static int parseInt(Scanner scan) throws ParserError {
+		if(!gobble(scan, "<Int>")){
+			error("Missing Int declaration.");
+		}
+		if(!scan.hasNextInt()){
+			error("missing int value.");
+		}
+		int id =  scan.nextInt();
+		if(!gobble(scan, "</Int>")){
+			error("Missing Int close declaration.");
+		}
+		return id;
 	}
 
 	private static boolean gobble(Scanner scan, String s) throws ParserError {

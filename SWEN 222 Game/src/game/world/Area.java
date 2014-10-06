@@ -19,7 +19,7 @@ import game.world.tiles.WallTile;
  *
  */
 public class Area {
-	private String name;
+	private int areaID;
 	private Item[][] items; //the items located on this area
 	private List<Item> itemsList; // the items located in this area
 	private GameWorld world;
@@ -52,8 +52,7 @@ public class Area {
 		itemsList = new ArrayList<Item>();
 	}
 
-	public Area(String n) {
-		name = n;
+	public Area() {
 	}
 
 	/**
@@ -63,7 +62,7 @@ public class Area {
 	public GameWorld getWorld() {
 		return world;
 	}
-	
+
 	public List<Item> getItems(){
 		return new ArrayList<Item>(itemsList);
 	}
@@ -81,7 +80,7 @@ public class Area {
 		}
 		return false;
 	}
-	
+
 	public boolean addItems(Item[][] itemMap){
 		if(items == null){
 			return false;
@@ -157,6 +156,10 @@ public class Area {
 	 */
 	public void initializeTiles(File file){
 		setUpFloorTiles(file);
+	}
+
+	public void setAreaID(int id) {
+		areaID = id;
 	}
 
 //	public static Area parseArea(String[] data, Map<Integer, Tile> tileMap){
