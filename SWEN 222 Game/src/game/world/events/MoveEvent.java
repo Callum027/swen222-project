@@ -20,10 +20,12 @@ public class MoveEvent extends GameEvent {
 	private final int x;
 	private final int y;
 
+
 	public MoveEvent(int x, int y, PlayableCharacter player){
 		if (player == null)
 			throw new IllegalArgumentException("player is null");
-		
+
+
 		this.x = x;
 		this.y = y;
 		this.player = player;
@@ -36,7 +38,8 @@ public class MoveEvent extends GameEvent {
 	/**
 	 * Read an MoveEvent from the input stream.
 	 *
-	 * @param is Input stream
+	 * @param is
+	 *            Input stream
 	 * @return MoveEvent
 	 * @throws IOException
 	 */
@@ -63,7 +66,7 @@ public class MoveEvent extends GameEvent {
 		return y;
 	}
 
-	public PlayableCharacter getPlayer(){
+	public PlayableCharacter getPlayer() {
 		return player;
 	}
 }

@@ -2,6 +2,7 @@ package game.ui.application;
 
 import game.Main;
 import game.ui.GameFrame;
+import game.world.items.Equipment;
 import game.world.items.MovableItem;
 
 import java.awt.Color;
@@ -31,6 +32,8 @@ public class InventoryPanel extends JPanel implements MouseListener {
 			* INVENTORY_WIDTH];
 	private int cats = 0;
 	private MovableItem itemSelected;
+	private EquipPanel equip;
+	private int previousSlot = -1;
 
 	/**
 	 * Makes a new InventoryPanel which extends JPanel and sets the width and
@@ -99,15 +102,6 @@ public class InventoryPanel extends JPanel implements MouseListener {
 				k++;
 			}
 		}
-		/*
-		for(int i = 0; i < INVENTORY_WIDTH; i++){
-			for(int j = 0; j < INVENTORY_HEIGHT; j++){
-				if(items[i*j] != null){
-					items[i*j].draw(g, i * squareSize, j * squareSize);
-				}
-			}
-		}
-		*/
 	}
 
 	@Override
@@ -115,6 +109,15 @@ public class InventoryPanel extends JPanel implements MouseListener {
 
 	}
 
+	/**
+	 * Uses two ints to find the location in the inventory.
+	 *
+	 * @param x
+	 *            the x of the panel
+	 * @param y
+	 *            the y of the panel
+	 * @return returns an index value for the array
+	 */
 	private int findInventorySquare(int x, int y) {
 		int XSelect = x / squareSize; // works out how far along the grid it is
 		int ySelect = (y / squareSize) * INVENTORY_WIDTH;
@@ -150,6 +153,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 		if (inv >= 0 && inv < items.length) {
 			itemSelected = items[inv];
 			items[inv] = null;
+			previousSlot = inv;
 		}
 	}
 
@@ -159,9 +163,9 @@ public class InventoryPanel extends JPanel implements MouseListener {
 		int y = e.getY();
 		int inv = findInventorySquare(x, y);
 		selectItem(inv);
-		System.out.println("Item: " + itemSelected.toString());
-		itemSelected.setX(x);
-		itemSelected.setY(y);
+		if (itemSelected != null) {
+			System.out.println("Item: " + itemSelected.toString());
+		}
 		repaint();
 	}
 
@@ -169,12 +173,13 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	public void mouseReleased(MouseEvent e) {
 		int x = e.getX();
 		int y = e.getY();
-		itemSelected.setX(x);
-		itemSelected.setY(y);
-		System.out.println("X = " + itemSelected.getX() + "Y = " + itemSelected.getY());
 		int inv = findInventorySquare(x, y);
+		// if (inv < 0) {
 		dropItem(inv);
 		repaint();
+		// }
+		itemSelected = null;
+		previousSlot = -1;
 	}
 
 	/**
@@ -184,20 +189,47 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	 * @param y
 	 */
 	private void dropItem(int inv) {
-		items[inv] = itemSelected;
-		itemSelected = null;
+		if (inv >= 0 && inv < INVENTORY_HEIGHT * INVENTORY_WIDTH) {
+			if (items[inv] == null) {
+				items[inv] = itemSelected;
+				itemSelected = null;
+			}
+		} else {
+			returnItem(itemSelected);
+		}
+	}
+
+	/**
+	 * Returns the item back to the inventory to the slot it was from, used if
+	 * trying to move non equipment to the equipment panel Or if you are trying
+	 * to drop an item on top of another item in the inventory
+	 *
+	 * @param item
+	 *            The item to be returned
+	 */
+	public void returnItem(MovableItem item) {
+		if (previousSlot != -1) {
+			itemSelected = item;
+			dropItem(previousSlot);
+		}
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
+		if (GameFrame.selectedItem != null) {
+			addItem(GameFrame.selectedItem);
+		}
+		GameFrame.selectedItem = null;
 
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		if (itemSelected != null) {
+			GameFrame.selectedItem = itemSelected;
+		}
+		itemSelected = null;
+		repaint();
 	}
 
 	public MovableItem[] getItems() {
@@ -206,6 +238,32 @@ public class InventoryPanel extends JPanel implements MouseListener {
 
 	public void setItems(MovableItem[] items) {
 		this.items = items;
+	}
+
+	public void setEquip(EquipPanel equip) {
+		this.equip = equip;
+
+	}
+
+	/**
+	 * Adds an item to the inventory panel and places it in the first availiable
+	 * slot
+	 *
+	 * @param item
+	 *            the item to be added to the inventory
+	 * @return the index that the item was added
+	 */
+	public int addItem(MovableItem item) {
+		for (int i = 0; i < items.length; i++) {
+			if (items[i] == null) {
+				items[i] = item;
+				repaint();
+				return i;
+			}
+		}
+		repaint();
+		return -1;
+
 	}
 
 }

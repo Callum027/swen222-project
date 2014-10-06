@@ -1,9 +1,12 @@
 package game.ui.rendering;
 
 import game.Main;
+import game.ui.GameFrame;
 import game.world.Area;
+import game.world.BoundingBox;
 import game.world.items.Furniture;
 import game.world.items.Item;
+import game.world.items.MovableItem;
 import game.world.tiles.FloorTile;
 import game.world.tiles.Tile;
 
@@ -11,9 +14,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.Polygon;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -24,13 +30,19 @@ public class RenderingPanel extends JPanel implements MouseListener {
 	// fields
 	private final int WIDTH = 960;
 	private final int HEIGHT = 720;
+	private final int DX = (FloorTile.WIDTH / 2) + 1;
+	private final int DY = FloorTile.HEIGHT / 2;
+
 	private Area area;
-	private Polygon[][] tileBoundingBoxes;
-	private Polygon[][] itemBoundingBoxes;
+	private List<BoundingBox> tileBoundingBoxes;
+	private List<BoundingBox> itemBoundingBoxes;
 
 	private int areaLength;
 	private int areaWidth;
 	private int areaHeight;
+	private int startX;
+	private int startY;
+	private int direction;
 
 	private Furniture test;
 
@@ -38,12 +50,13 @@ public class RenderingPanel extends JPanel implements MouseListener {
 	 * Constructor:
 	 *
 	 */
-	public RenderingPanel() {
+	public RenderingPanel(int direction) {
 		super();
+		this.direction = direction;
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		addMouseListener(this);
-
-		test = new Furniture(0, 0, 2, "temp", Main.getImage("temp_character.png"), null);
+		test = new Furniture(0, 0, 2, "temp",
+				Main.getImage("temp_character.png"), null);
 	}
 
 	/**
@@ -55,118 +68,105 @@ public class RenderingPanel extends JPanel implements MouseListener {
 	 */
 	public void setArea(Area area) {
 		this.area = area;
+		calculateConstants();
+		// calculateBoundingBoxes();
+	}
 
+	/**
+	 * Set the direction of the game view to the specified direction. The
+	 * specified value must be equal to a valid direction as defined by the
+	 * GameFrame class. Therefore the value must be equal to either NORTH, EAST,
+	 * SOUTH or WEST.
+	 *
+	 * @param direction
+	 *            --- the direction of the game view
+	 */
+	public void setDirection(int direction) {
+		if (direction >= GameFrame.NORTH && direction <= GameFrame.WEST) {
+			this.direction = direction;
+		}
+	}
+
+	private void calculateBoundingBoxes(Tile[][] tiles) {
+		tileBoundingBoxes = new ArrayList<BoundingBox>();
+		for (int i = 0; i < tiles.length; i++) {
+			for (int j = 0; j < tiles[0].length; j++) {
+
+			}
+		}
+	}
+
+	private Point rotatePosition(Point p, int width, int height, int count) {
+		if (count < direction) {
+			p.x = (direction % 2 == 0) ? width - 1 - p.x : height - 1 - p.x;
+			p.y = p.x;
+			rotatePosition(p, width, height, count + 1);
+		}
+		return p;
+	}
+
+	/**
+	 * Calculates the constant values that are used regularly in rendering the
+	 * Area view.
+	 */
+	private void calculateConstants() {
 		areaLength = (area.getTiles().length + area.getTiles()[0].length) - 1;
 		areaWidth = (((areaLength - 1) * ((FloorTile.WIDTH / 2) + 1)))
 				+ FloorTile.WIDTH;
 		areaHeight = ((areaLength - 1) * (FloorTile.HEIGHT / 2)) - 135;
-
-		calculateBoundingBoxes();
+		startX = (WIDTH - areaWidth) / 2;
+		// adjust start x so that the rendered outcome is centered in the
+		// graphics pane
+		if (direction == GameFrame.NORTH || direction == GameFrame.SOUTH) {
+			startX += ((area.getTiles().length - 1) * DX);
+		} else if (direction == GameFrame.EAST || direction == GameFrame.WEST) {
+			startX += ((area.getTiles()[0].length - 1) * DX);
+		}
+		startY = (HEIGHT - areaHeight) / 2;
 	}
 
 	/**
 	 * Calculates the bounding boxes for each tile in the game.
 	 */
-	public void calculateBoundingBoxes() {
-		tileBoundingBoxes = new Polygon[area.getTiles().length][area.getTiles()[0].length];
-		itemBoundingBoxes = new Polygon[area.getTiles().length][area.getTiles()[0].length];
-
-		int dx = (FloorTile.WIDTH / 2) + 1;
-		int dy = FloorTile.HEIGHT / 2;
-		int startX = ((WIDTH - areaWidth) / 2)
-				+ ((area.getTiles().length - 1) * dx);
-		int startY = (HEIGHT - areaHeight) / 2;
-
-		for (int i = 0; i < tileBoundingBoxes.length; i++) {
-			int x = startX - (dx * i);
-			int y = startY + (dy * i);
-			for (int j = 0; j < tileBoundingBoxes[i].length; j++) {
-				// calculate x and y points for bounding box of tile
-				int[] xPoints = new int[] { x, x + (FloorTile.WIDTH / 2),
-						x + FloorTile.WIDTH, x + (FloorTile.WIDTH / 2) };
-				int[] yPoints = new int[] { y + (FloorTile.HEIGHT / 2), y,
-						y + (FloorTile.HEIGHT / 2), y + FloorTile.HEIGHT };
-				tileBoundingBoxes[i][j] = new Polygon(xPoints, yPoints,
-						xPoints.length);
-
-				// calculate x and y point for bounding box of item
-				if (area.getItems()[i][j] != null) {
-					int itemHeight = area.getItems()[i][j].getHeight();
-					int itemY = y - (itemHeight * FloorTile.HEIGHT);
-					xPoints = new int[] { x, x + (FloorTile.WIDTH / 2),
-							x + FloorTile.WIDTH, x + FloorTile.WIDTH,
-							x + (FloorTile.WIDTH / 2), x };
-					yPoints = new int[] {
-							itemY + (FloorTile.HEIGHT / 2),
-							itemY,
-							itemY + (FloorTile.HEIGHT / 2),
-							itemY + ((itemHeight + 1) * FloorTile.HEIGHT)
-									- (FloorTile.HEIGHT / 2),
-							itemY + ((itemHeight + 1) * FloorTile.HEIGHT),
-							itemY + ((itemHeight + 1) * FloorTile.HEIGHT)
-									- (FloorTile.HEIGHT / 2) };
-					itemBoundingBoxes[i][j] = new Polygon(xPoints, yPoints,
-							xPoints.length);
-				}
-
-				x += dx;
-				y += dy;
-			}
-		}
-	}
+	/*
+	 * public void calculateBoundingBoxes() { //tileBoundingBoxes = new
+	 * Polygon[area.getTiles().length][area.getTiles()[0].length];
+	 * itemBoundingBoxes = new
+	 * Polygon[area.getTiles().length][area.getTiles()[0].length];
+	 *
+	 * for (int i = 0; i < tileBoundingBoxes.length; i++) { int x = startX - (DX
+	 * * i); int y = startY + (DY * i); for (int j = 0; j <
+	 * tileBoundingBoxes[i].length; j++) { tileBoundingBoxes[i][j] =
+	 * area.getTiles()[i][j].getBoundingBox(x, y);
+	 *
+	 * // calculate x and y point for bounding box of item if
+	 * (area.getItems()[i][j] != null) { int itemHeight =
+	 * area.getItems()[i][j].getHeight(); int itemY = y - (itemHeight *
+	 * FloorTile.HEIGHT); int[] xPoints = new int[] { x, x + (FloorTile.WIDTH /
+	 * 2), x + FloorTile.WIDTH, x + FloorTile.WIDTH, x + (FloorTile.WIDTH / 2),
+	 * x }; int[] yPoints = new int[] { itemY + DY, itemY, itemY + DY, itemY +
+	 * ((itemHeight + 1) * FloorTile.HEIGHT) - DY, itemY + ((itemHeight + 1) *
+	 * FloorTile.HEIGHT), itemY + ((itemHeight + 1) * FloorTile.HEIGHT) - DY };
+	 * itemBoundingBoxes[i][j] = new Polygon(xPoints, yPoints, xPoints.length);
+	 * } x += DX; y += DY; } } }
+	 */
 
 	/**
-	 * Find the position in the area that the player has clicked on,
-	 * based on the coordinates of their click. Returns null if they
-	 * have not clicked in the area.
-	 * @param x
-	 * @param y
-	 * @return
+	 * Find the position in the area that the player has clicked on, based on
+	 * the coordinates of their click. Returns null if they have not clicked in
+	 * the area.
+	 *
+	 * @param p
+	 *            : the point where the mouse click occured
+	 * @return the position that the click corresponds to, null if not in area
 	 */
-	public Point findPosition(int x, int y) {
-		Point p = new Point(x, y);
-		for (int i = 0; i < tileBoundingBoxes.length; i++) {
-			for (int j = 0; j < tileBoundingBoxes[i].length; j++) {
-				if (tileBoundingBoxes[i][j].contains(p)) {
-					return new Point(j, i);
-				}
+	public Point findPosition(Point p) {
+		for (BoundingBox box : tileBoundingBoxes) {
+			if (box.contains(p)) {
+				return box.getPosition();
 			}
 		}
 		return null;
-	}
-
-	/**
-	 * Find out if the user has clicked on an item
-	 * @param x
-	 * @param y
-	 */
-	public void findItem(int x, int y) {
-		Point p = new Point(x, y);
-		for (int i = 0; i < tileBoundingBoxes.length; i++) {
-			for (int j = 0; j < tileBoundingBoxes[i].length; j++) {
-				if (area.getItems()[i][j] != null
-						&& itemBoundingBoxes[i][j].contains(p)) {
-					System.out.println(area.getItems()[i][j].getName());
-				}
-			}
-		}
-	}
-
-	// not used currently (doesn't work)
-	public int calculateXPosition(int drawX) {
-		int dx = (FloorTile.WIDTH / 2) + 1;
-		int startX = ((WIDTH - areaWidth) / 2)
-				+ ((area.getTiles().length - 1) * dx);
-		int x = (startX - drawX) / dx;
-		return x;
-	}
-
-	// not used currently (doesn't work)
-	public int calculateYPosition(int drawY) {
-		int dy = FloorTile.HEIGHT / 2;
-		int startY = (HEIGHT - areaHeight) / 2;
-		int y = (drawY - startY) / dy;
-		return y;
 	}
 
 	/**
@@ -178,57 +178,161 @@ public class RenderingPanel extends JPanel implements MouseListener {
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		if (area != null) {
 			Tile[][] tiles = area.getTiles();
-			Item[][] items = area.getItems();
+			List<Item> items = area.getItems();
 			drawFloors(g, tiles, items);
 
 			// draw test
-			int dx = (FloorTile.WIDTH / 2) + 1;
-			int dy = FloorTile.HEIGHT / 2;
-			int startX = ((WIDTH - areaWidth) / 2) + ((area.getTiles().length - 1) * dx);
-			int startY = (HEIGHT - areaHeight) / 2;
-			int x = startX - (dx * test.getY());
-			int y = startY + (dy * test.getY())-(test.getHeight() * FloorTile.HEIGHT);
+			Point draw = rotatePosition(new Point(test.getX(), test.getY()),
+					area.getTiles().length, area.getTiles()[0].length, 0);
+			int x = startX - (DX * draw.y) + (draw.x * DX);
+			int y = startY + (DY * (draw.x + draw.y))
+					- (test.getHeight() * FloorTile.HEIGHT);
 			test.draw(g, x, y);
+			// drawTileBoxes(g);
 		}
 	}
 
 	/**
 	 * Draw the floor of the current area to the render panel.
 	 */
-	private void drawFloors(Graphics g, Tile[][] tiles, Item[][] items) {
-		int dx = (FloorTile.WIDTH / 2) + 1;
-		int dy = FloorTile.HEIGHT / 2;
-		int startX = ((WIDTH - areaWidth) / 2) + ((tiles.length - 1) * dx);
-		int startY = (HEIGHT - areaHeight) / 2;
+	private void drawFloors(Graphics g, Tile[][] tiles, List<Item> items) {
+		Comparator<Item> comp = null;
+		if (direction == GameFrame.NORTH) {
+			comp = new NorthComparator(tiles.length, tiles[0].length);
+			drawNorthFloorLayout(g, tiles);
+		} else if (direction == GameFrame.EAST) {
+			comp = new EastComparator(tiles.length, tiles[0].length);
+			drawEastFloorLayout(g, tiles);
+		} else if (direction == GameFrame.SOUTH) {
+			comp = new SouthComparator(tiles.length, tiles[0].length);
+			drawSouthFloorLayout(g, tiles);
+		} else if (direction == GameFrame.WEST) {
+			comp = new WestComparator(tiles.length, tiles[0].length);
+			drawWestFloorLayout(g, tiles);
+		}
+		Collections.sort(items, comp);
+	}
+
+	/**
+	 * Draws the floor layout of the area when the game view is facing north.
+	 *
+	 * @param g
+	 *            --- the graphics pane to draw onto
+	 * @param tiles
+	 *            --- tiles representing the floor layout
+	 */
+	private void drawNorthFloorLayout(Graphics g, Tile[][] tiles) {
+		tileBoundingBoxes = new ArrayList<BoundingBox>();
 		for (int i = 0; i < tiles.length; i++) {
-			// work out coordinates to draw tile
-			int x = startX - (dx * i);
-			int y = startY + (dy * i);
+			int x = startX - (DX * i);
+			int y = startY + (DY * i);
 			for (int j = 0; j < tiles[i].length; j++) {
-				// System.out.println("Drawing tile at ("+x+", "+y+")");
-				tiles[i][j].draw(g, x, y);
-				if (items[i][j] != null) {
-					items[i][j].draw(g, x, y-(items[i][j].getHeight() * FloorTile.HEIGHT));
-				}
-				x += dx;
-				y += dy;
+				tiles[i][j].draw(g, x, y, direction);
+				tileBoundingBoxes.add(tiles[i][j].getBoundingBox(x, y,
+						new Point(i, j)));
+				x += DX;
+				y += DY;
 			}
 		}
 	}
 
 	/**
+	 * Draws the floor layout of the area when the game view is facing east.
+	 *
+	 * @param g
+	 *            --- the graphics pane to draw onto
+	 * @param tiles
+	 *            --- tiles representing the floor layout
+	 */
+	private void drawEastFloorLayout(Graphics g, Tile[][] tiles) {
+		tileBoundingBoxes = new ArrayList<BoundingBox>();
+		int startI = tiles[0].length - 1;
+		for (int i = startI; i >= 0; i--) {
+			int x = startX - (DX * (startI - i));
+			int y = startY + (DY * (startI - i));
+			for (int j = 0; j < tiles.length; j++) {
+				tiles[j][i].draw(g, x, y, direction);
+				tileBoundingBoxes.add(tiles[j][i].getBoundingBox(x, y,
+						new Point(j, i)));
+				x += DX;
+				y += DY;
+			}
+		}
+	}
+
+	/**
+	 * Draws the floor layout of the area when the game view is facing south.
+	 *
+	 * @param g
+	 *            --- the graphics pane to draw onto
+	 * @param tiles
+	 *            --- tiles representing the floor layout
+	 */
+	private void drawSouthFloorLayout(Graphics g, Tile[][] tiles) {
+		tileBoundingBoxes = new ArrayList<BoundingBox>();
+		int startI = tiles.length - 1;
+		for (int i = startI; i >= 0; i--) {
+			int x = startX - (DX * (startI - i));
+			int y = startY + (DY * (startI - i));
+			for (int j = tiles[i].length - 1; j >= 0; j--) {
+				tiles[i][j].draw(g, x, y, direction);
+				tileBoundingBoxes.add(tiles[i][j].getBoundingBox(x, y,
+						new Point(i, j)));
+				x += DX;
+				y += DY;
+			}
+		}
+	}
+
+	/**
+	 * Draws the floor layout of the area when the game view is facing west.
+	 *
+	 * @param g
+	 *            --- the graphics pane to draw onto
+	 * @param tiles
+	 *            --- tiles representing the floor layout
+	 */
+	private void drawWestFloorLayout(Graphics g, Tile[][] tiles) {
+		tileBoundingBoxes = new ArrayList<BoundingBox>();
+		for (int i = 0; i < tiles[0].length; i++) {
+			int x = startX - (DX * i);
+			int y = startY + (DY * i);
+			for (int j = tiles.length - 1; j >= 0; j--) {
+				tiles[j][i].draw(g, x, y, direction);
+				tileBoundingBoxes.add(tiles[j][i].getBoundingBox(x, y,
+						new Point(j, i)));
+				x += DX;
+				y += DY;
+			}
+		}
+	}
+
+	private void setupItemBoundingBoxes(List<Item> items) {
+		itemBoundingBoxes = new ArrayList<BoundingBox>();
+		for (Item item : items) {
+			Point p = new Point(item.getX(), item.getY());
+			// itemBoundingBoxes.add(item.getBoundingBox(x, y, p));
+		}
+	}
+
+	/**
 	 * Draw the bounding boxes surrounding each item.
+	 *
 	 * @param g
 	 * @param items
 	 */
-	public void drawBoxes(Graphics g, Item[][] items) {
-		for (int i = 0; i < items.length; i++) {
-			for (int j = 0; j < items[0].length; j++) {
-				if (items[i][j] != null) {
-					g.fillPolygon(itemBoundingBoxes[i][j]);
-				}
-			}
+	/*
+	 * public void drawBoxes(Graphics g, Item[][] items) { for (int i = 0; i <
+	 * items.length; i++) { for (int j = 0; j < items[0].length; j++) { if
+	 * (items[i][j] != null) { g.fillPolygon(itemBoundingBoxes[i][j]); } } } }
+	 */
+
+	@Override
+	public void repaint() {
+		if (area != null) {
+			calculateConstants();
 		}
+		super.repaint();
 	}
 
 	// Mouse Listener Methods
@@ -236,40 +340,194 @@ public class RenderingPanel extends JPanel implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		System.out.println("Clicked: (" + e.getX() + ", " + e.getY() + ")");
-		Point p = findPosition(e.getX(), e.getY());
+		Point p = findPosition(new Point(e.getX(), e.getY()));
 		if (p != null) {
 			System.out.println("Area position: (" + p.x + ", " + p.y + ")");
 			test.setX(p.x);
 			test.setY(p.y);
+			// System.out.println("Test position: (" + test.getX() + ", " +
+			// test.getY() + ")");
 			repaint();
 		} else {
 			System.out.println("Position not on board.");
 		}
-		findItem(e.getX(), e.getY());
+		// findItem(e.getX(), e.getY());
 
 	}
 
-	@Override
+	// unneeded mouse listener methods
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
-	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
-	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		if (GameFrame.selectedItem != null) {
+			area.addItem(GameFrame.selectedItem, 0, 0); //wrong
+			GameFrame.selectedItem = null;
+		}
 	}
 
-	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
+	}
 
+	// comparators for sorting items
+
+	/**
+	 * A private class that is used to sort Items in an area so that when the
+	 * game view is facing north, the items are ordered from closest to
+	 * furtherest away.
+	 *
+	 * @author David Sheridan
+	 *
+	 */
+	private class NorthComparator implements Comparator<Item> {
+
+		// field
+		private int length;
+
+		/**
+		 * Constructor: Constructs a NorthComparator, which takes a width and
+		 * height so that the length of the area can be calculated.
+		 *
+		 * @param width
+		 *            --- width of area
+		 * @param height
+		 *            --- height of area
+		 */
+		public NorthComparator(int width, int height) {
+			length = width + height - 1;
+		}
+
+		/**
+		 * Compares two Items to determine which one is closer while the game
+		 * view is facing north. Returns a negative integer if Item o1 is closer
+		 * than o2, zero if item o1 is at the same distance as o2 and a position
+		 * integer if o1 is further away than o2.
+		 *
+		 */
+		public int compare(Item o1, Item o2) {
+			int i = length - o1.getX() - o1.getY();
+			int j = length - o2.getX() - o2.getY();
+			return i - j;
+		}
+	}
+
+	/**
+	 * A private class that is used to sort Items in an area so that when the
+	 * game view is facing east, the items are ordered from closest to
+	 * furtherest away.
+	 *
+	 * @author David Sheridan
+	 *
+	 */
+	private class EastComparator implements Comparator<Item> {
+
+		// field
+		private int length;
+
+		/**
+		 * Constructor: Constructs a EastComparator, which takes a width and
+		 * height so that the length of the area can be calculated.
+		 *
+		 * @param width
+		 *            --- width of area
+		 * @param height
+		 *            --- height of area
+		 */
+		public EastComparator(int width, int height) {
+			length = width + height - 1;
+		}
+
+		/**
+		 * Compares two Items to determine which one is closer while the game
+		 * view is facing east. Returns a negative integer if Item o1 is closer
+		 * than o2, zero if item o1 is at the same distance as o2 and a position
+		 * integer if o1 is further away than o2.
+		 *
+		 */
+		public int compare(Item o1, Item o2) {
+
+			return 0;
+		}
+	}
+
+	/**
+	 * A private class that is used to sort Items in an area so that when the
+	 * game view is facing south, the items are ordered from closest to
+	 * furtherest away.
+	 *
+	 * @author David Sheridan
+	 *
+	 */
+	private class SouthComparator implements Comparator<Item> {
+
+		// field
+		private int length;
+
+		/**
+		 * Constructor: Constructs a SouthComparator, which takes a width and
+		 * height so that the length of the area can be calculated.
+		 *
+		 * @param width
+		 *            --- width of area
+		 * @param height
+		 *            --- height of area
+		 */
+		public SouthComparator(int width, int height) {
+			length = width + height - 1;
+		}
+
+		/**
+		 * Compares two Items to determine which one is closer while the game
+		 * view is facing south. Returns a negative integer if Item o1 is closer
+		 * than o2, zero if item o1 is at the same distance as o2 and a position
+		 * integer if o1 is further away than o2.
+		 *
+		 */
+		public int compare(Item o1, Item o2) {
+
+			return 0;
+		}
+	}
+
+	/**
+	 * A private class that is used to sort Items in an area so that when the
+	 * game view is facing west, the items are ordered from closest to
+	 * furtherest away.
+	 *
+	 * @author David Sheridan
+	 *
+	 */
+	private class WestComparator implements Comparator<Item> {
+
+		// field
+		private int length;
+
+		/**
+		 * Constructor: Constructs a WestComparator, which takes a width and
+		 * height so that the length of the area can be calculated.
+		 *
+		 * @param width
+		 *            --- width of area
+		 * @param height
+		 *            --- height of area
+		 */
+		public WestComparator(int width, int height) {
+			length = width + height - 1;
+		}
+
+		/**
+		 * Compares two Items to determine which one is closer while the game
+		 * view is facing west. Returns a negative integer if Item o1 is closer
+		 * than o2, zero if item o1 is at the same distance as o2 and a position
+		 * integer if o1 is further away than o2.
+		 *
+		 */
+		public int compare(Item o1, Item o2) {
+
+			return 0;
+		}
 	}
 }

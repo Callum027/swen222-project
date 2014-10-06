@@ -1,7 +1,12 @@
 package game.world.tiles;
 
+import game.Main;
+import game.world.BoundingBox;
+
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.Polygon;
 
 /**
  * A Tile represents an abstract tile in the game. Tiles are
@@ -13,7 +18,8 @@ import java.awt.Image;
 public abstract class Tile {
 
 	// fields
-	private Image image;
+	private final String[] directions = new String[]{"North", "East", "South", "West"};
+	private Image[] image;
 
 	/**
 	 * Constructor:
@@ -23,9 +29,29 @@ public abstract class Tile {
 	 * @param image
 	 * 			--- image associated with this tile
 	 */
-	public Tile(Image image){
-		this.image = image;
+	public Tile(String filename){
+		this.image = new Image[directions.length];
+		for(int i = 0; i < directions.length; i++){
+			image[i] = Main.getImage(filename+"_"+directions[i]+".png");
+			//image[i] = Main.getImage(filename+".png");
+		}
+		
 	}
+
+	/**
+	 * Returns a bounding box in the form of a Polygon for this
+	 * Tile. The specified x, y coordinates are in relation to
+	 * the top left x, y coordinates where the image for this Tile
+	 * will be drawn.
+	 *
+	 * @param x
+	 * 		--- top left x of Tile image
+	 * @param y
+	 * 		--- top left y of Tile image
+	 * @return
+	 * 		--- bounding box of Tile
+	 */
+	public abstract BoundingBox getBoundingBox(int x, int y, Point p);
 
 	/**
 	 * Draws this tile to the specified graphics pane,
@@ -39,7 +65,7 @@ public abstract class Tile {
 	 * @param y
 	 * 			--- y position to draw tile
 	 */
-	public void draw(Graphics g, int x, int y){
-		g.drawImage(image, x, y, null);
+	public void draw(Graphics g, int x, int y, int direction){
+		g.drawImage(image[direction], x, y, null);
 	}
 }

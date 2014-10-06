@@ -3,6 +3,7 @@ package game.world;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -20,6 +21,7 @@ import game.world.tiles.WallTile;
 public class Area {
 	private String name;
 	private Item[][] items; //the items located on this area
+	private List<Item> itemsList; // the items located in this area
 	private GameWorld world;
 	private Tile[][] tiles; //the tiles that make up this area
 	private WallTile[][] northWall;
@@ -40,12 +42,14 @@ public class Area {
 	public Area(GameWorld world, File file){
 		this.world = world;
 		initializeTiles(file); //reads the grid of tiles from the file
-		items =  new Item[MAXIMUM_CAPACITY][MAXIMUM_CAPACITY];
+		//items =  new Item[MAXIMUM_CAPACITY][MAXIMUM_CAPACITY];
+		itemsList = new ArrayList<Item>();
 	}
 
 	public Area(Tile[][] tiles){
 		this.tiles = tiles;
-		items = new Item[tiles.length][tiles[0].length];
+		//items = new Item[tiles.length][tiles[0].length];
+		itemsList = new ArrayList<Item>();
 	}
 
 	public Area(String n) {
@@ -58,6 +62,10 @@ public class Area {
 	 */
 	public GameWorld getWorld() {
 		return world;
+	}
+	
+	public List<Item> getItems(){
+		return new ArrayList<Item>(itemsList);
 	}
 
 	/**
@@ -73,10 +81,14 @@ public class Area {
 		}
 		return false;
 	}
+	
 	public boolean addItems(Item[][] itemMap){
-		for(int y = 0; y < itemMap.length; y++){
-			for(int x = 0; x < itemMap[y].length; x++){
-				if(items[x][y] == null){ items[x][y] = itemMap[x][y];}
+		if(items == null){
+			return false;
+		}
+		for(int y = 0; y < itemMap.length && y < items.length; y++){
+			for(int x = 0; x < itemMap[y].length && x < items[y].length; x++){
+				if(items[y][x] == null){ items[y][x] = itemMap[y][x];}
 				else{ return false;}
 			}
 		}
@@ -97,9 +109,9 @@ public class Area {
 		return false;
 	}
 
-	public Item[][] getItems(){
-		return items;
-	}
+	//public Item[][] getItems(){
+	//	return items;
+	//}
 
 	public void setItems(Item[][] items){
 		this.items = items;
