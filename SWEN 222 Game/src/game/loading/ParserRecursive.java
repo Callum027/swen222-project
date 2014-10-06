@@ -34,7 +34,8 @@ private static String next;
 		if(!scan.hasNext()){
 			error("Missing Declaration");
 		}
-		return scan.next().equals(s);
+		next = scan.next();
+		return next.equals(s);
 
 	}
 
