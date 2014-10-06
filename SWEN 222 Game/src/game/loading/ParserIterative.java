@@ -59,9 +59,6 @@ public class ParserIterative {
 			// open Area declaration
 			if (!scan.next().equals("<Area>"))
 				throw new ParserError("Invalid declaration, should be an Area.");
-			scan.next();
-			scan.next();
-			scan.next();
 			// check there is a dimension declaration
 			if (!scan.hasNext())
 				throw new ParserError("No Dimension Declaration");
