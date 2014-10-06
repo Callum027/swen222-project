@@ -14,9 +14,9 @@ import java.awt.event.MouseListener;
 import javax.swing.JPanel;
 
 /**
- * A simple panel that is to be used for drawing the inventory Also can
- * determine what equip slot was selected so it can return a related int value
- * for what slot on the character it was
+ * A custom JPanel used to represent the current equipment equiped by the
+ * player. It has an EquipedItem object which is the same as the players but
+ * also stored here for ease of access.
  *
  * @author Harry
  *
@@ -139,7 +139,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 	/**
 	 * Adds up the defence for all the equiped items
 	 *
-	 * @return the total defence value
+	 * @return The total defence value
 	 */
 	private int getDefence() {
 		int def = 0;
@@ -164,7 +164,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 	/**
 	 * Used to get the total attack value of the all equipment
 	 *
-	 * @return the attack value of the total equipment
+	 * @return The attack value of the total equipment
 	 */
 	private int getTotalAttack() {
 		int at = 0;
@@ -191,7 +191,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 	 * the slot
 	 *
 	 * @param g
-	 *            the Graphics component
+	 *            The Graphics component
 	 */
 	private void drawEquipmentItems(Graphics g) {
 		if (items.getHead() != null) {
@@ -217,12 +217,13 @@ public class EquipPanel extends JPanel implements MouseListener {
 	}
 
 	/**
-	 * Works out what equipment slot has been clicked on
+	 * Works out what equipment slot has been clicked on based on where the
+	 * mouse was clicked
 	 *
 	 * @param x
-	 *            the mouse X
+	 *            The mouse X
 	 * @param y
-	 *            the mouse Y
+	 *            The mouse Y
 	 */
 	private int findEquip(int x, int y) {
 		int equip = -1;
@@ -246,10 +247,13 @@ public class EquipPanel extends JPanel implements MouseListener {
 	}
 
 	/**
-	 * Selects the equpipment found by the findEquip method
+	 * Selects the equipment found by the findEquip() method, if there is no
+	 * item equiped it tells the player. Otherwise, it tells the player what the
+	 * equipment is and its stats.
 	 *
 	 * @param equip
-	 *            the value of the equipment slot
+	 *            The int value that represents the slot that the equipment is
+	 *            stored in.
 	 */
 	private void selectEquip(int equip) {
 		previousSelected = equip;
@@ -331,10 +335,11 @@ public class EquipPanel extends JPanel implements MouseListener {
 	/**
 	 * Called when the mouse is release. Putting the item into the slot the
 	 * mouse was released on if that slot is empty. If it is not empty it
-	 * returns the item to the slot it was taken from
+	 * returns the item to the slot it was taken from, with the returnItem()
+	 * method.
 	 *
 	 * @param equip
-	 *            the slot the equipment is to be put into
+	 *            The slot the equipment is to be put into
 	 */
 	private void dropEquip(int equip) {
 		if (equipSelected == null) {
@@ -398,7 +403,9 @@ public class EquipPanel extends JPanel implements MouseListener {
 
 	/**
 	 * This method returns the item to the slot that it was taken from if the
-	 * slot that it was tried to put in is not a valid slot
+	 * slot that it was tried to put in is not a valid slot. Used when moving an
+	 * item between slots in the equip section. A different method is called
+	 * when moving items from inventory to equip
 	 */
 	private void returnItem() {
 		switch (previousSelected) {
@@ -444,10 +451,11 @@ public class EquipPanel extends JPanel implements MouseListener {
 	}
 
 	/**
-	 * gets the stats for the equiped item that the mouse is hovering over
+	 * Gets the stats for the equiped item that the mouse is hovering over, not
+	 * working yet
 	 *
 	 * @param equip
-	 *            the value of the slot of the equiped item
+	 *            The value of the slot of the equiped item
 	 */
 	private void equipStats(int equip) {
 		switch (equip) {
@@ -501,26 +509,37 @@ public class EquipPanel extends JPanel implements MouseListener {
 	}
 
 	/**
-	 * gets the equiped items that the panel has
+	 * Gets the equiped items that the panel has
 	 *
-	 * @return the equiped items
+	 * @return The equiped items
 	 */
 	public EquippedItems getItems() {
 		return items;
 	}
 
 	/**
-	 * sets the items for the panel so it can draw them appropriatly also calls
+	 * Sets the items for the panel so it can draw them appropriately also calls
 	 * getStats again so it updates the total stats
 	 *
 	 * @param items
-	 *            the equipedItems
+	 *            The EquippedItems item which is a class containing all the
+	 *            items equiped by the player
 	 */
 	public void setItems(EquippedItems items) {
 		this.items = items;
 		getStats();
 	}
 
+	/**
+	 * Adds the equipment to the correct slot that it belongs in. Used when
+	 * moving an item from the inventory to the equipment slot. If the slot is
+	 * full it returns -1 rather than the equipment position it was put in
+	 *
+	 * @param equipment
+	 *            The equipment to be added
+	 * @return The int related to the slot of the equipment. Returns -1 if there
+	 *         was no room to equip it
+	 */
 	public int addEquip(Equipment equipment) {
 		int slot = equipment.getSlot();
 		switch (slot) {

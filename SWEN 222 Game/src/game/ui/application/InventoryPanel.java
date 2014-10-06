@@ -15,8 +15,10 @@ import java.awt.event.MouseListener;
 import javax.swing.JPanel;
 
 /**
- * A simple panel that drawing the inventory items on screen Also can determine
- * what inventory slot was selected so it can return the value for the array
+ * A custom JPanel used to represent the players inventory. Stores the players
+ * inventory here as well so it can draw it easier. Also has a record of the
+ * players cats so it can draw them too. This was done rather than having the
+ * whole player object stored it can just have the inventory stored.
  *
  * @author Harry
  *
@@ -30,7 +32,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	public static final int squareSize = 45;
 	private MovableItem[] items = new MovableItem[INVENTORY_HEIGHT
 			* INVENTORY_WIDTH];
-	private int cats = 0;
+	private int cats = 1;
 	private MovableItem itemSelected;
 	private EquipPanel equip;
 	private int previousSlot = -1;
@@ -92,7 +94,6 @@ public class InventoryPanel extends JPanel implements MouseListener {
 		int j = 0;
 		int k = 0;
 		for (int i = 0; i < items.length; i++) {
-
 			if (items[i] != null) {
 				items[i].draw(g, j * squareSize, k * squareSize);
 			}
@@ -232,14 +233,32 @@ public class InventoryPanel extends JPanel implements MouseListener {
 		repaint();
 	}
 
+	/**
+	 * gets the array of items in the inventory
+	 *
+	 * @return an array of Movable items, which is the inventory
+	 */
 	public MovableItem[] getItems() {
 		return items;
 	}
 
+	/**
+	 * Sets the inventory to be a specific inventory
+	 *
+	 * @param items
+	 *            the array of items for the inventory
+	 */
 	public void setItems(MovableItem[] items) {
 		this.items = items;
 	}
 
+	/**
+	 * Gives this panel an equipPanel. Used so that InventoryPanel can talk to
+	 * EquipPanel. Is called in the GameFrame to set everything up
+	 *
+	 * @param equip
+	 *            the equipment panel.
+	 */
 	public void setEquip(EquipPanel equip) {
 		this.equip = equip;
 
@@ -251,7 +270,8 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	 *
 	 * @param item
 	 *            the item to be added to the inventory
-	 * @return the index that the item was added
+	 * @return the index that the item was added, returns -1 if there is no room
+	 *         available.
 	 */
 	public int addItem(MovableItem item) {
 		for (int i = 0; i < items.length; i++) {
@@ -263,7 +283,6 @@ public class InventoryPanel extends JPanel implements MouseListener {
 		}
 		repaint();
 		return -1;
-
 	}
 
 }

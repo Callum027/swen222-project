@@ -26,8 +26,9 @@ import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 
 /**
- * Makes the frame that the game is going to run in Extends JFrame and has some
- * panels in it
+ * A custom JFrame used to hold all the panels of the game. Implements
+ * ActionListener and KeyListener so it can respond to the correct inputs from
+ * the user.
  *
  * @author Harry
  *
@@ -45,7 +46,10 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 	private EquipPanel equip;
 	private InventoryPanel inventory;
 	public static MovableItem selectedItem;
-
+	/*
+	 * selectedItem is the item that has been selected in one of the panels and
+	 * is stored here so that it can be easily moved between panels.
+	 */
 	private int direction;
 
 	/**
@@ -83,6 +87,12 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 		setVisible(true);
 	}
 
+	/**
+	 * Returns the RenderingPanel stored in the Frame so it can be used other
+	 * places
+	 *
+	 * @return The rendering panel
+	 */
 	public RenderingPanel getRender() {
 		return render;
 	}
@@ -90,7 +100,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 	/**
 	 * Sets up the menu bar at the top of the GameFrame.
 	 */
-	private void setupMenuBar(){
+	private void setupMenuBar() {
 		JMenuBar menu = new JMenuBar();
 		JMenu file = new JMenu("File");
 		JMenuItem quit = new JMenuItem("Quit");
@@ -101,14 +111,15 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 	}
 
 	/**
-	 * Used to prompt the user with the decision to quit the game.
-	 * If they choose yes, the game is exited.
+	 * Used to prompt the user with the decision to quit the game. If they
+	 * choose yes, the game is exited.
 	 */
 	private void quitGame() {
-		int result = JOptionPane.showOptionDialog(this, "Are you sure you want to quit?", "Quit",
-						JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE,
-						null, null, null);
-		if(result == JOptionPane.YES_OPTION){
+		int result = JOptionPane.showOptionDialog(this,
+				"Are you sure you want to quit?", "Quit",
+				JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE,
+				null, null, null);
+		if (result == JOptionPane.YES_OPTION) {
 			System.exit(0);
 		}
 	}
@@ -119,8 +130,8 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
 		String action = null;
-		if(source instanceof JMenuItem){
-			action = ((JMenuItem)source).getText();
+		if (source instanceof JMenuItem) {
+			action = ((JMenuItem) source).getText();
 		}
 		if (action.equals("Quit")) {
 			quitGame();
@@ -135,42 +146,41 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if(e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_UP){
+		if (e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_UP) {
 			direction = NORTH;
-		}
-		else if(e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_LEFT){
-			//System.out.println("pressed A");
+		} else if (e.getKeyCode() == KeyEvent.VK_A
+				|| e.getKeyCode() == KeyEvent.VK_LEFT) {
+			// System.out.println("pressed A");
 			direction = (direction == WEST) ? NORTH : direction + 1;
-		}
-		else if(e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_DOWN){
+		} else if (e.getKeyCode() == KeyEvent.VK_S
+				|| e.getKeyCode() == KeyEvent.VK_DOWN) {
 			direction = SOUTH;
-		}
-		else if(e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_RIGHT){
-			//System.out.println("pressed D");
+		} else if (e.getKeyCode() == KeyEvent.VK_D
+				|| e.getKeyCode() == KeyEvent.VK_RIGHT) {
+			// System.out.println("pressed D");
 			direction = (direction == NORTH) ? WEST : direction - 1;
-		}
-		else if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
+		} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			quitGame();
 		}
 		render.setDirection(direction);
 		render.repaint();
 
-		if(direction == NORTH){
+		if (direction == NORTH) {
 			System.out.println("facing north");
 		}
-		if(direction == EAST){
+		if (direction == EAST) {
 			System.out.println("facing east");
 		}
-		if(direction == SOUTH){
+		if (direction == SOUTH) {
 			System.out.println("facing south");
-		}
-		else if(direction == WEST){
+		} else if (direction == WEST) {
 			System.out.println("facing west");
 		}
 
 	}
 
 	// unneeded method
-	public void keyReleased(KeyEvent e) {}
+	public void keyReleased(KeyEvent e) {
+	}
 
 }
