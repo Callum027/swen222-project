@@ -14,8 +14,14 @@ private static String next;
 		if(fileName != null){
 		try {
 			Scanner scan = new Scanner(new File(fileName));
+			if(!scan.hasNext()){
+				error("The Area File is empty.");
+			}
+			next = scan.next();
 			gobble(scan, "<Area>");
-			return parseArea(scan, tileMap);
+			Area newArea = parseArea(scan, tileMap);
+
+			return newArea;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (ParserError e) {
