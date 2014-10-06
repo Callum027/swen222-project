@@ -49,7 +49,7 @@ private static String next;
 		if(gobble(scan, "<Height>")){
 			int height = parseInt(scan);
 			if(!gobble(scan, "</Height>")){
-				error("Missing ID close Declaration.");
+				error("Missing Height close Declaration.");
 			}
 			newArea.setHeight(height);
 			return parseArea(newArea, scan, tileMap);
