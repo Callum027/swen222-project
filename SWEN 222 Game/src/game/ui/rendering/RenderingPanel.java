@@ -96,11 +96,12 @@ public class RenderingPanel extends JPanel implements MouseListener {
 		}
 	}
 
-	private Point rotatePosition(Point p, int width, int height, int count) {
-		if (count < direction) {
-			p.x = (direction % 2 == 0) ? width - 1 - p.x : height - 1 - p.x;
-			p.y = p.x;
-			rotatePosition(p, width, height, count + 1);
+	private Point rotatePosition(Point p, int width, int height, int count){
+		if(count < direction){
+			int length = (count % 2 == 0) ? width : height;
+			int y = p.x;
+			int x = length - p.y - 1;
+			rotatePosition(new Point(x, y), height, width, count + 1);
 		}
 		return p;
 	}
