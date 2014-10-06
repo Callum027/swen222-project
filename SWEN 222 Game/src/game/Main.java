@@ -19,6 +19,7 @@ import javax.imageio.ImageIO;
 import game.control.Player;
 import game.loading.ParserIterative;
 import game.ui.*;
+import game.ui.rendering.RenderingPanel;
 import game.world.Area;
 import game.world.GameWorld;
 import game.world.items.Furniture;
@@ -33,6 +34,7 @@ public class Main {
 	private static GameFrame gameWindow;
 	private static final String IMAGE_PATH = "ui/graphics/";
 	private static GameWorld gameWorld = new GameWorld();
+	
 
 	/**
 	 * Creates a tile map which maps a unique integer value to a unique tile, to
