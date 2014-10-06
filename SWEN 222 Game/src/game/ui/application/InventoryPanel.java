@@ -246,7 +246,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	}
 
 	/**
-	 * Adds an item to the inventory panel and places it in the first availiable
+	 * Adds an item to the inventory panel and places it in the first available
 	 * slot
 	 *
 	 * @param item
