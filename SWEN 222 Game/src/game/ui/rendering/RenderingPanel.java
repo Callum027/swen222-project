@@ -50,7 +50,7 @@ public class RenderingPanel extends JPanel implements MouseListener {
 	 * Constructor:
 	 *
 	 */
-	public RenderingPanel(int direction) {
+	public RenderingPanel(int direction){
 		super();
 		this.direction = direction;
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -98,9 +98,10 @@ public class RenderingPanel extends JPanel implements MouseListener {
 
 	private Point rotatePosition(Point p, int width, int height, int count){
 		if(count < direction){
-			int length = (count % 2 == 0) ? width : height;
+			int length = (count % 2 == 0) ? height : width;
 			int y = p.x;
 			int x = length - p.y - 1;
+			// swap height and width around to simulate array rotating
 			rotatePosition(new Point(x, y), height, width, count + 1);
 		}
 		return p;
@@ -181,16 +182,40 @@ public class RenderingPanel extends JPanel implements MouseListener {
 			Tile[][] tiles = area.getTiles();
 			List<Item> items = area.getItems();
 			drawFloors(g, tiles, items);
-
+			drawBoundingBoxes(g);
 			// draw test
-			Point draw = rotatePosition(new Point(test.getX(), test.getY()),
-					area.getTiles().length, area.getTiles()[0].length, 0);
-			int x = startX - (DX * draw.y) + (draw.x * DX);
-			int y = startY + (DY * (draw.x + draw.y))
-					- (test.getHeight() * FloorTile.HEIGHT);
-			test.draw(g, x, y);
+			//Point draw = rotatePosition(new Point(test.getX(), test.getY()), tiles[0].length, tiles.length, 0);
+			//Point draw = new Point(test.getX(), test.getY());
+			//System.out.println(draw);
+			//int x = startX + (DX * draw.y) - (draw.x * DX);
+			//int y = startY + (DY * (draw.x + draw.y)) - (test.getHeight() * FloorTile.HEIGHT);
+			//test.draw(g, x, y);
 			// drawTileBoxes(g);
+			drawCharacter(g);
 		}
+	}
+
+	private void drawCharacter(Graphics g){
+		int x = 0;
+		int y = 0;
+		Point draw = new Point(test.getX(), test.getY());
+		if(direction == GameFrame.NORTH){
+			x = startX + (DX * draw.y) - (draw.x * DX);
+			y = startY + (DY * (draw.x + draw.y)) - (test.getHeight() * FloorTile.HEIGHT);
+		}
+		else if(direction == GameFrame.EAST){
+			int start = area.getTiles()[0].length - 1;
+			x = startX + (DX * (start - draw.y)) + ((start - draw.x) * DX);
+			y = startY + (DY * (start -(draw.x + start - draw.y)) - (test.getHeight() * FloorTile.HEIGHT));
+		}
+		else if(direction == GameFrame.SOUTH){
+			x = startX + (DX * draw.y) - (draw.x * DX);
+			y = startY + (DY * (draw.x + draw.y)) - (test.getHeight() * FloorTile.HEIGHT);
+		}
+		else if(direction == GameFrame.WEST){
+
+		}
+		test.draw(g, x, y);
 	}
 
 	/**
@@ -222,6 +247,7 @@ public class RenderingPanel extends JPanel implements MouseListener {
 	 * @param tiles
 	 *            --- tiles representing the floor layout
 	 */
+
 	private void drawNorthFloorLayout(Graphics g, Tile[][] tiles) {
 		tileBoundingBoxes = new ArrayList<BoundingBox>();
 		for (int i = 0; i < tiles.length; i++) {
@@ -313,6 +339,12 @@ public class RenderingPanel extends JPanel implements MouseListener {
 		for (Item item : items) {
 			Point p = new Point(item.getX(), item.getY());
 			// itemBoundingBoxes.add(item.getBoundingBox(x, y, p));
+		}
+	}
+
+	private void drawBoundingBoxes(Graphics g){
+		for(BoundingBox b : tileBoundingBoxes){
+			g.fillPolygon(b);
 		}
 	}
 
