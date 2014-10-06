@@ -5,6 +5,7 @@ import game.ui.application.InventoryPanel;
 import game.ui.rendering.RenderingPanel;
 import game.world.items.MovableItem;
 
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;

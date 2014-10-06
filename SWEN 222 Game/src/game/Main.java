@@ -2,6 +2,8 @@ package game;
 
 import java.awt.Cursor;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -79,7 +81,11 @@ public class Main {
 
 	public static void main(String arr[]) {
 		Map<Integer, Tile> tileMap = createTileMap(tilesFile);
-		gameWindow = new GameFrame(1280, 720, Cursor.getDefaultCursor());
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		Image img = getImage("ff_cursor.png");
+		Point point = new Point(0,0);
+		Cursor cursor = tk.createCustomCursor(img, point, "Hand");
+		gameWindow = new GameFrame(1280, 720, cursor);
 		Area area = ParserIterative.parseArea(areaFile, tileMap);
 		gameWorld.addArea(area);
 		//Image shelfImage = getImage("shelf.png");
