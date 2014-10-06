@@ -1,0 +1,21 @@
+<Area>
+<ID> <Int> 1 </Int> </ID>
+<Width> <Int> 10 </Int> </Width>
+<Height> <Int> 10 </Int> </Height>
+<FloorLayout>
+1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1
+</FloorLayout>
+<NorthWall> 1 1 1 1 1 1 1 1 1 1 </NorthWall>
+<EastWall> 1 1 1 1 1 1 1 1 1 1 </EastWall>
+<SouthWall> 1 1 1 1 1 1 1 1 1 1 </SouthWall>
+<WestWall> 1 1 1 1 1 1 1 1 1 1 </WestWall>
+</Area>
