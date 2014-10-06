@@ -1,6 +1,7 @@
 package game.ui.application;
 
 import game.Main;
+import game.ui.GameFrame;
 import game.world.items.Equipment;
 import game.world.items.EquippedItems;
 
@@ -336,9 +337,10 @@ public class EquipPanel extends JPanel implements MouseListener {
 	 *            the slot the equipment is to be put into
 	 */
 	private void dropEquip(int equip) {
+		if(equipSelected==null){return;}
 		switch (equip) {
 		case HEAD_SLOT:
-			if (items.getHead() == null && equipSelected.getSlot()==HEAD_SLOT) {
+			if (items.getHead() == null && equipSelected.getSlot() == HEAD_SLOT) {
 				items.equipHead(equipSelected);
 				equipSelected = null;
 				previousSelected = -1;
@@ -347,7 +349,8 @@ public class EquipPanel extends JPanel implements MouseListener {
 			}
 			break;
 		case MAIN_HAND:
-			if (items.getMainHand() == null && equipSelected.getSlot()==MAIN_HAND) {
+			if (items.getMainHand() == null
+					&& equipSelected.getSlot() == MAIN_HAND) {
 				items.equipMainHand(equipSelected);
 				equipSelected = null;
 				previousSelected = -1;
@@ -356,7 +359,8 @@ public class EquipPanel extends JPanel implements MouseListener {
 			}
 			break;
 		case OFF_HAND:
-			if (items.getoffHand() == null&& equipSelected.getSlot()==OFF_HAND) {
+			if (items.getoffHand() == null
+					&& equipSelected.getSlot() == OFF_HAND) {
 				items.equipOffHand(equipSelected);
 				equipSelected = null;
 				previousSelected = -1;
@@ -365,7 +369,8 @@ public class EquipPanel extends JPanel implements MouseListener {
 			}
 			break;
 		case CHEST_SLOT:
-			if (items.getBody() == null && equipSelected.getSlot()==CHEST_SLOT) {
+			if (items.getBody() == null
+					&& equipSelected.getSlot() == CHEST_SLOT) {
 				items.equipBody(equipSelected);
 				equipSelected = null;
 				previousSelected = -1;
@@ -374,7 +379,8 @@ public class EquipPanel extends JPanel implements MouseListener {
 			}
 			break;
 		case FEET_SLOT:
-			if (items.getBoots() == null&& equipSelected.getSlot()==FEET_SLOT) {
+			if (items.getBoots() == null
+					&& equipSelected.getSlot() == FEET_SLOT) {
 				items.equipBoots(equipSelected);
 				equipSelected = null;
 				previousSelected = -1;
@@ -426,13 +432,12 @@ public class EquipPanel extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// int y = e.getY();
-		// int x = e.getX();
-		// System.out.println("Y = " + y + "X = " + x);
-		// int equip = findEquip(x, y);
-		// equipStats(equip);
-		// repaint();
+		if (GameFrame.selectedItem != null
+				&& GameFrame.selectedItem instanceof Equipment) {
 
+			addEquip((Equipment) GameFrame.selectedItem);
+		}
+		GameFrame.selectedItem = null;
 	}
 
 	/**
@@ -487,13 +492,8 @@ public class EquipPanel extends JPanel implements MouseListener {
 	@Override
 	public void mouseExited(MouseEvent e) {
 		if (equipSelected != null) {
-			int i = inventory.addItem(equipSelected);
-			if (i != -1) {
-				equipSelected = null;
-				previousSelected = -1;
-			} else {
-				returnItem();
-			}
+			GameFrame.selectedItem = equipSelected;
+			equipSelected = null;
 		}
 	}
 

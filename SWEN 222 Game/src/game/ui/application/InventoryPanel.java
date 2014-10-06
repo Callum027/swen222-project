@@ -1,6 +1,7 @@
 package game.ui.application;
 
 import game.Main;
+import game.ui.GameFrame;
 import game.world.items.Equipment;
 import game.world.items.MovableItem;
 
@@ -198,24 +199,19 @@ public class InventoryPanel extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
+		if (GameFrame.selectedItem != null) {
+			addItem(GameFrame.selectedItem);
+		}
+		GameFrame.selectedItem = null;
 
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		if (itemSelected != null) {
-			int i = -1;
-			if (itemSelected instanceof Equipment) {
-				i = equip.addEquip((Equipment) itemSelected);
-			}
-			if (i != -1) {
-				itemSelected = null;
-				previousSlot = -1;
-			} else {
-				returnItem();
-			}
+			GameFrame.selectedItem = itemSelected;
 		}
+		itemSelected = null;
 		repaint();
 	}
 

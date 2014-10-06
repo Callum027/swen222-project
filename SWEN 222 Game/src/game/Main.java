@@ -82,9 +82,9 @@ public class Main {
 		gameWindow = new GameFrame(1280, 720, Cursor.getDefaultCursor());
 		Area area = ParserIterative.parseArea(areaFile, tileMap);
 		gameWorld.addArea(area);
-		//Image shelfImage = getImage("shelf.png");
-		//Furniture shelf = new Furniture(3, 5, 2, "shelf", shelfImage, null);
-		//area.addItem(shelf, shelf.getX(), shelf.getY());
+//		Image shelfImage = getImage("shelf.png");
+//		Furniture shelf = new Furniture(3, 5, 2, "shelf", shelfImage, null);
+//		area.addItem(shelf, shelf.getX(), shelf.getY());
 		gameWindow.getRender().setArea(area);
 		gameWindow.getRender().repaint();
 	}

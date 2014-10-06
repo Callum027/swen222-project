@@ -35,7 +35,7 @@ import javax.swing.JTextPane;
 public class GameFrame extends JFrame implements ActionListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	public static final int NORTH = 0;
 	public static final int EAST = 1;
 	public static final int SOUTH = 2;
@@ -45,7 +45,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 	private EquipPanel equip;
 	private InventoryPanel inventory;
 	public static MovableItem selectedItem;
-	
+
 	private int direction;
 
 	/**
@@ -82,11 +82,11 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 		pack();
 		setVisible(true);
 	}
-	
+
 	public RenderingPanel getRender() {
 		return render;
 	}
-	
+
 	/**
 	 * Sets up the menu bar at the top of the GameFrame.
 	 */
@@ -125,37 +125,36 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 		if (action.equals("Quit")) {
 			quitGame();
 		}
-	
+
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		//System.out.println(e.getKeyCode()+"");
-		if (e.getKeyCode()==KeyEvent.VK_ESCAPE) {
-			System.out.println("WOO!");
-			//openMenu();
-		}
+
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if(e.getKeyCode() == KeyEvent.VK_W){
+		if(e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_UP){
 			direction = NORTH;
 		}
-		else if(e.getKeyCode() == KeyEvent.VK_A){
+		else if(e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_LEFT){
 			//System.out.println("pressed A");
 			direction = (direction == WEST) ? NORTH : direction + 1;
 		}
-		else if(e.getKeyCode() == KeyEvent.VK_S){
+		else if(e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_DOWN){
 			direction = SOUTH;
 		}
-		else if(e.getKeyCode() == KeyEvent.VK_D){
+		else if(e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_RIGHT){
 			//System.out.println("pressed D");
 			direction = (direction == NORTH) ? WEST : direction - 1;
 		}
+		else if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
+			quitGame();
+		}
 		render.setDirection(direction);
 		render.repaint();
-		
+
 		if(direction == NORTH){
 			System.out.println("facing north");
 		}
@@ -168,7 +167,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 		else if(direction == WEST){
 			System.out.println("facing west");
 		}
-		
+
 	}
 
 	// unneeded method
