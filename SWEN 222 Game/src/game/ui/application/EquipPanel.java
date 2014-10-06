@@ -337,7 +337,9 @@ public class EquipPanel extends JPanel implements MouseListener {
 	 *            the slot the equipment is to be put into
 	 */
 	private void dropEquip(int equip) {
-		if(equipSelected==null){return;}
+		if (equipSelected == null) {
+			return;
+		}
 		switch (equip) {
 		case HEAD_SLOT:
 			if (items.getHead() == null && equipSelected.getSlot() == HEAD_SLOT) {
@@ -434,8 +436,9 @@ public class EquipPanel extends JPanel implements MouseListener {
 	public void mouseEntered(MouseEvent e) {
 		if (GameFrame.selectedItem != null
 				&& GameFrame.selectedItem instanceof Equipment) {
-
 			addEquip((Equipment) GameFrame.selectedItem);
+		} else {
+			inventory.returnItem(GameFrame.selectedItem);
 		}
 		GameFrame.selectedItem = null;
 	}
