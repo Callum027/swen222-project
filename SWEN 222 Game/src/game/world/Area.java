@@ -20,6 +20,8 @@ import game.world.tiles.WallTile;
  */
 public class Area {
 	private int areaID;
+	private int height = -1;
+	private int width = -1;
 	private Item[][] items; //the items located on this area
 	private List<Item> itemsList; // the items located in this area
 	private GameWorld world;
@@ -160,6 +162,11 @@ public class Area {
 
 	public void setAreaID(int id) {
 		areaID = id;
+	}
+
+	public void setHeight(int h) {
+		height = h;
+
 	}
 
 //	public static Area parseArea(String[] data, Map<Integer, Tile> tileMap){

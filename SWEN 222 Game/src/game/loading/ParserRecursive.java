@@ -40,7 +40,19 @@ private static String next;
 		}
 		if(gobble(scan, "<ID>")){
 			int id = parseInt(scan);
+			if(!gobble(scan, "</ID>")){
+				error("Missing ID close Declaration.");
+			}
 			newArea.setAreaID(id);
+			return parseArea(newArea, scan, tileMap);
+		}
+		if(gobble(scan, "<Height>")){
+			int height = parseInt(scan);
+			if(!gobble(scan, "</Height>")){
+				error("Missing ID close Declaration.");
+			}
+			newArea.setHeight(height);
+			return parseArea(newArea, scan, tileMap);
 		}
 		return null;
 	}
