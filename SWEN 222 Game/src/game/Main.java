@@ -29,7 +29,7 @@ import game.world.tiles.WallTile;
 public class Main {
 
 	private static String[] tilesFile = new String[] { "1, FloorTile, floor_tile3" };
-	private static String areaFile = "src/game/loading/Area.xml";
+	private static String areaFile = "src/game/loading/Area2.xml";
 	private static GameFrame gameWindow;
 	private static final String IMAGE_PATH = "ui/graphics/";
 	private static GameWorld gameWorld = new GameWorld();
