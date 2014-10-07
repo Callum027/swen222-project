@@ -11,7 +11,7 @@ import game.world.characters.PlayableCharacter;
  */
 public class WarriorClass implements GameClass{
 
-	//These are the stat bonuses for the Player. They're added on-top of the Player's stats
+	//These are the stat bonuses for the Player. They are added on-top of the Player is stats
 	private final int strength = 25;
 	private final int dexterity = 15;
 	private final int intelligence = 10;
