@@ -159,9 +159,15 @@ public class Server extends Thread {
 				InputStream is = clientSocket.getInputStream();
 				OutputStream os = clientSocket.getOutputStream();
 				
+				System.out.println("server: accepted connection from " + clientSocket.getInetAddress());
+				
 				while (!closing.booleanValue()) {
+					System.out.println("server: listening for packets from " + clientSocket.getInetAddress());
+					
 					// Read a new GamePacket from the client.
 					GamePacket gp = GamePacket.read(is);
+					
+					System.out.println("server: received packet of type " + gp.getType() + " from " + clientSocket.getInetAddress());
 					
 					// Determine the next action according to the contents of the GamePacket.
 					switch (gp.getType())
@@ -170,8 +176,7 @@ public class Server extends Thread {
 						case EVENT:
 							GameEvent ge = (GameEvent)gp.getPayload();
 							
-							System.out.println("server: received an EVENT packet from " + clientSocket.getInetAddress());
-							System.out.println("        EVENT type: " + ge.getType());
+							System.out.println("server: GameEvent type is: " + ge.getType());
 							
 							// Update the game world.
 							geb.broadcastGameEvent(ge);

@@ -1,6 +1,7 @@
 package game.net;
 
 import game.world.GameEvent;
+import game.world.GameEvent.Type;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -149,11 +150,11 @@ public class GamePacket implements Streamable {
 		 * @return GamePacket.Type
 		 */
 		public static Type read(InputStream is) throws IOException {
-			return getTypeFromID((byte)is.read());
+			return getTypeFromID(NetIO.readByte(is));
 		}
 		
 		public void write(OutputStream os) throws IOException {
-			os.write((int)id);
+			NetIO.writeByte(os, id);
 		}
 	}
 }

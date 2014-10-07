@@ -78,6 +78,24 @@ public class NetIO {
 	}
 	
 	/**
+	 * Read a byte array from the input stream. This only reads as many bytes as the given byte array
+	 * can hold.
+	 * 
+	 * @param is Input stream
+	 * @param bytes Byte array object to read into
+	 * @throws IOException
+	 */
+	public static void readByteArray(InputStream is, byte[] bytes) throws IOException
+	{
+		is.read(bytes);
+	}
+	
+	public static void readByteArray(InputStream is, byte[] bytes, int off, int len) throws IOException
+	{
+		is.read(bytes, off, len);
+	}
+	
+	/**
 	 * Write a byte to the output stream.
 	 * 
 	 * @param os Output stream

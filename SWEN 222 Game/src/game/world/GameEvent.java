@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import game.net.NetIO;
 import game.net.Streamable;
 import game.world.events.InteractEvent;
 import game.world.events.MoveEvent;
@@ -99,11 +100,11 @@ public abstract class GameEvent implements Streamable {
 		 * @return GameEvent.Type
 		 */
 		public static Type read(InputStream is) throws IOException {
-			return getTypeFromID((byte)is.read());
+			return getTypeFromID(NetIO.readByte(is));
 		}
 		
 		public void write(OutputStream os) throws IOException {
-			os.write((int)id);
+			NetIO.writeByte(os, id);
 		}
 	}
 }

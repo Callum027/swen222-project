@@ -35,7 +35,7 @@ public class ClientServerTests {
 		client.gameEventOccurred(new MoveEvent(0, 0, new PlayableCharacter(0, 0, "test", 0, 0)));
 		
 		try {
-			Thread.sleep(100);
+			Thread.sleep(1000);
 		}
 		catch (InterruptedException e) {
 			// TODO Auto-generated catch block

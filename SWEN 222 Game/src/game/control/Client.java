@@ -68,8 +68,12 @@ public class Client extends Thread implements GameEventListener {
 	 * @return true if connected, false otherwise
 	 */
 	public boolean connect(String host, int port) {
+		if (socket != null)
+			return false;
+		
 		try {
 			socket = new Socket(InetAddress.getByName(host), port);
+			System.out.println("client: connected to " + socket.getInetAddress());
 			return true;
 		}
 		catch (UnknownHostException e) {
@@ -86,6 +90,7 @@ public class Client extends Thread implements GameEventListener {
 			close();
 		}
 		
+		socket = null;
 		return false;
 	}
 	
@@ -161,6 +166,7 @@ public class Client extends Thread implements GameEventListener {
 				// Get the output stream of the socket.
 				OutputStream os = socket.getOutputStream();
 				
+				System.out.println("client: sending a GameEvent of type " + ge.getType() + " to the server");
 				// Pack the game event into a game packet, and send it off!
 				new GamePacket(GamePacket.Type.EVENT, ge).write(os);
 			}
