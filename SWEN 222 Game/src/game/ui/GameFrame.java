@@ -63,7 +63,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 	 * @param cursor
 	 *            enables the game to run with a custom cursor
 	 */
-	public GameFrame(int gameWindowX, int gameWindowY, Cursor cursor) {
+	public GameFrame(int gameWindowX, int gameWindowY) {
 		super("An Excellent Adventure!");
 		setupMenuBar();
 		direction = NORTH;
@@ -80,7 +80,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 		appPane.add(inventory);
 		add(appPane);
 		addKeyListener(this);
-		setCursor(cursor);
+		//setCursor(Cursor.DEFAULT_CURSOR);
 		setFocusable(true);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);

@@ -37,7 +37,7 @@ public class Main {
 	private static Area area = ParserIterative.parseArea(areaFile, tileMap);
 
 	private static GameWorld gameWorld = new GameWorld();
-	private static GameFrame gameWindow = new GameFrame(1280, 720, Cursor.getDefaultCursor());
+	private static GameFrame gameWindow = new GameFrame(1280, 720);
 
 	/**
 	 * Quick'n'dirty processing of command line arguments.

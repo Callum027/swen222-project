@@ -50,14 +50,14 @@ public class RenderingPanel extends JPanel implements MouseListener {
 	 * Constructor:
 	 *
 	 */
-	public RenderingPanel(int direction){
+	public RenderingPanel(int direction) {
 		super();
 		this.direction = direction;
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		addMouseListener(this);
-		test = new Furniture(0, 0, 2, "temp",
-				Main.getImage("SpriteTEST4.png")	, null);
-		
+		test = new Furniture(0, 0, 2, "temp", Main.getImage("SpriteTEST4.png"),
+				null);
+
 	}
 
 	/**
@@ -97,8 +97,8 @@ public class RenderingPanel extends JPanel implements MouseListener {
 		}
 	}
 
-	private Point rotatePosition(Point p, int width, int height, int count){
-		if(count < direction){
+	private Point rotatePosition(Point p, int width, int height, int count) {
+		if (count < direction) {
 			int length = (count % 2 == 0) ? height : width;
 			int y = p.x;
 			int x = length - p.y - 1;
@@ -185,35 +185,38 @@ public class RenderingPanel extends JPanel implements MouseListener {
 			drawFloors(g, tiles, items);
 			drawBoundingBoxes(g);
 			// draw test
-			//Point draw = rotatePosition(new Point(test.getX(), test.getY()), tiles[0].length, tiles.length, 0);
-			//Point draw = new Point(test.getX(), test.getY());
-			//System.out.println(draw);
-			//int x = startX + (DX * draw.y) - (draw.x * DX);
-			//int y = startY + (DY * (draw.x + draw.y)) - (test.getHeight() * FloorTile.HEIGHT);
-			//test.draw(g, x, y);
+			// Point draw = rotatePosition(new Point(test.getX(), test.getY()),
+			// tiles[0].length, tiles.length, 0);
+			// Point draw = new Point(test.getX(), test.getY());
+			// System.out.println(draw);
+			// int x = startX + (DX * draw.y) - (draw.x * DX);
+			// int y = startY + (DY * (draw.x + draw.y)) - (test.getHeight() *
+			// FloorTile.HEIGHT);
+			// test.draw(g, x, y);
 			// drawTileBoxes(g);
 			drawCharacter(g);
 		}
 	}
 
-	private void drawCharacter(Graphics g){
+	private void drawCharacter(Graphics g) {
 		int x = 0;
 		int y = 0;
 		Point draw = new Point(test.getX(), test.getY());
-		if(direction == GameFrame.NORTH){
+		if (direction == GameFrame.NORTH) {
 			x = startX + (DX * draw.y) - (draw.x * DX);
-			y = startY + (DY * (draw.x + draw.y)) - (test.getHeight() * FloorTile.HEIGHT);
-		}
-		else if(direction == GameFrame.EAST){
+			y = startY + (DY * (draw.x + draw.y))
+					- (test.getHeight() * FloorTile.HEIGHT);
+		} else if (direction == GameFrame.EAST) {
 			int start = area.getTiles()[0].length - 1;
 			x = startX + (DX * (start - draw.y)) + ((start - draw.x) * DX);
-			y = startY + (DY * (start -(draw.x + start - draw.y)) - (test.getHeight() * FloorTile.HEIGHT));
-		}
-		else if(direction == GameFrame.SOUTH){
+			y = startY
+					+ (DY * (start - (draw.x + start - draw.y)) - (test
+							.getHeight() * FloorTile.HEIGHT));
+		} else if (direction == GameFrame.SOUTH) {
 			x = startX + (DX * draw.y) - (draw.x * DX);
-			y = startY + (DY * (draw.x + draw.y)) - (test.getHeight() * FloorTile.HEIGHT);
-		}
-		else if(direction == GameFrame.WEST){
+			y = startY + (DY * (draw.x + draw.y))
+					- (test.getHeight() * FloorTile.HEIGHT);
+		} else if (direction == GameFrame.WEST) {
 
 		}
 		test.draw(g, x, y);
@@ -343,8 +346,8 @@ public class RenderingPanel extends JPanel implements MouseListener {
 		}
 	}
 
-	private void drawBoundingBoxes(Graphics g){
-		for(BoundingBox b : tileBoundingBoxes){
+	private void drawBoundingBoxes(Graphics g) {
+		for (BoundingBox b : tileBoundingBoxes) {
 			g.fillPolygon(b);
 		}
 	}
@@ -373,17 +376,19 @@ public class RenderingPanel extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		System.out.println("Clicked: (" + e.getX() + ", " + e.getY() + ")");
-		Point p = findPosition(new Point(e.getX(), e.getY()));
-		if (p != null) {
-			System.out.println("Area position: (" + p.x + ", " + p.y + ")");
-			test.setX(p.x);
-			test.setY(p.y);
-			// System.out.println("Test position: (" + test.getX() + ", " +
-			// test.getY() + ")");
-			repaint();
-		} else {
-			System.out.println("Position not on board.");
+		if (e.getButton() == MouseEvent.BUTTON3) {
+			System.out.println("Clicked: (" + e.getX() + ", " + e.getY() + ")");
+			Point p = findPosition(new Point(e.getX(), e.getY()));
+			if (p != null) {
+				System.out.println("Area position: (" + p.x + ", " + p.y + ")");
+				test.setX(p.x);
+				test.setY(p.y);
+				// System.out.println("Test position: (" + test.getX() + ", " +
+				// test.getY() + ")");
+				repaint();
+			} else {
+				System.out.println("Position not on board.");
+			}
 		}
 		// findItem(e.getX(), e.getY());
 
@@ -398,7 +403,7 @@ public class RenderingPanel extends JPanel implements MouseListener {
 
 	public void mouseEntered(MouseEvent e) {
 		if (GameFrame.selectedItem != null) {
-			area.addItem(GameFrame.selectedItem, 0, 0); //wrong
+			area.addItem(GameFrame.selectedItem, 0, 0); // wrong
 			GameFrame.selectedItem = null;
 		}
 	}
