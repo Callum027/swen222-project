@@ -9,7 +9,7 @@ import java.awt.Image;
  * @author Nick Tran
  *
  */
-public class MovableItem extends Item {
+public class MoveableItem extends Item {
 
 	private int worth; // how much you can buy the weapon for
 
@@ -25,7 +25,7 @@ public class MovableItem extends Item {
 	 * @param name
 	 *            the anme of the item
 	 */
-	public MovableItem(int x, int y, int height, String name, Image image,
+	public MoveableItem(int x, int y, int height, String name, Image image,
 			int worth) {
 		super(x, y, height, name, image);
 		this.worth = worth;

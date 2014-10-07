@@ -4,7 +4,7 @@ import game.Main;
 import game.ui.application.EquipPanel;
 import game.ui.application.InventoryPanel;
 import game.ui.rendering.RenderingPanel;
-import game.world.items.MovableItem;
+import game.world.items.MoveableItem;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -50,7 +50,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 	private RenderingPanel render;
 	private EquipPanel equip;
 	private InventoryPanel inventory;
-	public static MovableItem selectedItem;
+	public static MoveableItem selectedItem;
 	/*
 	 * selectedItem is the item that has been selected in one of the panels and
 	 * is stored here so that it can be easily moved between panels.

@@ -6,7 +6,7 @@ import game.world.Area;
 import game.world.BoundingBox;
 import game.world.items.Furniture;
 import game.world.items.Item;
-import game.world.items.MovableItem;
+import game.world.items.MoveableItem;
 import game.world.tiles.FloorTile;
 import game.world.tiles.Tile;
 

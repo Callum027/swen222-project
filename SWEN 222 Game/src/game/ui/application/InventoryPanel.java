@@ -3,7 +3,7 @@ package game.ui.application;
 import game.Main;
 import game.ui.GameFrame;
 import game.world.items.Equipment;
-import game.world.items.MovableItem;
+import game.world.items.MoveableItem;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -30,10 +30,10 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	public static final int INVENTORY_WIDTH = 5;
 	public static final int INVENTORY_HEIGHT = 4;
 	public static final int squareSize = 45;
-	private MovableItem[] items = new MovableItem[INVENTORY_HEIGHT
+	private MoveableItem[] items = new MoveableItem[INVENTORY_HEIGHT
 			* INVENTORY_WIDTH];
 	private int cats = 1;
-	private MovableItem itemSelected;
+	private MoveableItem itemSelected;
 	private EquipPanel equip;
 	private int previousSlot = -1;
 
@@ -47,7 +47,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	 *            the height of the panel
 	 */
 	public InventoryPanel() {
-		addItem(new MovableItem(0, 0, squareSize, "cat",
+		addItem(new MoveableItem(0, 0, squareSize, "cat",
 				Main.getImage("cat-inv.png"), 9001));
 		addItem(new Equipment(0, 0, squareSize, "2nd Hat",
 				Main.getImage("cat-inv.png"), 100, 800, 9001,
@@ -215,7 +215,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	 * @param item
 	 *            The item to be returned
 	 */
-	public void returnItem(MovableItem item) {
+	public void returnItem(MoveableItem item) {
 		if (previousSlot != -1) {
 			itemSelected = item;
 			dropItem(previousSlot);
@@ -245,7 +245,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	 *
 	 * @return an array of Movable items, which is the inventory
 	 */
-	public MovableItem[] getItems() {
+	public MoveableItem[] getItems() {
 		return items;
 	}
 
@@ -255,7 +255,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	 * @param items
 	 *            the array of items for the inventory
 	 */
-	public void setItems(MovableItem[] items) {
+	public void setItems(MoveableItem[] items) {
 		this.items = items;
 	}
 
@@ -280,7 +280,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	 * @return the index that the item was added, returns -1 if there is no room
 	 *         available.
 	 */
-	public int addItem(MovableItem item) {
+	public int addItem(MoveableItem item) {
 		for (int i = 0; i < items.length; i++) {
 			if (items[i] == null) {
 				items[i] = item;

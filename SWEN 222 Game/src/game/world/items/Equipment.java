@@ -7,7 +7,7 @@ import java.awt.Image;
  * @author Nick Tran
  *
  */
-public class Equipment extends MovableItem{
+public class Equipment extends MoveableItem{
 
 
 	private int attack; //the attack increase that the equipment gives
@@ -66,8 +66,7 @@ public class Equipment extends MovableItem{
 	}
 
 	public String toString(){
-		String str = super.getName()+"\nAttack: "+attack+"\nDefence: "+defence+"\nWorth: "+super.getWorth();
-		return str;
+		return super.toString()+"\nAttack: "+attack+"\nDefence: "+defence;
 	}
 
 
