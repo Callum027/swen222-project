@@ -316,20 +316,24 @@ public class EquipPanel extends JPanel implements MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		int y = e.getY();
-		int x = e.getX();
-		int equip = findEquip(x, y);
-		selectEquip(equip);
-		repaint();
+		if (e.getButton() == MouseEvent.BUTTON1) {
+			int y = e.getY();
+			int x = e.getX();
+			int equip = findEquip(x, y);
+			selectEquip(equip);
+			repaint();
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		int x = e.getX();
-		int y = e.getY();
-		int equip = findEquip(x, y);
-		dropEquip(equip);
-		repaint();
+		if (e.getButton() == MouseEvent.BUTTON1) {
+			int x = e.getX();
+			int y = e.getY();
+			int equip = findEquip(x, y);
+			dropEquip(equip);
+			repaint();
+		}
 	}
 
 	/**

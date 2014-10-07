@@ -160,27 +160,31 @@ public class InventoryPanel extends JPanel implements MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		int x = e.getX();
-		int y = e.getY();
-		int inv = findInventorySquare(x, y);
-		selectItem(inv);
-		if (itemSelected != null) {
-			System.out.println("Item: " + itemSelected.toString());
+		if (e.getButton() == MouseEvent.BUTTON1) {
+			int x = e.getX();
+			int y = e.getY();
+			int inv = findInventorySquare(x, y);
+			selectItem(inv);
+			if (itemSelected != null) {
+				System.out.println("Item: " + itemSelected.toString());
+			}
+			repaint();
 		}
-		repaint();
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		int x = e.getX();
-		int y = e.getY();
-		int inv = findInventorySquare(x, y);
-		// if (inv < 0) {
-		dropItem(inv);
-		repaint();
-		// }
-		itemSelected = null;
-		previousSlot = -1;
+		if (e.getButton() == MouseEvent.BUTTON1) {
+			int x = e.getX();
+			int y = e.getY();
+			int inv = findInventorySquare(x, y);
+			// if (inv < 0) {
+			dropItem(inv);
+			repaint();
+			// }
+			itemSelected = null;
+			previousSlot = -1;
+		}
 	}
 
 	/**
