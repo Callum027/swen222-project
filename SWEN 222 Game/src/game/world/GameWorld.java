@@ -4,6 +4,7 @@ import game.world.characters.PlayableCharacter;
 import game.world.events.MoveEvent;
 import game.world.tiles.Tile;
 
+import java.awt.Point;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -74,7 +75,7 @@ public class GameWorld implements GameEventListener{
 		if (ge instanceof MoveEvent){
 			MoveEvent move = (MoveEvent) ge;
 			PlayableCharacter player = move.getPlayer();
-			player.moveTo(move.getX(), move.getY());
+			player.moveToPosition(new Point(move.getX(), move.getY()));
 		}
 	}
 
