@@ -447,7 +447,11 @@ public class EquipPanel extends JPanel implements MouseListener {
 	public void mouseEntered(MouseEvent e) {
 		if (GameFrame.selectedItem != null
 				&& GameFrame.selectedItem instanceof Equipment) {
-			addEquip((Equipment) GameFrame.selectedItem);
+			Equipment equip = (Equipment) GameFrame.selectedItem;
+			if(addEquip(equip)==-1){
+				inventory.returnItem(equip);
+			}
+
 		} else {
 			inventory.returnItem(GameFrame.selectedItem);
 		}

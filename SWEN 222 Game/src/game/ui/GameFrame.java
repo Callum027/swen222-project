@@ -68,7 +68,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 	 *            enables the game to run with a custom cursor
 	 */
 	public GameFrame(int gameWindowX, int gameWindowY) {
-		super("An Excellent Adventure!");
+		super("The not so Excellent Adventure!");
 		setupMenuBar();
 		direction = NORTH;
 		// set the frame to have a layout so that the screens are in proportion
