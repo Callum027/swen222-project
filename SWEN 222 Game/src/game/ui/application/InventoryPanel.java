@@ -36,6 +36,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	private MoveableItem itemSelected;
 	private EquipPanel equip;
 	private int previousSlot = -1;
+	private Image background;
 
 	/**
 	 * Makes a new InventoryPanel which extends JPanel and sets the width and
@@ -54,6 +55,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 				EquipPanel.HEAD_SLOT));
 		setPreferredSize(new Dimension(width, height));
 		addMouseListener(this);
+		background = Main.getImage("Inventory.png");
 	}
 
 	@Override
@@ -71,7 +73,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	 *            a Graphics object
 	 */
 	private void drawBlankInventory(Graphics g) {
-		for (int i = 0; i < INVENTORY_WIDTH; i++) {
+		/*for (int i = 0; i < INVENTORY_WIDTH; i++) {
 			for (int j = 0; j < INVENTORY_HEIGHT; j++) {
 				g.setColor(Color.white);
 				g.fillRect(squareSize * i, squareSize * j, squareSize,
@@ -81,9 +83,12 @@ public class InventoryPanel extends JPanel implements MouseListener {
 						squareSize);
 			}
 		}
+
 		Image img = Main.getImage("cat-inv.png");
-		g.setColor(Color.white);
 		g.drawImage(img, 10, height - 50, null);
+		*/
+		g.drawImage(background, 0, 0, null);
+		g.setColor(Color.white);
 		g.drawString("" + cats, 65, height - 10);
 		drawInventoryItems(g);
 	}
