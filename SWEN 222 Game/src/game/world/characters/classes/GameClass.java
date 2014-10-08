@@ -35,6 +35,4 @@ public interface GameClass {
 	public void attack();
 
 	public void calculateDamage();
-
-	public void write(OutputStream os) throws IOException;
 }

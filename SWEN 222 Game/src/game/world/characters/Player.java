@@ -62,10 +62,15 @@ public class Player extends GameCharacter implements Streamable, Attackable{
 
 	@Override
 	public void write(OutputStream os) throws IOException {
-		gameClass.write(os);
+		NetIO.writeByte(os, (byte)super.getId());
 	}
 
 	public EquippedItems getEquipped() {
 		return equipped;
+	}
+
+	public static Player read(InputStream is) throws IOException {
+		byte id = NetIO.readByte(is);
+		return Main.getGameWorld().getPlayer(id);
 	}
 }

@@ -1,5 +1,7 @@
 package game.world.characters.classes;
 
+import game.net.NetIO;
+
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -36,10 +38,4 @@ public class MageClass implements GameClass{
 		// TODO Auto-generated method stub
 
 	}
-	@Override
-	public void write(OutputStream os) throws IOException {
-		// TODO Auto-generated method stub
-
-	}
-
 }
