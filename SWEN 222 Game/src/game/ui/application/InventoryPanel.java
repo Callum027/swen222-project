@@ -20,9 +20,9 @@ import javax.swing.JPanel;
  * inventory here as well so it can draw it easier. Also has a record of the
  * players cats so it can draw them too. This was done rather than having the
  * whole player object stored it can just have the inventory stored.
- *
+ * 
  * @author Harry
- *
+ * 
  */
 public class InventoryPanel extends JPanel implements MouseListener {
 
@@ -42,7 +42,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	/**
 	 * Makes a new InventoryPanel which extends JPanel and sets the width and
 	 * height fields so that the panel can be a certain size
-	 *
+	 * 
 	 * @param width
 	 *            the width of the panel
 	 * @param height
@@ -67,7 +67,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	/**
 	 * Draws a grid from the size of the inventory and makes it look nice-ish in
 	 * a square
-	 *
+	 * 
 	 * @param g
 	 *            a Graphics object
 	 */
@@ -80,7 +80,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 
 	/**
 	 * Iterates through the whole inventory drawing the items in it
-	 *
+	 * 
 	 * @param g
 	 */
 	private void drawInventoryItems(Graphics g) {
@@ -88,7 +88,8 @@ public class InventoryPanel extends JPanel implements MouseListener {
 		int k = 0;
 		for (int i = 0; i < items.length; i++) {
 			if (items[i] != null) {
-				items[i].draw(g, (j * (squareSize+2))+8, (k * (squareSize+2))+22);
+				items[i].draw(g, (j * (squareSize + 2)) + 8,
+						(k * (squareSize + 2)) + 22);
 			}
 			j++;
 			if (j == INVENTORY_WIDTH) {
@@ -105,7 +106,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 
 	/**
 	 * Uses two ints to find the location in the inventory.
-	 *
+	 * 
 	 * @param x
 	 *            the x of the panel
 	 * @param y
@@ -113,22 +114,23 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	 * @return returns an index value for the array
 	 */
 	private int findInventorySquare(int x, int y) {
-		int XSelect = x / squareSize; // works out how far along the grid it is
-		int ySelect = (y / squareSize) * INVENTORY_WIDTH;
+		int XSelect = (x / (squareSize + 8));
+		// works out how far along the grid it is
+		int ySelect = ((y / (squareSize + 8)) * INVENTORY_WIDTH);
 		/*
 		 * It works out how far down the grid it is and then times it by
 		 * INVENTORY_WIDTH This is due to the fact that it is saved in a 1D
 		 * array rather than a 2D array even though it is expressed as a 2D
 		 * array
 		 */
-
+		System.out.println("X = " + XSelect + " Y = " + ySelect);
 		int selected = XSelect + ySelect;
+		System.out.println("Selected = " + selected);
 		/*
 		 * adds the x and y values together and represents it as an index in the
 		 * array
 		 */
-		if (selected > INVENTORY_HEIGHT * INVENTORY_WIDTH
-				|| XSelect > INVENTORY_WIDTH || ySelect > INVENTORY_HEIGHT) {
+		if (selected > INVENTORY_HEIGHT * INVENTORY_WIDTH) {
 			// this is to make sure that the place clicked is in the inventory
 			selected = -1; // if it's not then set it to -1
 		}
@@ -138,7 +140,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	/**
 	 * This method is called when the mouse is clicked and determines the square
 	 * in the array that the items are stored in
-	 *
+	 * 
 	 * @param x
 	 *            the mouse X
 	 * @param y
@@ -183,7 +185,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 
 	/**
 	 * This method will drop the item, into an inventory slot
-	 *
+	 * 
 	 * @param x
 	 * @param y
 	 */
@@ -202,7 +204,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	 * Returns the item back to the inventory to the slot it was from, used if
 	 * trying to move non equipment to the equipment panel Or if you are trying
 	 * to drop an item on top of another item in the inventory
-	 *
+	 * 
 	 * @param item
 	 *            The item to be returned
 	 */
@@ -210,6 +212,8 @@ public class InventoryPanel extends JPanel implements MouseListener {
 		if (previousSlot != -1) {
 			itemSelected = item;
 			dropItem(previousSlot);
+			itemSelected = null;
+			previousSlot = -1;
 		}
 	}
 
@@ -233,7 +237,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 
 	/**
 	 * gets the array of items in the inventory
-	 *
+	 * 
 	 * @return an array of Movable items, which is the inventory
 	 */
 	public MoveableItem[] getItems() {
@@ -242,7 +246,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 
 	/**
 	 * Sets the inventory to be a specific inventory
-	 *
+	 * 
 	 * @param items
 	 *            the array of items for the inventory
 	 */
@@ -253,7 +257,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	/**
 	 * Gives this panel an equipPanel. Used so that InventoryPanel can talk to
 	 * EquipPanel. Is called in the GameFrame to set everything up
-	 *
+	 * 
 	 * @param equip
 	 *            the equipment panel.
 	 */
@@ -265,7 +269,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	/**
 	 * Adds an item to the inventory panel and places it in the first available
 	 * slot
-	 *
+	 * 
 	 * @param item
 	 *            the item to be added to the inventory
 	 * @return the index that the item was added, returns -1 if there is no room
