@@ -403,7 +403,7 @@ public class RenderingPanel extends JPanel implements MouseListener {
 
 	public void mouseEntered(MouseEvent e) {
 		if (GameFrame.selectedItem != null) {
-			area.addItem(GameFrame.selectedItem, 0, 0); // wrong
+			area.addItem(GameFrame.selectedItem); // wrong
 			GameFrame.selectedItem = null;
 		}
 	}

@@ -142,7 +142,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 		 * adds the x and y values together and represents it as an index in the
 		 * array
 		 */
-		if (selected > INVENTORY_HEIGHT * INVENTORY_WIDTH) {
+		if (selected > INVENTORY_HEIGHT * INVENTORY_WIDTH || XSelect > INVENTORY_WIDTH || ySelect > INVENTORY_HEIGHT) {
 			// this is to make sure that the place clicked is in the inventory
 			selected = -1; // if it's not then set it to -1
 		}
