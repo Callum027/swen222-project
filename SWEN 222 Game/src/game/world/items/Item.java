@@ -1,5 +1,6 @@
 package game.world.items;
 
+import game.Main;
 import game.world.BoundingBox;
 import game.world.tiles.FloorTile;
 
@@ -37,6 +38,10 @@ public abstract class Item {
 	public Item(Point position, int height, String name) {
 		this.setHeight(height);
 		this.setName(name);
+		images = new Image[4];
+		for(int i = 0; i < images.length; i++){
+			images[i] = Main.getImage(name+".png");
+		}
 	}
 
 	/**

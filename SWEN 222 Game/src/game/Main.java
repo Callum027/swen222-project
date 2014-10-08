@@ -22,8 +22,9 @@ import javax.imageio.ImageIO;
 public class Main {
 
 
-	private static final String IMAGE_PATH = "src" + File.separatorChar + "ui" + File.separatorChar + "images";
+	private static final String IMAGE_PATH = "ui" + File.separatorChar + "images";
 	private static String areaFile = "src" + File.separatorChar + "game" + File.separatorChar + "loading" + File.separatorChar + "Area.xml";
+
 	private static String[] tilesFile = new String[] { "1, FloorTile, floor_tile3" };
 
 	/* Game mode: client, server, or client and server. */
