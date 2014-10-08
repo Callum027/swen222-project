@@ -38,11 +38,4 @@ public class WarriorClass implements GameClass{
 		// TODO Auto-generated method stub
 
 	}
-	@Override
-	public void write(OutputStream os) throws IOException {
-		// TODO Auto-generated method stub
-
-	}
-
-
 }
