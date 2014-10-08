@@ -20,13 +20,40 @@ import game.world.tiles.WallTile;
  */
 public class Area {
 	private int areaID;
-	private List<Item> itemsList; // the items located in this area
+	private List<Item> items; // the items located in this area
 	private Tile[][] tiles; //the tiles that make up this area
 	private WallTile[][][] walls;
 
 	public Area(Tile[][] tiles){
 		this.tiles = tiles;
-		itemsList = new ArrayList<Item>();
+		items = new ArrayList<Item>();
 	}
 
+	public int getAreaID() {
+		return areaID;
+	}
+
+	public void setAreaID(int areaID) {
+		this.areaID = areaID;
+	}
+
+	public Tile[][] getTiles() {
+		return tiles;
+	}
+
+	public WallTile[][][] getWalls() {
+		return walls;
+	}
+
+	public List<Item> getItems() {
+		return items;
+	}
+
+	public boolean addItem(Item item){
+		return items.add(item);
+	}
+
+	public boolean removeItem(Item item){
+		return items.remove(item);
+	}
 }

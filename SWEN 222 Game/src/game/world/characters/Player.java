@@ -25,16 +25,12 @@ import java.util.ArrayList;
  */
 public class Player extends GameCharacter implements Streamable, Attackable{
 
+	private int health;
+	private int attack;
+	private int defence;
 	private EquippedItems equipped; //the items that is currently equipped to the player
 	private GameClass gameClass; //either Warrior, Mage or Rogue
 
-	/**
-	 * The constructor: invokes the assignClass method and gives the player a class
-	 * @param x the x position of the player
-	 * @param y the y position of the player
-	 * @param name the name of the player
-	 * @param playerClass the class of the player
-	 */
 	public Player(Point point, String name, int uid, GameClass.playerClass playerClass){
 		super(point, name, uid);
 		assignClass(playerClass); //gives the player a class (behaviour)

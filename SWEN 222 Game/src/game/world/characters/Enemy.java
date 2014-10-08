@@ -1,5 +1,11 @@
 package game.world.characters;
 
+import java.awt.Point;
+
+import game.world.characters.classes.GameClass;
+import game.world.characters.classes.MageClass;
+import game.world.characters.classes.RogueClass;
+import game.world.characters.classes.WarriorClass;
 import game.world.items.Equipment;
 
 /**
@@ -7,28 +13,39 @@ import game.world.items.Equipment;
  * @author Nick Tran
  *
  */
-public class Enemy extends GameCharacter{
+public class Enemy extends GameCharacter implements Attackable{
 
-	private int cats; //the amount of cats they drop when they die
 	private int health;
 	private int attack;
-	private Equipment[] drops; //the items that the enemy drops when it dies
+	private int defence;
+	private GameClass gameClass; //either Warrior, Mage or Rogue
 
-	/**
-	 * The constructor
-	 * @param x the x position of the enemy
-	 * @param y the y position of the enemy
-	 * @param name the name of the enemy
-	 * @param drops the items the enemy drops when they die
-	 * @param attack the amount of damage the enemy deals with each strike
-	 * @param health the amount of health the enemy has
-	 * @param cats the amount of cats the enemy drops when it dies
-	 */
-	public Enemy(int x, int y, String name, Equipment[] drops, int attack, int health, int cats){
-		super(x, y, name);
-		this.drops = drops;
-		this.attack = attack;
-		this.health = health;
-		this.cats = cats;
+	public Enemy(Point point, String name, int uid, GameClass.playerClass playerClass){
+		super(point, name, uid);
+		assignClass(playerClass); //gives the player a class (behaviour)
+	}
+
+	public void assignClass(GameClass.playerClass playerClass){
+		switch (playerClass){
+			case WARRIOR:
+				gameClass = new WarriorClass();
+				break;
+			case ROGUE:
+				gameClass = new RogueClass();
+				break;
+			case MAGE:
+				gameClass = new MageClass();
+				break;
+		}
+	}
+
+	@Override
+	public void attack() {
+		gameClass.attack();
+	}
+
+	@Override
+	public void calculateDamage() {
+		gameClass.calculateDamage();
 	}
 }

@@ -25,12 +25,6 @@ public abstract class GameCharacter {
 	private final int id;
 	private final int MAXIMUM_CAPACITY = 20;
 
-	/**
-	 * The Constructor
-	 * @param x the x position
-	 * @param y the y position
-	 * @param name the name of the character
-	 */
 	public GameCharacter(Point position, String name, int id) {
 		this.name = name;
 		this.setCats(0);
@@ -39,11 +33,6 @@ public abstract class GameCharacter {
 		items = new ArrayList<MoveableItem>(MAXIMUM_CAPACITY);
 	}
 
-	/**
-	 * Moves the character to some postion
-	 * @param x the new x coordinate
-	 * @param y the new y coordinate
-	 */
 	public void moveToPosition(Point position){
 		this.setPosition(position);
 	}
