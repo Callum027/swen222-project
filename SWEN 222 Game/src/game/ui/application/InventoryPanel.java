@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -48,11 +49,9 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	 *            the height of the panel
 	 */
 	public InventoryPanel() {
-		addItem(new MoveableItem(0, 0, squareSize, "cat",
-				Main.getImage("cat-inv.png"), 9001));
-		addItem(new Equipment(0, 0, squareSize, "2nd Hat",
-				Main.getImage("cat-inv.png"), 100, 800, 9001,
-				EquipPanel.HEAD_SLOT));
+		addItem(new MoveableItem(new Point(0, 0), squareSize, "cat-inv", 9001));
+		addItem(new Equipment(new Point(0, 0), squareSize, "cat-inv", 100, 800,
+				9001, EquipPanel.HEAD_SLOT));
 		setPreferredSize(new Dimension(width, height));
 		addMouseListener(this);
 		background = Main.getImage("Inventory.png");
@@ -73,20 +72,16 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	 *            a Graphics object
 	 */
 	private void drawBlankInventory(Graphics g) {
-		/*for (int i = 0; i < INVENTORY_WIDTH; i++) {
-			for (int j = 0; j < INVENTORY_HEIGHT; j++) {
-				g.setColor(Color.white);
-				g.fillRect(squareSize * i, squareSize * j, squareSize,
-						squareSize);
-				g.setColor(Color.black);
-				g.drawRect(squareSize * i, squareSize * j, squareSize,
-						squareSize);
-			}
-		}
-
-		Image img = Main.getImage("cat-inv.png");
-		g.drawImage(img, 10, height - 50, null);
-		*/
+		/*
+		 * for (int i = 0; i < INVENTORY_WIDTH; i++) { for (int j = 0; j <
+		 * INVENTORY_HEIGHT; j++) { g.setColor(Color.white);
+		 * g.fillRect(squareSize * i, squareSize * j, squareSize, squareSize);
+		 * g.setColor(Color.black); g.drawRect(squareSize * i, squareSize * j,
+		 * squareSize, squareSize); } }
+		 *
+		 * Image img = Main.getImage("cat-inv.png"); g.drawImage(img, 10, height
+		 * - 50, null);
+		 */
 		g.drawImage(background, 0, 0, null);
 		g.setColor(Color.white);
 		g.drawString("" + cats, 65, height - 10);
@@ -142,7 +137,8 @@ public class InventoryPanel extends JPanel implements MouseListener {
 		 * adds the x and y values together and represents it as an index in the
 		 * array
 		 */
-		if (selected > INVENTORY_HEIGHT * INVENTORY_WIDTH || XSelect > INVENTORY_WIDTH || ySelect > INVENTORY_HEIGHT) {
+		if (selected > INVENTORY_HEIGHT * INVENTORY_WIDTH
+				|| XSelect > INVENTORY_WIDTH || ySelect > INVENTORY_HEIGHT) {
 			// this is to make sure that the place clicked is in the inventory
 			selected = -1; // if it's not then set it to -1
 		}

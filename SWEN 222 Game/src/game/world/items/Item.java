@@ -39,9 +39,6 @@ public abstract class Item {
 		this.setName(name);
 	}
 
-
-
-
 	/**
 	 * Retrieves the height (size) of the item
 	 *
