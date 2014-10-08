@@ -12,6 +12,7 @@ import game.world.tiles.WallTile;
 
 import java.awt.Cursor;
 import java.awt.Image;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,8 +21,8 @@ import javax.imageio.ImageIO;
 
 public class Main {
 
-	private static final String IMAGE_PATH = "/swen222_Game/src/resources/";
-	private static String areaFile = "src/game/loading/Area.xml";
+	private static final String IMAGE_PATH = "src" + File.separatorChar + "ui" + File.separatorChar + "images";
+	private static String areaFile = "src" + File.separatorChar + "game" + File.separatorChar + "loading" + File.separatorChar + "Area.xml";
 	private static String[] tilesFile = new String[] { "1, FloorTile, floor_tile3" };
 
 	/* Game mode: client, server, or client and server. */
@@ -199,7 +200,7 @@ public class Main {
 	 * @return Image
 	 */
 	public static Image getImage(String filename) {
-		java.net.URL imageURL = Main.class.getResource(IMAGE_PATH + filename);
+		java.net.URL imageURL = Main.class.getResource(IMAGE_PATH  + File.separatorChar + filename);
 		
 		if (imageURL == null)
 		{
