@@ -5,6 +5,7 @@ import game.world.items.MoveableItem;
 import game.world.tiles.Tile;
 
 import java.awt.Image;
+import java.awt.List;
 import java.awt.Point;
 import java.util.ArrayList;
 
@@ -15,13 +16,14 @@ import java.util.ArrayList;
  */
 public abstract class GameCharacter {
 
-	private MoveableItem[] items;
+	private ArrayList<MoveableItem> items;
 	private final String name;
 	private Point position;
 	private Image[] images;
 	private int direction;
 	private int cats; //the amount of money/points the player has
 	private final int id;
+	private final int MAXIMUM_CAPACITY = 20;
 
 	/**
 	 * The Constructor
@@ -29,11 +31,12 @@ public abstract class GameCharacter {
 	 * @param y the y position
 	 * @param name the name of the character
 	 */
-	public GameCharacter(Point position, String name, int id, MoveableItem[] items) {
+	public GameCharacter(Point position, String name, int id) {
 		this.name = name;
 		this.setCats(0);
 		this.setDirection(0);
 		this.id = id;
+		items = new ArrayList<MoveableItem>(MAXIMUM_CAPACITY);
 	}
 
 	/**
@@ -53,11 +56,19 @@ public abstract class GameCharacter {
 
 	}
 
+	public boolean addItem(MoveableItem item){
+		return items.add(item);
+	}
+
+	public boolean removeItem(MoveableItem item){
+		return items.remove(item);
+	}
+
 	public String getName() {
 		return name;
 	}
 
-	public MoveableItem[] getItems() {
+	public ArrayList<MoveableItem> getItems() {
 		return items;
 	}
 

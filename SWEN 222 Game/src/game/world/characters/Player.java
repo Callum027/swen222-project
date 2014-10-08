@@ -35,8 +35,8 @@ public class Player extends GameCharacter implements Streamable, Attackable{
 	 * @param name the name of the player
 	 * @param playerClass the class of the player
 	 */
-	public Player(Point point, String name, int uid, GameClass.playerClass playerClass, MoveableItem[] inventory){
-		super(point, name, uid, inventory);
+	public Player(Point point, String name, int uid, GameClass.playerClass playerClass){
+		super(point, name, uid);
 		assignClass(playerClass); //gives the player a class (behaviour)
 	}
 
@@ -67,5 +67,9 @@ public class Player extends GameCharacter implements Streamable, Attackable{
 	@Override
 	public void write(OutputStream os) throws IOException {
 		gameClass.write(os);
+	}
+
+	public EquippedItems getEquipped() {
+		return equipped;
 	}
 }

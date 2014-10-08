@@ -14,14 +14,14 @@ import game.world.items.MoveableItem;
  */
 public class Merchant extends GameCharacter{
 
-	public Merchant(Point position, String name, int id, MoveableItem[] wares){
-		super(position, name, id, wares);
+	public Merchant(Point position, String name, int id){
+		super(position, name, id);
 	}
-	
-	public void sellWares(Equipment item, Player player){
+
+	public void sellWares(MoveableItem item, Player player){
 		player.setCats(player.getCats()-item.getWorth()); //deducts money from the player
-		player.getInventory()[player.getCount()] = item;
-		getWares().remove(item);
+		player.getItems().add(item);
+		getItems().remove(item);
 		this.setCats(this.getCats()+item.getWorth()); //increase the Merchant's money
 	}
 }
