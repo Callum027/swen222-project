@@ -12,6 +12,8 @@ public class ParserRecursive {
 private static String next;
 private static int height = -1;
 private static int width = -1;
+private static int id = -1;
+private static Tile[][] tiles;
 
 	public static Area parse(String fileName, Map<Integer, Tile> tileMap) {
 		if(fileName != null){
@@ -26,7 +28,7 @@ private static int width = -1;
 			}
 			parseArea(scan, tileMap);
 			scan.close();
-			return new Area();
+			return new Area(tiles);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (ParserError e) {
@@ -36,17 +38,17 @@ private static int width = -1;
 		return null;
 	}
 
-	private static Area parseArea(Scanner scan, Map<Integer, Tile> tileMap) throws ParserError {
+	private static void parseArea(Scanner scan, Map<Integer, Tile> tileMap) throws ParserError {
 		if(gobble(scan, "</Area>")){
-			return newArea;
+			return;
 		}
 		if(gobble(scan, "<ID>")){
-			int id = parseInt(scan);
+			int i = parseInt(scan);
 			if(!gobble(scan, "</ID>")){
 				error("Missing ID close Declaration.");
 			}
-			newArea.setAreaID(id);
-			return parseArea(newArea, scan, tileMap);
+			id = i;
+			parseArea(scan, tileMap);
 		}
 		if(gobble(scan, "<Height>")){
 			int h = parseInt(scan);
@@ -54,9 +56,29 @@ private static int width = -1;
 				error("Missing Height close Declaration.");
 			}
 			height = h;
-			return parseArea(scan, tileMap);
+			parseArea(scan, tileMap);
 		}
+		if(gobble(scan, "<Width>")){
+			int w = parseInt(scan);
+			if(!gobble(scan, "</Width>")){
+				error("Missing Width close Declaration.");
+			}
+			width = w;
+			parseArea(scan, tileMap);
+		}
+		if(gobble(scan, "<FloorLayout>")){
+			tiles = parseFloor(scan, tileMap);
+			if(!gobble(scan, "</FloorLayout>")){
+				error("Missing Floor Layout close.");
+			}
+			parseArea(scan, tileMap);
+		}
+	}
+
+	private static Tile[][] parseFloor(Scanner scan, Map<Integer, Tile> tileMap) {
+		if(height < 0 || width < 0) error("Invalid Height or Width of area.")
 		return null;
+
 	}
 
 	private static int parseInt(Scanner scan) throws ParserError {

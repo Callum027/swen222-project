@@ -18,5 +18,4 @@
 <EastWall> 1 1 1 1 1 1 1 1 1 1 </EastWall>
 <SouthWall> 1 1 1 1 1 1 1 1 1 1 </SouthWall>
 <WestWall> 1 1 1 1 1 1 1 1 1 1 </WestWall>
-<ItemList> <String> ItemList.xml </String> </ItemList>
 </Area>
