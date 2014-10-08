@@ -96,7 +96,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 		DEFENCE_X = (int) (width * 0.2);
 		DEFENCE_Y = (int) (height * 0.75);
 
-		items.equipHead(new Equipment(new Point(0, 0), squareSize, "cat-inv", 0, 100, 100, HEAD_SLOT));
+		items.equipHead(new Equipment(new Point(0, 0), squareSize, "iron-hat", 0, 100, 100, HEAD_SLOT));
 		items.equipMainHand(new Equipment(new Point(0,0), squareSize, "cat-inv", 50, 0, 50, MAIN_HAND));
 		items.equipBody(new Equipment(new Point(0, 0), squareSize, "cat-inv", 0, 300, 300, CHEST_SLOT));
 		items.equipBoots(new Equipment(new Point(0, 0), squareSize, "cat-inv", 0, 400, 400, FEET_SLOT));
