@@ -1,6 +1,7 @@
 package game.world.items;
 
 import java.awt.Image;
+import java.awt.Point;
 
 import game.world.characters.Player;
 
@@ -21,8 +22,8 @@ public class Furniture extends Item{
 	 * @param name the name of the furniture
 	 * @param item the item you can get from interacting with the furniture
 	 */
-	public Furniture(int x, int y, int height, String name, Image image, MoveableItem item) {
-		super(x, y, height, name, image);
+	public Furniture(Point point, int height, String name, MoveableItem item) {
+		super(point, height, name);
 		this.setItem(item);
 	}
 

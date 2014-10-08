@@ -1,6 +1,7 @@
 package game.world.items;
 
 import java.awt.Image;
+import java.awt.Point;
 
 /**
  * Used to differentiate between items that you can move and pick-up from items
@@ -23,11 +24,10 @@ public class MoveableItem extends Item {
 	 * @param height
 	 *            the height (size) of the item
 	 * @param name
-	 *            the anme of the item
+	 *            the name of the item
 	 */
-	public MoveableItem(int x, int y, int height, String name, Image image,
-			int worth) {
-		super(x, y, height, name, image);
+	public MoveableItem(Point point, int height, String name, int worth) {
+		super(point, height, name);
 		this.worth = worth;
 	}
 
