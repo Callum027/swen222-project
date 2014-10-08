@@ -191,13 +191,13 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	 */
 	private void dropItem(int inv) {
 		if (inv >= 0 && inv < INVENTORY_HEIGHT * INVENTORY_WIDTH) {
-			if (items[inv] == null) {
+			if (items[inv] != null) {
+				returnItem(itemSelected);
+			} else {
 				items[inv] = itemSelected;
 				itemSelected = null;
 				previousSlot = -1;
 			}
-		} else {
-			returnItem(itemSelected);
 		}
 	}
 
