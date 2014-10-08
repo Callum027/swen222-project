@@ -66,12 +66,6 @@ public class ParserIterative {
 				throw new ParserError(
 						"Invalid declaration, should be a Dimension.");
 			Area area = new Area(parseEmptyMap(scan, tileMap));
-			if (!scan.hasNext())
-				throw new ParserError("No ItemMap declaration.");
-			if (!scan.next().equals("<ItemMap>"))
-				throw new ParserError(
-						"Invalid declaration, should be an ItemMap.");
-				area.addItems(parseItemMap(scan));
 			// close Area declaration
 			if (!scan.hasNext())
 				throw new ParserError("No Area closing declaration.");

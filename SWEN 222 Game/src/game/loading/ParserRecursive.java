@@ -75,8 +75,14 @@ private static Tile[][] tiles;
 		}
 	}
 
-	private static Tile[][] parseFloor(Scanner scan, Map<Integer, Tile> tileMap) {
-		if(height < 0 || width < 0) error("Invalid Height or Width of area.")
+	private static Tile[][] parseFloor(Scanner scan, Map<Integer, Tile> tileMap) throws ParserError {
+		if(height < 0 || width < 0) error("Invalid Height or Width of area.");
+		Tile[][] tiles = new Tile[width][height];
+		for(int y = 0; y < height; y++){
+			for(int x = 0; x < width; x++){
+				tiles[x][y] =
+			}
+		}
 		return null;
 
 	}
