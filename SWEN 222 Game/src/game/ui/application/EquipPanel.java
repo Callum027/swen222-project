@@ -8,6 +8,7 @@ import game.world.items.EquippedItems;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -59,6 +60,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 	private Equipment equipSelected;
 	private int previousSelected = -1;
 	private InventoryPanel inventory;
+	private Image background;
 
 	/**
 	 * Makes a new EquipPanel sets the width and height of the panel
@@ -72,22 +74,25 @@ public class EquipPanel extends JPanel implements MouseListener {
 		this.inventory = inventory;
 
 		width = inventory.getWidth();
-		height = inventory.getHeight();
+		height = 169;
 
-		HEAD_Y = (int) (height * 0.1);
-		HEAD_X = (int) (width * 0.5);
-		BODY_X = (int) (width * 0.5);
-		BODY_Y = (int) (height * 0.25);
-		MAIN_X = width / 4;
-		MAIN_Y = (int) (height * 0.25);
-		OFF_X = (int) (width * 0.75);
-		OFF_Y = (int) (height * 0.25);
-		BOOTS_X = width / 2;
-		BOOTS_Y = (int) (height * 0.5);
+		HEAD_X = width+55;
+		HEAD_Y = height-147;
+		BODY_X = width+55;
+		BODY_Y = height-100;
+		OFF_X = width+101;
+		OFF_Y = height-100;
+		MAIN_X = width+8;
+		MAIN_Y = height-100;
+		BOOTS_X = width+55;
+		BOOTS_Y = height-52;
+
 		HP_X = (int) (width * 0.2);
 		HP_Y = (int) (height * 0.6666);
+
 		ATTACK_X = (int) (width * 0.2);
 		ATTACK_Y = (int) (height * 0.7);
+
 		DEFENCE_X = (int) (width * 0.2);
 		DEFENCE_Y = (int) (height * 0.75);
 
@@ -95,9 +100,12 @@ public class EquipPanel extends JPanel implements MouseListener {
 		items.equipMainHand(new Equipment(new Point(0,0), squareSize, "cat-inv", 50, 0, 50, MAIN_HAND));
 		items.equipBody(new Equipment(new Point(0, 0), squareSize, "cat-inv", 0, 300, 300, CHEST_SLOT));
 		items.equipBoots(new Equipment(new Point(0, 0), squareSize, "cat-inv", 0, 400, 400, FEET_SLOT));
+		items.equipOffHand(new Equipment(new Point(0,0), squareSize, "cat-inv", 0, 0, 9000, OFF_HAND));
 		setPreferredSize(new Dimension(width, height));
 		addMouseListener(this);
+		background = Main.getImage("Equip.png");
 		getStats();
+		repaint();
 
 	}
 
@@ -117,16 +125,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 	 *            the graphics component
 	 */
 	private void drawBlankEquip(Graphics g) {
-		g.setColor(Color.white);
-		g.fillRect(HEAD_X, HEAD_Y, squareSize, squareSize);
-		g.setColor(Color.white);
-		g.fillRect(MAIN_X, MAIN_Y, squareSize, squareSize);
-		g.setColor(Color.white);
-		g.fillRect(OFF_X, OFF_Y, squareSize, squareSize);
-		g.setColor(Color.white);
-		g.fillRect(BODY_X, BODY_Y, squareSize, squareSize);
-		g.setColor(Color.white);
-		g.fillRect(BOOTS_X, BOOTS_Y, squareSize, squareSize);
+		g.drawImage(background, 0, 0, null);
 		drawEquipmentItems(g);
 		drawStats(g);
 	}

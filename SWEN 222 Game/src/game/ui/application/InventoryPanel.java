@@ -26,8 +26,8 @@ import javax.swing.JPanel;
  */
 public class InventoryPanel extends JPanel implements MouseListener {
 
-	private final int width = INVENTORY_WIDTH * squareSize + 25;
-	private final int height = INVENTORY_HEIGHT * squareSize + 70;
+	private final int width = INVENTORY_WIDTH * squareSize + 20;
+	private final int height = INVENTORY_HEIGHT * squareSize + 60;
 	public static final int INVENTORY_WIDTH = 3;
 	public static final int INVENTORY_HEIGHT = 6;
 	public static final int squareSize = 45;
@@ -74,7 +74,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	private void drawBlankInventory(Graphics g) {
 		g.drawImage(background, 0, 0, null);
 		g.setColor(Color.white);
-		g.drawString("" + cats, 40, height - 20);
+		g.drawString("" + cats, 40, height - 11);
 		drawInventoryItems(g);
 	}
 
@@ -88,7 +88,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 		int k = 0;
 		for (int i = 0; i < items.length; i++) {
 			if (items[i] != null) {
-				items[i].draw(g, (j * squareSize+2)+8, (k * squareSize+2)+22);
+				items[i].draw(g, (j * (squareSize+2))+8, (k * (squareSize+2))+22);
 			}
 			j++;
 			if (j == INVENTORY_WIDTH) {
