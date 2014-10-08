@@ -12,6 +12,7 @@ import game.world.tiles.WallTile;
 
 import java.awt.Cursor;
 import java.awt.Image;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,8 +21,8 @@ import javax.imageio.ImageIO;
 
 public class Main {
 
-	private static final String IMAGE_PATH = "/swen222_Game/src/resources/";
-	private static String areaFile = "src/game/loading/Area.xml";
+	private static final String IMAGE_PATH = "src" + File.separatorChar + "ui" + File.separatorChar + "images";
+	private static String areaFile = "src" + File.separatorChar + "game" + File.separatorChar + "loading" + File.separatorChar + "Area.xml";
 	private static String[] tilesFile = new String[] { "1, FloorTile, floor_tile3" };
 
 	/* Game mode: client, server, or client and server. */
@@ -44,24 +45,22 @@ public class Main {
 	 *
 	 * @param args Command-line arguments
 	 */
-	private static void setupGameMode(String[] args)
-	{
+	private static void setupGameMode(String[] args) {
 		// Process command line arguments.
-		for (int i = 0; i < args.length; i++)
-		{
+		for (int i = 0; i < args.length; i++) {
 			String a = args[i];
 
 			// This instance is a server program.
 			if (a.equals("--server") || a.equals("-s"))
 				mode = GameMode.SERVER;
 			// This instance is a client program.
-			else if (a.equals("--join") || a.equals("-j"))
+			else if (a.equals("--client") || a.equals("-c") || a.equals("--join") || a.equals("-j"))
 				mode = GameMode.CLIENT;
 			// Get the port to connect to.
 			else if (connectPort == 0 && i > 0 && (args[i-1].equals("--port") || args[i-1].equals("--p")) && a.matches("\\d+"))
 				connectPort = Integer.parseInt(a);
 			// Get address the client is to connect to.
-			else if (mode == GameMode.CLIENT && clientConnectAddr == null)
+			else if (mode == GameMode.CLIENT && (args[i-1].equals("--join") || args[i-1].equals("--j")) && clientConnectAddr == null)
 				clientConnectAddr = a;
 			// Ignore. Processing is done later.
 			else if (a.equals("--port") || a.equals("-p"));
@@ -73,8 +72,7 @@ public class Main {
 	/**
 	 * Set up the game world.
 	 */
-	private static void setupGameWorld()
-	{
+	private static void setupGameWorld() {
 		// Add the main area to the game world.
 		gameWorld.addArea(area);
 	}
@@ -84,10 +82,8 @@ public class Main {
 	 *
 	 * @param port port to listen on
 	 */
-	private static void setupServer(int port)
-	{
-		if (gameWorld == null)
-		{
+	private static void setupServer(int port) {
+		if (gameWorld == null) {
 			System.err.println("main: ERROR: setupServer() called before setupGameWorld()");
 			return;
 		}
@@ -111,10 +107,8 @@ public class Main {
 	 * @param addr Address to connect to
 	 * @param port Port to connect to
 	 */
-	private static void setupClient(String addr, int port)
-	{
-		if (gameWorld == null)
-		{
+	private static void setupClient(String addr, int port) {
+		if (gameWorld == null) {
 			System.err.println("main: ERROR: setupClient() called before setupGameWorld()");
 			return;
 		}
@@ -140,24 +134,21 @@ public class Main {
 	/**
 	 * Set up a dedicated server instance.
 	 */
-	private static void setupDedicatedServer()
-	{
+	private static void setupDedicatedServer() {
 		setupServer(connectPort);
 	}
 
 	/**
 	 * Set up a dedicated client instance.
 	 */
-	private static void setupDedicatedClient()
-	{
+	private static void setupDedicatedClient() {
 		setupClient(clientConnectAddr, connectPort);
 	}
 
 	/**
 	 * Set up a combined client-and-server combo.
 	 */
-	private static void setupClientAndServer()
-	{
+	private static void setupClientAndServer() {
 		setupServer(0);
 		setupClient(null, 0);
 	}
@@ -165,8 +156,7 @@ public class Main {
 	/**
 	 * Set up the GUI.
 	 */
-	private static void setupGameWindow()
-	{
+	private static void setupGameWindow() {
 		// Render the area.
 		gameWindow.getRender().setArea(area);
 		gameWindow.getRender().repaint();
@@ -210,7 +200,14 @@ public class Main {
 	 * @return Image
 	 */
 	public static Image getImage(String filename) {
-		java.net.URL imageURL = Main.class.getResource(IMAGE_PATH + filename);
+		java.net.URL imageURL = Main.class.getResource(IMAGE_PATH  + File.separatorChar + filename);
+		
+		if (imageURL == null)
+		{
+			System.err.println("main: getImage: ERROR: unable to locate image file " + filename);
+			return null;
+		}
+		
 		try {
 			Image image = ImageIO.read(imageURL);
 			return image;

@@ -16,14 +16,14 @@ import java.awt.Point;
  */
 public abstract class Item {
 
-	private int x;
-	private int y;
+	private Point position;
 	private String name;
 	private int height; // how much room the item takes up on the area
-	private Image image;
+	private Image[] images;
+	private String description;
 
 	/**
-	 * THe constructor
+	 * The constructor
 	 *
 	 * @param x
 	 *            the x position
@@ -34,12 +34,9 @@ public abstract class Item {
 	 * @param name
 	 *            the name of the item
 	 */
-	public Item(int x, int y, int height, String name, Image image) {
+	public Item(Point position, int height, String name) {
 		this.setHeight(height);
-		this.setX(x);
-		this.setY(y);
 		this.setName(name);
-		this.image = image;
 	}
 
 	/**
@@ -131,7 +128,7 @@ public abstract class Item {
 	public void draw(Graphics g, int x, int y) {
 		g.drawImage(image, x, y, null);
 	}
-	
+
 	public BoundingBox getBoundingBox(int x, int y, Point p){
 		int itemY = y - (height * FloorTile.HEIGHT);
 		int dy = FloorTile.HEIGHT / 2;
@@ -139,5 +136,13 @@ public abstract class Item {
 		int[] yPoints = new int[] { itemY + dy, itemY, itemY + dy, itemY + ((height + 1) * FloorTile.HEIGHT) - dy,
 				itemY + ((height + 1) * FloorTile.HEIGHT), itemY + ((height + 1) * FloorTile.HEIGHT) - dy };
 		return new BoundingBox(xPoints, yPoints, xPoints.length, p);
+	}
+
+	public Point getPosition() {
+		return position;
+	}
+
+	public void setPosition(Point position) {
+		this.position = position;
 	}
 }
