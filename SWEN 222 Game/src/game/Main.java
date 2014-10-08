@@ -10,7 +10,6 @@ import game.world.tiles.FloorTile;
 import game.world.tiles.Tile;
 import game.world.tiles.WallTile;
 
-import java.awt.Cursor;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
