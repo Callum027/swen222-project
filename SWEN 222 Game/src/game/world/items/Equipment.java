@@ -1,6 +1,7 @@
 package game.world.items;
 
 import java.awt.Image;
+import java.awt.Point;
 
 /**
  * A class to represent the equipment (Weapons and Armour)
@@ -24,8 +25,8 @@ public class Equipment extends MoveableItem{
 	 * @param defence the defence stat of the equipment
 	 * @param worth how much you can buy the weapon for from the merchant
 	 */
-	public Equipment(int x, int y, int height, String name, Image image, int attack, int defence, int worth, int slot) {
-		super(x, y, height, name, image, worth);
+	public Equipment(Point point, int height, String name, int attack, int defence, int worth, int slot) {
+		super(point, height, name, worth);
 		this.setSlot(slot);
 		this.attack = attack;
 		this.defence = defence;

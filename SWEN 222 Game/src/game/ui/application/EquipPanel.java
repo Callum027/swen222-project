@@ -8,6 +8,7 @@ import game.world.items.EquippedItems;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -69,14 +70,10 @@ public class EquipPanel extends JPanel implements MouseListener {
 	 */
 	public EquipPanel(InventoryPanel inventory) {
 		this.inventory = inventory;
-		items.equipHead(new Equipment(0, 0, squareSize, "Cat Hat", Main
-				.getImage("cat-inv.png"), 0, 100, 100, HEAD_SLOT));
-		items.equipMainHand(new Equipment(0, 0, squareSize, "Cat Sword", Main
-				.getImage("cat-inv.png"), 50, 0, 50, MAIN_HAND));
-		items.equipBody(new Equipment(0, 0, squareSize, "Cat Brestplate", Main
-				.getImage("cat-inv.png"), 0, 300, 300, CHEST_SLOT));
-		items.equipBoots(new Equipment(0, 0, squareSize, "Cat Boots", Main
-				.getImage("cat-inv.png"), 0, 400, 400, FEET_SLOT));
+		items.equipHead(new Equipment(new Point(0, 0), squareSize, "cat-inv", 0, 100, 100, HEAD_SLOT));
+		items.equipMainHand(new Equipment(new Point(0,0), squareSize, "cat-inv", 50, 0, 50, MAIN_HAND));
+		items.equipBody(new Equipment(new Point(0, 0), squareSize, "cat-inv", 0, 300, 300, CHEST_SLOT));
+		items.equipBoots(new Equipment(new Point(0, 0), squareSize, "cat-inv", 0, 400, 400, FEET_SLOT));
 		setPreferredSize(new Dimension(width, height));
 		addMouseListener(this);
 		getStats();

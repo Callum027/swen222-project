@@ -55,8 +55,7 @@ public class RenderingPanel extends JPanel implements MouseListener {
 		this.direction = direction;
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		addMouseListener(this);
-		test = new Furniture(0, 0, 2, "temp", Main.getImage("SpriteTEST4.png"),
-				null);
+		test = new Furniture(new Point(0,0),  2, "SpriteTES", null);
 
 	}
 
@@ -201,8 +200,8 @@ public class RenderingPanel extends JPanel implements MouseListener {
 	private void drawCharacter(Graphics g) {
 		int x = 0;
 		int y = 0;
-		Point draw = new Point(test.getX(), test.getY());
-		if (direction == GameFrame.NORTH) {
+		Point draw = test.getPosition();
+			if (direction == GameFrame.NORTH) {
 			x = startX + (DX * draw.y) - (draw.x * DX);
 			y = startY + (DY * (draw.x + draw.y))
 					- (test.getHeight() * FloorTile.HEIGHT);
@@ -341,7 +340,7 @@ public class RenderingPanel extends JPanel implements MouseListener {
 	private void setupItemBoundingBoxes(List<Item> items) {
 		itemBoundingBoxes = new ArrayList<BoundingBox>();
 		for (Item item : items) {
-			Point p = new Point(item.getX(), item.getY());
+			Point p = item.getPosition();
 			// itemBoundingBoxes.add(item.getBoundingBox(x, y, p));
 		}
 	}
@@ -381,8 +380,9 @@ public class RenderingPanel extends JPanel implements MouseListener {
 			Point p = findPosition(new Point(e.getX(), e.getY()));
 			if (p != null) {
 				System.out.println("Area position: (" + p.x + ", " + p.y + ")");
-				test.setX(p.x);
-				test.setY(p.y);
+				test.setPosition(new Point(p.x, p.y));
+				//test.setX(p.x);
+				//test.setY(p.y);
 				// System.out.println("Test position: (" + test.getX() + ", " +
 				// test.getY() + ")");
 				repaint();
@@ -447,8 +447,10 @@ public class RenderingPanel extends JPanel implements MouseListener {
 		 *
 		 */
 		public int compare(Item o1, Item o2) {
-			int i = length - o1.getX() - o1.getY();
-			int j = length - o2.getX() - o2.getY();
+			Point p1 = o1.getPosition();
+			Point p2 = o2.getPosition();
+			int i = length - (int)(p1.getX() - p1.getY());
+			int j = length - (int)(p2.getX() - p2.getY());
 			return i - j;
 		}
 	}
