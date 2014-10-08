@@ -24,8 +24,8 @@ import javax.swing.JPanel;
  */
 public class EquipPanel extends JPanel implements MouseListener {
 	private final int equipSize = 5;
-	private final int width = 235;
-	private final int height = 495;
+	private final int width;
+	private final int height;
 
 	public static final int HEAD_SLOT = 0;
 	public static final int OFF_HAND = 2;
@@ -33,24 +33,24 @@ public class EquipPanel extends JPanel implements MouseListener {
 	public static final int CHEST_SLOT = 3;
 	public static final int FEET_SLOT = 4;
 
-	public static final int squareSize = 45;
+	public static final int squareSize = 43;
 
-	private final int HEAD_X = (int) (width * 0.5);
-	private final int HEAD_Y = (int) (height * 0.1);
-	private final int BODY_X = (int) (width * 0.5);
-	private final int BODY_Y = (int) (height * 0.25);
-	private final int MAIN_X = width / 4;
-	private final int MAIN_Y = (int) (height * 0.25);
-	private final int OFF_X = (int) (width * 0.75);
-	private final int OFF_Y = (int) (height * 0.25);
-	private final int BOOTS_X = width / 2;
-	private final int BOOTS_Y = (int) (height * 0.5);
-	private final int HP_X = (int) (width * 0.2);
-	private final int HP_Y = (int) (height * 0.6666);
-	private final int ATTACK_X = (int) (width * 0.2);
-	private final int ATTACK_Y = (int) (height * 0.7);
-	private final int DEFENCE_X = (int) (width * 0.2);
-	private final int DEFENCE_Y = (int) (height * 0.75);
+	private final int HEAD_Y;
+	private final int HEAD_X;
+	private final int BODY_X;
+	private final int BODY_Y;
+	private final int MAIN_X;
+	private final int MAIN_Y;
+	private final int OFF_X;
+	private final int OFF_Y;
+	private final int BOOTS_X;
+	private final int BOOTS_Y;
+	private final int HP_X;
+	private final int HP_Y;
+	private final int ATTACK_X;
+	private final int ATTACK_Y;
+	private final int DEFENCE_X;
+	private final int DEFENCE_Y;
 
 	private int hp = 100;
 	private int attack = 0;
@@ -70,6 +70,27 @@ public class EquipPanel extends JPanel implements MouseListener {
 	 */
 	public EquipPanel(InventoryPanel inventory) {
 		this.inventory = inventory;
+
+		width = inventory.getWidth();
+		height = inventory.getHeight();
+
+		HEAD_Y = (int) (height * 0.1);
+		HEAD_X = (int) (width * 0.5);
+		BODY_X = (int) (width * 0.5);
+		BODY_Y = (int) (height * 0.25);
+		MAIN_X = width / 4;
+		MAIN_Y = (int) (height * 0.25);
+		OFF_X = (int) (width * 0.75);
+		OFF_Y = (int) (height * 0.25);
+		BOOTS_X = width / 2;
+		BOOTS_Y = (int) (height * 0.5);
+		HP_X = (int) (width * 0.2);
+		HP_Y = (int) (height * 0.6666);
+		ATTACK_X = (int) (width * 0.2);
+		ATTACK_Y = (int) (height * 0.7);
+		DEFENCE_X = (int) (width * 0.2);
+		DEFENCE_Y = (int) (height * 0.75);
+
 		items.equipHead(new Equipment(new Point(0, 0), squareSize, "cat-inv", 0, 100, 100, HEAD_SLOT));
 		items.equipMainHand(new Equipment(new Point(0,0), squareSize, "cat-inv", 50, 0, 50, MAIN_HAND));
 		items.equipBody(new Equipment(new Point(0, 0), squareSize, "cat-inv", 0, 300, 300, CHEST_SLOT));

@@ -26,10 +26,10 @@ import javax.swing.JPanel;
  */
 public class InventoryPanel extends JPanel implements MouseListener {
 
-	private final int width = INVENTORY_WIDTH * squareSize + 10;
-	private final int height = INVENTORY_HEIGHT * squareSize + 50;
-	public static final int INVENTORY_WIDTH = 5;
-	public static final int INVENTORY_HEIGHT = 4;
+	private final int width = INVENTORY_WIDTH * squareSize + 25;
+	private final int height = INVENTORY_HEIGHT * squareSize + 70;
+	public static final int INVENTORY_WIDTH = 3;
+	public static final int INVENTORY_HEIGHT = 6;
 	public static final int squareSize = 45;
 	private MoveableItem[] items = new MoveableItem[INVENTORY_HEIGHT
 			* INVENTORY_WIDTH];
@@ -72,19 +72,9 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	 *            a Graphics object
 	 */
 	private void drawBlankInventory(Graphics g) {
-		/*
-		 * for (int i = 0; i < INVENTORY_WIDTH; i++) { for (int j = 0; j <
-		 * INVENTORY_HEIGHT; j++) { g.setColor(Color.white);
-		 * g.fillRect(squareSize * i, squareSize * j, squareSize, squareSize);
-		 * g.setColor(Color.black); g.drawRect(squareSize * i, squareSize * j,
-		 * squareSize, squareSize); } }
-		 *
-		 * Image img = Main.getImage("cat-inv.png"); g.drawImage(img, 10, height
-		 * - 50, null);
-		 */
 		g.drawImage(background, 0, 0, null);
 		g.setColor(Color.white);
-		g.drawString("" + cats, 65, height - 10);
+		g.drawString("" + cats, 40, height - 20);
 		drawInventoryItems(g);
 	}
 
@@ -98,7 +88,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 		int k = 0;
 		for (int i = 0; i < items.length; i++) {
 			if (items[i] != null) {
-				items[i].draw(g, j * squareSize, k * squareSize);
+				items[i].draw(g, (j * squareSize+2)+8, (k * squareSize+2)+22);
 			}
 			j++;
 			if (j == INVENTORY_WIDTH) {
