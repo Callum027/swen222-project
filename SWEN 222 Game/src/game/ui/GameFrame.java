@@ -86,7 +86,11 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 		addKeyListener(this);
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		Image img = Main.getImage("ff_cursor.png");
-		Cursor cursor = tk.createCustomCursor(img, new Point(0, 0), "cursor");
+		Cursor cursor = Cursor.getDefaultCursor();
+		if (img != null) {
+			cursor = tk.createCustomCursor(img, new Point(0, 0),
+					"cursor");
+		}
 		// makes a custom cursor from an image file
 		setCursor(cursor);
 		setFocusable(true);
