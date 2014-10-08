@@ -1,6 +1,6 @@
 package game.world.characters.classes;
 
-import game.world.characters.PlayableCharacter;
+import game.world.characters.Player;
 
 /**
  * The melee class that deals with brute force and strength. It's a close-range class that deal high melee damage.

@@ -6,7 +6,7 @@ import java.io.OutputStream;
 
 import game.net.NetIO;
 import game.world.GameEvent;
-import game.world.characters.PlayableCharacter;
+import game.world.characters.Player;
 
 /**
  * Events that represent moving characters in the game world.
@@ -16,12 +16,12 @@ import game.world.characters.PlayableCharacter;
  */
 public class MoveEvent extends GameEvent {
 
-	private final PlayableCharacter player;
+	private final Player player;
 	private final int x;
 	private final int y;
 
 
-	public MoveEvent(int x, int y, PlayableCharacter player){
+	public MoveEvent(int x, int y, Player player){
 		if (player == null)
 			throw new IllegalArgumentException("player is null");
 
@@ -46,7 +46,7 @@ public class MoveEvent extends GameEvent {
 	public static MoveEvent read(InputStream is) throws IOException {
 		int x = NetIO.readInt(is);
 		int y = NetIO.readInt(is);
-		PlayableCharacter player = PlayableCharacter.read(is);
+		Player player = Player.read(is);
 		return new MoveEvent(x, y, player);
 	}
 
@@ -66,7 +66,7 @@ public class MoveEvent extends GameEvent {
 		return y;
 	}
 
-	public PlayableCharacter getPlayer() {
+	public Player getPlayer() {
 		return player;
 	}
 }

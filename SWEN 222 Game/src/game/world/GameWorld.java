@@ -1,6 +1,6 @@
 package game.world;
 
-import game.world.characters.PlayableCharacter;
+import game.world.characters.Player;
 import game.world.events.MoveEvent;
 import game.world.tiles.Tile;
 
@@ -20,11 +20,11 @@ import java.util.Set;
 public class GameWorld implements GameEventListener{
 
 	private List<Area> areas;
-	private List<PlayableCharacter> players;
+	private List<Player> players;
 
 	public GameWorld(){
 		areas = new ArrayList<Area>();
-		players = new ArrayList<PlayableCharacter>();
+		players = new ArrayList<Player>();
 	}
 
 	/**
@@ -36,7 +36,7 @@ public class GameWorld implements GameEventListener{
 		return areas.add(new Area(this, file));
 	}
 
-	public boolean addPlayers(PlayableCharacter player){
+	public boolean addPlayers(Player player){
 		return players.add(player);
 	}
 
@@ -58,7 +58,7 @@ public class GameWorld implements GameEventListener{
 		return areas;
 	}
 
-	public PlayableCharacter getPlayer(int id){
+	public Player getPlayer(int id){
 		return players.get(id);
 	}
 
@@ -74,7 +74,7 @@ public class GameWorld implements GameEventListener{
 	public void gameEventOccurred(GameEvent ge) {
 		if (ge instanceof MoveEvent){
 			MoveEvent move = (MoveEvent) ge;
-			PlayableCharacter player = move.getPlayer();
+			Player player = move.getPlayer();
 			player.moveToPosition(new Point(move.getX(), move.getY()));
 		}
 	}

@@ -2,7 +2,7 @@ package game.tests;
 
 import game.control.Client;
 import game.control.Server;
-import game.world.characters.PlayableCharacter;
+import game.world.characters.Player;
 import game.world.events.MoveEvent;
 
 import org.junit.Test;
@@ -32,7 +32,7 @@ public class ClientServerTests {
 		client.start();
 		
 		System.out.println("generating game event");
-		client.gameEventOccurred(new MoveEvent(0, 0, new PlayableCharacter(0, 0, "test", 0, 0)));
+		client.gameEventOccurred(new MoveEvent(0, 0, new Player(0, 0, "test", 0, 0)));
 		
 		try {
 			Thread.sleep(1000);

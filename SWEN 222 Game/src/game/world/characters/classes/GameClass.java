@@ -1,11 +1,18 @@
 package game.world.characters.classes;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 /**
  * The strategy interface for the game classes
  * @author Nick Tran
  *
  */
 public interface GameClass {
+
+	public enum playerClass{
+		WARRIOR, MAGE, ROGUE
+	}
 
 	/**
 	 * Retrieves the classes base strength
@@ -25,4 +32,9 @@ public interface GameClass {
 	 */
 	public int getIntelligence();
 
+	public void attack();
+
+	public void calculateDamage();
+
+	public void write(OutputStream os) throws IOException;
 }

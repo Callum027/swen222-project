@@ -15,22 +15,24 @@ import java.util.ArrayList;
  */
 public abstract class GameCharacter {
 
-	private MoveableItem[] items; 
+	private MoveableItem[] items;
 	private final String name;
 	private Point position;
 	private Image[] images;
 	private int direction;
-	private int cats;
+	private int cats; //the amount of money/points the player has
 	private int ID;
-	
+
 	/**
 	 * The Constructor
 	 * @param x the x position
 	 * @param y the y position
 	 * @param name the name of the character
 	 */
-	public GameCharacter(Point position, String name) {
+	public GameCharacter(Point position, String name, int ID, MoveableItem[] items) {
 		this.name = name;
+		this.cats = 0;
+		this.direction =0;
 	}
 
 	/**
@@ -41,9 +43,9 @@ public abstract class GameCharacter {
 	public void moveToPosition(Point position){
 		this.position = position;
 	}
-	
+
 	public void dropItems(){
-		
+
 	}
 
 	public String getName() {

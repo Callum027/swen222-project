@@ -2,7 +2,7 @@ package game.world.items;
 
 import java.awt.Image;
 
-import game.world.characters.PlayableCharacter;
+import game.world.characters.Player;
 
 /**
  * A furniture is an immovable item that's also not a container
@@ -31,7 +31,7 @@ public class Furniture extends Item{
 	 * @param player the player interacting with this piece of furniture
 	 * @return the description of the furniture
 	 */
-	public String interact(PlayableCharacter player){
+	public String interact(Player player){
 		return "This is a piece of furniture";
 	}
 

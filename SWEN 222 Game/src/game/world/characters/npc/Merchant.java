@@ -2,7 +2,7 @@ package game.world.characters.npc;
 
 import java.util.ArrayList;
 import game.world.characters.NonPlayableCharacter;
-import game.world.characters.PlayableCharacter;
+import game.world.characters.Player;
 import game.world.items.Equipment;
 import game.world.items.Item;
 
@@ -34,7 +34,7 @@ public class Merchant extends NonPlayableCharacter{
 	 * @param item the item to sell to the player
 	 * @param player the player that's buying the item
 	 */
-	public void sellWares(Equipment item, PlayableCharacter player){
+	public void sellWares(Equipment item, Player player){
 		player.setCats(player.getCats()-item.getWorth()); //deducts money from the player
 		player.getInventory()[player.getCount()] = item;
 		getWares().remove(item);
