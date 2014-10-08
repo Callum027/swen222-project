@@ -20,7 +20,7 @@ import javax.imageio.ImageIO;
 
 public class Main {
 
-	private static final String IMAGE_PATH = "/swen222_Game/src/resources/";
+	private static final String IMAGE_PATH = "/SWEN 222 Game/src/resources/";
 	private static String areaFile = "src/game/loading/Area.xml";
 	private static String[] tilesFile = new String[] { "1, FloorTile, floor_tile3" };
 
