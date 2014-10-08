@@ -1,5 +1,8 @@
 package game.world.characters.classes;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 /**
  * The range class that deals with sneaky tactics. It's a long range class that deal high projectile damage.
  * The class uses Bows and wears leather armour.
@@ -22,5 +25,20 @@ public class RogueClass implements GameClass{
 	}
 	public int getIntelligence() {
 		return intelligence;
+	}
+	@Override
+	public void attack() {
+		// TODO Auto-generated method stub
+
+	}
+	@Override
+	public void calculateDamage() {
+		// TODO Auto-generated method stub
+
+	}
+	@Override
+	public void write(OutputStream os) throws IOException {
+		// TODO Auto-generated method stub
+
 	}
 }

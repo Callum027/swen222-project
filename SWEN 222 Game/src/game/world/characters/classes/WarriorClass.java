@@ -1,5 +1,8 @@
 package game.world.characters.classes;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 import game.world.characters.Player;
 
 /**
@@ -24,6 +27,21 @@ public class WarriorClass implements GameClass{
 	}
 	public int getIntelligence() {
 		return intelligence;
+	}
+	@Override
+	public void attack() {
+		// TODO Auto-generated method stub
+
+	}
+	@Override
+	public void calculateDamage() {
+		// TODO Auto-generated method stub
+
+	}
+	@Override
+	public void write(OutputStream os) throws IOException {
+		// TODO Auto-generated method stub
+
 	}
 
 

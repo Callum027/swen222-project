@@ -1,5 +1,8 @@
 package game.world.characters.classes;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 /**
  * The magic-user class that deals with magical items. It's a medium range class that deal high magic damage.
  * The class uses staves and wears robes.
@@ -22,6 +25,21 @@ public class MageClass implements GameClass{
 	}
 	public int getIntelligence() {
 		return intelligence;
+	}
+	@Override
+	public void attack() {
+		// TODO Auto-generated method stub
+
+	}
+	@Override
+	public void calculateDamage() {
+		// TODO Auto-generated method stub
+
+	}
+	@Override
+	public void write(OutputStream os) throws IOException {
+		// TODO Auto-generated method stub
+
 	}
 
 }
