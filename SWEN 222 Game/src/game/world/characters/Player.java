@@ -27,7 +27,6 @@ public class Player extends GameCharacter implements Streamable, Attackable{
 
 	private EquippedItems equipped; //the items that is currently equipped to the player
 	private GameClass gameClass; //either Warrior, Mage or Rogue
-	private int cats;
 
 	/**
 	 * The constructor: invokes the assignClass method and gives the player a class
@@ -39,7 +38,6 @@ public class Player extends GameCharacter implements Streamable, Attackable{
 	public Player(Point point, String name, int uid, GameClass.playerClass playerClass, MoveableItem[] inventory){
 		super(point, name, uid, inventory);
 		assignClass(playerClass); //gives the player a class (behaviour)
-		this.cats = 100;
 	}
 
 	public void assignClass(GameClass.playerClass playerClass){

@@ -21,7 +21,7 @@ public abstract class GameCharacter {
 	private Image[] images;
 	private int direction;
 	private int cats; //the amount of money/points the player has
-	private int ID;
+	private final int id;
 
 	/**
 	 * The Constructor
@@ -29,10 +29,11 @@ public abstract class GameCharacter {
 	 * @param y the y position
 	 * @param name the name of the character
 	 */
-	public GameCharacter(Point position, String name, int ID, MoveableItem[] items) {
+	public GameCharacter(Point position, String name, int id, MoveableItem[] items) {
 		this.name = name;
-		this.cats = 0;
-		this.direction =0;
+		this.setCats(0);
+		this.setDirection(0);
+		this.id = id;
 	}
 
 	/**
@@ -41,7 +42,11 @@ public abstract class GameCharacter {
 	 * @param y the new y coordinate
 	 */
 	public void moveToPosition(Point position){
-		this.position = position;
+		this.setPosition(position);
+	}
+
+	private void setPosition(Point newPosition) {
+		this.position = newPosition;
 	}
 
 	public void dropItems(){
@@ -50,5 +55,33 @@ public abstract class GameCharacter {
 
 	public String getName() {
 		return name;
+	}
+
+	public MoveableItem[] getItems() {
+		return items;
+	}
+
+	public Point getPosition() {
+		return position;
+	}
+
+	public int getDirection() {
+		return direction;
+	}
+
+	public void setDirection(int direction) {
+		this.direction = direction;
+	}
+
+	public int getCats() {
+		return cats;
+	}
+
+	public void setCats(int cats) {
+		this.cats = cats;
+	}
+
+	public int getId() {
+		return id;
 	}
 }
