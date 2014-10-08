@@ -10,6 +10,9 @@ import game.world.tiles.Tile;
 
 public class ParserRecursive {
 private static String next;
+private static int height = -1;
+private static int width = -1;
+
 	public static Area parse(String fileName, Map<Integer, Tile> tileMap) {
 		if(fileName != null){
 		try {
@@ -21,10 +24,9 @@ private static String next;
 			if(!gobble(scan, "<Area>")){
 				error("Missing Area Declaration.");
 			}
-			Area newArea = new Area();
-			parseArea(newArea, scan, tileMap);
+			parseArea(scan, tileMap);
 			scan.close();
-			return newArea;
+			return new Area();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (ParserError e) {
@@ -34,7 +36,7 @@ private static String next;
 		return null;
 	}
 
-	private static Area parseArea(Area newArea, Scanner scan, Map<Integer, Tile> tileMap) throws ParserError {
+	private static Area parseArea(Scanner scan, Map<Integer, Tile> tileMap) throws ParserError {
 		if(gobble(scan, "</Area>")){
 			return newArea;
 		}
@@ -47,12 +49,12 @@ private static String next;
 			return parseArea(newArea, scan, tileMap);
 		}
 		if(gobble(scan, "<Height>")){
-			int height = parseInt(scan);
+			int h = parseInt(scan);
 			if(!gobble(scan, "</Height>")){
 				error("Missing Height close Declaration.");
 			}
-			newArea.setHeight(height);
-			return parseArea(newArea, scan, tileMap);
+			height = h;
+			return parseArea(scan, tileMap);
 		}
 		return null;
 	}
