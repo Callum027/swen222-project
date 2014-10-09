@@ -1,6 +1,8 @@
 package game.world.characters;
 
 import game.Main;
+import game.exceptions.GameException;
+import game.exceptions.PlayerIDNotFoundException;
 import game.net.NetIO;
 import game.net.Streamable;
 import game.world.Position;
@@ -65,8 +67,13 @@ public class Player extends GameCharacter implements Streamable, Attackable{
 		return equipped;
 	}
 
-	public static Player read(InputStream is) throws IOException {
+	public static Player read(InputStream is) throws IOException, GameException {
 		byte id = NetIO.readByte(is);
-		return Main.getGameWorld().getPlayer(id);
+		Player player = Main.getGameWorld().getPlayer(id);
+
+		if (player == null)
+			throw new PlayerIDNotFoundException(id);
+
+		return player;
 	}
 }

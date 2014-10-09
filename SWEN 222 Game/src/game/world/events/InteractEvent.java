@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import game.exceptions.GameException;
 import game.world.GameEvent;
 
 /**
@@ -24,7 +25,7 @@ public class InteractEvent extends GameEvent {
 	 * @return InteractEvent
 	 * @throws IOException
 	 */
-	public static InteractEvent read(InputStream is) throws IOException {
+	public static InteractEvent read(InputStream is) throws IOException, GameException {
 		return new InteractEvent();
 	}
 
