@@ -24,6 +24,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 
 /**
  * A custom JFrame used to hold all the panels of the game. Implements
@@ -43,6 +46,8 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 	public static final int WEST = 3;
 
 	private RenderingPanel render;
+	private JTextArea text;
+	private JScrollPane scroll;
 	private EquipPanel equip;
 	private StatsPanel stats;
 	private InventoryPanel inventory;
@@ -69,21 +74,34 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 		setupMenuBar();
 		direction = NORTH;
 		// set the frame to have a layout so that the screens are in proportion
-		setLayout(new FlowLayout());
+		//setLayout(new FlowLayout());
+
+		// setup the components of the game frame
 		render = new RenderingPanel(direction);
-		add(render);
-		JPanel appPane = new JPanel();
-		appPane.setLayout(new BoxLayout(appPane, BoxLayout.Y_AXIS));
+		text = new JTextArea(7, 49);
+		scroll = new JScrollPane(text);
 		inventory = new InventoryPanel();
 		equip = new EquipPanel(inventory);
 		stats = new StatsPanel(equip);
-
 		inventory.setEquip(equip);
 		equip.setStats(stats);
 
+		// setup the render pane
+		JPanel renderPane = new JPanel();
+		renderPane.setLayout(new BoxLayout(renderPane, BoxLayout.Y_AXIS));
+		renderPane.add(render);
+		renderPane.add(scroll);
+
+		// setup app pane
+		JPanel appPane = new JPanel();
+		appPane.setLayout(new BoxLayout(appPane, BoxLayout.Y_AXIS));
 		appPane.add(stats);
 		appPane.add(equip);
 		appPane.add(inventory);
+
+		// setup the game frame layout
+		setLayout(new FlowLayout());
+		add(renderPane);
 		add(appPane);
 
 		addKeyListener(this);
