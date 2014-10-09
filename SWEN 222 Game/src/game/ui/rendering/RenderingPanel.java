@@ -395,7 +395,7 @@ public class RenderingPanel extends JPanel implements MouseListener {
 			}
 		}
 		// findItem(e.getX(), e.getY());
-
+		repaint();
 	}
 
 	// unneeded mouse listener methods

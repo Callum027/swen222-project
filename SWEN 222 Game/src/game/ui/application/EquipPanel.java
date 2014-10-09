@@ -102,7 +102,6 @@ public class EquipPanel extends JPanel implements MouseListener {
 	public void paintComponent(Graphics g) {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, width, height);
-		g.setColor(Color.white);
 		drawBlankEquip(g);
 	}
 
