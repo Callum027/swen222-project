@@ -68,7 +68,6 @@ public class RenderingPanel extends JPanel implements MouseListener {
 	public void setArea(Area area) {
 		this.area = area;
 		calculateConstants();
-		// calculateBoundingBoxes();
 	}
 
 	/**
