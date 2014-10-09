@@ -33,14 +33,14 @@ public class StatsPanel extends JPanel {
 		this.equip = equip;
 		this.width = equip.getWidth();
 		this.height = equip.getHeight();
-		HP_X = width + 20;
+		HP_X = width + 10;
 		HP_Y = height - 150;
 
-		ATTACK_X = width + 20;
-		ATTACK_Y = height -135;
+		ATTACK_X = width + 10;
+		ATTACK_Y = height - 135;
 
-		DEFENCE_X = width +20;
-		DEFENCE_Y = height-120;
+		DEFENCE_X = width + 10;
+		DEFENCE_Y = height - 120;
 		setPreferredSize(new Dimension(width, height));
 		background = Main.getImage("Stats.png");
 		System.out.println("Got here");
@@ -76,5 +76,11 @@ public class StatsPanel extends JPanel {
 		System.out.println("GetStats");
 		attack = equip.getTotalAttack();
 		defence = equip.getDefence();
+	}
+
+	public void refresh() {
+		System.out.println("refresh");
+		repaint();
+
 	}
 }

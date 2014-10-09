@@ -86,9 +86,6 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 		appPane.add(stats);
 		add(appPane);
 
-		equip.repaint();
-		stats.repaint();
-
 		addKeyListener(this);
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		Image img = Main.getImage("ff_cursor.png");
