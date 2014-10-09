@@ -28,7 +28,7 @@ private static Tile[][] tiles;
 			}
 			parseArea(scan, tileMap);
 			scan.close();
-			return new Area(tiles);
+			//return new Area(tiles);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (ParserError e) {
