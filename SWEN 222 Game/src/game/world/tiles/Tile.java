@@ -2,6 +2,8 @@ package game.world.tiles;
 
 import game.Main;
 import game.world.BoundingBox;
+import game.world.Drawable;
+import game.world.Position;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -15,7 +17,7 @@ import java.awt.Polygon;
  * @author David Sheridan
  *
  */
-public abstract class Tile {
+public abstract class Tile implements Drawable{
 
 	// fields
 	private final String[] directions = new String[]{"North", "East", "South", "West"};
@@ -35,7 +37,7 @@ public abstract class Tile {
 			image[i] = Main.getImage(filename+"_"+directions[i]+".png");
 			//image[i] = Main.getImage(filename+".png");
 		}
-		
+
 	}
 
 	/**
@@ -51,7 +53,7 @@ public abstract class Tile {
 	 * @return
 	 * 		--- bounding box of Tile
 	 */
-	public abstract BoundingBox getBoundingBox(int x, int y, Point p);
+	public abstract BoundingBox getBoundingBox(int x, int y, Position p);
 
 	/**
 	 * Draws this tile to the specified graphics pane,

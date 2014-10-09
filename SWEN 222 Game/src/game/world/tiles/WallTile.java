@@ -1,7 +1,9 @@
 package game.world.tiles;
 
 import game.world.BoundingBox;
+import game.world.Position;
 
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
 
@@ -44,6 +46,12 @@ public class WallTile extends Tile{
 	 * 		--- bounding box of Tile
 	 */
 	public BoundingBox getBoundingBox(int x, int y, Point p){
+		return null;
+	}
+
+	@Override
+	public BoundingBox getBoundingBox(int x, int y, Position p) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }
