@@ -22,11 +22,13 @@ public class Area {
 	private int areaID;
 	private List<Item> items; // the items located in this area
 	private Tile[][] tiles; //the tiles that make up this area
-	private WallTile[][][] walls;
+	private Tile[][][] walls;
 
-	public Area(Tile[][] tiles){
+	public Area(Tile[][] tiles, Tile[][][] walls, int areaID){
 		this.tiles = tiles;
 		items = new ArrayList<Item>();
+		this.areaID = areaID;
+		this.walls = walls;
 	}
 
 	public int getAreaID() {
@@ -41,7 +43,7 @@ public class Area {
 		return tiles;
 	}
 
-	public WallTile[][][] getWalls() {
+	public Tile[][][] getWalls() {
 		return walls;
 	}
 

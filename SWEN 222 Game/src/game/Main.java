@@ -21,7 +21,7 @@ import javax.imageio.ImageIO;
 public class Main {
 
 
-	private static final String IMAGE_PATH = "ui" + File.separatorChar + "images";
+	private static final String IMAGE_PATH = "src" + File.separatorChar + "game" + File.separatorChar + "ui" + File.separatorChar + "images";
 	private static String areaFile = "src" + File.separatorChar + "game" + File.separatorChar + "loading" + File.separatorChar + "Area.xml";
 
 	private static String[] tilesFile = new String[] { "1, FloorTile, floor_tile3" };
@@ -45,8 +45,12 @@ public class Main {
 	 * Quick'n'dirty processing of command line arguments.
 	 *
 	 * @param args Command-line arguments
+	 * @return true if operation succeeded
 	 */
-	private static void setupGameMode(String[] args) {
+	private static boolean setupGameMode(String[] args) {
+		if (args == null)
+			return false;
+		
 		// Process command line arguments.
 		for (int i = 0; i < args.length; i++) {
 			String a = args[i];
@@ -66,27 +70,43 @@ public class Main {
 			// Ignore. Processing is done later.
 			else if (a.equals("--port") || a.equals("-p"));
 			else
+			{
 				System.err.println("main: invalid argument: " + a);
+				return false;
+			}
 		}
+		
+		return true;
 	}
 
 	/**
 	 * Set up the game world.
+	 * 
+	 * @return true if operation succeeded
 	 */
-	private static void setupGameWorld() {
+	private static boolean setupGameWorld() {
 		// Add the main area to the game world.
-		gameWorld.addArea(area);
+		if (area != null)
+			gameWorld.addArea(area);
+		else
+		{
+			System.err.println("main: ERROR: could not load game world area");
+			return false;
+		}
+		
+		return true;
 	}
 
 	/**
 	 * Set up the server, binding to a specific TCP port.
 	 *
 	 * @param port port to listen on
+	 * @return true if operation succeeded
 	 */
-	private static void setupServer(int port) {
+	private static boolean setupServer(int port) {
 		if (gameWorld == null) {
 			System.err.println("main: ERROR: setupServer() called before setupGameWorld()");
-			return;
+			return false;
 		}
 
 		// Create the server, and add the game world as a listener for game events.
@@ -100,6 +120,8 @@ public class Main {
 		// Bind the server to the socket, and start the thread!
 		server.bind();
 		server.start();
+		
+		return true;
 	}
 
 	/**
@@ -107,11 +129,12 @@ public class Main {
 	 *
 	 * @param addr Address to connect to
 	 * @param port Port to connect to
+	 * @return true if operation succeeded
 	 */
-	private static void setupClient(String addr, int port) {
+	private static boolean setupClient(String addr, int port) {
 		if (gameWorld == null) {
 			System.err.println("main: ERROR: setupClient() called before setupGameWorld()");
-			return;
+			return false;
 		}
 
 		// Create a new client object, and make this client listen to game events from the GUI.
@@ -130,37 +153,50 @@ public class Main {
 
 		// Start the client thread.
 		client.start();
+		
+		return true;
 	}
 
 	/**
 	 * Set up a dedicated server instance.
+	 * 
+	 * @return true if operation succeeded
 	 */
-	private static void setupDedicatedServer() {
-		setupServer(connectPort);
+	private static boolean setupDedicatedServer() {
+		return setupServer(connectPort);
 	}
 
 	/**
 	 * Set up a dedicated client instance.
 	 */
-	private static void setupDedicatedClient() {
-		setupClient(clientConnectAddr, connectPort);
+	private static boolean setupDedicatedClient() {
+		return setupClient(clientConnectAddr, connectPort);
 	}
 
 	/**
 	 * Set up a combined client-and-server combo.
 	 */
-	private static void setupClientAndServer() {
-		setupServer(0);
-		setupClient(null, 0);
+	private static boolean setupClientAndServer() {
+		boolean ret = true;
+		
+		if (ret && server != null)
+			ret = setupServer(0);
+		
+		if (ret && client == null)
+			ret = setupClient(null, 0);
+		
+		return ret;
 	}
 
 	/**
 	 * Set up the GUI.
 	 */
-	private static void setupGameWindow() {
+	private static boolean setupGameWindow() {
 		// Render the area.
 		gameWindow.getRender().setArea(area);
 		gameWindow.getRender().repaint();
+		
+		return true;
 	}
 
 	/**
@@ -201,19 +237,12 @@ public class Main {
 	 * @return Image
 	 */
 	public static Image getImage(String filename) {
-		java.net.URL imageURL = Main.class.getResource(IMAGE_PATH  + File.separatorChar + filename);
-
-		if (imageURL == null)
-		{
-			System.err.println("main: getImage: ERROR: unable to locate image file " + filename);
-			return null;
-		}
-
 		try {
-			Image image = ImageIO.read(imageURL);
+			Image image = ImageIO.read(new File(IMAGE_PATH  + File.separatorChar + filename));
 			return image;
 		} catch (IOException e) {
-			throw new RuntimeException("Unable to locate " + filename);
+			System.err.println("main: getImage: " + filename + ": ERROR: " + e);
+			return null;
 		}
 	}
 
@@ -233,27 +262,34 @@ public class Main {
 	 * @param args Command-line arguments
 	 */
 	public static void main(String args[]) {
-		setupGameMode(args);
-		setupGameWorld();
+		if (!setupGameMode(args))
+			System.exit(1);
+		
+		if (!setupGameWorld())
+			System.exit(2);
 
 		// Do different actions, depending on the given arguments.
 		switch (mode)
 		{
 			// Self-contained client and server, all in one.
 			case CLIENTANDSERVER:
-				setupClientAndServer();
+				if (!setupClientAndServer())
+					System.exit(3);
 				break;
 			// Dedicated server.
 			case SERVER:
-				setupDedicatedServer();
+				if (!setupDedicatedServer())
+					System.exit(4);
 				break;
 			// Dedicated client, who connects to a remote server.
 			case CLIENT:
-				setupDedicatedClient();
+				if (!setupDedicatedClient())
+					System.exit(5);
 				break;
 		}
 
-		setupGameWindow();
+		if (!setupGameWindow())
+			System.exit(6);
 	}
 
 	/**
