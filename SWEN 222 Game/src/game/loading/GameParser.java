@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import game.world.Area;
+import game.world.items.Item;
 import game.world.tiles.Tile;
 
 public class GameParser {
@@ -40,7 +41,9 @@ public class GameParser {
         return null;
     }
 
-    public static Item[][]
+    public static Item[][] parseItems(String filename){
+    	return null;
+    }
 
     private static int parseInt(Scanner scan, String type) throws ParserError{
         if(!gobble(scan, "<"+type+">")){

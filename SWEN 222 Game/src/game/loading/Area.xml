@@ -1,7 +1,7 @@
 <Area>
-<ID> <Int> 1 </Int> </ID>
-<Width> <Int> 10 </Int> </Width>
-<Height> <Int> 10 </Int> </Height>
+<ID> 1 </ID>
+<Width> 10 </Width>
+<Height> 10 </Height>
 <FloorLayout>
 1 1 1 1 1 1 1 1 1 1
 1 1 1 1 1 1 1 1 1 1

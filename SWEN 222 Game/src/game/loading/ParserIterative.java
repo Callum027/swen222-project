@@ -65,7 +65,7 @@ public class ParserIterative {
 			if (!scan.next().equals("<Dimension>"))
 				throw new ParserError(
 						"Invalid declaration, should be a Dimension.");
-			Area area = new Area(parseEmptyMap(scan, tileMap));
+			//Area area = new Area(parseEmptyMap(scan, tileMap));
 			// close Area declaration
 			if (!scan.hasNext())
 				throw new ParserError("No Area closing declaration.");
@@ -73,7 +73,7 @@ public class ParserIterative {
 				throw new ParserError(
 						"Invalid declaration, should be an Area close.");
 			scan.close();
-			return area;
+			//return area;
 		} catch (ParserError pError) {
 			System.out.println("Parser Error: " + pError.getMessage());
 		} catch (FileNotFoundException e) {
