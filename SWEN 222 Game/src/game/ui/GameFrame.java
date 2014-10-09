@@ -173,8 +173,8 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 		} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			quitGame();
 		}
-		render.setDirection(direction);
-		render.repaint();
+		//render.setDirection(direction);
+		//render.repaint();
 
 		if (direction == NORTH) {
 			System.out.println("facing north");
