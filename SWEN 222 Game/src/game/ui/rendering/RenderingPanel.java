@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Queue;
 
 import javax.swing.JPanel;
 
@@ -323,6 +324,11 @@ public class RenderingPanel extends JPanel implements MouseListener {
 			Position p = findPosition(new Position(e.getX(), e.getY()));
 			if (p != null) {
 				//System.out.println("Area position: (" + p.getX() + ", " + p.getY() + ")");
+				Position current = test.getPosition();
+				Queue<Position> moves = area.findPath(current, p);
+				//for(Position pos : moves){
+				//	System.out.println(moves.toString());
+				//}
 				test.setPosition(new Position(p.getX(), p.getY()));
 				//test.setX(p.x);
 				//test.setY(p.y);

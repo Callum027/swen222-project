@@ -67,4 +67,8 @@ public class Position implements Streamable {
 		NetIO.writeInt(os, y);
 	}
 
+	public String toString(){
+		return "Position: ("+x+", "+y+")";
+	}
+
 }
