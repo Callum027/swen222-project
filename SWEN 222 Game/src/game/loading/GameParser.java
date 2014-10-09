@@ -2,6 +2,8 @@ package game.loading;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -10,6 +12,7 @@ import game.world.Position;
 import game.world.items.Container;
 import game.world.items.Equipment;
 import game.world.items.Item;
+import game.world.items.MoveableItem;
 import game.world.tiles.Tile;
 
 public class GameParser {
@@ -100,16 +103,24 @@ public class GameParser {
 								+ scan.next());
 			}
 
-			if(gobble(scan, "<Container>")){
+			if (gobble(scan, "<Container>")) {
 				int cats = parseInt(scan, "Cats");
-				if (!gobble(scan, "</Container>")) {
-					throw new ParserError(
-							"Parsing ItemType: Expecting </Container>, got "
-									+ scan.next());
+				Container tempContainer = new Container(pos, height, name, cats);
+				List<MoveableItem> loot = new ArrayList<MoveableItem>();
+				while (!gobble(scan, "</Container>")) {
+					Item tempItem = parseItemType(scan);
+					if (tempItem instanceof MoveableItem) {
+						loot.add((MoveableItem) tempItem);
+					} else {
+						throw new ParserError(
+								"Parsing ItemType: Expecting a moveable Item, got"
+										+ tempItem.getClass());
+					}
 				}
-				return new Container(pos, height, name, cats);
+				tempContainer.setLoot(loot);
+				return tempContainer;
 			}
-			if(gobble(scan, "<Equipment>")){
+			if (gobble(scan, "<Equipment>")) {
 				int attack = parseInt(scan, "Attack");
 				int defence = parseInt(scan, "Defence");
 				int worth = parseInt(scan, "Worth");
@@ -119,7 +130,11 @@ public class GameParser {
 							"Parsing ItemType: Expecting </Equipment>, got "
 									+ scan.next());
 				}
-				return new Equipment(pos, height, name, attack, defence, worth, slot);
+				return new Equipment(pos, height, name, attack, defence, worth,
+						slot);
+			}
+			if (gobble(scan, "<Furniture>")) {
+
 			}
 		} catch (ParserError error) {
 			error.printStackTrace();
