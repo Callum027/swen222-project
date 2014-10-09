@@ -1,5 +1,7 @@
 package game.world.items;
 
+import game.world.Position;
+
 import java.awt.Image;
 import java.awt.Point;
 
@@ -26,8 +28,8 @@ public class MoveableItem extends Item {
 	 * @param name
 	 *            the name of the item
 	 */
-	public MoveableItem(Point point, int height, String name, int worth) {
-		super(point, height, name);
+	public MoveableItem(Position position, int height, String name, int worth) {
+		super(position, height, name);
 		this.worth = worth;
 	}
 

@@ -1,5 +1,7 @@
 package game.world.items;
 
+import game.world.Position;
+
 import java.awt.Image;
 import java.awt.Point;
 
@@ -21,8 +23,8 @@ public class Container extends Item{
 	 * @param height the height/size of the container
 	 * @param name the name of the container
 	 */
-	public Container(Point point, int height, String name, int cats) {
-		super(point, height, name);
+	public Container(Position position, int height, String name, int cats) {
+		super(position, height, name);
 		this.cats=cats;
 	}
 
