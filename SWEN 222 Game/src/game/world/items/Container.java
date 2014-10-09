@@ -4,6 +4,7 @@ import game.world.Position;
 
 import java.awt.Image;
 import java.awt.Point;
+import java.util.List;
 
 /**
  * A container is an item that contains movable items and cats.
@@ -14,7 +15,7 @@ import java.awt.Point;
 public class Container extends Item{
 
 	private int cats; //the cats contained in the container
-	private Equipment[] loot; //the items in the container
+	private List<MoveableItem> loot; //the items in the container
 
 	/**
 	 * The Constructor:
@@ -48,7 +49,7 @@ public class Container extends Item{
 	 * Gets the Array of items that are contained in this container
 	 * @return the Array of items
 	 */
-	public Equipment[] getLoot() {
+	public List<MoveableItem> getLoot() {
 		return loot;
 	}
 
@@ -56,7 +57,7 @@ public class Container extends Item{
 	 * Sets the items in the container
 	 * @param loot the items to place into the container
 	 */
-	public void setLoot(Equipment[] loot) {
+	public void setLoot(List<MoveableItem> loot) {
 		this.loot = loot;
 	}
 

@@ -6,6 +6,9 @@ import java.util.Map;
 import java.util.Scanner;
 
 import game.world.Area;
+import game.world.Position;
+import game.world.items.Container;
+import game.world.items.Equipment;
 import game.world.items.Item;
 import game.world.tiles.Tile;
 
@@ -77,8 +80,47 @@ public class GameParser {
 
 	private static Item parseItemType(Scanner scan) {
 		try {
-			int x = parseInt(scan, "XPosition");
-			int y = parseInt(scan, "YPosition");
+			int x = parseInt(scan, "XPos");
+			int y = parseInt(scan, "YPos");
+			int height = parseInt(scan, "Height");
+			Position pos = new Position(x, y);
+			if (!gobble(scan, "<Name>")) {
+				throw new ParserError(
+						"Parsing ItemType: Expecting <Name>, got "
+								+ scan.next());
+			}
+			if (!scan.hasNext()) {
+				throw new ParserError(
+						"Parsing ItemType: Expected String, got nothing.");
+			}
+			String name = scan.next();
+			if (!gobble(scan, "</Name>")) {
+				throw new ParserError(
+						"Parsing ItemType: Expecting </Name>, got "
+								+ scan.next());
+			}
+
+			if(gobble(scan, "<Container>")){
+				int cats = parseInt(scan, "Cats");
+				if (!gobble(scan, "</Container>")) {
+					throw new ParserError(
+							"Parsing ItemType: Expecting </Container>, got "
+									+ scan.next());
+				}
+				return new Container(pos, height, name, cats);
+			}
+			if(gobble(scan, "<Equipment>")){
+				int attack = parseInt(scan, "Attack");
+				int defence = parseInt(scan, "Defence");
+				int worth = parseInt(scan, "Worth");
+				int slot = parseInt(scan, "Slot");
+				if (!gobble(scan, "</Equipment>")) {
+					throw new ParserError(
+							"Parsing ItemType: Expecting </Equipment>, got "
+									+ scan.next());
+				}
+				return new Equipment(pos, height, name, attack, defence, worth, slot);
+			}
 		} catch (ParserError error) {
 			error.printStackTrace();
 		}
