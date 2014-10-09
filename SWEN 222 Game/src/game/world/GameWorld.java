@@ -53,7 +53,7 @@ public class GameWorld implements GameEventListener{
 		if (ge instanceof MoveEvent){
 			MoveEvent move = (MoveEvent) ge;
 			Player player = move.getPlayer();
-			player.moveToPosition(new Position(move.getX(), move.getY()));
+			player.moveToPosition(move.getPosition());
 		}
 	}
 
