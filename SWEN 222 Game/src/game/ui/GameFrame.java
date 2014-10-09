@@ -77,13 +77,18 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 		inventory = new InventoryPanel();
 		equip = new EquipPanel(inventory);
 		stats = new StatsPanel(equip);
+
 		inventory.setEquip(equip);
 		equip.setStats(stats);
-		stats.getStats();
+
 		appPane.add(equip);
 		appPane.add(inventory);
 		appPane.add(stats);
 		add(appPane);
+
+		equip.repaint();
+		stats.repaint();
+
 		addKeyListener(this);
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		Image img = Main.getImage("ff_cursor.png");
@@ -173,8 +178,8 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 		} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			quitGame();
 		}
-		//render.setDirection(direction);
-		//render.repaint();
+		// render.setDirection(direction);
+		// render.repaint();
 
 		if (direction == NORTH) {
 			System.out.println("facing north");

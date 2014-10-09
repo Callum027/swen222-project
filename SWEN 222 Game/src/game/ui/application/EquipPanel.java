@@ -99,6 +99,16 @@ public class EquipPanel extends JPanel implements MouseListener {
 	}
 
 	@Override
+	public int getWidth(){
+		return width;
+	}
+
+	@Override
+	public int getHeight(){
+		return height;
+	}
+
+	@Override
 	public void paintComponent(Graphics g) {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, width, height);
