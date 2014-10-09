@@ -50,7 +50,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	 */
 	public InventoryPanel() {
 		addItem(new MoveableItem(new Point(0, 0), squareSize, "cat-inv", 9001));
-		addItem(new Equipment(new Point(0, 0), squareSize, "cat-inv", 100, 800,
+		addItem(new Equipment(new Point(0, 0), squareSize, "mithril-hat", 100, 800,
 				9001, EquipPanel.HEAD_SLOT));
 		setPreferredSize(new Dimension(width, height));
 		addMouseListener(this);
