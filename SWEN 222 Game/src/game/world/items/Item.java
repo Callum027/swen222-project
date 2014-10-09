@@ -2,10 +2,7 @@ package game.world.items;
 
 import game.Main;
 import game.world.BoundingBox;
-<<<<<<< HEAD
 import game.world.Drawable;
-=======
->>>>>>> branch 'master' of https://github.com/Callum027/swen222-project.git
 import game.world.Position;
 import game.world.tiles.FloorTile;
 
@@ -20,7 +17,7 @@ import java.awt.Point;
  * @author Nick Tran
  *
  */
-public abstract class Item implements Drawable{
+public abstract class Item implements Drawable {
 
 	private Position position;
 	private String name;
@@ -45,8 +42,8 @@ public abstract class Item implements Drawable{
 		this.setHeight(height);
 		this.setName(name);
 		images = new Image[4];
-		for(int i = 0; i < images.length; i++){
-			images[i] = Main.getImage(name+".png");
+		for (int i = 0; i < images.length; i++) {
+			images[i] = Main.getImage(name + ".png");
 		}
 	}
 
@@ -102,12 +99,16 @@ public abstract class Item implements Drawable{
 		g.drawImage(images[0], x, y, null);
 	}
 
-	public BoundingBox getBoundingBox(int x, int y, Position p){
+	public BoundingBox getBoundingBox(int x, int y, Position p) {
 		int itemY = y - (height * FloorTile.HEIGHT);
 		int dy = FloorTile.HEIGHT / 2;
-		int[] xPoints = new int[] { x, x + (FloorTile.WIDTH / 2), x + FloorTile.WIDTH, x + FloorTile.WIDTH, x + (FloorTile.WIDTH / 2), x };
-		int[] yPoints = new int[] { itemY + dy, itemY, itemY + dy, itemY + ((height + 1) * FloorTile.HEIGHT) - dy,
-				itemY + ((height + 1) * FloorTile.HEIGHT), itemY + ((height + 1) * FloorTile.HEIGHT) - dy };
+		int[] xPoints = new int[] { x, x + (FloorTile.WIDTH / 2),
+				x + FloorTile.WIDTH, x + FloorTile.WIDTH,
+				x + (FloorTile.WIDTH / 2), x };
+		int[] yPoints = new int[] { itemY + dy, itemY, itemY + dy,
+				itemY + ((height + 1) * FloorTile.HEIGHT) - dy,
+				itemY + ((height + 1) * FloorTile.HEIGHT),
+				itemY + ((height + 1) * FloorTile.HEIGHT) - dy };
 		return new BoundingBox(xPoints, yPoints, xPoints.length, p);
 	}
 

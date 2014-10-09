@@ -178,19 +178,19 @@ public class EquipPanel extends JPanel implements MouseListener {
 	 */
 	private void drawEquipmentItems(Graphics g) {
 		if (items.getHead() != null) {
-			items.getHead().draw(g, HEAD_X, HEAD_Y);
+			items.getHead().draw(g, HEAD_X, HEAD_Y, 0);
 		}
 		if (items.getMainHand() != null) {
-			items.getMainHand().draw(g, MAIN_X, MAIN_Y);
+			items.getMainHand().draw(g, MAIN_X, MAIN_Y, 0);
 		}
 		if (items.getoffHand() != null) {
-			items.getoffHand().draw(g, OFF_X, OFF_Y);
+			items.getoffHand().draw(g, OFF_X, OFF_Y, 0);
 		}
 		if (items.getBody() != null) {
-			items.getBody().draw(g, BODY_X, BODY_Y);
+			items.getBody().draw(g, BODY_X, BODY_Y, 0);
 		}
 		if (items.getBoots() != null) {
-			items.getBoots().draw(g, BOOTS_X, BOOTS_Y);
+			items.getBoots().draw(g, BOOTS_X, BOOTS_Y, 0);
 		}
 	}
 

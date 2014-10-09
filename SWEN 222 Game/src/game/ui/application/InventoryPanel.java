@@ -98,7 +98,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 		for (int i = 0; i < items.length; i++) {
 			if (items[i] != null) {
 				items[i].draw(g, (j * (squareSize + 2)) + 8,
-						(k * (squareSize + 2)) + 22);
+						(k * (squareSize + 2)) + 22, 0);
 			}
 			j++;
 			if (j == INVENTORY_WIDTH) {
