@@ -499,7 +499,17 @@ public class RenderingPanel extends JPanel implements MouseListener {
 	}
 
 	/**
-	 * A private class that is used to sort Items in an area so that when the
+	 * A private class that is used to sort Items in an area so that when the	private Area area;
+	private Image[] images;
+	private boolean locked;
+
+	public Door(int ID, String name, Area area, boolean locked){
+		this.ID = ID;
+		this.name = name;
+		this.area = area;
+		this.locked = locked;
+	}
+}
 	 * game view is facing south, the items are ordered from closest to
 	 * furtherest away.
 	 *
