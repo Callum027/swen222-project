@@ -21,7 +21,7 @@ import javax.imageio.ImageIO;
 public class Main {
 
 
-	private static final String IMAGE_PATH = "ui" + File.separatorChar + "images";
+	private static final String IMAGE_PATH = "src" + File.separatorChar + "game" + File.separatorChar + "ui" + File.separatorChar + "images";
 	private static String areaFile = "src" + File.separatorChar + "game" + File.separatorChar + "loading" + File.separatorChar + "Area.xml";
 
 	private static String[] tilesFile = new String[] { "1, FloorTile, floor_tile3" };
@@ -237,19 +237,12 @@ public class Main {
 	 * @return Image
 	 */
 	public static Image getImage(String filename) {
-		java.net.URL imageURL = Main.class.getResource(IMAGE_PATH  + File.separatorChar + filename);
-
-		if (imageURL == null)
-		{
-			System.err.println("main: getImage: ERROR: unable to locate image file " + filename);
-			return null;
-		}
-
 		try {
-			Image image = ImageIO.read(imageURL);
+			Image image = ImageIO.read(new File(IMAGE_PATH  + File.separatorChar + filename));
 			return image;
 		} catch (IOException e) {
-			throw new RuntimeException("Unable to locate " + filename);
+			System.err.println("main: getImage: " + filename + ": ERROR: " + e);
+			return null;
 		}
 	}
 
