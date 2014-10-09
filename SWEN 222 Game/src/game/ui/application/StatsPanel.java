@@ -29,7 +29,6 @@ public class StatsPanel extends JPanel {
 	private EquipPanel equip;
 
 	public StatsPanel(EquipPanel equip) {
-		System.out.println("Making a stats Panel");
 		this.equip = equip;
 		this.width = equip.getWidth();
 		this.height = equip.getHeight();
@@ -43,13 +42,11 @@ public class StatsPanel extends JPanel {
 		DEFENCE_Y = height - 120;
 		setPreferredSize(new Dimension(width, height));
 		background = Main.getImage("Stats.png");
-		System.out.println("Got here");
 		repaint();
 	}
 
 	@Override
 	public void paintComponent(Graphics g) {
-		System.out.println("paintcomponet");
 		g.drawImage(background, 0, 0, null);
 		drawStats(g);
 	}
@@ -61,7 +58,6 @@ public class StatsPanel extends JPanel {
 	 *            the graphics component
 	 */
 	private void drawStats(Graphics g) {
-		System.out.println("drawStats");
 		getStats();
 		g.drawString("HP: " + hp, HP_X, HP_Y);
 		g.drawString("Attack: " + attack, ATTACK_X, ATTACK_Y);
@@ -73,13 +69,11 @@ public class StatsPanel extends JPanel {
 	 * easily add in other get'stat' methods if needed
 	 */
 	public void getStats() {
-		System.out.println("GetStats");
 		attack = equip.getTotalAttack();
 		defence = equip.getDefence();
 	}
 
 	public void refresh() {
-		System.out.println("refresh");
 		repaint();
 
 	}
