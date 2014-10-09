@@ -1,5 +1,6 @@
 package game.control;
 
+import game.exceptions.GameException;
 import game.net.GamePacket;
 import game.world.GameEvent;
 import game.world.GameEventBroadcaster;
@@ -163,29 +164,34 @@ public class Server extends Thread {
 				System.out.println("server: accepted connection from " + clientSocket.getInetAddress());
 
 				while (!closing.booleanValue()) {
-					System.out.println("server: listening for packets from " + clientSocket.getInetAddress());
+					try {
+						System.out.println("server: listening for packets from " + clientSocket.getInetAddress());
 
-					// Read a new GamePacket from the client.
-					GamePacket gp = GamePacket.read(is);
+						// Read a new GamePacket from the client.
+						GamePacket gp = GamePacket.read(is);
 
-					System.out.println("server: received packet of type " + gp.getType() + " from " + clientSocket.getInetAddress());
+						System.out.println("server: received packet of type " + gp.getType() + " from " + clientSocket.getInetAddress());
 
-					// Determine the next action according to the contents of the GamePacket.
-					switch (gp.getType())
-					{
-						// We have received a game event from a client.
-						case EVENT:
-							GameEvent ge = (GameEvent)gp.getPayload();
+						// Determine the next action according to the contents of the GamePacket.
+						switch (gp.getType())
+						{
+							// We have received a game event from a client.
+							case EVENT:
+								GameEvent ge = (GameEvent)gp.getPayload();
 
-							System.out.println("server: GameEvent type is: " + ge.getType());
+								System.out.println("server: GameEvent type is: " + ge.getType());
 
-							// Update the game world.
-							geb.broadcastGameEvent(ge);
+								// Update the game world.
+								geb.broadcastGameEvent(ge);
 
-							// TODO: Send the updated game state to the rest of the clients.
-							break;
-						default:
-							break;
+								// TODO: Send the updated game state to the rest of the clients.
+								break;
+							default:
+								break;
+						}
+					}
+					catch (GameException e) {
+						System.err.println("server: while reading game packet: " + e);
 					}
 				}
 
