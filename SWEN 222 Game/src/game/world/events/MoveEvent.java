@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import game.exceptions.GameException;
 import game.net.NetIO;
 import game.world.GameEvent;
 import game.world.Position;
@@ -66,7 +67,7 @@ public class MoveEvent extends GameEvent {
 	 * @return MoveEvent
 	 * @throws IOException
 	 */
-	public static MoveEvent read(InputStream is) throws IOException {
+	public static MoveEvent read(InputStream is) throws IOException, GameException {
 		Position position = Position.read(is);
 		Player player = Player.read(is);
 

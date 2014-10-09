@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import game.exceptions.GameException;
 import game.net.NetIO;
 import game.net.Streamable;
 import game.world.events.InteractEvent;
@@ -29,7 +30,7 @@ public abstract class GameEvent implements Streamable {
 	 * @param is Input stream
 	 * @return Game event
 	 */
-	public static GameEvent read(InputStream is) throws IOException {
+	public static GameEvent read(InputStream is) throws IOException, GameException {
 		// Get the packet type from the stream.
 		GameEvent.Type t = GameEvent.Type.read(is);
 
