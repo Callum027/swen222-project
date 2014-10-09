@@ -19,29 +19,29 @@ import java.util.List;
 /**
  * Accept connections from clients to allow them to access the game world.
  * Update everybody when new events happen.
- * 
+ *
  * @author Callum
  *
  */
 public class Server extends Thread {
 	/** The default port the server listens on, if none is specified. */
 	public static final int DEFAULT_PORT = 19642;
-	
+
 	/* The actual port the server will use. */
 	private int port = DEFAULT_PORT;
-	
+
 	/* Controls whether or not the server is closing down. */
 	private Boolean closing = new Boolean(false);
 
 	private ServerSocket serverSocket = null;
 	private List<ServerConnection> serverConnections = new ArrayList<ServerConnection>();
-	
+
 	private GameEventBroadcaster geb = new GameEventBroadcaster();
 
 	/**
 	 * Private helper method for the constructors, to set up the server socket
 	 * with a given port number. Can only be applied if the server is not running.
-	 * 
+	 *
 	 * @param p Port number to listen on
 	 * @return True if the port was changed
 	 */
@@ -50,19 +50,20 @@ public class Server extends Thread {
 			port = p;
 			return true;
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Bind the server socket.
-	 * 
+	 *
 	 * @return True if binding succeeded
 	 */
 	public boolean bind() {
 		try {
 			if (serverSocket == null) {
 				serverSocket = new ServerSocket(port);
+				System.out.println("server: binded a socket to port " + port);
 				return true;
 			}
 		}
@@ -73,10 +74,10 @@ public class Server extends Thread {
 			System.err.println("server: unhandled, unknown IOException");
 			e.printStackTrace();
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Start the main server loop.
 	 */
@@ -84,7 +85,7 @@ public class Server extends Thread {
 		// Return if the server socket didn't bind.
 		if (serverSocket == null)
 			return;
-			
+
 		// Enter the main loop, accepting new connections from clients
 		// as they come.
 		try {
@@ -101,19 +102,19 @@ public class Server extends Thread {
 			e.printStackTrace();
 			close();
 		}
-		
+
 		// We have exited the main server loop. This only happens when
 		// someone calls close() on the server. So, do what they want:
 		// close all client connections, and close the server socket!
 		Iterator<ServerConnection> it = serverConnections.iterator();
-		
+
 		while (it.hasNext()) {
 			ServerConnection sc = it.next();
 			sc.close();
-			
+
 			it.remove();
 		}
-		
+
 		try {
 			serverSocket.close();
 		}
@@ -122,7 +123,7 @@ public class Server extends Thread {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Close all client connections to the server, and stop listening
 	 * for new connections. The server cannot be used after this.
@@ -131,63 +132,63 @@ public class Server extends Thread {
 		closing = new Boolean(true);
 		// TODO: tell the client to close the connection
 	}
-	
+
 	public void addGameEventListener(GameEventListener gel) {
 		geb.addGameEventListener(gel);
 	}
-	
+
 	/*
 	 * A private helper class which separates direct communication with
 	 * clients from the main server thread.
-	 * 
+	 *
 	 * @author Callum
 	 *
 	 */
 	private class ServerConnection extends Thread {
 		private Boolean closing = new Boolean(false);
 		private final Socket clientSocket;
-		
+
 		public ServerConnection(Socket cs) {
 			if (cs == null)
 				throw new IllegalArgumentException();
-			
+
 			clientSocket = cs;
 		}
-		
+
 		public void run() {
 			try {
 				InputStream is = clientSocket.getInputStream();
 				OutputStream os = clientSocket.getOutputStream();
-				
+
 				System.out.println("server: accepted connection from " + clientSocket.getInetAddress());
-				
+
 				while (!closing.booleanValue()) {
 					System.out.println("server: listening for packets from " + clientSocket.getInetAddress());
-					
+
 					// Read a new GamePacket from the client.
 					GamePacket gp = GamePacket.read(is);
-					
+
 					System.out.println("server: received packet of type " + gp.getType() + " from " + clientSocket.getInetAddress());
-					
+
 					// Determine the next action according to the contents of the GamePacket.
 					switch (gp.getType())
 					{
 						// We have received a game event from a client.
 						case EVENT:
 							GameEvent ge = (GameEvent)gp.getPayload();
-							
+
 							System.out.println("server: GameEvent type is: " + ge.getType());
-							
+
 							// Update the game world.
 							geb.broadcastGameEvent(ge);
-							
+
 							// TODO: Send the updated game state to the rest of the clients.
 							break;
 						default:
 							break;
 					}
 				}
-				
+
 				// Exited the server connection loop, which means
 				// we have to close the client socket.
 				clientSocket.close();
@@ -202,11 +203,9 @@ public class Server extends Thread {
 				close();
 			}
 		}
-		
+
 		public void close() {
-			synchronized (closing) {
-				closing = new Boolean(true);
-			}
+			closing = new Boolean(true);
 		}
 	}
 }

@@ -8,7 +8,7 @@ import game.world.GameEvent;
 
 /**
  * Events that represent interacting with objects in the game world.
- * 
+ *
  * @author Callum
  *
  */
@@ -16,10 +16,10 @@ public class InteractEvent extends GameEvent {
 	public GameEvent.Type getType() {
 		return GameEvent.Type.INTERACT;
 	}
-	
+
 	/**
 	 * Read an InteractEvent from the input stream.
-	 * 
+	 *
 	 * @param is Input stream
 	 * @return InteractEvent
 	 * @throws IOException
@@ -27,11 +27,10 @@ public class InteractEvent extends GameEvent {
 	public static InteractEvent read(InputStream is) throws IOException {
 		return new InteractEvent();
 	}
-	
+
 	public void write(OutputStream os) throws IOException {
-		// Write the type header of this event to the output stream.
-		getType().write(os);
-		
+		super.write(os);
+
 		// Write the changes this event causes to the output stream.
 	}
 }
