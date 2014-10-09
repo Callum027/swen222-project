@@ -44,15 +44,15 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 
 	private RenderingPanel render;
 	private EquipPanel equip;
+	private StatsPanel stats;
 	private InventoryPanel inventory;
+
 	public static MoveableItem selectedItem;
 	/*
 	 * selectedItem is the item that has been selected in one of the panels and
 	 * is stored here so that it can be easily moved between panels.
 	 */
 	private int direction;
-
-	private StatsPanel stats;
 
 	/**
 	 * Is called automatically from Main

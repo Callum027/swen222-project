@@ -67,6 +67,14 @@ public class InventoryPanel extends JPanel implements MouseListener {
 		background = Main.getImage("Inventory.png");
 	}
 
+	public int getWidth(){
+		return width;
+	}
+
+	public int getHeight(){
+		return height;
+	}
+
 	@Override
 	public void paintComponent(Graphics g) {
 		g.setColor(Color.black);

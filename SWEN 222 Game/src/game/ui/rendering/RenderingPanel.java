@@ -1,13 +1,11 @@
 package game.ui.rendering;
 
-import game.Main;
 import game.ui.GameFrame;
 import game.world.Area;
 import game.world.BoundingBox;
 import game.world.Position;
 import game.world.items.Furniture;
 import game.world.items.Item;
-import game.world.items.MoveableItem;
 import game.world.tiles.FloorTile;
 import game.world.tiles.Tile;
 
@@ -85,15 +83,6 @@ public class RenderingPanel extends JPanel implements MouseListener {
 	public void setDirection(int direction) {
 		if (direction >= GameFrame.NORTH && direction <= GameFrame.WEST) {
 			this.direction = direction;
-		}
-	}
-
-	private void calculateBoundingBoxes(Tile[][] tiles) {
-		tileBoundingBoxes = new ArrayList<BoundingBox>();
-		for (int i = 0; i < tiles.length; i++) {
-			for (int j = 0; j < tiles[0].length; j++) {
-
-			}
 		}
 	}
 
