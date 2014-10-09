@@ -1,5 +1,8 @@
 package game.world.items;
 
+import game.world.BoundingBox;
+import game.world.Position;
+
 import java.awt.Image;
 import java.awt.Point;
 
@@ -56,6 +59,12 @@ public class Container extends Item{
 	 */
 	public void setLoot(Equipment[] loot) {
 		this.loot = loot;
+	}
+
+	@Override
+	public BoundingBox getBoundingBox(int x, int y, Position p) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

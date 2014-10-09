@@ -2,6 +2,8 @@ package game.world.items;
 
 import game.Main;
 import game.world.BoundingBox;
+import game.world.Drawable;
+import game.world.Position;
 import game.world.tiles.FloorTile;
 
 import java.awt.Graphics;
@@ -15,7 +17,7 @@ import java.awt.Point;
  * @author Nick Tran
  *
  */
-public abstract class Item {
+public abstract class Item implements Drawable{
 
 	private Point position;
 	private String name;
@@ -93,11 +95,11 @@ public abstract class Item {
 	 * @param y
 	 *            - y position to draw to
 	 */
-	public void draw(Graphics g, int x, int y) {
+	public void draw(Graphics g, int x, int y, int direction) {
 		g.drawImage(images[0], x, y, null);
 	}
 
-	public BoundingBox getBoundingBox(int x, int y, Point p){
+	public BoundingBox getBoundingBox(int x, int y, Position p){
 		int itemY = y - (height * FloorTile.HEIGHT);
 		int dy = FloorTile.HEIGHT / 2;
 		int[] xPoints = new int[] { x, x + (FloorTile.WIDTH / 2), x + FloorTile.WIDTH, x + FloorTile.WIDTH, x + (FloorTile.WIDTH / 2), x };
