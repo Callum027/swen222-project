@@ -67,6 +67,20 @@ public class Position implements Streamable {
 		NetIO.writeInt(os, y);
 	}
 
+	public boolean equals(Object o){
+		if(o == null){
+			return false;
+		}
+		if(!(o instanceof Position)){
+			return false;
+		}
+		Position p = (Position)o;
+		if(p.getX() == x && p.getY() == y){
+			return true;
+		}
+		return false;
+	}
+
 	public String toString(){
 		return "Position: ("+x+", "+y+")";
 	}
