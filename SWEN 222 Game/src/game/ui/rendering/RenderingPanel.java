@@ -56,7 +56,7 @@ public class RenderingPanel extends JPanel implements MouseListener {
 		this.direction = direction;
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		addMouseListener(this);
-		test = new Furniture(new Point(0,0),  2, "SpriteTEST", null);
+		test = new Furniture(new Position(0,0),  2, "SpriteTEST", null);
 
 	}
 
@@ -204,23 +204,23 @@ public class RenderingPanel extends JPanel implements MouseListener {
 		int width = area.getTiles()[0].length - 1;
 		int height = area.getTiles().length - 1;
 		int yOffset = test.getHeight() * FloorTile.HEIGHT;
-		Point draw = test.getPosition();
+		Position draw = test.getPosition();
 
 		if (direction == GameFrame.NORTH) {
-			x = startX + DX * (draw.y - draw.x);
-			y = startY + DY * (draw.x + draw.y) - yOffset;
+			x = startX + DX * (draw.getY() - draw.getX());
+			y = startY + DY * (draw.getX() + draw.getY()) - yOffset;
 		}
 		else if (direction == GameFrame.EAST) {
-			x = startX + DX * ((height - draw.y) - (width - draw.x));
-			y = startY + DY * ((width - draw.x) + (height - draw.y)) - yOffset;
+			x = startX + DX * ((height - draw.getY()) - (width - draw.getX()));
+			y = startY + DY * ((width - draw.getX()) + (height - draw.getY())) - yOffset;
 		}
 		else if (direction == GameFrame.SOUTH) {
-			x = startX + DX * ((height - draw.y) - (width - draw.x));
-			y = startY + DY * ((width - draw.x) + (height - draw.y)) - yOffset;
+			x = startX + DX * ((height - draw.getY()) - (width - draw.getX()));
+			y = startY + DY * ((width - draw.getX()) + (height - draw.getY())) - yOffset;
 		}
 		else if (direction == GameFrame.WEST) {
-			x = startX + DX * ((height + draw.y) - (draw.x));
-			y = startY + DY * ((draw.x) + (height + draw.y)) - yOffset;
+			x = startX + DX * ((height + draw.getY()) - (draw.getX()));
+			y = startY + DY * ((draw.getX()) + (height + draw.getY())) - yOffset;
 		}
 
 		test.draw(g, x, y, direction);
@@ -344,7 +344,7 @@ public class RenderingPanel extends JPanel implements MouseListener {
 	private void setupItemBoundingBoxes(List<Item> items) {
 		itemBoundingBoxes = new ArrayList<BoundingBox>();
 		for (Item item : items) {
-			Point p = item.getPosition();
+			Position p = item.getPosition();
 			// itemBoundingBoxes.add(item.getBoundingBox(x, y, p));
 		}
 	}
@@ -384,7 +384,7 @@ public class RenderingPanel extends JPanel implements MouseListener {
 			Position p = findPosition(new Position(e.getX(), e.getY()));
 			if (p != null) {
 				System.out.println("Area position: (" + p.getX() + ", " + p.getY() + ")");
-				test.setPosition(new Point(p.getX(), p.getY()));
+				test.setPosition(new Position(p.getX(), p.getY()));
 				//test.setX(p.x);
 				//test.setY(p.y);
 				// System.out.println("Test position: (" + test.getX() + ", " +
@@ -451,8 +451,8 @@ public class RenderingPanel extends JPanel implements MouseListener {
 		 *
 		 */
 		public int compare(Item o1, Item o2) {
-			Point p1 = o1.getPosition();
-			Point p2 = o2.getPosition();
+			Position p1 = o1.getPosition();
+			Position p2 = o2.getPosition();
 			int i = length - (int)(p1.getX() - p1.getY());
 			int j = length - (int)(p2.getX() - p2.getY());
 			return i - j;

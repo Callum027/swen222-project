@@ -69,12 +69,12 @@ public class MoveEvent extends GameEvent {
 	public static MoveEvent read(InputStream is) throws IOException {
 		Position position = Position.read(is);
 		Player player = Player.read(is);
+
 		return new MoveEvent(position, player);
 	}
 
 	public void write(OutputStream os) throws IOException {
-		// Write the type header of this event to the output stream.
-		getType().write(os);
+		super.write(os);
 
 		// Write the changes this event causes to the output stream.
 		position.write(os);

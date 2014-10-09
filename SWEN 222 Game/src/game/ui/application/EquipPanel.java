@@ -99,26 +99,23 @@ public class EquipPanel extends JPanel implements MouseListener {
 	}
 
 	@Override
+	public int getWidth(){
+		return width;
+	}
+
+	@Override
+	public int getHeight(){
+		return height;
+	}
+
+	@Override
 	public void paintComponent(Graphics g) {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, width, height);
-		drawBlankEquip(g);
-	}
-
-	/**
-	 * Draws the equipment slots where they should be, ie the head slot is at
-	 * the top and boot slot is at the bottom
-	 *
-	 * @param g
-	 *            the graphics component
-	 */
-	private void drawBlankEquip(Graphics g) {
 		g.drawImage(background, 0, 0, null);
 		drawEquipmentItems(g);
+		stats.refresh();
 	}
-
-
-
 
 	/**
 	 * Adds up the defence for all the equiped items
@@ -211,6 +208,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 	 */
 	private int findEquip(int x, int y) {
 		int equip = -1;
+
 		if (y >= HEAD_Y && y < HEAD_Y + squareSize && x >= HEAD_X
 				&& x < HEAD_X + squareSize) {
 			equip = HEAD_SLOT;
@@ -241,6 +239,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 	 */
 	private void selectEquip(int equip) {
 		previousSelected = equip;
+		stats.getStats();
 		switch (equip) {
 		case HEAD_SLOT:
 			if (items.getHead() == null) {
