@@ -11,76 +11,122 @@ import game.world.tiles.Tile;
 
 public class GameParser {
 
-    public static Area parseArea(String filename, Map<Integer, Tile> tileMap){
-        Scanner scan = null;
-        try{
-            scan = new Scanner(new File(filename));
-        }catch(IOException e){e.printStackTrace();}
+	public static Area parseArea(String filename, Map<Integer, Tile> tileMap) {
+		Scanner scan = null;
+		try {
+			scan = new Scanner(new File(filename));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-        try{
-            if(!gobble(scan, "<Area>")){
-                throw new ParserError("Parsing Area: Expecting <Area>, got "+scan.next());
-            }
+		try {
+			if (!gobble(scan, "<Area>")) {
+				throw new ParserError("Parsing Area: Expecting <Area>, got "
+						+ scan.next());
+			}
 
-            int ID = parseInt(scan, "ID");
-            int width = parseInt(scan, "Width");
-            int height = parseInt(scan, "Height");
-            Tile[][] floor = parse2DTileArray(scan, "Floor", width, height, tileMap);
-            Tile[][][] walls = new Tile[4][][];
-            walls[0] = parse2DTileArray(scan, "NorthWall", width, 3, tileMap);
-            walls[1] = parse2DTileArray(scan, "EastWall", height, 3, tileMap);
-            walls[2] = parse2DTileArray(scan, "SouthWall", width, 3, tileMap);
-            walls[3] = parse2DTileArray(scan, "WestWall", height, 3, tileMap);
+			int ID = parseInt(scan, "ID");
+			int width = parseInt(scan, "Width");
+			int height = parseInt(scan, "Height");
+			Tile[][] floor = parse2DTileArray(scan, "Floor", width, height,
+					tileMap);
+			Tile[][][] walls = new Tile[4][][];
+			walls[0] = parse2DTileArray(scan, "NorthWall", width, 3, tileMap);
+			walls[1] = parse2DTileArray(scan, "EastWall", height, 3, tileMap);
+			walls[2] = parse2DTileArray(scan, "SouthWall", width, 3, tileMap);
+			walls[3] = parse2DTileArray(scan, "WestWall", height, 3, tileMap);
 
-            if(!gobble(scan, "</Area>")){
-                throw new ParserError("Parsing Area: Expecting </Area>, got "+scan.next());
-            }
-            scan.close();
-            return new Area(floor, walls, ID);
-        }catch(ParserError error){error.printStackTrace();}
-        return null;
-    }
+			if (!gobble(scan, "</Area>")) {
+				throw new ParserError("Parsing Area: Expecting </Area>, got "
+						+ scan.next());
+			}
+			scan.close();
+			return new Area(floor, walls, ID);
+		} catch (ParserError error) {
+			error.printStackTrace();
+		}
+		return null;
+	}
 
-    public static Item[][] parseItems(String filename){
-    	return null;
-    }
+	public static void parseItems(String filename, Area area) {
+		Scanner scan = null;
+		try {
+			scan = new Scanner(new File(filename));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-    private static int parseInt(Scanner scan, String type) throws ParserError{
-        if(!gobble(scan, "<"+type+">")){
-            throw new ParserError("Parsing Int: Expecting <"+type+">, got "+scan.next());
-        }
-        int value = scan.nextInt();
+		try {
+			if (!gobble(scan, "<ItemList>")) {
+				throw new ParserError(
+						"Parsing Items: Expecting <ItemList>, got "
+								+ scan.next());
+			}
+			while (!gobble(scan, "</ItemList>")) {
+				if (!gobble(scan, "<Item>")) {
+					throw new ParserError(
+							"Parsing Items: Expecting <Item>, got "
+									+ scan.next());
+				}
+				area.addItem(parseItemType(scan));
+			}
+		} catch (ParserError error) {
+			error.printStackTrace();
+		}
+	}
 
-        if(!gobble(scan, "</"+type+">")){
-            throw new ParserError("Parsing Int: Expecting </"+type+">, got "+scan.next());
-        }
-        return value;
-    }
+	private static Item parseItemType(Scanner scan) {
+		try {
+			int x = parseInt(scan, "XPosition");
+			int y = parseInt(scan, "YPosition");
+		} catch (ParserError error) {
+			error.printStackTrace();
+		}
+		return null;
+	}
 
-    private static Tile[][] parse2DTileArray(Scanner scan, String type, int width, int height, Map<Integer, Tile> tileMap) throws ParserError{
-        if(!gobble(scan, "<"+type+">")){
-            throw new ParserError("Parsing 2D Tile Array: Expecting <"+type+">, got "+scan.next());
-        }
-        Tile[][] tiles = new Tile[height][width];
-        for(int i = 0; i < tiles.length; i++){
-            for(int j = 0; j < tiles[i].length; j++){
-                int tile = scan.nextInt();
-                tiles[i][j] = tileMap.get(tile);
-            }
-        }
+	private static int parseInt(Scanner scan, String type) throws ParserError {
+		if (!gobble(scan, "<" + type + ">")) {
+			throw new ParserError("Parsing Int: Expecting <" + type + ">, got "
+					+ scan.next());
+		}
+		int value = scan.nextInt();
 
-        if(!gobble(scan, "</"+type+">")){
-            throw new ParserError("Parsing 2D Tile Array: Expecting </"+type+">, got "+scan.next());
-        }
+		if (!gobble(scan, "</" + type + ">")) {
+			throw new ParserError("Parsing Int: Expecting </" + type
+					+ ">, got " + scan.next());
+		}
+		return value;
+	}
 
-        return tiles;
-    }
+	private static Tile[][] parse2DTileArray(Scanner scan, String type,
+			int width, int height, Map<Integer, Tile> tileMap)
+			throws ParserError {
+		if (!gobble(scan, "<" + type + ">")) {
+			throw new ParserError("Parsing 2D Tile Array: Expecting <" + type
+					+ ">, got " + scan.next());
+		}
+		Tile[][] tiles = new Tile[height][width];
+		for (int i = 0; i < tiles.length; i++) {
+			for (int j = 0; j < tiles[i].length; j++) {
+				int tile = scan.nextInt();
+				tiles[i][j] = tileMap.get(tile);
+			}
+		}
 
-    private static boolean gobble(Scanner scan, String s){
-        if(scan.hasNext(s)){
-            scan.next();
-            return true;
-        }
-        return false;
-    }
+		if (!gobble(scan, "</" + type + ">")) {
+			throw new ParserError("Parsing 2D Tile Array: Expecting </" + type
+					+ ">, got " + scan.next());
+		}
+
+		return tiles;
+	}
+
+	private static boolean gobble(Scanner scan, String s) {
+		if (scan.hasNext(s)) {
+			scan.next();
+			return true;
+		}
+		return false;
+	}
 }
