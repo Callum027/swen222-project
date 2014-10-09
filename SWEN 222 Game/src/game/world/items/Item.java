@@ -19,7 +19,7 @@ import java.awt.Point;
  */
 public abstract class Item implements Drawable{
 
-	private Point position;
+	private Position position;
 	private String name;
 	private int height; // how much room the item takes up on the area
 	private Image[] images;
@@ -37,7 +37,7 @@ public abstract class Item implements Drawable{
 	 * @param name
 	 *            the name of the item
 	 */
-	public Item(Point position, int height, String name) {
+	public Item(Position position, int height, String name) {
 		this.setPosition(position);
 		this.setHeight(height);
 		this.setName(name);
@@ -108,11 +108,11 @@ public abstract class Item implements Drawable{
 		return new BoundingBox(xPoints, yPoints, xPoints.length, p);
 	}
 
-	public Point getPosition() {
+	public Position getPosition() {
 		return position;
 	}
 
-	public void setPosition(Point position) {
+	public void setPosition(Position position) {
 		this.position = position;
 	}
 }

@@ -1,6 +1,5 @@
 package game.world.items;
 
-import game.world.BoundingBox;
 import game.world.Position;
 
 import java.awt.Image;
@@ -24,8 +23,8 @@ public class Container extends Item{
 	 * @param height the height/size of the container
 	 * @param name the name of the container
 	 */
-	public Container(Point point, int height, String name, int cats) {
-		super(point, height, name);
+	public Container(Position position, int height, String name, int cats) {
+		super(position, height, name);
 		this.cats=cats;
 	}
 
@@ -59,12 +58,6 @@ public class Container extends Item{
 	 */
 	public void setLoot(Equipment[] loot) {
 		this.loot = loot;
-	}
-
-	@Override
-	public BoundingBox getBoundingBox(int x, int y, Position p) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }
