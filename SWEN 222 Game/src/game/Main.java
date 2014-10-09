@@ -20,26 +20,29 @@ import javax.imageio.ImageIO;
 
 public class Main {
 
-
+	/** Constants used internally in the Main class. */
 	private static final String IMAGE_PATH = "src" + File.separatorChar + "game" + File.separatorChar + "ui" + File.separatorChar + "images";
-	private static String areaFile = "src" + File.separatorChar + "game" + File.separatorChar + "loading" + File.separatorChar + "Area.xml";
+	private static final String AREA_FILE = "src" + File.separatorChar + "game" + File.separatorChar + "loading" + File.separatorChar + "Area.xml";
+	private static final String[] TILES_FILE = new String[] { "1, FloorTile, floor_tile3" };
 
-	private static String[] tilesFile = new String[] { "1, FloorTile, floor_tile3" };
-
-	/* Game mode: client, server, or client and server. */
+	/** Game mode: client, server, or client and server. */
 	private static GameMode mode = GameMode.CLIENTANDSERVER;
 	private static int connectPort = 0;
 	private static String clientConnectAddr = null;
 
-	/* Client and server, which control networked communication. */
+	/** Client and server, which control networked communication. */
 	private static Server server = null;
 	private static Client client = null;
 
-	private static Map<Integer, Tile> tileMap = createTileMap(tilesFile);
-	private static Area area = GameParser.parseArea(areaFile, tileMap);
+	/** Tile map and area which gets added to the game world. */
+	private static Map<Integer, Tile> tileMap = createTileMap(TILES_FILE);
+	private static Area area = GameParser.parseArea(AREA_FILE, tileMap);
 
+	/** Game world and game window. */
 	private static GameWorld gameWorld = new GameWorld();
 	private static GameFrame gameWindow = new GameFrame(1280, 720);
+	/** Is this game set up properly? */
+	private static boolean gameWorldSetUp = false;
 
 	/**
 	 * Quick'n'dirty processing of command line arguments.
@@ -47,7 +50,7 @@ public class Main {
 	 * @param args Command-line arguments
 	 * @return true if operation succeeded
 	 */
-	private static boolean setupGameMode(String[] args) {
+	private static boolean processArgs(String[] args) {
 		if (args == null)
 			return false;
 
@@ -94,6 +97,7 @@ public class Main {
 			return false;
 		}
 
+		gameWorldSetUp = true;
 		return true;
 	}
 
@@ -104,10 +108,9 @@ public class Main {
 	 * @return true if operation succeeded
 	 */
 	private static boolean setupServer(int port) {
-		if (gameWorld == null) {
-			System.err.println("main: ERROR: setupServer() called before setupGameWorld()");
-			return false;
-		}
+		// Set up the game world if it has not been set up already.
+		if (!gameWorldSetUp)
+			setupGameWorld();
 
 		// Create the server, and add the game world as a listener for game events.
 		server = new Server();
@@ -132,10 +135,9 @@ public class Main {
 	 * @return true if operation succeeded
 	 */
 	private static boolean setupClient(String addr, int port) {
-		if (gameWorld == null) {
-			System.err.println("main: ERROR: setupClient() called before setupGameWorld()");
-			return false;
-		}
+		// Set up the game world if it has not been set up already.
+		if (!gameWorldSetUp)
+			setupGameWorld();
 
 		// Create a new client object, and make this client listen to game events from the GUI.
 		client = new Client();
@@ -192,6 +194,10 @@ public class Main {
 	 * Set up the GUI.
 	 */
 	private static boolean setupGameWindow() {
+		// Set up the game world if it has not been set up already.
+		if (!gameWorldSetUp)
+			setupGameWorld();
+
 		// Render the area.
 		gameWindow.getRender().setArea(area);
 		gameWindow.getRender().repaint();
@@ -237,6 +243,10 @@ public class Main {
 	 * @return Image
 	 */
 	public static Image getImage(String filename) {
+		// Set up the game world if it has not been set up already.
+		if (!gameWorldSetUp)
+			setupGameWorld();
+
 		try {
 			Image image = ImageIO.read(new File(IMAGE_PATH  + File.separatorChar + filename));
 			return image;
@@ -253,6 +263,10 @@ public class Main {
 	 * @return game world
 	 */
 	public static GameWorld getGameWorld() {
+		// Set up the game world if it has not been set up already.
+		if (!gameWorldSetUp)
+			setupGameWorld();
+
 		return gameWorld;
 	}
 
@@ -262,7 +276,7 @@ public class Main {
 	 * @param args Command-line arguments
 	 */
 	public static void main(String args[]) {
-		if (!setupGameMode(args))
+		if (!processArgs(args))
 			System.exit(1);
 
 		if (!setupGameWorld())
