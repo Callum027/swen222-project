@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import game.exceptions.GameException;
+import game.exceptions.InvalidGameEventException;
 import game.net.NetIO;
 import game.net.Streamable;
 import game.world.events.InteractEvent;
@@ -95,12 +96,12 @@ public abstract class GameEvent implements Streamable {
 		 * @param id ID to convert
 		 * @return GameEvent.Type version
 		 */
-		public static Type getTypeFromID(byte id) {
+		public static Type getTypeFromID(byte id) throws GameException {
 			for (Type t: values())
 				if (t.getID() == id)
 					return t;
 
-			return null;
+			throw new InvalidGameEventException(id);
 		}
 
 		/**
@@ -109,7 +110,7 @@ public abstract class GameEvent implements Streamable {
 		 * @param is InputStream
 		 * @return GameEvent.Type
 		 */
-		public static Type read(InputStream is) throws IOException {
+		public static Type read(InputStream is) throws IOException, GameException {
 			return getTypeFromID(NetIO.readByte(is));
 		}
 

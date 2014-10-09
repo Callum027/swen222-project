@@ -1,6 +1,8 @@
 package game.net;
 
 import game.exceptions.GameException;
+import game.exceptions.InvalidGameEventException;
+import game.exceptions.InvalidGamePacketException;
 import game.world.GameEvent;
 import game.world.GameEvent.Type;
 
@@ -132,12 +134,12 @@ public class GamePacket implements Streamable {
 		 * @param id ID to convert
 		 * @return GamePacket.Type version
 		 */
-		public static Type getTypeFromID(byte id) {
+		public static Type getTypeFromID(byte id) throws GameException {
 			for (Type t: values())
 				if (t.getID() == id)
 					return t;
 
-			return null;
+			throw new InvalidGamePacketException(id);
 		}
 
 		/**
@@ -146,7 +148,7 @@ public class GamePacket implements Streamable {
 		 * @param is InputStream
 		 * @return GamePacket.Type
 		 */
-		public static Type read(InputStream is) throws IOException {
+		public static Type read(InputStream is) throws IOException, GameException {
 			return getTypeFromID(NetIO.readByte(is));
 		}
 
