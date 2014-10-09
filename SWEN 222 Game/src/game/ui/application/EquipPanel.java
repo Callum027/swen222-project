@@ -46,16 +46,9 @@ public class EquipPanel extends JPanel implements MouseListener {
 	private final int OFF_Y;
 	private final int BOOTS_X;
 	private final int BOOTS_Y;
-	private final int HP_X;
-	private final int HP_Y;
-	private final int ATTACK_X;
-	private final int ATTACK_Y;
-	private final int DEFENCE_X;
-	private final int DEFENCE_Y;
 
-	private int hp = 100;
-	private int attack = 0;
-	private int defence = 0;
+	private StatsPanel stats;
+
 	private EquippedItems items = new EquippedItems();
 	private Equipment equipSelected;
 	private int previousSelected = -1;
@@ -80,21 +73,14 @@ public class EquipPanel extends JPanel implements MouseListener {
 		HEAD_Y = height - 147;
 		BODY_X = width + 55;
 		BODY_Y = height - 100;
-		OFF_X = width + 100;
+		OFF_X = width + 102;
 		OFF_Y = height - 100;
 		MAIN_X = width + 8;
 		MAIN_Y = height - 100;
 		BOOTS_X = width + 55;
 		BOOTS_Y = height - 52;
 
-		HP_X = (int) (width * 0.2);
-		HP_Y = (int) (height * 0.6666);
 
-		ATTACK_X = (int) (width * 0.2);
-		ATTACK_Y = (int) (height * 0.7);
-
-		DEFENCE_X = (int) (width * 0.2);
-		DEFENCE_Y = (int) (height * 0.75);
 
 		items.equipHead(new Equipment(new Point(0, 0), squareSize, "iron-hat",
 				0, 50, 50, HEAD_SLOT));
@@ -109,9 +95,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 		setPreferredSize(new Dimension(width, height));
 		addMouseListener(this);
 		background = Main.getImage("Equip.png");
-		getStats();
 		repaint();
-
 	}
 
 	@Override
@@ -132,38 +116,17 @@ public class EquipPanel extends JPanel implements MouseListener {
 	private void drawBlankEquip(Graphics g) {
 		g.drawImage(background, 0, 0, null);
 		drawEquipmentItems(g);
-		drawStats(g);
 	}
 
-	/**
-	 * A method to draw the HP, Attack and Defence stats underneath the
-	 * equipment slots
-	 *
-	 * @param g
-	 *            the graphics component
-	 */
-	private void drawStats(Graphics g) {
-		getStats();
-		g.drawString("HP: " + hp, HP_X, HP_Y);
-		g.drawString("Attack: " + attack, ATTACK_X, ATTACK_Y);
-		g.drawString("Defence: " + defence, DEFENCE_X, DEFENCE_Y);
-	}
 
-	/**
-	 * Just calls the the other get stats methods done like this so it can
-	 * easily add in other get'stat' methods if needed
-	 */
-	private void getStats() {
-		attack = getTotalAttack();
-		defence = getDefence();
-	}
+
 
 	/**
 	 * Adds up the defence for all the equiped items
 	 *
 	 * @return The total defence value
 	 */
-	private int getDefence() {
+	public int getDefence() {
 		int def = 0;
 		if (items.getHead() != null) {
 			def += items.getHead().getDefence();
@@ -188,7 +151,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 	 *
 	 * @return The attack value of the total equipment
 	 */
-	private int getTotalAttack() {
+	public int getTotalAttack() {
 		int at = 0;
 		if (items.getHead() != null) {
 			at += items.getHead().getAttack();
@@ -492,36 +455,32 @@ public class EquipPanel extends JPanel implements MouseListener {
 		case HEAD_SLOT:
 			if (items.getHead() == null) {
 			} else {
-				attack = items.getHead().getAttack();
-				defence = items.getHead().getDefence();
+				stats.getStats();
 			}
 			break;
 		case MAIN_HAND:
 			if (items.getMainHand() == null) {
 			} else {
-				attack = items.getMainHand().getAttack();
+				stats.getStats();
 			}
 			break;
 		case OFF_HAND:
 			if (items.getoffHand() == null) {
 			} else {
-				attack = items.getoffHand().getAttack();
-				defence = items.getoffHand().getDefence();
+				stats.getStats();
 			}
 			break;
 		case CHEST_SLOT:
 			if (items.getBody() == null) {
 			} else {
-				attack = items.getBody().getAttack();
-				defence = items.getBody().getDefence();
+				stats.getStats();
 			}
 			break;
 		case FEET_SLOT:
 			if (items.getBoots() == null) {
 				System.out.println("No items equiped on feet");
 			} else {
-				attack = items.getBoots().getAttack();
-				defence = items.getBoots().getDefence();
+				stats.getStats();
 			}
 			break;
 		default:
@@ -557,7 +516,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 	 */
 	public void setItems(EquippedItems items) {
 		this.items = items;
-		getStats();
+
 	}
 
 	/**
@@ -618,5 +577,13 @@ public class EquipPanel extends JPanel implements MouseListener {
 		}
 
 		return -1;
+	}
+
+	public StatsPanel getStats() {
+		return stats;
+	}
+
+	public void setStats(StatsPanel stats) {
+		this.stats = stats;
 	}
 }

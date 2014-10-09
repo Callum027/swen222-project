@@ -3,10 +3,10 @@ package game.ui;
 import game.Main;
 import game.ui.application.EquipPanel;
 import game.ui.application.InventoryPanel;
+import game.ui.application.StatsPanel;
 import game.ui.rendering.RenderingPanel;
 import game.world.items.MoveableItem;
 
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.Image;
@@ -14,21 +14,16 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextPane;
 
 /**
  * A custom JFrame used to hold all the panels of the game. Implements
@@ -57,6 +52,8 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 	 */
 	private int direction;
 
+	private StatsPanel stats;
+
 	/**
 	 * Is called automatically from Main
 	 *
@@ -79,9 +76,13 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 		appPane.setLayout(new BoxLayout(appPane, BoxLayout.Y_AXIS));
 		inventory = new InventoryPanel();
 		equip = new EquipPanel(inventory);
+		stats = new StatsPanel(equip);
 		inventory.setEquip(equip);
+		equip.setStats(stats);
+		stats.getStats();
 		appPane.add(equip);
 		appPane.add(inventory);
+		appPane.add(stats);
 		add(appPane);
 		addKeyListener(this);
 		Toolkit tk = Toolkit.getDefaultToolkit();

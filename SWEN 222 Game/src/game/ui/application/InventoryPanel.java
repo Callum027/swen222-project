@@ -51,7 +51,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	public InventoryPanel() {
 		Point p = new Point(0, 0);
 		addItem(new MoveableItem(p, squareSize, "cat-inv", 9001));
-		addItem(new Equipment(p, squareSize, "mithril-hat", 0, 200, 500,
+		addItem(new Equipment(p, squareSize, "wizard-hat", 0, 20, 500,
 				equip.HEAD_SLOT));
 		addItem(new Equipment(p, squareSize, "mithril-sword", 200, 0, 500,
 				equip.MAIN_HAND));
@@ -82,7 +82,6 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	 */
 	private void drawBlankInventory(Graphics g) {
 		g.drawImage(background, 0, 0, null);
-		g.setColor(Color.white);
 		g.drawString("" + cats, 40, height - 11);
 		drawInventoryItems(g);
 	}
