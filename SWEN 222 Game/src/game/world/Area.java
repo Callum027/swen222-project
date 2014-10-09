@@ -180,7 +180,7 @@ public class Area {
 			}
 			path.push(node.getPosition());
 			FringeNode current = node.getFrom();
-			while(current.getFrom() != null){
+			while(current != null){
 				path.push(current.getPosition());
 				current = current.getFrom();
 			}
