@@ -2,7 +2,7 @@
 <ID> 1 </ID>
 <Width> 10 </Width>
 <Height> 10 </Height>
-<FloorLayout>
+<Floor>
 1 1 1 1 1 1 1 1 1 1
 1 1 1 1 1 1 1 1 1 1
 1 1 1 1 1 1 1 1 1 1
@@ -13,9 +13,25 @@
 1 1 1 1 1 1 1 1 1 1
 1 1 1 1 1 1 1 1 1 1
 1 1 1 1 1 1 1 1 1 1
-</FloorLayout>
-<NorthWall> 1 1 1 1 1 1 1 1 1 1 </NorthWall>
-<EastWall> 1 1 1 1 1 1 1 1 1 1 </EastWall>
-<SouthWall> 1 1 1 1 1 1 1 1 1 1 </SouthWall>
-<WestWall> 1 1 1 1 1 1 1 1 1 1 </WestWall>
+</Floor>
+<NorthWall>
+1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1
+</NorthWall>
+<EastWall>
+1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1
+</EastWall>
+<SouthWall>
+1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1
+</SouthWall>
+<WestWall>
+1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1
+</WestWall>
 </Area>

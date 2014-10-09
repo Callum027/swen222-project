@@ -36,6 +36,7 @@ public abstract class Item {
 	 *            the name of the item
 	 */
 	public Item(Point position, int height, String name) {
+		this.setPosition(position);
 		this.setHeight(height);
 		this.setName(name);
 		images = new Image[4];
