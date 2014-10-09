@@ -1,12 +1,9 @@
 package game.world.characters;
 
-import game.world.items.Item;
+import game.world.Position;
 import game.world.items.MoveableItem;
-import game.world.tiles.Tile;
 
 import java.awt.Image;
-import java.awt.List;
-import java.awt.Point;
 import java.util.ArrayList;
 
 /**
@@ -18,14 +15,14 @@ public abstract class GameCharacter {
 
 	private ArrayList<MoveableItem> items;
 	private final String name;
-	private Point position;
+	private Position position;
 	private Image[] images;
 	private int direction;
 	private int cats; //the amount of money/points the player has
 	private final int id;
 	private final int MAXIMUM_CAPACITY = 20;
 
-	public GameCharacter(Point position, String name, int id) {
+	public GameCharacter(Position position, String name, int id) {
 		this.name = name;
 		this.setCats(0);
 		this.setDirection(0);
@@ -33,11 +30,11 @@ public abstract class GameCharacter {
 		items = new ArrayList<MoveableItem>(MAXIMUM_CAPACITY);
 	}
 
-	public void moveToPosition(Point position){
+	public void moveToPosition(Position position){
 		this.setPosition(position);
 	}
 
-	private void setPosition(Point newPosition) {
+	private void setPosition(Position newPosition) {
 		this.position = newPosition;
 	}
 
@@ -61,7 +58,7 @@ public abstract class GameCharacter {
 		return items;
 	}
 
-	public Point getPosition() {
+	public Position getPosition() {
 		return position;
 	}
 

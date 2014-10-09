@@ -1,10 +1,6 @@
 package game.world.characters;
 
-import java.awt.Point;
-import java.util.ArrayList;
-
-import game.world.items.Equipment;
-import game.world.items.Item;
+import game.world.Position;
 import game.world.items.MoveableItem;
 
 /**
@@ -14,7 +10,7 @@ import game.world.items.MoveableItem;
  */
 public class Merchant extends GameCharacter{
 
-	public Merchant(Point position, String name, int id){
+	public Merchant(Position position, String name, int id){
 		super(position, name, id);
 	}
 
