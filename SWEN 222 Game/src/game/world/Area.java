@@ -175,6 +175,9 @@ public class Area {
 		 */
 		private Stack<Position> getPath(FringeNode node){
 			Stack<Position> path = new Stack<Position>();
+			if(node == null){
+				return path;
+			}
 			path.push(node.getPosition());
 			FringeNode current = node.getFrom();
 			while(current.getFrom() != null){

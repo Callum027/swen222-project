@@ -327,8 +327,8 @@ public class RenderingPanel extends JPanel implements MouseListener {
 				//System.out.println("Area position: (" + p.getX() + ", " + p.getY() + ")");
 				Position current = test.getPosition();
 				Stack<Position> moves = area.findPath(current, p);
-				for(Position pos : moves){
-					System.out.println(pos.toString());
+				while(!moves.isEmpty()){
+					System.out.println(moves.pop().toString());
 				}
 				test.setPosition(new Position(p.getX(), p.getY()));
 				//test.setX(p.x);
