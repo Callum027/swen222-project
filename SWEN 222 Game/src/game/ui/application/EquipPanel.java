@@ -76,16 +76,16 @@ public class EquipPanel extends JPanel implements MouseListener {
 		width = inventory.getWidth();
 		height = 169;
 
-		HEAD_X = width+55;
-		HEAD_Y = height-147;
-		BODY_X = width+55;
-		BODY_Y = height-100;
-		OFF_X = width+101;
-		OFF_Y = height-100;
-		MAIN_X = width+8;
-		MAIN_Y = height-100;
-		BOOTS_X = width+55;
-		BOOTS_Y = height-52;
+		HEAD_X = width + 55;
+		HEAD_Y = height - 147;
+		BODY_X = width + 55;
+		BODY_Y = height - 100;
+		OFF_X = width + 100;
+		OFF_Y = height - 100;
+		MAIN_X = width + 8;
+		MAIN_Y = height - 100;
+		BOOTS_X = width + 55;
+		BOOTS_Y = height - 52;
 
 		HP_X = (int) (width * 0.2);
 		HP_Y = (int) (height * 0.6666);
@@ -96,11 +96,16 @@ public class EquipPanel extends JPanel implements MouseListener {
 		DEFENCE_X = (int) (width * 0.2);
 		DEFENCE_Y = (int) (height * 0.75);
 
-		items.equipHead(new Equipment(new Point(0, 0), squareSize, "iron-hat", 0, 100, 100, HEAD_SLOT));
-		items.equipMainHand(new Equipment(new Point(0,0), squareSize, "iron-sword", 50, 0, 50, MAIN_HAND));
-		items.equipBody(new Equipment(new Point(0, 0), squareSize, "iron-armour", 0, 300, 300, CHEST_SLOT));
-		items.equipBoots(new Equipment(new Point(0, 0), squareSize, "iron-boots", 0, 400, 400, FEET_SLOT));
-		items.equipOffHand(new Equipment(new Point(0,0), squareSize, "iron-shield", 0, 0, 9000, OFF_HAND));
+		items.equipHead(new Equipment(new Point(0, 0), squareSize, "iron-hat",
+				0, 50, 50, HEAD_SLOT));
+		items.equipMainHand(new Equipment(new Point(0, 0), squareSize,
+				"iron-sword", 50, 0, 50, MAIN_HAND));
+		items.equipBody(new Equipment(new Point(0, 0), squareSize,
+				"iron-armour", 0, 50, 50, CHEST_SLOT));
+		items.equipBoots(new Equipment(new Point(0, 0), squareSize,
+				"iron-boots", 0, 50, 50, FEET_SLOT));
+		items.equipOffHand(new Equipment(new Point(0, 0), squareSize,
+				"iron-shield", 0, 50, 50, OFF_HAND));
 		setPreferredSize(new Dimension(width, height));
 		addMouseListener(this);
 		background = Main.getImage("Equip.png");
@@ -465,7 +470,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 		if (GameFrame.selectedItem != null
 				&& GameFrame.selectedItem instanceof Equipment) {
 			Equipment equip = (Equipment) GameFrame.selectedItem;
-			if(addEquip(equip)==-1){
+			if (addEquip(equip) == -1) {
 				inventory.returnItem(equip);
 			}
 
