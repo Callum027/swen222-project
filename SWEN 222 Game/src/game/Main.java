@@ -2,7 +2,7 @@ package game;
 
 import game.control.Client;
 import game.control.Server;
-import game.loading.ParserIterative;
+import game.loading.GameParser;
 import game.ui.GameFrame;
 import game.world.Area;
 import game.world.GameWorld;
@@ -36,7 +36,7 @@ public class Main {
 	private static Client client = null;
 
 	private static Map<Integer, Tile> tileMap = createTileMap(tilesFile);
-	private static Area area = ParserIterative.parseArea(areaFile, tileMap);
+	private static Area area = GameParser.parseArea(areaFile, tileMap);
 
 	private static GameWorld gameWorld = new GameWorld();
 	private static GameFrame gameWindow = new GameFrame(1280, 720);
@@ -50,7 +50,7 @@ public class Main {
 	private static boolean setupGameMode(String[] args) {
 		if (args == null)
 			return false;
-		
+
 		// Process command line arguments.
 		for (int i = 0; i < args.length; i++) {
 			String a = args[i];
@@ -75,13 +75,13 @@ public class Main {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 
 	/**
 	 * Set up the game world.
-	 * 
+	 *
 	 * @return true if operation succeeded
 	 */
 	private static boolean setupGameWorld() {
@@ -93,7 +93,7 @@ public class Main {
 			System.err.println("main: ERROR: could not load game world area");
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -120,7 +120,7 @@ public class Main {
 		// Bind the server to the socket, and start the thread!
 		server.bind();
 		server.start();
-		
+
 		return true;
 	}
 
@@ -153,13 +153,13 @@ public class Main {
 
 		// Start the client thread.
 		client.start();
-		
+
 		return true;
 	}
 
 	/**
 	 * Set up a dedicated server instance.
-	 * 
+	 *
 	 * @return true if operation succeeded
 	 */
 	private static boolean setupDedicatedServer() {
@@ -178,13 +178,13 @@ public class Main {
 	 */
 	private static boolean setupClientAndServer() {
 		boolean ret = true;
-		
+
 		if (ret && server != null)
 			ret = setupServer(0);
-		
+
 		if (ret && client == null)
 			ret = setupClient(null, 0);
-		
+
 		return ret;
 	}
 
@@ -195,7 +195,7 @@ public class Main {
 		// Render the area.
 		gameWindow.getRender().setArea(area);
 		gameWindow.getRender().repaint();
-		
+
 		return true;
 	}
 
@@ -264,7 +264,7 @@ public class Main {
 	public static void main(String args[]) {
 		if (!setupGameMode(args))
 			System.exit(1);
-		
+
 		if (!setupGameWorld())
 			System.exit(2);
 
