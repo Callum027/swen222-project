@@ -35,14 +35,14 @@ public class Main {
 	private static Client client = null;
 
 	/** Tile map and area which gets added to the game world. */
-	private static Map<Integer, Tile> tileMap = createTileMap(TILES_FILE);
-	private static Area area = GameParser.parseArea(AREA_FILE, tileMap);
+	private static Map<Integer, Tile> tileMap = null;
+	private static Area area = null;
 
 	/** Game world and game window. */
-	private static GameWorld gameWorld = new GameWorld();
-	private static GameFrame gameWindow = new GameFrame(1280, 720);
+	private static GameWorld gameWorld = null;
+	private static GameFrame gameWindow = null;
 	/** Is this game set up properly? */
-	private static boolean gameWorldSetUp = false;
+	private static Boolean gameWorldSetUp = false;
 
 	/**
 	 * Quick'n'dirty processing of command line arguments.
@@ -88,17 +88,31 @@ public class Main {
 	 * @return true if operation succeeded
 	 */
 	private static boolean setupGameWorld() {
-		// Add the main area to the game world.
-		if (area != null)
-			gameWorld.addArea(area);
-		else
-		{
-			System.err.println("main: ERROR: could not load game world area");
-			return false;
+		// Return true if it is already set up.
+		synchronized (gameWorldSetUp) {
+			if (gameWorldSetUp)
+				return true;
+			
+			// Load the tile map and the game world areas.
+			tileMap = createTileMap(TILES_FILE);
+			area = GameParser.parseArea(AREA_FILE, tileMap);
+	
+			// Add the main area to the game world, but only if the area
+			// successfully loaded.		
+			if (area != null)
+			{
+				gameWorld = new GameWorld();
+				gameWorld.addArea(area);
+			}
+			else
+			{
+				System.err.println("main: ERROR: could not load game world area");
+				return false;
+			}
+	
+			gameWorldSetUp = true;
+			return true;
 		}
-
-		gameWorldSetUp = true;
-		return true;
 	}
 
 	/**
@@ -109,8 +123,7 @@ public class Main {
 	 */
 	private static boolean setupServer(int port) {
 		// Set up the game world if it has not been set up already.
-		if (!gameWorldSetUp)
-			setupGameWorld();
+		setupGameWorld();
 
 		// Create the server, and add the game world as a listener for game events.
 		server = new Server();
@@ -136,8 +149,7 @@ public class Main {
 	 */
 	private static boolean setupClient(String addr, int port) {
 		// Set up the game world if it has not been set up already.
-		if (!gameWorldSetUp)
-			setupGameWorld();
+		setupGameWorld();
 
 		// Create a new client object, and make this client listen to game events from the GUI.
 		client = new Client();
@@ -195,8 +207,10 @@ public class Main {
 	 */
 	private static boolean setupGameWindow() {
 		// Set up the game world if it has not been set up already.
-		if (!gameWorldSetUp)
-			setupGameWorld();
+		setupGameWorld();
+		
+		// Set up the game GUI.
+		gameWindow = new GameFrame(1280, 720);
 
 		// Render the area.
 		gameWindow.getRender().setArea(area);
@@ -243,10 +257,6 @@ public class Main {
 	 * @return Image
 	 */
 	public static Image getImage(String filename) {
-		// Set up the game world if it has not been set up already.
-		if (!gameWorldSetUp)
-			setupGameWorld();
-
 		try {
 			Image image = ImageIO.read(new File(IMAGE_PATH  + File.separatorChar + filename));
 			return image;
@@ -264,8 +274,7 @@ public class Main {
 	 */
 	public static GameWorld getGameWorld() {
 		// Set up the game world if it has not been set up already.
-		if (!gameWorldSetUp)
-			setupGameWorld();
+		setupGameWorld();
 
 		return gameWorld;
 	}
