@@ -55,7 +55,7 @@ public class RenderingPanel extends JPanel implements MouseListener {
 		this.direction = direction;
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		addMouseListener(this);
-		test = new Furniture(new Point(0,0),  2, "SpriteTEST", null);
+		test = new Furniture(new Position(0,0),  2, "SpriteTEST", null);
 
 	}
 

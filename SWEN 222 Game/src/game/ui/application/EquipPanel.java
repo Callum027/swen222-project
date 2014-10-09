@@ -2,6 +2,7 @@ package game.ui.application;
 
 import game.Main;
 import game.ui.GameFrame;
+import game.world.Position;
 import game.world.items.Equipment;
 import game.world.items.EquippedItems;
 
@@ -80,31 +81,32 @@ public class EquipPanel extends JPanel implements MouseListener {
 		BOOTS_X = width + 55;
 		BOOTS_Y = height - 52;
 
+		Position p = new Position(0, 0);
 
-
-		items.equipHead(new Equipment(new Point(0, 0), squareSize, "iron-hat",
-				0, 50, 50, HEAD_SLOT));
-		items.equipMainHand(new Equipment(new Point(0, 0), squareSize,
-				"iron-sword", 50, 0, 50, MAIN_HAND));
-		items.equipBody(new Equipment(new Point(0, 0), squareSize,
-				"iron-armour", 0, 50, 50, CHEST_SLOT));
-		items.equipBoots(new Equipment(new Point(0, 0), squareSize,
-				"iron-boots", 0, 50, 50, FEET_SLOT));
-		items.equipOffHand(new Equipment(new Point(0, 0), squareSize,
-				"iron-shield", 0, 50, 50, OFF_HAND));
+		items.equipHead(new Equipment(p, squareSize, "iron-hat", 0, 50, 50,
+				HEAD_SLOT));
+		items.equipMainHand(new Equipment(p, squareSize, "iron-sword", 50, 0,
+				50, MAIN_HAND));
+		items.equipBody(new Equipment(p, squareSize, "iron-armour", 0, 50, 50,
+				CHEST_SLOT));
+		items.equipBoots(new Equipment(p, squareSize, "iron-boots", 0, 50, 50,
+				FEET_SLOT));
+		items.equipOffHand(new Equipment(p, squareSize, "iron-shield", 0, 50,
+				50, OFF_HAND));
 		setPreferredSize(new Dimension(width, height));
 		addMouseListener(this);
 		background = Main.getImage("Equip.png");
+		setVisible(true);
 		repaint();
 	}
 
 	@Override
-	public int getWidth(){
+	public int getWidth() {
 		return width;
 	}
 
 	@Override
-	public int getHeight(){
+	public int getHeight() {
 		return height;
 	}
 

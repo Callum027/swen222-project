@@ -2,6 +2,7 @@ package game.ui.application;
 
 import game.Main;
 import game.ui.GameFrame;
+import game.world.Position;
 import game.world.items.Equipment;
 import game.world.items.MoveableItem;
 
@@ -49,7 +50,7 @@ public class InventoryPanel extends JPanel implements MouseListener {
 	 *            the height of the panel
 	 */
 	public InventoryPanel() {
-		Point p = new Point(0, 0);
+		Position p = new Position(0, 0);
 		addItem(new MoveableItem(p, squareSize, "cat-inv", 9001));
 		addItem(new Equipment(p, squareSize, "wizard-hat", 0, 20, 500,
 				equip.HEAD_SLOT));
