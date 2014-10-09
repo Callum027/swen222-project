@@ -1,6 +1,7 @@
 package game.world.tiles;
 
 import game.world.BoundingBox;
+import game.world.Position;
 
 import java.awt.Point;
 import java.awt.Polygon;
@@ -43,7 +44,7 @@ public class FloorTile extends Tile{
 	 * @return
 	 * 		--- bounding box of Tile
 	 */
-	public BoundingBox getBoundingBox(int x, int y, Point p){
+	public BoundingBox getBoundingBox(int x, int y, Position p){
 		int[] xPoints = new int[]{x, x + (WIDTH / 2), x + WIDTH, x + (WIDTH / 2)};
 		int[] yPoints = new int[]{y + (HEIGHT / 2), y, y + (HEIGHT / 2), y + HEIGHT};
 		return new BoundingBox(xPoints, yPoints, xPoints.length, p);

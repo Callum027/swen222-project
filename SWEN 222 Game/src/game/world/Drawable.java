@@ -23,8 +23,10 @@ public interface Drawable {
 	 * 			--- top left x coordinate to draw object
 	 * @param y
 	 * 			--- top left y coordinate to draw object
+	 * @param direction
+	 * 			--- the current direction of the game view
 	 */
-	public void draw(Graphics g, int x, int y);
+	public void draw(Graphics g, int x, int y, int direction);
 
 	/**
 	 * Returns a bounding box that corresponds to the position
@@ -34,8 +36,10 @@ public interface Drawable {
 	 * 			--- top left x coordinate
 	 * @param y
 	 * 			--- top left y coordinate
+	 * @param p
+	 * 			--- Position of the object in its current Area
 	 * @return
 	 * 			--- BoundingBox of this object
 	 */
-	public BoundingBox getBoundingBox(int x, int y);
+	public BoundingBox getBoundingBox(int x, int y, Position p);
 }
