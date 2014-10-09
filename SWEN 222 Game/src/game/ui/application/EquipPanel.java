@@ -25,6 +25,8 @@ import javax.swing.JPanel;
  *
  */
 public class EquipPanel extends JPanel implements MouseListener {
+
+	private static final long serialVersionUID = 1L;
 	private final int equipSize = 5;
 	private final int width;
 	private final int height;
@@ -65,6 +67,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 	 *            the height of the panel
 	 */
 	public EquipPanel(InventoryPanel inventory) {
+		System.out.println("creating equip panel");
 		this.inventory = inventory;
 
 		width = inventory.getWidth();
@@ -112,8 +115,9 @@ public class EquipPanel extends JPanel implements MouseListener {
 
 	@Override
 	public void paintComponent(Graphics g) {
-		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, width, height);
+		//g.setColor(Color.BLACK);
+		//g.fillRect(0, 0, width, height);
+		System.out.println("painting equip panel");
 		g.drawImage(background, 0, 0, null);
 		drawEquipmentItems(g);
 		stats.refresh();

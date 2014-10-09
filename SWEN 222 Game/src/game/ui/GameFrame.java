@@ -81,9 +81,9 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 		inventory.setEquip(equip);
 		equip.setStats(stats);
 
+		appPane.add(stats);
 		appPane.add(equip);
 		appPane.add(inventory);
-		appPane.add(stats);
 		add(appPane);
 
 		addKeyListener(this);
