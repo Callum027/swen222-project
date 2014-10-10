@@ -67,11 +67,11 @@ public class InventoryPanel extends JPanel implements MouseListener {
 		background = Main.getImage("Inventory.png");
 	}
 
-	public int getWidth(){
+	public int getWidth() {
 		return width;
 	}
 
-	public int getHeight(){
+	public int getHeight() {
 		return height;
 	}
 

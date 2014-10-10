@@ -30,7 +30,7 @@ public class RenderingPanel extends JPanel implements MouseListener {
 
 	// fields
 	private final int WIDTH = 960;
-	private final int HEIGHT = 720;
+	private final int HEIGHT = 560;
 	private final int DX = (FloorTile.WIDTH / 2) + 1;
 	private final int DY = FloorTile.HEIGHT / 2;
 

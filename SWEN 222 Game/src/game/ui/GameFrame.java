@@ -43,7 +43,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 	private static final long serialVersionUID = 1L;
 
 	private GameEventBroadcaster geb = new GameEventBroadcaster();
-	
+
 	public static final int NORTH = 0;
 	public static final int EAST = 1;
 	public static final int SOUTH = 2;
@@ -99,9 +99,9 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 		// setup app pane
 		JPanel appPane = new JPanel();
 		appPane.setLayout(new BoxLayout(appPane, BoxLayout.Y_AXIS));
-		appPane.add(stats);
 		appPane.add(equip);
 		appPane.add(inventory);
+		appPane.add(stats);
 
 		// setup the game frame layout
 		setLayout(new FlowLayout());
@@ -217,10 +217,10 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 	// unneeded method
 	public void keyReleased(KeyEvent e) {
 	}
-	
+
 	/**
 	 * Add a GameEventListener to this GameFrame.
-	 * 
+	 *
 	 * @param gel Game event listener
 	 */
 	public void addGameEventListener(GameEventListener gel) {

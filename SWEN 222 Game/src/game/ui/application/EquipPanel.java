@@ -72,15 +72,16 @@ public class EquipPanel extends JPanel implements MouseListener {
 		width = inventory.getWidth();
 		height = 169;
 
-		HEAD_X = width + 55;
-		HEAD_Y = height - 147;
-		BODY_X = width + 55;
+		HEAD_X = width - 100;
+		HEAD_Y = height - 146;
+		BODY_X = width - 100;
 		BODY_Y = height - 100;
-		OFF_X = width + 102;
+		OFF_X = width - 53
+				;
 		OFF_Y = height - 100;
-		MAIN_X = width + 8;
+		MAIN_X = width - 147;
 		MAIN_Y = height - 100;
-		BOOTS_X = width + 55;
+		BOOTS_X = width - 100;
 		BOOTS_Y = height - 52;
 
 		Position p = new Position(0, 0);
@@ -98,7 +99,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 		setPreferredSize(new Dimension(width, height));
 		addMouseListener(this);
 		background = Main.getImage("Equip.png");
-		setVisible(true);
+		//setVisible(true);
 		repaint();
 	}
 
@@ -116,7 +117,7 @@ public class EquipPanel extends JPanel implements MouseListener {
 	public void paintComponent(Graphics g) {
 		g.drawImage(background, 0, 0, null);
 		drawEquipmentItems(g);
-		stats.refresh();
+		stats.repaint();
 	}
 
 	/**
