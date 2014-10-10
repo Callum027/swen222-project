@@ -23,17 +23,32 @@ import java.io.OutputStream;
  */
 public class Player extends GameCharacter implements Streamable, Attackable{
 
+	/*
+	 * the player stats
+	 */
 	private int health;
 	private int attack;
 	private int defence;
+
 	private EquippedItems equipped; //the items that is currently equipped to the player
 	private GameClass gameClass; //either Warrior, Mage or Rogue
 
+	/**
+	 * The constructor
+	 * @param position the position the player spawns at
+	 * @param name the name of our player
+	 * @param uid the unique identifier of our player
+	 * @param playerClass the class of our player
+	 */
 	public Player(Position position, String name, int uid, GameClass.playerClass playerClass){
 		super(position, name, uid);
 		assignClass(playerClass); //gives the player a class (behaviour)
 	}
 
+	/**
+	 * Gives the player a behaviour (class)
+	 * @param playerClass the enum that identifies the player's class
+	 */
 	public void assignClass(GameClass.playerClass playerClass){
 		switch (playerClass){
 			case WARRIOR:
@@ -63,10 +78,21 @@ public class Player extends GameCharacter implements Streamable, Attackable{
 		NetIO.writeByte(os, (byte)super.getId());
 	}
 
+	/**
+	 * gets the items that are currently equipped by the player
+	 * @return an ArrayList containing the equipped items
+	 */
 	public EquippedItems getEquipped() {
 		return equipped;
 	}
 
+	/**
+	 * reads a player from the inputstream
+	 * @param is the inputstream
+	 * @return the player with the given id that is recoeved form the inputstream
+	 * @throws IOException
+	 * @throws GameException
+	 */
 	public static Player read(InputStream is) throws IOException, GameException {
 		byte id = NetIO.readByte(is);
 		Player player = Main.getGameWorld().getPlayer(id);
