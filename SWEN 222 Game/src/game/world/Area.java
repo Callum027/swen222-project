@@ -21,46 +21,121 @@ import game.world.tiles.Tile;
  *
  */
 public class Area {
-	private int areaID;
+	
+	// fields
+	private final int areaID;
 	private List<Item> items; // the items located in this area
 	private Tile[][] tiles; //the tiles that make up this area
 	private Tile[][][] walls;
-
+	
+	/**
+	 * Constructor:
+	 * Constructs an instance of an Area. takes a 2D array of Tiles which
+	 * represent the floor layout, a 3D array of tiles which represents the wall
+	 * layout and a unique identifying integer.
+	 * 
+	 * @param tiles
+	 * 			--- floor layout
+	 * @param walls
+	 * 			--- wall layout
+	 * 			walls[0] = NORTH
+	 * 			walls[1] = EAST
+	 * 			walls[2] = SOUTH
+	 * 			walls[3] = WEST
+	 * @param areaID
+	 * 			--- unique identifier
+	 */
 	public Area(Tile[][] tiles, Tile[][][] walls, int areaID){
 		this.tiles = tiles;
 		items = new ArrayList<Item>();
 		this.areaID = areaID;
 		this.walls = walls;
 	}
-
+	
+	/**
+	 * Returns the unique identifier for this Area.
+	 * @return
+	 */
 	public int getAreaID() {
 		return areaID;
 	}
 
-	public void setAreaID(int areaID) {
-		this.areaID = areaID;
-	}
-
+	
+	/**
+	 * Returns the 2D array of tiles which represent the
+	 * floor layout of this Area.
+	 * 
+	 * @return
+	 * 		--- floor layout
+	 */
 	public Tile[][] getTiles() {
 		return tiles;
 	}
-
-	public Tile[][][] getWalls() {
-		return walls;
+	
+	/**
+	 * Returns the 2D array of tiles which represents the wall
+	 * specified by the given direction. The direction must be a
+	 * value between 0 and 3.
+	 * 
+	 * @param direction
+	 * 			--- the position of the wall
+	 * @return
+	 * 			--- wall layout
+	 */
+	public Tile[][] getWall(int direction) {
+		if(direction < 0 && direction >= walls.length){
+			return null;
+		}
+		return walls[0];
 	}
-
+	
+	/**
+	 * Returns  a shallow clone of the list of items 
+	 * that are currently in this area.
+	 * 
+	 * @return
+	 * 		--- list of items
+	 */
 	public List<Item> getItems() {
-		return items;
+		return new ArrayList<Item>(items);
 	}
-
+	
+	/**
+	 * Adds the specified item to the list of items currently
+	 * in this area.
+	 * 
+	 * @param item
+	 * 		--- the item to add
+	 * @return
+	 * 		--- returns true if the item was added, false otherwise
+	 */
 	public boolean addItem(Item item){
 		return items.add(item);
 	}
-
+	
+	/**
+	 * Removes the specified item from the list of items currently in
+	 * this area.
+	 * 
+	 * @param item
+	 * 		--- the item to be removed
+	 * @return
+	 * 		---	returns true if the item was removed, false otherwise
+	 */
 	public boolean removeItem(Item item){
 		return items.remove(item);
 	}
-
+	
+	/**
+	 * Returns true if the specified position is a moveable position.
+	 * A moveable position is defined as a position within the bounds
+	 * of the area that does not have a non moveable item on it.
+	 * 
+	 * @param p
+	 * 		--- position to check
+	 * @return
+	 * 		--- true if the position is moveable, false otherwise
+	 */
 	public boolean isMoveablePosition(Position p){
 		// if position is outside the bounds of the area return false
 		if(p.getX() < 0 || p.getX() >= tiles[0].length || p.getY() < 0 || p.getY() >= tiles.length){
@@ -74,7 +149,18 @@ public class Area {
 		}
 		return true;
 	}
-
+	
+	/**
+	 * Finds the path from the specified start position to the goal. Uses a version
+	 * of the A* algorithm to do this. Returns the path between the two positions
+	 * if there is one found. Returns null otherwise.
+	 * @param start
+	 * 			--- the start position
+	 * @param goal
+	 * 			--- the goal position
+	 * @return
+	 * 			--- the path if found, null otherwise
+	 */
 	public Stack<Position> findPath(Position start, Position goal){
 		AStar aStar = new AStar(start, goal);
 		return aStar.runAlgorithm();
