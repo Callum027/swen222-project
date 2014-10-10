@@ -13,15 +13,28 @@ import java.util.ArrayList;
  */
 public abstract class GameCharacter {
 
-	private ArrayList<MoveableItem> items;
-	private final String name;
+	/*
+	 * Each game character utilizes a bunch if items one way or another. 
+	 * The player has a list of items in their inventory
+	 * The enemy has a list of items that they drop when they die
+	 * The Merchant has a list of items that they can sell
+	 */
+	private ArrayList<MoveableItem> items; 
+	
+	private final int MAXIMUM_CAPACITY = 20; //the limit on the amount of items each character can hold
 	private Position position;
+	private final String name;
 	private Image[] images;
-	private int direction;
-	private int cats; //the amount of money/points the player has
+	private int direction; 
 	private final int id;
-	private final int MAXIMUM_CAPACITY = 20;
-
+	private int cats; //the amount of money/points the player has
+	
+	/**
+	 * The constructor
+	 * @param position the position where we spawn the character
+	 * @param name the name of the character
+	 * @param id the unique identifier that is assigned to this character
+	 */
 	public GameCharacter(Position position, String name, int id) {
 		this.name = name;
 		this.setCats(0);
@@ -30,54 +43,100 @@ public abstract class GameCharacter {
 		items = new ArrayList<MoveableItem>(MAXIMUM_CAPACITY);
 	}
 
+	/**
+	 * moves the character to a specified position
+	 * essentially the setter for the position field
+	 * @param position the specified position 
+	 */
 	public void moveToPosition(Position position){
-		this.setPosition(position);
+		this.position = position;
 	}
-
-	private void setPosition(Position newPosition) {
-		this.position = newPosition;
-	}
-
+	
+	/**
+	 * creates a container that contains the items that the character is holding when the character dies 
+	 */
 	public void dropItems(){
 
 	}
 
+	/**
+	 * adds an item to the list of items that the character is holding
+	 * @param item the item that we're adding
+	 * @return true if the addition is successful 
+	 */
 	public boolean addItem(MoveableItem item){
 		return items.add(item);
 	}
 
+	/**
+	 * removes an item to the list of items that the character is holding
+	 * @param item the item that we're removing
+	 * @return true if the removal is successful
+	 */
 	public boolean removeItem(MoveableItem item){
 		return items.remove(item);
 	}
 
+	/**
+	 * retrieves the name of the character
+	 * @return the name of the character
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * retrieves the items that the character is holding
+	 * @return the ArrayList of items
+	 */
 	public ArrayList<MoveableItem> getItems() {
 		return items;
 	}
 
+	/**
+	 * retrieves the current position of the character
+	 * @return the current position
+	 */
 	public Position getPosition() {
 		return position;
 	}
 
+	/**
+	 * retrieves the direction of the direction of the character
+	 * @return the direction as an integer
+	 */
 	public int getDirection() {
 		return direction;
 	}
 
+	/**
+	 * sets the direction as the specified direction
+	 * @param direction the specified direction
+	 */
 	public void setDirection(int direction) {
 		this.direction = direction;
 	}
 
+	/**
+	 * retrieves the cats (points/money)
+	 * @return the cats!
+	 */
 	public int getCats() {
 		return cats;
 	}
 
+	/**
+	 * sets the cats
+	 * @param cats the cats we're setting the current cats to
+	 */
 	public void setCats(int cats) {
 		this.cats = cats;
 	}
 
+	/**
+	 * retrieves the identifier that maps to this particular character
+	 * @return the id of this character
+	 */
 	public int getId() {
 		return id;
 	}

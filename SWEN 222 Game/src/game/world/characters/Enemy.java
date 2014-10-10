@@ -7,22 +7,37 @@ import game.world.characters.classes.RogueClass;
 import game.world.characters.classes.WarriorClass;
 
 /**
- * The enemies within the game. When they die, they drop items and cats
+ * The enemies within the game. When they die, they drop items and cats. This, like the Players, are also context classes for the strategy pattern
  * @author Nick Tran
  *
  */
 public class Enemy extends GameCharacter implements Attackable{
 
+	/*
+	 * The enemy stats
+	 */
 	private int health;
 	private int attack;
 	private int defence;
+	
 	private GameClass gameClass; //either Warrior, Mage or Rogue
 
+	/**
+	 * The Constructor
+	 * @param position the position the enemy is spawned at
+	 * @param name the name of the enemy
+	 * @param uid the unique identifier  that is assigned to this enemy
+	 * @param playerClass the class of the enemy. This is to identify the different strategies of the enemy
+	 */
 	public Enemy(Position position, String name, int uid, GameClass.playerClass playerClass){
 		super(position, name, uid);
 		assignClass(playerClass); //gives the player a class (behaviour)
 	}
 
+	/**
+	 * Gives the enemy a behaviour (class)
+	 * @param playerClass the enum that identifies the player's class
+	 */
 	public void assignClass(GameClass.playerClass playerClass){
 		switch (playerClass){
 			case WARRIOR:
