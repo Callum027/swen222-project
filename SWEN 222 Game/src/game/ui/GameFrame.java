@@ -9,6 +9,7 @@ import game.world.GameEventBroadcaster;
 import game.world.GameEventListener;
 import game.world.items.MoveableItem;
 
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.Image;
@@ -18,6 +19,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -38,12 +41,12 @@ import javax.swing.JTextPane;
  * @author Harry
  *
  */
-public class GameFrame extends JFrame implements ActionListener, KeyListener {
+public class GameFrame extends JFrame implements ActionListener, KeyListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
 
 	private GameEventBroadcaster geb = new GameEventBroadcaster();
-	
+
 	public static final int NORTH = 0;
 	public static final int EAST = 1;
 	public static final int SOUTH = 2;
@@ -92,22 +95,30 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 
 		// setup the render pane
 		JPanel renderPane = new JPanel();
+		renderPane.addMouseListener(this);
 		renderPane.setLayout(new BoxLayout(renderPane, BoxLayout.Y_AXIS));
 		renderPane.add(render);
+		render.addMouseListener(this);
 		renderPane.add(scroll);
+		renderPane.addMouseListener(this);
 
 		// setup app pane
 		JPanel appPane = new JPanel();
 		appPane.setLayout(new BoxLayout(appPane, BoxLayout.Y_AXIS));
 		appPane.add(stats);
+		stats.addMouseListener(this);
 		appPane.add(equip);
+		equip.addMouseListener(this);
 		appPane.add(inventory);
+		inventory.addMouseListener(this);
+		appPane.addMouseListener(this);
 
 		// setup the game frame layout
 		setLayout(new FlowLayout());
 		add(renderPane);
 		add(appPane);
 
+		addMouseListener(this);
 		addKeyListener(this);
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		Image img = Main.getImage("ff_cursor.png");
@@ -217,14 +228,55 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener {
 	// unneeded method
 	public void keyReleased(KeyEvent e) {
 	}
-	
+
 	/**
 	 * Add a GameEventListener to this GameFrame.
-	 * 
+	 *
 	 * @param gel Game event listener
 	 */
 	public void addGameEventListener(GameEventListener gel) {
 		geb.addGameEventListener(gel);
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		Component c = e.getComponent();
+		if(c instanceof RenderingPanel){
+			text.append("Entered the Rendering Panel\n");
+		}
+		else if(c instanceof StatsPanel){
+			text.append("Entered the Stats Panel\n");
+		}
+		else if(c instanceof EquipPanel){
+			text.append("Entered the Equipment Panel\n");
+		}
+		else if(c instanceof InventoryPanel){
+			text.append("Entered the Inventory Panel\n");
+		}
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+
 	}
 
 }
