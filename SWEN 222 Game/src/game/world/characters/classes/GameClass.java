@@ -10,6 +10,9 @@ import java.io.OutputStream;
  */
 public interface GameClass {
 
+	/**
+	 * makes it easier to assign the classes within the context classes
+	 */
 	public enum playerClass{
 		WARRIOR, MAGE, ROGUE
 	}
@@ -32,7 +35,13 @@ public interface GameClass {
 	 */
 	public int getIntelligence();
 
+	/**
+	 * handles the logic when a character attacks a target
+	 */
 	public void attack();
 
+	/**
+	 * calculates the damage the character deals to another character
+	 */
 	public void calculateDamage();
 }
