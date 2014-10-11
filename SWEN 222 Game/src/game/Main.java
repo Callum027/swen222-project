@@ -193,7 +193,7 @@ public class Main {
 	private static boolean setupClientAndServer() {
 		boolean ret = true;
 
-		if (ret && server != null)
+		if (ret && server == null)
 			ret = setupServer(0);
 
 		if (ret && client == null)
