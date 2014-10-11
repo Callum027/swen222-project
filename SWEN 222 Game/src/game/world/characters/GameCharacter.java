@@ -36,6 +36,7 @@ public abstract class GameCharacter {
 	 * @param id the unique identifier that is assigned to this character
 	 */
 	public GameCharacter(Position position, String name, int id) {
+		this.position = position;
 		this.name = name;
 		this.setCats(0);
 		this.setDirection(0);

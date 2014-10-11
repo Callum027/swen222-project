@@ -5,6 +5,9 @@ import game.ui.GameFrame;
 import game.world.Area;
 import game.world.BoundingBox;
 import game.world.Position;
+import game.world.characters.Player;
+import game.world.characters.classes.GameClass;
+import game.world.events.MoveEvent;
 import game.world.items.Furniture;
 import game.world.items.Item;
 import game.world.tiles.FloorTile;
@@ -47,6 +50,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 	private int direction;
 
 	private Furniture test;
+	private Player player;
 
 	/**
 	 * Constructor:
@@ -57,6 +61,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 		this.direction = direction;
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		test = new Furniture(new Position(0,0),  2, "SpriteTEST", null);
+		player = new Player(new Position(0,0), "Frank", 1, GameClass.playerClass.WARRIOR);
 
 	}
 
@@ -488,16 +493,19 @@ public class RenderingPanel extends JPanel implements GameComponent {
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
+	public void mouseClicked(GameFrame frame, MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON3) {
 			Position p = findPosition(new Position(e.getX(), e.getY()));
 			if (p != null) {
-				Position current = test.getPosition();
+				Position current = player.getPosition();
 				Stack<Position> moves = area.findPath(current, p);
 				while(!moves.isEmpty()){
 					System.out.println(moves.pop().toString());
 				}
-				test.setPosition(new Position(p.getX(), p.getY()));
+				MoveEvent move = new MoveEvent(moves.pop(), player);
+				frame.getGameEventBroadcaster().broadcastGameEvent(move);
+				//player.setPosition(new Position(p.getX(), p.getY()));
+				//MoveEvent move = new MoveEvent(moves.pop(), player);
 				repaint();
 			}
 		}
@@ -506,13 +514,13 @@ public class RenderingPanel extends JPanel implements GameComponent {
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
+	public void mouseReleased(GameFrame frame, MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
+	public void mousePressed(GameFrame frame, MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}

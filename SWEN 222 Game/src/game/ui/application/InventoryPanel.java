@@ -38,6 +38,7 @@ public class InventoryPanel extends JPanel implements GameComponent {
 			* INVENTORY_WIDTH];
 	private int cats = 1;
 	private MoveableItem itemSelected;
+	private Graphics selectedImage;
 	private EquipPanel equip;
 	private int previousSlot = -1;
 	private Image background;
@@ -67,6 +68,7 @@ public class InventoryPanel extends JPanel implements GameComponent {
 		setPreferredSize(new Dimension(width, height));
 		//addMouseListener(this);
 		background = Main.getImage("Inventory.png");
+		selectedImage = null;
 	}
 
 	public int getWidth() {
@@ -275,13 +277,13 @@ public class InventoryPanel extends JPanel implements GameComponent {
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
+	public void mouseClicked(GameFrame frame, MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
+	public void mouseReleased(GameFrame frame, MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON1) {
 			int x = e.getX();
 			int y = e.getY();
@@ -293,16 +295,19 @@ public class InventoryPanel extends JPanel implements GameComponent {
 			itemSelected = null;
 			previousSlot = -1;
 		}
-		
 	}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
+	public void mousePressed(GameFrame frame, MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON1) {
 			int x = e.getX();
 			int y = e.getY();
 			int inv = findInventorySquare(x, y);
 			selectItem(inv);
+			
+			//selectedImage = createImage(45, 45).getGraphics();
+			//itemSelected.draw(selectedImage, 0, 0, 0);
+			
 			if (itemSelected != null) {
 				System.out.println("Item: " + itemSelected.toString());
 			}

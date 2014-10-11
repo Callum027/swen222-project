@@ -2,6 +2,7 @@ package game.ui.application;
 
 import game.Main;
 import game.ui.GameComponent;
+import game.ui.GameFrame;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -78,19 +79,19 @@ public class StatsPanel extends JPanel implements GameComponent{
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
+	public void mouseClicked(GameFrame frame, MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
+	public void mouseReleased(GameFrame frame, MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
+	public void mousePressed(GameFrame frame, MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}

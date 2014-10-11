@@ -9,9 +9,11 @@ import game.world.GameEventBroadcaster;
 import game.world.GameEventListener;
 import game.world.items.MoveableItem;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -41,7 +43,7 @@ import javax.swing.JTextPane;
  * @author Harry
  *
  */
-public class GameFrame extends JFrame implements ActionListener, KeyListener, MouseListener {
+public class GameFrame extends JFrame implements ActionListener, KeyListener, MouseListener{
 
 	private static final long serialVersionUID = 1L;
 
@@ -59,7 +61,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 	private StatsPanel stats;
 	private InventoryPanel inventory;
 
-	public static MoveableItem selectedItem;
+	private MoveableItem selectedItem;
 	/*
 	 * selectedItem is the item that has been selected in one of the panels and
 	 * is stored here so that it can be easily moved between panels.
@@ -129,7 +131,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 		Cursor cursor = (img != null) ? tk.createCustomCursor(img, new Point(0,
 				0), "cursor") : Cursor.getDefaultCursor();
 		// makes a custom cursor from an image file
-		setCursor(cursor);
+		//setCursor(cursor);
 		setFocusable(true);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -146,7 +148,14 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 	public RenderingPanel getRender() {
 		return render;
 	}
+	
+	public MoveableItem getSelectedItem(){
+		return selectedItem;
+	}
 
+	public void setSelectedItem(MoveableItem item){
+		selectedItem = item;
+	}
 	/**
 	 * Sets up the menu bar at the top of the GameFrame.
 	 */
@@ -265,24 +274,29 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 		return null;
 	}
 	
+	public GameEventBroadcaster getGameEventBroadcaster(){
+		return geb;
+	}
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		GameComponent current = getCurrentGameComponent();
-		current.mouseClicked(e);
+		current.mouseClicked(this, e);
 
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		GameComponent current = getCurrentGameComponent();
-		current.mousePressed(e);
+		current.mousePressed(this, e);
 
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		GameComponent current = getCurrentGameComponent();
-		current.mouseReleased(e);
+		current.mouseReleased(this, e);
+		
 
 	}
 
@@ -290,16 +304,16 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 	public void mouseEntered(MouseEvent e) {
 		currentComponent = e.getComponent();
 		if(currentComponent instanceof RenderingPanel){
-			text.append("Entered the Rendering Panel\n");
+			//text.append("Entered the Rendering Panel\n");
 		}
 		else if(currentComponent instanceof StatsPanel){
-			text.append("Entered the Stats Panel\n");
+			//text.append("Entered the Stats Panel\n");
 		}
 		else if(currentComponent instanceof EquipPanel){
-			text.append("Entered the Equipment Panel\n");
+			//text.append("Entered the Equipment Panel\n");
 		}
 		else if(currentComponent instanceof InventoryPanel){
-			text.append("Entered the Inventory Panel\n");
+			//text.append("Entered the Inventory Panel\n");
 		}
 	}
 	

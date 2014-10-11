@@ -25,7 +25,7 @@ import javax.swing.JPanel;
  * @author Harry
  *
  */
-public class EquipPanel extends JPanel implements MouseListener, GameComponent {
+public class EquipPanel extends JPanel implements GameComponent {
 
 	private static final long serialVersionUID = 1L;
 	private final int equipSize = 5;
@@ -98,7 +98,6 @@ public class EquipPanel extends JPanel implements MouseListener, GameComponent {
 		items.equipOffHand(new Equipment(p, squareSize, "iron-shield", 0, 50,
 				50, OFF_HAND));
 		setPreferredSize(new Dimension(width, height));
-		addMouseListener(this);
 		background = Main.getImage("Equip.png");
 		//setVisible(true);
 		repaint();
@@ -403,8 +402,9 @@ public class EquipPanel extends JPanel implements MouseListener, GameComponent {
 		}
 	}
 
-	@Override
+	/*@Override
 	public void mouseEntered(MouseEvent e) {
+		/*
 		if (GameFrame.selectedItem != null
 				&& GameFrame.selectedItem instanceof Equipment) {
 			Equipment equip = (Equipment) GameFrame.selectedItem;
@@ -416,7 +416,8 @@ public class EquipPanel extends JPanel implements MouseListener, GameComponent {
 			inventory.returnItem(GameFrame.selectedItem);
 		}
 		GameFrame.selectedItem = null;
-	}
+		*/
+	//}
 
 	/**
 	 * Gets the stats for the equiped item that the mouse is hovering over, not
@@ -464,13 +465,13 @@ public class EquipPanel extends JPanel implements MouseListener, GameComponent {
 
 	}
 
-	@Override
+	/*@Override
 	public void mouseExited(MouseEvent e) {
 		if (equipSelected != null) {
-			GameFrame.selectedItem = equipSelected;
+			//GameFrame.selectedItem = equipSelected;
 			equipSelected = null;
 		}
-	}
+	}*/
 
 	/**
 	 * Gets the equiped items that the panel has
@@ -563,13 +564,13 @@ public class EquipPanel extends JPanel implements MouseListener, GameComponent {
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
+	public void mouseClicked(GameFrame frame, MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
+	public void mouseReleased(GameFrame frame, MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON1) {
 			int x = e.getX();
 			int y = e.getY();
@@ -580,7 +581,7 @@ public class EquipPanel extends JPanel implements MouseListener, GameComponent {
 	}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
+	public void mousePressed(GameFrame frame, MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON1) {
 			int y = e.getY();
 			int x = e.getX();
