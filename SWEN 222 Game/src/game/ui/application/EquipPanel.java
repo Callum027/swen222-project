@@ -1,6 +1,7 @@
 package game.ui.application;
 
 import game.Main;
+import game.ui.GameComponent;
 import game.ui.GameFrame;
 import game.world.Position;
 import game.world.items.Equipment;
@@ -24,7 +25,7 @@ import javax.swing.JPanel;
  * @author Harry
  *
  */
-public class EquipPanel extends JPanel implements MouseListener {
+public class EquipPanel extends JPanel implements MouseListener, GameComponent {
 
 	private static final long serialVersionUID = 1L;
 	private final int equipSize = 5;
@@ -586,5 +587,23 @@ public class EquipPanel extends JPanel implements MouseListener {
 
 	public void setStats(StatsPanel stats) {
 		this.stats = stats;
+	}
+
+	@Override
+	public void mouseClicked() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed() {
+		// TODO Auto-generated method stub
+		
 	}
 }

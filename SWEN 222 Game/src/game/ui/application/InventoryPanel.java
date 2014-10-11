@@ -1,6 +1,7 @@
 package game.ui.application;
 
 import game.Main;
+import game.ui.GameComponent;
 import game.ui.GameFrame;
 import game.world.Position;
 import game.world.items.Equipment;
@@ -25,7 +26,7 @@ import javax.swing.JPanel;
  * @author Harry
  *
  */
-public class InventoryPanel extends JPanel implements MouseListener {
+public class InventoryPanel extends JPanel implements MouseListener, GameComponent {
 
 	private final int width = INVENTORY_WIDTH * squareSize + 20;
 	private final int height = INVENTORY_HEIGHT * squareSize + 60;
@@ -303,6 +304,24 @@ public class InventoryPanel extends JPanel implements MouseListener {
 		}
 		repaint();
 		return -1;
+	}
+
+	@Override
+	public void mouseClicked() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

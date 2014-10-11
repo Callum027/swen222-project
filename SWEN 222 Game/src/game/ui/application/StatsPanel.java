@@ -1,6 +1,7 @@
 package game.ui.application;
 
 import game.Main;
+import game.ui.GameComponent;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -8,7 +9,7 @@ import java.awt.Image;
 
 import javax.swing.JPanel;
 
-public class StatsPanel extends JPanel {
+public class StatsPanel extends JPanel implements GameComponent{
 
 	private int hp = 100;
 	private int attack = 0;
@@ -71,6 +72,24 @@ public class StatsPanel extends JPanel {
 	public void getStats() {
 		attack = equip.getTotalAttack();
 		defence = equip.getDefence();
+	}
+
+	@Override
+	public void mouseClicked() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

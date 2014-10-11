@@ -66,6 +66,8 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 	 */
 	private int direction;
 
+	private Component currentComponent = null;
+
 	/**
 	 * Is called automatically from Main
 	 *
@@ -239,10 +241,10 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 	public void addGameEventListener(GameEventListener gel) {
 		geb.addGameEventListener(gel);
 	}
-
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
@@ -260,20 +262,22 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		Component c = e.getComponent();
-		if(c instanceof RenderingPanel){
+		currentComponent = e.getComponent();
+		if(currentComponent instanceof RenderingPanel){
 			text.append("Entered the Rendering Panel\n");
 		}
-		else if(c instanceof StatsPanel){
+		else if(currentComponent instanceof StatsPanel){
 			text.append("Entered the Stats Panel\n");
 		}
-		else if(c instanceof EquipPanel){
+		else if(currentComponent instanceof EquipPanel){
 			text.append("Entered the Equipment Panel\n");
 		}
-		else if(c instanceof InventoryPanel){
+		else if(currentComponent instanceof InventoryPanel){
 			text.append("Entered the Inventory Panel\n");
 		}
 	}
+	
+
 
 	@Override
 	public void mouseExited(MouseEvent e) {
