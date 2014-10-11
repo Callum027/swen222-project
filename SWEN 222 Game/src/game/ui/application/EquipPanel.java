@@ -196,11 +196,6 @@ public class EquipPanel extends JPanel implements MouseListener, GameComponent {
 		}
 	}
 
-	@Override
-	public void mouseClicked(MouseEvent e) {
-
-	}
-
 	/**
 	 * Works out what equipment slot has been clicked on based on where the
 	 * mouse was clicked
@@ -299,28 +294,6 @@ public class EquipPanel extends JPanel implements MouseListener, GameComponent {
 			break;
 		}
 
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		if (e.getButton() == MouseEvent.BUTTON1) {
-			int y = e.getY();
-			int x = e.getX();
-			int equip = findEquip(x, y);
-			selectEquip(equip);
-			repaint();
-		}
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		if (e.getButton() == MouseEvent.BUTTON1) {
-			int x = e.getX();
-			int y = e.getY();
-			int equip = findEquip(x, y);
-			dropEquip(equip);
-			repaint();
-		}
 	}
 
 	/**
@@ -590,20 +563,30 @@ public class EquipPanel extends JPanel implements MouseListener, GameComponent {
 	}
 
 	@Override
-	public void mouseClicked() {
+	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void mouseReleased() {
-		// TODO Auto-generated method stub
-		
+	public void mouseReleased(MouseEvent e) {
+		if (e.getButton() == MouseEvent.BUTTON1) {
+			int x = e.getX();
+			int y = e.getY();
+			int equip = findEquip(x, y);
+			dropEquip(equip);
+			repaint();
+		}
 	}
 
 	@Override
-	public void mousePressed() {
-		// TODO Auto-generated method stub
-		
+	public void mousePressed(MouseEvent e) {
+		if (e.getButton() == MouseEvent.BUTTON1) {
+			int y = e.getY();
+			int x = e.getX();
+			int equip = findEquip(x, y);
+			selectEquip(equip);
+			repaint();
+		}
 	}
 }

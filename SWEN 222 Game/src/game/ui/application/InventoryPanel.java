@@ -26,8 +26,9 @@ import javax.swing.JPanel;
  * @author Harry
  *
  */
-public class InventoryPanel extends JPanel implements MouseListener, GameComponent {
+public class InventoryPanel extends JPanel implements GameComponent {
 
+	private static final long serialVersionUID = 1L;
 	private final int width = INVENTORY_WIDTH * squareSize + 20;
 	private final int height = INVENTORY_HEIGHT * squareSize + 60;
 	public static final int INVENTORY_WIDTH = 3;
@@ -64,7 +65,7 @@ public class InventoryPanel extends JPanel implements MouseListener, GameCompone
 		addItem(new Equipment(p, squareSize, "mithril-boots", 0, 200, 500,
 				equip.FEET_SLOT));
 		setPreferredSize(new Dimension(width, height));
-		addMouseListener(this);
+		//addMouseListener(this);
 		background = Main.getImage("Inventory.png");
 	}
 
@@ -117,10 +118,6 @@ public class InventoryPanel extends JPanel implements MouseListener, GameCompone
 		}
 	}
 
-	@Override
-	public void mouseClicked(MouseEvent e) {
-
-	}
 
 	/**
 	 * Uses two ints to find the location in the inventory.
@@ -172,35 +169,6 @@ public class InventoryPanel extends JPanel implements MouseListener, GameCompone
 		}
 	}
 
-	@Override
-	public void mousePressed(MouseEvent e) {
-		if (e.getButton() == MouseEvent.BUTTON1) {
-			int x = e.getX();
-			int y = e.getY();
-			int inv = findInventorySquare(x, y);
-			selectItem(inv);
-			if (itemSelected != null) {
-				System.out.println("Item: " + itemSelected.toString());
-			}
-			repaint();
-		}
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		if (e.getButton() == MouseEvent.BUTTON1) {
-			int x = e.getX();
-			int y = e.getY();
-			int inv = findInventorySquare(x, y);
-			// if (inv < 0) {
-			dropItem(inv);
-			repaint();
-			// }
-			itemSelected = null;
-			previousSlot = -1;
-		}
-	}
-
 	/**
 	 * This method will drop the item, into an inventory slot
 	 *
@@ -236,7 +204,7 @@ public class InventoryPanel extends JPanel implements MouseListener, GameCompone
 		}
 	}
 
-	@Override
+	/*@Override
 	public void mouseEntered(MouseEvent e) {
 		if (GameFrame.selectedItem != null) {
 			addItem(GameFrame.selectedItem);
@@ -252,7 +220,7 @@ public class InventoryPanel extends JPanel implements MouseListener, GameCompone
 		}
 		itemSelected = null;
 		repaint();
-	}
+	}*/
 
 	/**
 	 * gets the array of items in the inventory
@@ -307,20 +275,39 @@ public class InventoryPanel extends JPanel implements MouseListener, GameCompone
 	}
 
 	@Override
-	public void mouseClicked() {
+	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void mouseReleased() {
-		// TODO Auto-generated method stub
+	public void mouseReleased(MouseEvent e) {
+		if (e.getButton() == MouseEvent.BUTTON1) {
+			int x = e.getX();
+			int y = e.getY();
+			int inv = findInventorySquare(x, y);
+			// if (inv < 0) {
+			dropItem(inv);
+			repaint();
+			// }
+			itemSelected = null;
+			previousSlot = -1;
+		}
 		
 	}
 
 	@Override
-	public void mousePressed() {
-		// TODO Auto-generated method stub
+	public void mousePressed(MouseEvent e) {
+		if (e.getButton() == MouseEvent.BUTTON1) {
+			int x = e.getX();
+			int y = e.getY();
+			int inv = findInventorySquare(x, y);
+			selectItem(inv);
+			if (itemSelected != null) {
+				System.out.println("Item: " + itemSelected.toString());
+			}
+			repaint();
+		}
 		
 	}
 

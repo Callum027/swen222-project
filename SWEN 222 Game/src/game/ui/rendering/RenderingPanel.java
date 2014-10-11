@@ -25,7 +25,7 @@ import java.util.Stack;
 
 import javax.swing.JPanel;
 
-public class RenderingPanel extends JPanel implements MouseListener, GameComponent {
+public class RenderingPanel extends JPanel implements GameComponent {
 
 	private static final long serialVersionUID = 1L;
 
@@ -56,7 +56,6 @@ public class RenderingPanel extends JPanel implements MouseListener, GameCompone
 		super();
 		this.direction = direction;
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
-		addMouseListener(this);
 		test = new Furniture(new Position(0,0),  2, "SpriteTEST", null);
 
 	}
@@ -317,51 +316,6 @@ public class RenderingPanel extends JPanel implements MouseListener, GameCompone
 		super.repaint();
 	}
 
-	// Mouse Listener Methods
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		if (e.getButton() == MouseEvent.BUTTON3) {
-			//System.out.println("Clicked: (" + e.getX() + ", " + e.getY() + ")");
-			Position p = findPosition(new Position(e.getX(), e.getY()));
-			if (p != null) {
-				//System.out.println("Area position: (" + p.getX() + ", " + p.getY() + ")");
-				Position current = test.getPosition();
-				Stack<Position> moves = area.findPath(current, p);
-				while(!moves.isEmpty()){
-					System.out.println(moves.pop().toString());
-				}
-				test.setPosition(new Position(p.getX(), p.getY()));
-				//test.setX(p.x);
-				//test.setY(p.y);
-				// System.out.println("Test position: (" + test.getX() + ", " +
-				// test.getY() + ")");
-				repaint();
-			} else {
-				//System.out.println("Position not on board.");
-			}
-		}
-		// findItem(e.getX(), e.getY());
-		repaint();
-	}
-
-	// unneeded mouse listener methods
-	public void mousePressed(MouseEvent e) {
-	}
-
-	public void mouseReleased(MouseEvent e) {
-	}
-
-	public void mouseEntered(MouseEvent e) {
-		if (GameFrame.selectedItem != null) {
-			area.addItem(GameFrame.selectedItem); // wrong
-			GameFrame.selectedItem = null;
-		}
-	}
-
-	public void mouseExited(MouseEvent e) {
-	}
-
 	// comparators for sorting items
 
 	/**
@@ -534,19 +488,31 @@ public class RenderingPanel extends JPanel implements MouseListener, GameCompone
 	}
 
 	@Override
-	public void mouseClicked() {
+	public void mouseClicked(MouseEvent e) {
+		if (e.getButton() == MouseEvent.BUTTON3) {
+			Position p = findPosition(new Position(e.getX(), e.getY()));
+			if (p != null) {
+				Position current = test.getPosition();
+				Stack<Position> moves = area.findPath(current, p);
+				while(!moves.isEmpty()){
+					System.out.println(moves.pop().toString());
+				}
+				test.setPosition(new Position(p.getX(), p.getY()));
+				repaint();
+			}
+		}
+		repaint();
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void mouseReleased() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mousePressed() {
+	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
