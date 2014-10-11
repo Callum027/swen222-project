@@ -242,21 +242,47 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 		geb.addGameEventListener(gel);
 	}
 	
+	/**
+	 * Finds and returns the current GameComponent that has focus
+	 * on the GameFrame.
+	 * 
+	 * @return
+	 * 			--- GameComponent currently in focus
+	 */
+	public GameComponent getCurrentGameComponent(){
+		if(currentComponent instanceof RenderingPanel){
+			return render;
+		}
+		else if(currentComponent instanceof InventoryPanel){
+			return inventory;
+		}
+		else if(currentComponent instanceof EquipPanel){
+			return equip;
+		}
+		else if(currentComponent instanceof StatsPanel){
+			return stats;
+		}
+		return null;
+	}
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		
+		GameComponent current = getCurrentGameComponent();
+		current.mouseClicked();
 
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
+		GameComponent current = getCurrentGameComponent();
+		current.mousePressed();
 
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
+		GameComponent current = getCurrentGameComponent();
+		current.mouseReleased();
 
 	}
 
@@ -277,7 +303,6 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 		}
 	}
 	
-
 
 	@Override
 	public void mouseExited(MouseEvent e) {

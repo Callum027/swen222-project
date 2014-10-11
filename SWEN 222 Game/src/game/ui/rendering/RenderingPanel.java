@@ -1,5 +1,6 @@
 package game.ui.rendering;
 
+import game.ui.GameComponent;
 import game.ui.GameFrame;
 import game.world.Area;
 import game.world.BoundingBox;
@@ -24,7 +25,7 @@ import java.util.Stack;
 
 import javax.swing.JPanel;
 
-public class RenderingPanel extends JPanel implements MouseListener {
+public class RenderingPanel extends JPanel implements MouseListener, GameComponent {
 
 	private static final long serialVersionUID = 1L;
 
@@ -530,6 +531,24 @@ public class RenderingPanel extends JPanel implements MouseListener {
 
 			return 0;
 		}
+	}
+
+	@Override
+	public void mouseClicked() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed() {
+		// TODO Auto-generated method stub
+		
 	}
 }
 

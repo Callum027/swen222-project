@@ -11,6 +11,8 @@ import javax.swing.JPanel;
 
 public class StatsPanel extends JPanel implements GameComponent{
 
+	private static final long serialVersionUID = 1L;
+	
 	private int hp = 100;
 	private int attack = 0;
 	private int defence = 0;
