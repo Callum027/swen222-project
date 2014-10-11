@@ -103,10 +103,21 @@ public class Server extends Thread {
 			e.printStackTrace();
 			close();
 		}
-
+		
 		// We have exited the main server loop. This only happens when
-		// someone calls close() on the server. So, do what they want:
-		// close all client connections, and close the server socket!
+		// someone calls close() on the server. Start shutting things down.
+		
+		// Stop accepting new connections, by closing the server socket.
+		try {
+			serverSocket.close();
+		}
+		catch (IOException e) {
+			System.err.println("server: unhandled, unknown IOException");
+			e.printStackTrace();
+		}
+
+
+		// Close all client connections.
 		Iterator<ServerConnection> it = serverConnections.iterator();
 
 		while (it.hasNext()) {
@@ -114,14 +125,6 @@ public class Server extends Thread {
 			sc.close();
 
 			it.remove();
-		}
-
-		try {
-			serverSocket.close();
-		}
-		catch (IOException e) {
-			System.err.println("server: unhandled, unknown IOException");
-			e.printStackTrace();
 		}
 	}
 
@@ -212,6 +215,7 @@ public class Server extends Thread {
 
 		public void close() {
 			closing = new Boolean(true);
+			serverConnections.remove(this);
 		}
 	}
 }

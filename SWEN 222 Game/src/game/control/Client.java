@@ -157,12 +157,9 @@ public class Client extends Thread implements GameEventListener {
 	public void gameEventOccurred(GameEvent ge) {
 		try {
 			if (socket != null && !closing.booleanValue()) {
-				// Get the output stream of the socket.
-				OutputStream os = socket.getOutputStream();
-
 				System.out.println("client: sending a GameEvent of type " + ge.getType() + " to the server");
 				// Pack the game event into a game packet, and send it off!
-				new GamePacket(GamePacket.Type.EVENT, ge).write(os);
+				new GamePacket(GamePacket.Type.EVENT, ge).write(socket.getOutputStream());
 			}
 		}
 		catch (SocketException e) {
