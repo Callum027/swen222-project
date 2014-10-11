@@ -42,7 +42,7 @@ public abstract class GameEvent implements Streamable {
 			case INTERACT:
 				return InteractEvent.read(is);
 			default:
-				return null;
+				throw new InvalidGameEventException(t);
 		}
 	}
 

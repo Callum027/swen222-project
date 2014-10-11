@@ -1,10 +1,9 @@
 package game.net;
 
 import game.exceptions.GameException;
-import game.exceptions.InvalidGameEventException;
 import game.exceptions.InvalidGamePacketException;
+import game.exceptions.UnsupportedGamePacketException;
 import game.world.GameEvent;
-import game.world.GameEvent.Type;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -62,8 +61,7 @@ public class GamePacket implements Streamable {
 		GamePacket.Type t = null;
 
 		// Get the packet type from the stream.
-		if ((t = GamePacket.Type.read(is)) == null)
-			return null;
+		t = GamePacket.Type.read(is);
 
 		// Get a specific kind of payload from the input stream,
 		// according to the packet type.
@@ -72,10 +70,12 @@ public class GamePacket implements Streamable {
 			case EVENT:
 				s = GameEvent.read(is);
 				break;
+			/*case STATE:
+				s = GameState.read(is);
+				break;*/
+			default:
+				throw new UnsupportedGamePacketException(t);
 		}
-
-		if (s == null)
-			return null;
 
 		return new GamePacket(t, s);
 	}
