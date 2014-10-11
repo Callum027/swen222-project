@@ -61,4 +61,52 @@ public class Enemy extends GameCharacter implements Attackable{
 	public void calculateDamage() {
 		gameClass.calculateDamage();
 	}
+
+	/**
+	 * retrieves the health of the player
+	 * @return the health of the player
+	 */
+	public int getHealth() {
+		return health;
+	}
+
+	/**
+	 * changes the player's health by the specified amount
+	 * @param health
+	 */
+	public void setHealth(int health) {
+		this.health = health;
+	}
+
+	/**
+	 * retrieves the player's attack stat
+	 * @return the player's attack stat
+	 */
+	public int getAttack() {
+		return attack;
+	}
+
+	/**
+	 * changes the attack stat to the specified number given
+	 * @param attack the attack we're changing the current stat to
+	 */
+	public void setAttack(int attack) {
+		this.attack = attack;
+	}
+
+	/**
+	 * retrieves the defence stat of the player
+	 * @return the defense stat
+	 */
+	public int getDefence() {
+		return defence;
+	}
+
+	/**
+	 * changes the defence stat to the specified number given
+	 * @param defence the defence we're changing the current stat to
+	 */
+	public void setDefence(int defence) {
+		this.defence = defence;
+	}
 }

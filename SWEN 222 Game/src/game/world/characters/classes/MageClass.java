@@ -1,10 +1,5 @@
 package game.world.characters.classes;
 
-import game.net.NetIO;
-
-import java.io.IOException;
-import java.io.OutputStream;
-
 /**
  * The magic-user class that deals with magical items. It's a medium range class that deal high magic damage.
  * The class uses staves and wears robes.

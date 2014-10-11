@@ -2,16 +2,8 @@ package game.world;
 
 import game.world.characters.Player;
 import game.world.events.MoveEvent;
-import game.world.tiles.Tile;
-
-import java.awt.Point;
-import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * A class to represent the Game World and stores the areas that make up this "world"

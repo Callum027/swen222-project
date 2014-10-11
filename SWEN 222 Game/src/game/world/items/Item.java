@@ -8,7 +8,6 @@ import game.world.tiles.FloorTile;
 
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Point;
 
 /**
  * A class for all the items including furniture, chests (containers) and
@@ -112,11 +111,35 @@ public abstract class Item implements Drawable {
 		return new BoundingBox(xPoints, yPoints, xPoints.length, p);
 	}
 
+	/**
+	 * grabs the position of this item
+	 * @return the position
+	 */
 	public Position getPosition() {
 		return position;
 	}
 
+	/**
+	 * changes the position of the item
+	 * @param position the position we're changing to
+	 */
 	public void setPosition(Position position) {
 		this.position = position;
+	}
+
+	/**
+	 * gets the description of the item
+	 * @return the description describing the item
+	 */
+	public String getDescription() {
+		return description;
+	}
+	
+	/**
+	 * changes the description of the item 
+	 * @param description the description we're changing to
+	 */
+	public void setDescription(String description){
+		this.description = description;
 	}
 }

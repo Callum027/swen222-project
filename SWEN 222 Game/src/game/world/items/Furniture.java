@@ -1,8 +1,5 @@
 package game.world.items;
 
-import java.awt.Image;
-import java.awt.Point;
-
 import game.world.Position;
 import game.world.characters.Player;
 

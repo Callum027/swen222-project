@@ -1,8 +1,5 @@
 package game.world.characters.classes;
 
-import java.io.IOException;
-import java.io.OutputStream;
-
 /**
  * The strategy interface for the game classes
  * @author Nick Tran

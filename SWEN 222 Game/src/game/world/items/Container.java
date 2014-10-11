@@ -2,8 +2,6 @@ package game.world.items;
 
 import game.world.Position;
 
-import java.awt.Image;
-import java.awt.Point;
 import java.util.List;
 
 /**

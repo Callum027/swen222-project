@@ -2,9 +2,6 @@ package game.world.items;
 
 import game.world.Position;
 
-import java.awt.Image;
-import java.awt.Point;
-
 /**
  * A class to represent the equipment (Weapons and Armour)
  * @author Nick Tran

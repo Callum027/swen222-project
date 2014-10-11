@@ -1,10 +1,5 @@
 package game.world.characters.classes;
 
-import java.io.IOException;
-import java.io.OutputStream;
-
-import game.world.characters.Player;
-
 /**
  * The melee class that deals with brute force and strength. It's a close-range class that deal high melee damage.
  * The class uses either 1H Swords or 2H Swords and wears Heavy Plate armour.

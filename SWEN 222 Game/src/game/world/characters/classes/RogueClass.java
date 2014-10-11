@@ -1,8 +1,5 @@
 package game.world.characters.classes;
 
-import java.io.IOException;
-import java.io.OutputStream;
-
 /**
  * The range class that deals with sneaky tactics. It's a long range class that deal high projectile damage.
  * The class uses Bows and wears leather armour.

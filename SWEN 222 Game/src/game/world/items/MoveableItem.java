@@ -2,9 +2,6 @@ package game.world.items;
 
 import game.world.Position;
 
-import java.awt.Image;
-import java.awt.Point;
-
 /**
  * Used to differentiate between items that you can move and pick-up from items
  * that you can't

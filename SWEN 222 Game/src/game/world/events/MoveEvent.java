@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import game.exceptions.GameException;
-import game.net.NetIO;
 import game.world.GameEvent;
 import game.world.Position;
 import game.world.characters.Player;
