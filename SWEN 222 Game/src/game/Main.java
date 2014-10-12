@@ -313,6 +313,8 @@ public class Main {
 
 		if (!setupGameWindow())
 			System.exit(6);
+		
+		gameWindow.getGameEventBroadcaster().addGameEventListener(gameWorld);
 	}
 
 	/**

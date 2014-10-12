@@ -156,6 +156,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 	public void setSelectedItem(MoveableItem item){
 		selectedItem = item;
 	}
+	
 	/**
 	 * Sets up the menu bar at the top of the GameFrame.
 	 */
@@ -322,6 +323,10 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	public void append(String message){
+		text.append(message+"\n");
 	}
 
 }

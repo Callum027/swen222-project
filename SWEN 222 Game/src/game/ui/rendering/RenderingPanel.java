@@ -162,7 +162,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 		int width = area.getTiles()[0].length - 1;
 		int height = area.getTiles().length - 1;
 		int yOffset = test.getHeight() * FloorTile.HEIGHT;
-		Position draw = test.getPosition();
+		Position draw = player.getPosition();
 
 		if (direction == GameFrame.NORTH) {
 			x = startX + DX * (draw.getY() - draw.getX());
@@ -499,11 +499,10 @@ public class RenderingPanel extends JPanel implements GameComponent {
 			if (p != null) {
 				Position current = player.getPosition();
 				Stack<Position> moves = area.findPath(current, p);
-				while(!moves.isEmpty()){
-					System.out.println(moves.pop().toString());
-				}
+				moves.pop();
 				MoveEvent move = new MoveEvent(moves.pop(), player);
 				frame.getGameEventBroadcaster().broadcastGameEvent(move);
+				frame.append("Sent Move Event.");
 				//player.setPosition(new Position(p.getX(), p.getY()));
 				//MoveEvent move = new MoveEvent(moves.pop(), player);
 				repaint();
