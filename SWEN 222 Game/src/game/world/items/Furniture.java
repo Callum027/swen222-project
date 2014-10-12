@@ -1,5 +1,8 @@
 package game.world.items;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 import game.world.Position;
 import game.world.characters.Player;
 
@@ -30,8 +33,8 @@ public class Furniture extends Item{
 	 * @param player the player interacting with this piece of furniture
 	 * @return the description of the furniture
 	 */
-	public String interact(Player player){
-		return "This is a piece of furniture";
+	public void interact(Player player){
+		
 	}
 
 	/**
@@ -48,5 +51,11 @@ public class Furniture extends Item{
 	 */
 	public void setItem(MoveableItem item) {
 		this.item = item;
+	}
+
+	@Override
+	public void write(OutputStream os) throws IOException {
+		// TODO Auto-generated method stub
+		
 	}
 }

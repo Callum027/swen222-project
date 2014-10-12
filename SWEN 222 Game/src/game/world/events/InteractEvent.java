@@ -6,6 +6,9 @@ import java.io.OutputStream;
 
 import game.exceptions.GameException;
 import game.world.GameEvent;
+import game.world.Interactable;
+import game.world.Position;
+import game.world.characters.Player;
 
 /**
  * Events that represent interacting with objects in the game world.
@@ -14,6 +17,15 @@ import game.world.GameEvent;
  *
  */
 public class InteractEvent extends GameEvent {
+	
+	private final Player player;
+	private final Interactable interactable;
+	
+	public InteractEvent(Player player, Interactable interactable){
+		this.player = player;
+		this.interactable = interactable;
+	}
+	
 	public GameEvent.Type getType() {
 		return GameEvent.Type.INTERACT;
 	}
@@ -25,9 +37,11 @@ public class InteractEvent extends GameEvent {
 	 * @return InteractEvent
 	 * @throws IOException
 	 */
-	public static InteractEvent read(InputStream is) throws IOException, GameException {
-		return new InteractEvent();
-	}
+	//public static InteractEvent read(InputStream is) throws IOException, GameException {
+		//Interactable interactable = Interactable.read(is);
+		//Player player = Player.read(is);
+		//return new InteractEvent(player, interactable);
+	//}
 
 	public void write(OutputStream os) throws IOException {
 		super.write(os);

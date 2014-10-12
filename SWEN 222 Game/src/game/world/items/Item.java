@@ -3,6 +3,7 @@ package game.world.items;
 import game.Main;
 import game.world.BoundingBox;
 import game.world.Drawable;
+import game.world.Interactable;
 import game.world.Position;
 import game.world.tiles.FloorTile;
 
@@ -16,7 +17,7 @@ import java.awt.Image;
  * @author Nick Tran
  *
  */
-public abstract class Item implements Drawable {
+public abstract class Item implements Drawable, Interactable{
 
 	private Position position;
 	private String name;

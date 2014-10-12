@@ -1,5 +1,8 @@
 package game.world;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -9,6 +12,13 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 
+import game.Main;
+import game.exceptions.AreaIDNotFoundException;
+import game.exceptions.GameException;
+import game.exceptions.PlayerIDNotFoundException;
+import game.net.NetIO;
+import game.net.Streamable;
+import game.world.characters.Player;
 import game.world.items.Item;
 import game.world.items.MoveableItem;
 import game.world.tiles.Tile;
@@ -19,10 +29,10 @@ import game.world.tiles.Tile;
  * @author Nick Tran
  *
  */
-public class Area {
+public class Area  implements Streamable{
 	
 	// fields
-	private final int areaID;
+	private final int id;
 	private List<Item> items; // the items located in this area
 	private Tile[][] tiles; //the tiles that make up this area
 	private Tile[][][] walls;
@@ -47,7 +57,7 @@ public class Area {
 	public Area(Tile[][] tiles, Tile[][][] walls, int areaID){
 		this.tiles = tiles;
 		items = new ArrayList<Item>();
-		this.areaID = areaID;
+		this.id = areaID;
 		this.walls = walls;
 	}
 	
@@ -55,8 +65,8 @@ public class Area {
 	 * Returns the unique identifier for this Area.
 	 * @return
 	 */
-	public int getAreaID() {
-		return areaID;
+	public int getID() {
+		return id;
 	}
 
 	
@@ -402,4 +412,27 @@ public class Area {
 		}
 
 	}
+
+	@Override
+	public void write(OutputStream os) throws IOException {
+		NetIO.writeByte(os, (byte)getID());
+	}
+	
+	/**
+	 * reads an area from the inputstream
+	 * @param is the inputstream
+	 * @return the area with the given id that is received form the inputstream
+	 * @throws IOException
+	 * @throws GameException
+	 */
+	public static Area read(InputStream is) throws IOException, GameException {
+		byte id = NetIO.readByte(is);
+		Area area = Main.getGameWorld().getArea(id);
+
+		if (area == null)
+			throw new AreaIDNotFoundException(id);
+
+		return area;
+	}
+
 }

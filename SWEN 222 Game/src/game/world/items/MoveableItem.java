@@ -1,6 +1,10 @@
 package game.world.items;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 import game.world.Position;
+import game.world.characters.Player;
 
 /**
  * Used to differentiate between items that you can move and pick-up from items
@@ -51,6 +55,18 @@ public class MoveableItem extends Item {
 	 */
 	public void setWorth(int worth) {
 		this.worth = worth;
+	}
+
+	@Override
+	public void interact(Player player) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void write(OutputStream os) throws IOException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

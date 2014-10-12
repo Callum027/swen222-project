@@ -1,5 +1,9 @@
 package game.world.characters;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
+import game.world.Interactable;
 import game.world.Position;
 import game.world.items.MoveableItem;
 
@@ -8,7 +12,7 @@ import game.world.items.MoveableItem;
  * @author Nick Tran
  *
  */
-public class Merchant extends GameCharacter{
+public class Merchant extends GameCharacter implements Interactable{
 
 	/**
 	 * The Constructor:
@@ -30,5 +34,16 @@ public class Merchant extends GameCharacter{
 		player.getItems().add(item);
 		getItems().remove(item);
 		this.setCats(this.getCats()+item.getWorth()); //increase the Merchant's money
+	}
+
+	@Override
+	public void interact(Player player) {
+		
+	}
+
+	@Override
+	public void write(OutputStream os) throws IOException {
+		// TODO Auto-generated method stub
+		
 	}
 }

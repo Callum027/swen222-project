@@ -30,7 +30,7 @@ public class GameWorld implements GameEventListener{
 	 * @param area the area to add to the map
 	 */
 	public void addArea(Area area){
-		areas.put(area.getAreaID(), area);
+		areas.put(area.getID(), area);
 	}
 
 	/**
@@ -56,6 +56,10 @@ public class GameWorld implements GameEventListener{
 	 */
 	public Player getPlayer(int id){
 		return players.get(id);
+	}
+	
+	public Area getArea(int id){
+		return areas.get(id);
 	}
 
 	/**

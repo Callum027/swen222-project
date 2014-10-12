@@ -1,5 +1,6 @@
 package game.world;
 
+import game.net.Streamable;
 import game.world.characters.Player;
 
 /**
@@ -8,10 +9,10 @@ import game.world.characters.Player;
  * @author Nick
  *
  */
-public interface Interactable {
+public interface Interactable extends Streamable{
 	
 	/**
-	 * The em,thod that gets called when a player interacts with stuff
+	 * The method that gets called when a player interacts with stuff
 	 * @param player the player that is interacting with stuff
 	 */
 	public void interact(Player player);

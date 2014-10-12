@@ -1,7 +1,10 @@
 package game.world.items;
 
 import game.world.Position;
+import game.world.characters.Player;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 /**
@@ -57,6 +60,18 @@ public class Container extends Item{
 	 */
 	public void setLoot(List<MoveableItem> loot) {
 		this.loot = loot;
+	}
+
+	@Override
+	public void interact(Player player) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void write(OutputStream os) throws IOException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
