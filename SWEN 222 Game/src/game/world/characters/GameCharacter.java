@@ -1,5 +1,6 @@
 package game.world.characters;
 
+import game.net.Streamable;
 import game.world.Position;
 import game.world.items.MoveableItem;
 
@@ -11,7 +12,7 @@ import java.util.ArrayList;
  * @author Nick Tran
  *
  */
-public abstract class GameCharacter {
+public abstract class GameCharacter implements Streamable{
 
 	/*
 	 * Each game character utilizes a bunch if items one way or another. 

@@ -1,7 +1,9 @@
 package game.world;
 
+import game.world.characters.Enemy;
 import game.world.characters.Player;
 import game.world.events.MoveEvent;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +16,8 @@ import java.util.Map;
 public class GameWorld implements GameEventListener{
 
 	private Map<Integer,Area> areas; //a mapping from unique identifiers to their respective area
-	private Map<Integer,Player> players; //a mapping from unique identifiers to their respectiove players
+	private Map<Integer,Player> players; //a mapping from unique identifiers to their respective players
+	private Map<Integer,Enemy> enemies; //a mapping from unique identifiers to their respective enemy character
 
 	/**
 	 * The constructor:
@@ -37,8 +40,16 @@ public class GameWorld implements GameEventListener{
 	 * adds a player with it's id to the map of players
 	 * @param player the player we are adding to the map
 	 */
-	public void addPlayers(Player player){
+	public void addPlayer(Player player){
 		players.put(player.getId(), player);
+	}
+	
+	/**
+	 * adds an enemy with it's id to the map of enemies
+	 * @param enemy the enemy we are adding to the map
+	 */
+	public void addEnemy(Enemy enemy){
+		enemies.put(enemy.getId(), enemy);
 	}
 
 	/**
@@ -58,8 +69,22 @@ public class GameWorld implements GameEventListener{
 		return players.get(id);
 	}
 	
+	/**
+	 * retrieves the areas contained within the world using their id
+	 * @param id the id that is used to get the area with this id
+	 * @return the area with the given id
+	 */
 	public Area getArea(int id){
 		return areas.get(id);
+	}
+	
+	/**
+	 * retrieves the enemies contained within the world using their id
+	 * @param id the id that is used to get the enemy with this id
+	 * @return the enemy with the given id
+	 */
+	public Enemy getEnemy(int id){
+		return enemies.get(id);
 	}
 
 	/**

@@ -89,7 +89,7 @@ public class Player extends GameCharacter implements Streamable, Attackable{
 	/**
 	 * reads a player from the inputstream
 	 * @param is the inputstream
-	 * @return the player with the given id that is recoeved form the inputstream
+	 * @return the player with the given id that is received form the inputstream
 	 * @throws IOException
 	 * @throws GameException
 	 */

@@ -1,5 +1,13 @@
 package game.world.characters;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import game.Main;
+import game.exceptions.EnemyIDNotFoundException;
+import game.exceptions.GameException;
+import game.net.NetIO;
 import game.world.Position;
 import game.world.characters.classes.GameClass;
 import game.world.characters.classes.MageClass;
@@ -108,5 +116,27 @@ public class Enemy extends GameCharacter implements Attackable{
 	 */
 	public void setDefence(int defence) {
 		this.defence = defence;
+	}
+
+	@Override
+	public void write(OutputStream os) throws IOException {
+		NetIO.writeByte(os, (byte)super.getId());	
+	}
+	
+	/**
+	 * reads an enemy from the inputstream
+	 * @param is the inputstream
+	 * @return the enemy with the given id that is received form the inputstream
+	 * @throws IOException
+	 * @throws GameException
+	 */
+	public static Enemy read(InputStream is) throws IOException, GameException {
+		byte id = NetIO.readByte(is);
+		Enemy enemy = Main.getGameWorld().getEnemy(id);
+
+		if (enemy == null)
+			throw new EnemyIDNotFoundException(id);
+
+		return enemy;
 	}
 }
