@@ -34,6 +34,7 @@ public class Enemy extends GameCharacter implements Attackable{
 
 	private GameClass gameClass; //either Warrior, Mage or Rogue
 	private Image[] images;
+	private int height = 2;
 
 	/**
 	 * The Constructor
@@ -139,7 +140,7 @@ public class Enemy extends GameCharacter implements Attackable{
 	public static Enemy read(InputStream is) throws IOException, GameException {
 		byte id = NetIO.readByte(is);
 		Enemy enemy = null;
-		
+
 		/*
 		 * iterates over all the areas and returns the enemy with the given id
 		 */
@@ -164,5 +165,10 @@ public class Enemy extends GameCharacter implements Attackable{
 
 	public Integer getID() {
 		return super.getId();
+	}
+
+	@Override
+	public int getHeight() {
+		return height;
 	}
 }

@@ -18,6 +18,7 @@ import game.world.items.MoveableItem;
 public class Merchant extends GameCharacter implements Interactable{
 
 	private Image[] images;
+	private int height = 2;
 
 	/**
 	 * The Constructor:
@@ -28,6 +29,11 @@ public class Merchant extends GameCharacter implements Interactable{
 	public Merchant(Position position, String name, int id){
 		super(position, name, id);
 		images = new Image[]{Main.getImage("SpriteTEST.png")};
+	}
+
+	@Override
+	public int getHeight() {
+		return height;
 	}
 
 	/**

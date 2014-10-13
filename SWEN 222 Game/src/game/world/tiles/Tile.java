@@ -40,6 +40,14 @@ public abstract class Tile implements Drawable{
 
 	}
 
+	public int getHeight(){
+		return 0;
+	}
+
+	public Position getPosition(){
+		return null;
+	}
+
 	/**
 	 * Returns a bounding box in the form of a Polygon for this
 	 * Tile. The specified x, y coordinates are in relation to

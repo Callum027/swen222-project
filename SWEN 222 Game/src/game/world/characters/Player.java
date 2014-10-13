@@ -35,6 +35,7 @@ public class Player extends GameCharacter implements Streamable, Attackable{
 	private EquippedItems equipped; //the items that is currently equipped to the player
 	private GameClass gameClass; //either Warrior, Mage or Rogue
 	private Image[] images;
+	private int height = 2;
 
 	/**
 	 * The constructor
@@ -88,6 +89,11 @@ public class Player extends GameCharacter implements Streamable, Attackable{
 	 */
 	public EquippedItems getEquipped() {
 		return equipped;
+	}
+
+	@Override
+	public int getHeight() {
+		return height;
 	}
 
 	/**
