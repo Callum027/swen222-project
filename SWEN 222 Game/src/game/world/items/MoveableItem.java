@@ -29,8 +29,8 @@ public class MoveableItem extends Item {
 	 * @param name
 	 *            the name of the item
 	 */
-	public MoveableItem(Position position, int height, String name, int worth) {
-		super(position, height, name);
+	public MoveableItem(Position position, int height, int ID, String name, int worth) {
+		super(position, height, ID, name);
 		this.worth = worth;
 	}
 

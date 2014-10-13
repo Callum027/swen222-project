@@ -17,7 +17,6 @@ public class GameWorld implements GameEventListener{
 
 	private Map<Integer,Area> areas; //a mapping from unique identifiers to their respective area
 	private Map<Integer,Player> players; //a mapping from unique identifiers to their respective players
-	private Map<Integer,Enemy> enemies; //a mapping from unique identifiers to their respective enemy character
 
 	/**
 	 * The constructor:

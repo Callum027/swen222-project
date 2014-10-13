@@ -5,8 +5,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
@@ -18,6 +21,7 @@ import game.exceptions.GameException;
 import game.exceptions.PlayerIDNotFoundException;
 import game.net.NetIO;
 import game.net.Streamable;
+import game.world.characters.Enemy;
 import game.world.characters.Player;
 import game.world.items.Item;
 import game.world.items.MoveableItem;
@@ -33,7 +37,8 @@ public class Area  implements Streamable{
 	
 	// fields
 	private final int id;
-	private List<Item> items; // the items located in this area
+	private Map<Integer,Enemy> enemies; //a mapping from unique identifiers to their respective enemy character
+	private Map<Integer,Item> items; //a mapping from unique identifiers to the items located in this area
 	private Tile[][] tiles; //the tiles that make up this area
 	private Tile[][][] walls;
 	
@@ -56,7 +61,8 @@ public class Area  implements Streamable{
 	 */
 	public Area(Tile[][] tiles, Tile[][][] walls, int areaID){
 		this.tiles = tiles;
-		items = new ArrayList<Item>();
+		items = new HashMap<Integer,Item>();
+		enemies = new HashMap<Integer,Enemy>();
 		this.id = areaID;
 		this.walls = walls;
 	}
@@ -99,39 +105,39 @@ public class Area  implements Streamable{
 	}
 	
 	/**
-	 * Returns  a shallow clone of the list of items 
+	 * Returns  a shallow clone of the map of items 
 	 * that are currently in this area.
 	 * 
 	 * @return
-	 * 		--- list of items
+	 * 		--- map of integers to items
 	 */
-	public List<Item> getItems() {
-		return new ArrayList<Item>(items);
+	public Map<Integer,Item> getItems() {
+		return new HashMap<Integer,Item>(items);
 	}
 	
 	/**
-	 * Adds the specified item to the list of items currently
+	 * Adds the specified item to the map of items currently
 	 * in this area.
 	 * 
 	 * @param item
 	 * 		--- the item to add
 	 * @return
-	 * 		--- returns true if the item was added, false otherwise
+	 * 		--- returns the previous item associated with the ID or null if there was no previous mapping of the ID
 	 */
-	public boolean addItem(Item item){
-		return items.add(item);
+	public Item addItem(Item item){
+		return items.put(item.getID(), item);
 	}
 	
 	/**
-	 * Removes the specified item from the list of items currently in
+	 * Removes the specified item from the map of items currently in
 	 * this area.
 	 * 
 	 * @param item
 	 * 		--- the item to be removed
 	 * @return
-	 * 		---	returns true if the item was removed, false otherwise
+	 * 		---	the previous item associated with the ID, or null if there was no mapping for the ID. 
 	 */
-	public boolean removeItem(Item item){
+	public Item removeItem(Item item){
 		return items.remove(item);
 	}
 	
@@ -151,8 +157,8 @@ public class Area  implements Streamable{
 			return false;
 		}
 		// if position is occupied by an item return false
-		for(Item item : items){
-			if(item.getPosition().equals(p) && !(item instanceof MoveableItem)){
+		for (Entry<Integer, Item> entry : items.entrySet()){
+			if(entry.getValue().getPosition().equals(p) && !(entry.getValue() instanceof MoveableItem)){
 				return false;
 			}
 		}

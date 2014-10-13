@@ -1,5 +1,6 @@
 package game.world.items;
 
+import game.world.Position;
 import game.world.characters.Player;
 
 
@@ -7,7 +8,7 @@ import game.world.characters.Player;
  * The class for the items that are consumed by the player
  * @author Nick
  */
-public class Consumables {
+public class Consumables extends MoveableItem{
 
 	private final float buffPercentage; //the amount of points to increase by
 
@@ -17,7 +18,8 @@ public class Consumables {
 	 * The Constructor
 	 * @param buffPercentage the percentage the player's health gets increased by
 	 */
-	public Consumables (float buffPercentage){
+	public Consumables (Position position, int height, String name, int worth, float buffPercentage){
+		super(position, height, name, worth);
 		this.buffPercentage = buffPercentage;
 	}
 	

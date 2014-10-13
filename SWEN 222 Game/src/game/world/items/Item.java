@@ -1,6 +1,7 @@
 package game.world.items;
 
 import game.Main;
+import game.net.Streamable;
 import game.world.BoundingBox;
 import game.world.Drawable;
 import game.world.Interactable;
@@ -17,13 +18,14 @@ import java.awt.Image;
  * @author Nick Tran
  *
  */
-public abstract class Item implements Drawable, Interactable{
+public abstract class Item implements Drawable, Interactable, Streamable{
 
 	private Position position;
-	private String name;
-	private int height; // how much room the item takes up on the area
+	private final String name;
+	private final int height; // how much room the item takes up on the area
 	private Image[] images;
 	private String description;
+	private final int ID;
 
 	/**
 	 * The constructor
@@ -37,10 +39,11 @@ public abstract class Item implements Drawable, Interactable{
 	 * @param name
 	 *            the name of the item
 	 */
-	public Item(Position position, int height, String name) {
-		this.setPosition(position);
-		this.setHeight(height);
-		this.setName(name);
+	public Item(Position position, int height, int ID, String name) {
+		this.position = position;
+		this.height = height;
+		this.name = name;
+		this.ID = ID;
 		images = new Image[4];
 		for (int i = 0; i < images.length; i++) {
 			images[i] = Main.getImage(name + ".png");
@@ -57,32 +60,12 @@ public abstract class Item implements Drawable, Interactable{
 	}
 
 	/**
-	 * Sets the height of the item
-	 *
-	 * @param height
-	 *            the new height value
-	 */
-	public void setHeight(int height) {
-		this.height = height;
-	}
-
-	/**
 	 * Retrieves the name of the item
 	 *
 	 * @return the name of the item
 	 */
 	public String getName() {
 		return name;
-	}
-
-	/**
-	 * sets the name of the item
-	 *
-	 * @param name
-	 *            the name to give the item
-	 */
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	/**
@@ -142,5 +125,9 @@ public abstract class Item implements Drawable, Interactable{
 	 */
 	public void setDescription(String description){
 		this.description = description;
+	}
+
+	public int getID() {
+		return ID;
 	}
 }
