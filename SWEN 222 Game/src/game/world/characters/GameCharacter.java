@@ -1,9 +1,12 @@
 package game.world.characters;
 
 import game.net.Streamable;
+import game.world.BoundingBox;
+import game.world.Drawable;
 import game.world.Position;
 import game.world.items.MoveableItem;
 
+import java.awt.Graphics;
 import java.awt.Image;
 import java.util.ArrayList;
 
@@ -12,24 +15,24 @@ import java.util.ArrayList;
  * @author Nick Tran
  *
  */
-public abstract class GameCharacter implements Streamable{
+public abstract class GameCharacter implements Streamable, Drawable{
 
 	/*
-	 * Each game character utilizes a bunch if items one way or another. 
+	 * Each game character utilizes a bunch if items one way or another.
 	 * The player has a list of items in their inventory
 	 * The enemy has a list of items that they drop when they die
 	 * The Merchant has a list of items that they can sell
 	 */
-	private ArrayList<MoveableItem> items; 
-	
+	private ArrayList<MoveableItem> items;
+
 	private final int MAXIMUM_CAPACITY = 20; //the limit on the amount of items each character can hold
 	private Position position;
 	private final String name;
 	private Image[] images;
-	private int direction; 
+	private int direction;
 	private final int id;
 	private int cats; //the amount of money/points the player has
-	
+
 	/**
 	 * The constructor
 	 * @param position the position where we spawn the character
@@ -48,14 +51,14 @@ public abstract class GameCharacter implements Streamable{
 	/**
 	 * moves the character to a specified position
 	 * essentially the setter for the position field
-	 * @param position the specified position 
+	 * @param position the specified position
 	 */
 	public void moveToPosition(Position position){
 		this.position = position;
 	}
-	
+
 	/**
-	 * creates a container that contains the items that the character is holding when the character dies 
+	 * creates a container that contains the items that the character is holding when the character dies
 	 */
 	public void dropItems(){
 
@@ -64,7 +67,7 @@ public abstract class GameCharacter implements Streamable{
 	/**
 	 * adds an item to the list of items that the character is holding
 	 * @param item the item that we're adding
-	 * @return true if the addition is successful 
+	 * @return true if the addition is successful
 	 */
 	public boolean addItem(MoveableItem item){
 		return items.add(item);
@@ -141,5 +144,14 @@ public abstract class GameCharacter implements Streamable{
 	 */
 	public int getId() {
 		return id;
+	}
+
+	public void draw(Graphics g, int x, int y, int direction){
+
+	}
+
+	public BoundingBox getBoundingBox(int x, int y, Position p){
+
+		return null;
 	}
 }
