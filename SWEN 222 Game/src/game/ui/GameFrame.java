@@ -148,7 +148,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 	public RenderingPanel getRender() {
 		return render;
 	}
-	
+
 	public MoveableItem getSelectedItem(){
 		return selectedItem;
 	}
@@ -156,7 +156,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 	public void setSelectedItem(MoveableItem item){
 		selectedItem = item;
 	}
-	
+
 	/**
 	 * Sets up the menu bar at the top of the GameFrame.
 	 */
@@ -251,11 +251,11 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 	public void addGameEventListener(GameEventListener gel) {
 		geb.addGameEventListener(gel);
 	}
-	
+
 	/**
 	 * Finds and returns the current GameComponent that has focus
 	 * on the GameFrame.
-	 * 
+	 *
 	 * @return
 	 * 			--- GameComponent currently in focus
 	 */
@@ -274,11 +274,11 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 		}
 		return null;
 	}
-	
+
 	public GameEventBroadcaster getGameEventBroadcaster(){
 		return geb;
 	}
-	
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		GameComponent current = getCurrentGameComponent();
@@ -297,7 +297,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 	public void mouseReleased(MouseEvent e) {
 		GameComponent current = getCurrentGameComponent();
 		current.mouseReleased(this, e);
-		
+
 
 	}
 
@@ -317,14 +317,14 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 			//text.append("Entered the Inventory Panel\n");
 		}
 	}
-	
+
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	public void append(String message){
 		text.append(message+"\n");
 	}
