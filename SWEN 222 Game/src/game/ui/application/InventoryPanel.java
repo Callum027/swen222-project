@@ -287,7 +287,6 @@ public class InventoryPanel extends JPanel implements GameComponent {
 			int inv = findInventorySquare(x, y);
 			/* finds the inventory slot by using to ints */
 			selectItem(frame, inv);
-
 			if (itemSelected != null) {
 				frame.append("Item: " + itemSelected.toString());
 			}

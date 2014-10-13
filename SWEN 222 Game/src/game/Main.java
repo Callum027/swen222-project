@@ -92,13 +92,13 @@ public class Main {
 		synchronized (gameWorldSetUp) {
 			if (gameWorldSetUp)
 				return true;
-			
+
 			// Load the tile map and the game world areas.
 			tileMap = createTileMap(TILES_FILE);
 			area = GameParser.parseArea(AREA_FILE, tileMap);
-	
+
 			// Add the main area to the game world, but only if the area
-			// successfully loaded.		
+			// successfully loaded.
 			if (area != null)
 			{
 				gameWorld = new GameWorld();
@@ -109,7 +109,7 @@ public class Main {
 				System.err.println("main: ERROR: could not load game world area");
 				return false;
 			}
-	
+
 			gameWorldSetUp = true;
 			return true;
 		}
@@ -208,9 +208,9 @@ public class Main {
 	private static boolean setupGameWindow() {
 		// Set up the game world if it has not been set up already.
 		setupGameWorld();
-		
+
 		// Set up the game GUI.
-		gameWindow = new GameFrame(1280, 720);
+		gameWindow = new GameFrame(800, 600);
 
 		// Render the area.
 		gameWindow.getRender().setArea(area);
@@ -313,7 +313,7 @@ public class Main {
 
 		if (!setupGameWindow())
 			System.exit(6);
-		
+
 		gameWindow.getGameEventBroadcaster().addGameEventListener(gameWorld);
 	}
 
