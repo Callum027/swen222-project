@@ -81,29 +81,29 @@ public class Container extends Item{
 	}
 	
 	/**
-	 * reads a player from the inputstream
+	 * reads a container from the inputstream
 	 * @param is the inputstream
-	 * @return the player with the given id that is received form the inputstream
+	 * @return the container with the given id that is received form the inputstream
 	 * @throws IOException
 	 * @throws GameException
 	 */
-	public static MoveableItem read(InputStream is) throws IOException, GameException {
+	public static Container read(InputStream is) throws IOException, GameException {
 		byte id = NetIO.readByte(is);
-		MoveableItem moveableItem = null;
+		Container container = null;
 
 		/*
 		 * iterates over all the areas and returns the moveable item with the given id
 		 */
 		for (Entry<Integer,Area> entry : Main.getGameWorld().getAreas().entrySet()){
-			if (moveableItem != null){
-				return moveableItem;
+			if (container != null){
+				return container;
 			}
-			moveableItem = (MoveableItem) entry.getValue().getItem(id);
+			container = (Container) entry.getValue().getItem(id);
 		}
 
-		if (moveableItem == null)
+		if (container == null)
 			throw new ItemIDNotFoundException(id);
 
-		return moveableItem;
+		return container;
 	}
 }
