@@ -149,4 +149,8 @@ public class Enemy extends GameCharacter implements Attackable{
 		g.drawImage(images[0], x, y, null);
 
 	}
+
+	public Integer getID() {
+		return super.getId();
+	}
 }

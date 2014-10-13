@@ -142,6 +142,43 @@ public class Area  implements Streamable{
 	}
 	
 	/**
+	 * Returns  a shallow clone of the map of enemies 
+	 * that are currently in this area.
+	 * 
+	 * @return
+	 * 		--- map of integers to enemies
+	 */
+	public Map<Integer,Enemy> getEnemies() {
+		return new HashMap<Integer,Enemy>(enemies);
+	}
+	
+	/**
+	 * Adds the specified enemy to the map of enemies currently
+	 * in this area.
+	 * 
+	 * @param enemy
+	 * 		--- the enemy to add
+	 * @return
+	 * 		--- returns the previous enemy associated with the ID or null if there was no previous mapping of the ID
+	 */
+	public Enemy addEnemy(Enemy enemy){
+		return enemies.put(enemy.getID(), enemy);
+	}
+	
+	/**
+	 * Removes the specified enemy from the map of enemies currently in
+	 * this area.
+	 * 
+	 * @param enemy
+	 * 		--- the enemy to be removed
+	 * @return
+	 * 		---	the previous enemy associated with the ID, or null if there was no mapping for the ID. 
+	 */
+	public Enemy removeEnemy(Enemy enemy){
+		return enemies.remove(enemy);
+	}
+	
+	/**
 	 * Returns true if the specified position is a moveable position.
 	 * A moveable position is defined as a position within the bounds
 	 * of the area that does not have a non moveable item on it.
