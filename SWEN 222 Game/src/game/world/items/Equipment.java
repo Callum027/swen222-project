@@ -24,8 +24,8 @@ public class Equipment extends MoveableItem{
 	 * @param defence the defence stat of the equipment
 	 * @param worth how much you can buy the weapon for from the merchant
 	 */
-	public Equipment(Position position, int height, String name, int attack, int defence, int worth, int slot) {
-		super(position, height, name, worth);
+	public Equipment(Position position, int height, int id, String name, int attack, int defence, int worth, int slot) {
+		super(position, height, id, name, worth);
 		this.setSlot(slot);
 		this.attack = attack;
 		this.defence = defence;
