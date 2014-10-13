@@ -209,7 +209,7 @@ public class GameParser {
 						"Parsing Furniture: Expected </StoredItem>, got "
 								+ scan.next());
 			}
-			return new Furniture(pos, height, name, storedItem);
+			return new Furniture(pos, height,ID, name, storedItem);
 
 		} catch (ParserError error) {
 			error.printStackTrace();
@@ -241,7 +241,7 @@ public class GameParser {
 			String name, int ID) {
 		try {
 			int cats = parseInt(scan, "Cats");
-			Container tempContainer = new Container(pos, height, name, cats);
+			Container tempContainer = new Container(pos, height,ID, name, cats);
 			List<MoveableItem> loot = new ArrayList<MoveableItem>();
 			while (!gobble(scan, "</Container>")) {
 				loot.add(parseStoredItem(scan));
