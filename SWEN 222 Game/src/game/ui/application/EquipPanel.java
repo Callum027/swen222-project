@@ -59,7 +59,6 @@ public class EquipPanel extends JPanel implements GameComponent {
 	private InventoryPanel inventory;
 	private Image background;
 
-
 	/**
 	 * Makes a new EquipPanel sets the width and height of the panel
 	 *
@@ -87,16 +86,15 @@ public class EquipPanel extends JPanel implements GameComponent {
 
 		Position p = new Position(0, 0);
 
-		items.equipHead(new Equipment(p, squareSize, "iron-hat", 0, 50, 50,
-				HEAD_SLOT));
-		items.equipMainHand(new Equipment(p, squareSize, "iron-sword", 50, 0,
-				50, MAIN_HAND));
-		items.equipBody(new Equipment(p, squareSize, "iron-armour", 0, 50, 50,
+		items.equipHead(new Equipment(p, 1, 0, "iron-hat", 0, 50, 50, HEAD_SLOT));
+		items.equipMainHand(new Equipment(p, 1, 0, "iron-sword", 50, 0, 50,
+				MAIN_HAND));
+		items.equipBody(new Equipment(p, 1, 0, "iron-armour", 0, 50, 50,
 				CHEST_SLOT));
-		items.equipBoots(new Equipment(p, squareSize, "iron-boots", 0, 50, 50,
+		items.equipBoots(new Equipment(p, 1, 0, "iron-boots", 0, 50, 50,
 				FEET_SLOT));
-		items.equipOffHand(new Equipment(p, squareSize, "iron-shield", 0, 50,
-				50, OFF_HAND));
+		items.equipOffHand(new Equipment(p, 1, 0, "iron-shield", 0, 50, 50,
+				OFF_HAND));
 		setPreferredSize(new Dimension(width, height));
 		background = Main.getImage("Equip.png");
 		// setVisible(true);
@@ -595,6 +593,5 @@ public class EquipPanel extends JPanel implements GameComponent {
 			repaint();
 		}
 	}
-
 
 }

@@ -34,7 +34,7 @@ public class Furniture extends Item{
 	 * @return the description of the furniture
 	 */
 	public void interact(Player player){
-		
+
 	}
 
 	/**
@@ -56,6 +56,6 @@ public class Furniture extends Item{
 	@Override
 	public void write(OutputStream os) throws IOException {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

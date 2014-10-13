@@ -54,16 +54,15 @@ public class InventoryPanel extends JPanel implements GameComponent {
 	 */
 	public InventoryPanel() {
 		Position p = new Position(0, 0);
-		addItem(new MoveableItem(p, squareSize, "cat-inv", 9001));
-		addItem(new Equipment(p, squareSize, "wizard-hat", 0, 20, 500,
-				equip.HEAD_SLOT));
-		addItem(new Equipment(p, squareSize, "mithril-sword", 200, 0, 500,
+		addItem(new MoveableItem(p, 1, 0, "cat-inv", 9001));
+		addItem(new Equipment(p, 1, 0, "wizard-hat",  20, 500, equip.HEAD_SLOT));
+		addItem(new Equipment(p, 1, 0, "mithril-sword",  200, 0, 500,
 				equip.MAIN_HAND));
-		addItem(new Equipment(p, squareSize, "mithril-shield", 1, 200, 500,
+		addItem(new Equipment(p, 1, 0, "mithril-shield",  1, 200, 500,
 				equip.OFF_HAND));
-		addItem(new Equipment(p, squareSize, "mithril-armour", 0, 200, 500,
+		addItem(new Equipment(p, 1, 0, "mithril-armour",  0, 200, 500,
 				equip.CHEST_SLOT));
-		addItem(new Equipment(p, squareSize, "mithril-boots", 0, 200, 500,
+		addItem(new Equipment(p, 1, 0, "mithril-boots", 0, 200, 500,
 				equip.FEET_SLOT));
 		setPreferredSize(new Dimension(width, height));
 		// addMouseListener(this);
@@ -284,7 +283,8 @@ public class InventoryPanel extends JPanel implements GameComponent {
 			int inv = findInventorySquare(x, y);
 			// if (inv < 0) {
 			if (frame.getSelectedItem() != null) {
-				dropItem(inv);
+				itemSelected = frame.getSelectedItem();
+				addItem(itemSelected);
 				frame.setSelectedItem(null);
 				itemSelected = null;
 			}
