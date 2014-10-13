@@ -5,11 +5,13 @@ import java.awt.Image;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Map.Entry;
 
 import game.Main;
 import game.exceptions.EnemyIDNotFoundException;
 import game.exceptions.GameException;
 import game.net.NetIO;
+import game.world.Area;
 import game.world.Position;
 import game.world.characters.classes.GameClass;
 import game.world.characters.classes.MageClass;
@@ -136,7 +138,17 @@ public class Enemy extends GameCharacter implements Attackable{
 	 */
 	public static Enemy read(InputStream is) throws IOException, GameException {
 		byte id = NetIO.readByte(is);
-		Enemy enemy = Main.getGameWorld().getEnemy(id);
+		Enemy enemy = null;
+		
+		/*
+		 * iterates over all the areas and returns the enemy with the given id
+		 */
+		for (Entry<Integer,Area> entry : Main.getGameWorld().getAreas().entrySet()){
+			if (enemy != null){
+				return enemy;
+			}
+			enemy = entry.getValue().getEnemy(id);
+		}
 
 		if (enemy == null)
 			throw new EnemyIDNotFoundException(id);

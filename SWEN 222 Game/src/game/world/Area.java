@@ -179,6 +179,15 @@ public class Area  implements Streamable{
 	}
 	
 	/**
+	 * retrieves the players contained within the world using their id
+	 * @param id the id that is used to get the player with this id
+	 * @return the player with the given id
+	 */
+	public Enemy getEnemy(int id){
+		return enemies.get(id);
+	}
+	
+	/**
 	 * Returns true if the specified position is a moveable position.
 	 * A moveable position is defined as a position within the bounds
 	 * of the area that does not have a non moveable item on it.
