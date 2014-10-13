@@ -114,7 +114,7 @@ public class GameParser {
 				return parseFurniture(scan, pos, height, name);
 			}
 			if (gobble(scan, "<MoveableItem>")) {
-				return parseFurniture(scan, pos, height, name);
+				return parseMoveableItem(scan, pos, height, name);
 			}
 		} catch (ParserError error) {
 			error.printStackTrace();
@@ -122,16 +122,55 @@ public class GameParser {
 		return null;
 	}
 
-	private static Item parseFurniture(Scanner scan, Position pos, int height,
-			String name) {
+	private static MoveableItem parseMoveableItem(Scanner scan, Position pos,
+			int height, String name) {
 		try {
-			Item tempItem = parseItem(scan);
-			if (tempItem instanceof MoveableItem) {
-				return new Furniture(pos, height, name, (MoveableItem) tempItem);
+			int worth = parseInt(scan, "Worth");
+		} catch (ParserError e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	private static MoveableItem parseStoredItem(Scanner scan) {
+		try {
+			int height = parseInt(scan, "Height");
+			if (!gobble(scan, "<Name>")) {
+				throw new ParserError(
+						"Parsing ItemType: Expecting <Name>, got "
+								+ scan.next());
 			}
-			throw new ParserError(
-					"Parsing ItemType: Expecting a moveable Item, got"
-							+ tempItem.getClass());
+			if (!scan.hasNext()) {
+				throw new ParserError(
+						"Parsing ItemType: Expected String, got nothing.");
+			}
+			String name = scan.next();
+			if (!gobble(scan, "</Name>")) {
+				throw new ParserError(
+						"Parsing ItemType: Expecting </Name>, got "
+								+ scan.next());
+			}
+			int worth = parseInt(scan, "Worth");
+			return new MoveableItem(new Position(-1, -1), height, name, worth);
+		} catch (ParserError e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+
+	private static Furniture parseFurniture(Scanner scan, Position pos,
+			int height, String name) {
+		try {
+			if (!gobble(scan, "<StoredItem>")) {
+				throw new ParserError(
+						"Parsing Furniture: Expected StoredItem declaration, got "
+								+ scan.next());
+			}
+			MoveableItem storedItem = parseStoredItem(scan);
+			return new Furniture(pos, height, name, storedItem);
+
 		} catch (ParserError error) {
 			error.printStackTrace();
 		}
@@ -165,14 +204,8 @@ public class GameParser {
 			Container tempContainer = new Container(pos, height, name, cats);
 			List<MoveableItem> loot = new ArrayList<MoveableItem>();
 			while (!gobble(scan, "</Container>")) {
-				Item tempItem = parseItem(scan);
-				if (tempItem instanceof MoveableItem) {
-					loot.add((MoveableItem) tempItem);
-				} else {
-					throw new ParserError(
-							"Parsing ItemType: Expecting a moveable Item, got"
-									+ tempItem.getClass());
-				}
+				loot.add(parseMoveableItem(scan, new Position(-1, -1), cats,
+						name));
 			}
 			tempContainer.setLoot(loot);
 			return tempContainer;
