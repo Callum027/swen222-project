@@ -377,35 +377,54 @@ public class EquipPanel extends JPanel implements GameComponent {
 		int slot = equipSelected.getSlot();
 		switch (slot) {
 		case HEAD_SLOT:
-			items.equipHead(equipSelected);
-			equipSelected = null;
-			previousSelected = -1;
+			if (items.getHead() == null) {
+				items.equipHead(equipSelected);
+				equipSelected = null;
+				previousSelected = -1;
+			} else {
+				inventory.addItem(equipSelected);
+			}
 			break;
 		case MAIN_HAND:
-			items.equipMainHand(equipSelected);
-			equipSelected = null;
-			previousSelected = -1;
+			if (items.getMainHand() == null) {
+				items.equipMainHand(equipSelected);
+				equipSelected = null;
+				previousSelected = -1;
+			} else {
+				inventory.addItem(equipSelected);
+			}
 			break;
 		case OFF_HAND:
-			items.equipOffHand(equipSelected);
-			equipSelected = null;
-			previousSelected = -1;
+			if (items.getoffHand() == null) {
+				items.equipOffHand(equipSelected);
+				equipSelected = null;
+				previousSelected = -1;
+			} else {
+				inventory.addItem(equipSelected);
+			}
 			break;
 		case CHEST_SLOT:
-			items.equipBody(equipSelected);
-			equipSelected = null;
-			previousSelected = -1;
+			if (items.getBody() == null) {
+				items.equipBody(equipSelected);
+				equipSelected = null;
+				previousSelected = -1;
+			} else {
+				inventory.addItem(equipSelected);
+			}
 			break;
 		case FEET_SLOT:
-			items.equipBoots(equipSelected);
-			equipSelected = null;
-			previousSelected = -1;
+			if (items.getBoots() == null) {
+				items.equipBoots(equipSelected);
+				equipSelected = null;
+				previousSelected = -1;
+			} else {
+				inventory.addItem(equipSelected);
+			}
 			break;
 		default:
 			break;
 		}
 	}
-
 
 	/**
 	 * Gets the stats for the equiped item that the mouse is hovering over, not
@@ -452,7 +471,6 @@ public class EquipPanel extends JPanel implements GameComponent {
 		}
 
 	}
-
 
 	/**
 	 * Gets the equiped items that the panel has
