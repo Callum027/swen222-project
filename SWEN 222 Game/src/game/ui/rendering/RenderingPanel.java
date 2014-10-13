@@ -62,7 +62,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 		this.direction = direction;
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		player = new Player(new Position(0,0), "Frank", 1, GameClass.playerClass.WARRIOR);
-		shelf = new Furniture(new Position(3, 4), 2, 1, "Shelf", null);
+		shelf = new Furniture(new Position(0, 1), 2, 1, "Shelf", null);
 
 	}
 
@@ -191,7 +191,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 			Position p = d.getPosition();
 
 			if (direction == GameFrame.NORTH) {
-				x = startX + DX * (p.getY() - p.getX());
+				x = startX + DX * (p.getX() - p.getY());
 				y = startY + DY * (p.getX() + p.getY()) - yOffset;
 			}
 			else if (direction == GameFrame.EAST) {
@@ -541,10 +541,6 @@ public class RenderingPanel extends JPanel implements GameComponent {
 				frame.setSelectedItem(null);
 				repaint();
 			}
-		}
-		
-		for(Item item : area.getItems().values()){
-			frame.append(""+item.getPosition());
 		}
 	}
 	public void mousePressed(GameFrame frame, MouseEvent e) {
