@@ -9,11 +9,9 @@ import game.world.GameEventBroadcaster;
 import game.world.GameEventListener;
 import game.world.items.MoveableItem;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
-import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -33,7 +31,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextPane;
 
 /**
  * A custom JFrame used to hold all the panels of the game. Implements

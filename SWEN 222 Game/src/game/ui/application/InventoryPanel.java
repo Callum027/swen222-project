@@ -55,12 +55,12 @@ public class InventoryPanel extends JPanel implements GameComponent {
 	public InventoryPanel() {
 		Position p = new Position(0, 0);
 		addItem(new MoveableItem(p, 1, 0, "cat-inv", 9001));
-		addItem(new Equipment(p, 1, 0, "wizard-hat",  20, 500, equip.HEAD_SLOT));
-		addItem(new Equipment(p, 1, 0, "mithril-sword",  200, 0, 500,
+		addItem(new Equipment(p, 1, 0, "wizard-hat", 20, 500, equip.HEAD_SLOT));
+		addItem(new Equipment(p, 1, 0, "mithril-sword", 200, 0, 500,
 				equip.MAIN_HAND));
-		addItem(new Equipment(p, 1, 0, "mithril-shield",  1, 200, 500,
+		addItem(new Equipment(p, 1, 0, "mithril-shield", 1, 200, 500,
 				equip.OFF_HAND));
-		addItem(new Equipment(p, 1, 0, "mithril-armour",  0, 200, 500,
+		addItem(new Equipment(p, 1, 0, "mithril-armour", 0, 200, 500,
 				equip.CHEST_SLOT));
 		addItem(new Equipment(p, 1, 0, "mithril-boots", 0, 200, 500,
 				equip.FEET_SLOT));
@@ -70,10 +70,12 @@ public class InventoryPanel extends JPanel implements GameComponent {
 		selectedImage = null;
 	}
 
+	@Override
 	public int getWidth() {
 		return width;
 	}
 
+	@Override
 	public int getHeight() {
 		return height;
 	}
@@ -205,18 +207,6 @@ public class InventoryPanel extends JPanel implements GameComponent {
 		}
 	}
 
-	/*
-	 * @Override public void mouseEntered(MouseEvent e) { if
-	 * (GameFrame.selectedItem != null) { addItem(GameFrame.selectedItem); }
-	 * GameFrame.selectedItem = null;
-	 *
-	 * }
-	 *
-	 * @Override public void mouseExited(MouseEvent e) { if (itemSelected !=
-	 * null) { GameFrame.selectedItem = itemSelected; } itemSelected = null;
-	 * repaint(); }
-	 */
-
 	/**
 	 * gets the array of items in the inventory
 	 *
@@ -278,10 +268,9 @@ public class InventoryPanel extends JPanel implements GameComponent {
 	@Override
 	public void mouseReleased(GameFrame frame, MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON1) {
-			int x = e.getX();
-			int y = e.getY();
-			int inv = findInventorySquare(x, y);
-			// if (inv < 0) {
+			/* int x = e.getX(); */
+			/* int y = e.getY(); */
+			/* int inv = findInventorySquare(x, y); */
 			if (frame.getSelectedItem() != null) {
 				itemSelected = frame.getSelectedItem();
 				addItem(itemSelected);
@@ -289,7 +278,6 @@ public class InventoryPanel extends JPanel implements GameComponent {
 				itemSelected = null;
 			}
 			repaint();
-			// }
 			itemSelected = null;
 			previousSlot = -1;
 		}
@@ -301,10 +289,8 @@ public class InventoryPanel extends JPanel implements GameComponent {
 			int x = e.getX();
 			int y = e.getY();
 			int inv = findInventorySquare(x, y);
+			/* finds the inventory slot by using to ints */
 			selectItem(frame, inv);
-
-			// selectedImage = createImage(45, 45).getGraphics();
-			// itemSelected.draw(selectedImage, 0, 0, 0);
 
 			if (itemSelected != null) {
 				System.out.println("Item: " + itemSelected.toString());

@@ -406,16 +406,6 @@ public class EquipPanel extends JPanel implements GameComponent {
 		}
 	}
 
-	/*
-	 * @Override public void mouseEntered(MouseEvent e) { /* if
-	 * (GameFrame.selectedItem != null && GameFrame.selectedItem instanceof
-	 * Equipment) { Equipment equip = (Equipment) GameFrame.selectedItem; if
-	 * (addEquip(equip) == -1) { inventory.returnItem(equip); }
-	 *
-	 * } else { inventory.returnItem(GameFrame.selectedItem); }
-	 * GameFrame.selectedItem = null;
-	 */
-	// }
 
 	/**
 	 * Gets the stats for the equiped item that the mouse is hovering over, not
@@ -463,11 +453,6 @@ public class EquipPanel extends JPanel implements GameComponent {
 
 	}
 
-	/*
-	 * @Override public void mouseExited(MouseEvent e) { if (equipSelected !=
-	 * null) { //GameFrame.selectedItem = equipSelected; equipSelected = null; }
-	 * }
-	 */
 
 	/**
 	 * Gets the equiped items that the panel has
