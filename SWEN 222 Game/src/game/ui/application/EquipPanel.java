@@ -59,6 +59,7 @@ public class EquipPanel extends JPanel implements GameComponent {
 	private InventoryPanel inventory;
 	private Image background;
 
+
 	/**
 	 * Makes a new EquipPanel sets the width and height of the panel
 	 *
@@ -77,8 +78,7 @@ public class EquipPanel extends JPanel implements GameComponent {
 		HEAD_Y = height - 146;
 		BODY_X = width - 100;
 		BODY_Y = height - 100;
-		OFF_X = width - 53
-				;
+		OFF_X = width - 53;
 		OFF_Y = height - 100;
 		MAIN_X = width - 147;
 		MAIN_Y = height - 100;
@@ -99,7 +99,7 @@ public class EquipPanel extends JPanel implements GameComponent {
 				50, OFF_HAND));
 		setPreferredSize(new Dimension(width, height));
 		background = Main.getImage("Equip.png");
-		//setVisible(true);
+		// setVisible(true);
 		repaint();
 	}
 
@@ -235,7 +235,7 @@ public class EquipPanel extends JPanel implements GameComponent {
 	 *            The int value that represents the slot that the equipment is
 	 *            stored in.
 	 */
-	private void selectEquip(int equip) {
+	private void selectEquip(GameFrame frame, int equip) {
 		previousSelected = equip;
 		stats.getStats();
 		switch (equip) {
@@ -246,6 +246,7 @@ public class EquipPanel extends JPanel implements GameComponent {
 				System.out.println("Equiped item on head "
 						+ items.getHead().toString());
 				equipSelected = items.getHead();
+				frame.setSelectedItem(equipSelected);
 				items.equipHead(null);
 			}
 			break;
@@ -256,6 +257,7 @@ public class EquipPanel extends JPanel implements GameComponent {
 				System.out.println("Equiped item in main hand "
 						+ items.getMainHand().toString());
 				equipSelected = items.getMainHand();
+				frame.setSelectedItem(equipSelected);
 				items.equipMainHand(null);
 			}
 			break;
@@ -266,6 +268,7 @@ public class EquipPanel extends JPanel implements GameComponent {
 				System.out.println("Equiped item in off hand "
 						+ items.getoffHand().toString());
 				equipSelected = items.getoffHand();
+				frame.setSelectedItem(equipSelected);
 				items.equipOffHand(null);
 			}
 			break;
@@ -276,6 +279,7 @@ public class EquipPanel extends JPanel implements GameComponent {
 				System.out.println("Equiped item on chest "
 						+ items.getBody().toString());
 				equipSelected = items.getBody();
+				frame.setSelectedItem(equipSelected);
 				items.equipBody(null);
 			}
 			break;
@@ -286,6 +290,7 @@ public class EquipPanel extends JPanel implements GameComponent {
 				System.out.println("Equiped item on feet "
 						+ items.getBoots().toString());
 				equipSelected = items.getBoots();
+				frame.setSelectedItem(equipSelected);
 				items.equipBoots(null);
 			}
 			break;
@@ -402,22 +407,16 @@ public class EquipPanel extends JPanel implements GameComponent {
 		}
 	}
 
-	/*@Override
-	public void mouseEntered(MouseEvent e) {
-		/*
-		if (GameFrame.selectedItem != null
-				&& GameFrame.selectedItem instanceof Equipment) {
-			Equipment equip = (Equipment) GameFrame.selectedItem;
-			if (addEquip(equip) == -1) {
-				inventory.returnItem(equip);
-			}
-
-		} else {
-			inventory.returnItem(GameFrame.selectedItem);
-		}
-		GameFrame.selectedItem = null;
-		*/
-	//}
+	/*
+	 * @Override public void mouseEntered(MouseEvent e) { /* if
+	 * (GameFrame.selectedItem != null && GameFrame.selectedItem instanceof
+	 * Equipment) { Equipment equip = (Equipment) GameFrame.selectedItem; if
+	 * (addEquip(equip) == -1) { inventory.returnItem(equip); }
+	 *
+	 * } else { inventory.returnItem(GameFrame.selectedItem); }
+	 * GameFrame.selectedItem = null;
+	 */
+	// }
 
 	/**
 	 * Gets the stats for the equiped item that the mouse is hovering over, not
@@ -465,13 +464,11 @@ public class EquipPanel extends JPanel implements GameComponent {
 
 	}
 
-	/*@Override
-	public void mouseExited(MouseEvent e) {
-		if (equipSelected != null) {
-			//GameFrame.selectedItem = equipSelected;
-			equipSelected = null;
-		}
-	}*/
+	/*
+	 * @Override public void mouseExited(MouseEvent e) { if (equipSelected !=
+	 * null) { //GameFrame.selectedItem = equipSelected; equipSelected = null; }
+	 * }
+	 */
 
 	/**
 	 * Gets the equiped items that the panel has
@@ -566,7 +563,7 @@ public class EquipPanel extends JPanel implements GameComponent {
 	@Override
 	public void mouseClicked(GameFrame frame, MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -575,7 +572,14 @@ public class EquipPanel extends JPanel implements GameComponent {
 			int x = e.getX();
 			int y = e.getY();
 			int equip = findEquip(x, y);
-			dropEquip(equip);
+			if (frame.getSelectedItem() != null) {
+				if (frame.getSelectedItem() instanceof Equipment) {
+					equipSelected = (Equipment) frame.getSelectedItem();
+					dropEquip(equip);
+					frame.setSelectedItem(null);
+					equipSelected = null;
+				}
+			}
 			repaint();
 		}
 	}
@@ -586,8 +590,10 @@ public class EquipPanel extends JPanel implements GameComponent {
 			int y = e.getY();
 			int x = e.getX();
 			int equip = findEquip(x, y);
-			selectEquip(equip);
+			selectEquip(frame, equip);
 			repaint();
 		}
 	}
+
+
 }

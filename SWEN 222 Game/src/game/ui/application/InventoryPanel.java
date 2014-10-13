@@ -43,6 +43,7 @@ public class InventoryPanel extends JPanel implements GameComponent {
 	private int previousSlot = -1;
 	private Image background;
 
+
 	/**
 	 * Makes a new InventoryPanel which extends JPanel and sets the width and
 	 * height fields so that the panel can be a certain size
@@ -66,7 +67,7 @@ public class InventoryPanel extends JPanel implements GameComponent {
 		addItem(new Equipment(p, squareSize, "mithril-boots", 0, 200, 500,
 				equip.FEET_SLOT));
 		setPreferredSize(new Dimension(width, height));
-		//addMouseListener(this);
+		// addMouseListener(this);
 		background = Main.getImage("Inventory.png");
 		selectedImage = null;
 	}
@@ -120,7 +121,6 @@ public class InventoryPanel extends JPanel implements GameComponent {
 		}
 	}
 
-
 	/**
 	 * Uses two ints to find the location in the inventory.
 	 *
@@ -163,9 +163,10 @@ public class InventoryPanel extends JPanel implements GameComponent {
 	 * @param y
 	 *            the mouse Y
 	 */
-	private void selectItem(int inv) {
+	private void selectItem(GameFrame frame, int inv) {
 		if (inv >= 0 && inv < items.length) {
 			itemSelected = items[inv];
+			frame.setSelectedItem(itemSelected);
 			items[inv] = null;
 			previousSlot = inv;
 		}
@@ -206,23 +207,17 @@ public class InventoryPanel extends JPanel implements GameComponent {
 		}
 	}
 
-	/*@Override
-	public void mouseEntered(MouseEvent e) {
-		if (GameFrame.selectedItem != null) {
-			addItem(GameFrame.selectedItem);
-		}
-		GameFrame.selectedItem = null;
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		if (itemSelected != null) {
-			GameFrame.selectedItem = itemSelected;
-		}
-		itemSelected = null;
-		repaint();
-	}*/
+	/*
+	 * @Override public void mouseEntered(MouseEvent e) { if
+	 * (GameFrame.selectedItem != null) { addItem(GameFrame.selectedItem); }
+	 * GameFrame.selectedItem = null;
+	 *
+	 * }
+	 *
+	 * @Override public void mouseExited(MouseEvent e) { if (itemSelected !=
+	 * null) { GameFrame.selectedItem = itemSelected; } itemSelected = null;
+	 * repaint(); }
+	 */
 
 	/**
 	 * gets the array of items in the inventory
@@ -279,7 +274,7 @@ public class InventoryPanel extends JPanel implements GameComponent {
 	@Override
 	public void mouseClicked(GameFrame frame, MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -289,7 +284,12 @@ public class InventoryPanel extends JPanel implements GameComponent {
 			int y = e.getY();
 			int inv = findInventorySquare(x, y);
 			// if (inv < 0) {
-			dropItem(inv);
+			if (frame.getSelectedItem() != null) {
+				itemSelected=frame.getSelectedItem();
+				dropItem(inv);
+				frame.setSelectedItem(null);
+				itemSelected=null;
+			}
 			repaint();
 			// }
 			itemSelected = null;
@@ -303,17 +303,18 @@ public class InventoryPanel extends JPanel implements GameComponent {
 			int x = e.getX();
 			int y = e.getY();
 			int inv = findInventorySquare(x, y);
-			selectItem(inv);
-			
-			//selectedImage = createImage(45, 45).getGraphics();
-			//itemSelected.draw(selectedImage, 0, 0, 0);
-			
+			selectItem(frame, inv);
+
+			// selectedImage = createImage(45, 45).getGraphics();
+			// itemSelected.draw(selectedImage, 0, 0, 0);
+
 			if (itemSelected != null) {
 				System.out.println("Item: " + itemSelected.toString());
 			}
 			repaint();
 		}
-		
+
 	}
+
 
 }
