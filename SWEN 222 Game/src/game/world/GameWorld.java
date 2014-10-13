@@ -42,14 +42,6 @@ public class GameWorld implements GameEventListener{
 	public void addPlayer(Player player){
 		players.put(player.getId(), player);
 	}
-	
-	/**
-	 * adds an enemy with it's id to the map of enemies
-	 * @param enemy the enemy we are adding to the map
-	 */
-	public void addEnemy(Enemy enemy){
-		enemies.put(enemy.getId(), enemy);
-	}
 
 	/**
 	 * retrieves the areas contained within the world
@@ -59,6 +51,14 @@ public class GameWorld implements GameEventListener{
 		return areas;
 	}
 
+	/**
+	 * retrieves the players contained within the world
+	 * @return a map of the players
+	 */
+	public Map<Integer,Player> getPlayers(){
+		return players;
+	}
+	
 	/**
 	 * retrieves the players contained within the world using their id
 	 * @param id the id that is used to get the player with this id
@@ -75,15 +75,6 @@ public class GameWorld implements GameEventListener{
 	 */
 	public Area getArea(int id){
 		return areas.get(id);
-	}
-	
-	/**
-	 * retrieves the enemies contained within the world using their id
-	 * @param id the id that is used to get the enemy with this id
-	 * @return the enemy with the given id
-	 */
-	public Enemy getEnemy(int id){
-		return enemies.get(id);
 	}
 
 	/**
