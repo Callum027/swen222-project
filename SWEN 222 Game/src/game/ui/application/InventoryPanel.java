@@ -11,9 +11,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.JPanel;
 
@@ -55,15 +53,15 @@ public class InventoryPanel extends JPanel implements GameComponent {
 	public InventoryPanel() {
 		Position p = new Position(0, 0);
 		addItem(new MoveableItem(p, 1, 0, "cat-inv", 9001));
-		addItem(new Equipment(p, 1, 0, "wizard-hat", 0, 20, 500, equip.HEAD_SLOT));
+		addItem(new Equipment(p, 1, 0, "wizard-hat", 0, 20, 500, EquipPanel.HEAD_SLOT));
 		addItem(new Equipment(p, 1, 0, "mithril-sword", 200, 0, 500,
-				equip.MAIN_HAND));
+				EquipPanel.MAIN_HAND));
 		addItem(new Equipment(p, 1, 0, "mithril-shield", 1, 200, 500,
-				equip.OFF_HAND));
+				EquipPanel.OFF_HAND));
 		addItem(new Equipment(p, 1, 0, "mithril-armour", 0, 200, 500,
-				equip.CHEST_SLOT));
+				EquipPanel.CHEST_SLOT));
 		addItem(new Equipment(p, 1, 0, "mithril-boots", 0, 200, 500,
-				equip.FEET_SLOT));
+				EquipPanel.FEET_SLOT));
 		setPreferredSize(new Dimension(width, height));
 		// addMouseListener(this);
 		background = Main.getImage("Inventory.png");
@@ -140,9 +138,7 @@ public class InventoryPanel extends JPanel implements GameComponent {
 		 * array rather than a 2D array even though it is expressed as a 2D
 		 * array
 		 */
-		System.out.println("X = " + XSelect + " Y = " + ySelect);
 		int selected = XSelect + ySelect;
-		System.out.println("Selected = " + selected);
 		/*
 		 * adds the x and y values together and represents it as an index in the
 		 * array
@@ -293,7 +289,7 @@ public class InventoryPanel extends JPanel implements GameComponent {
 			selectItem(frame, inv);
 
 			if (itemSelected != null) {
-				System.out.println("Item: " + itemSelected.toString());
+				frame.append("Item: " + itemSelected.toString());
 			}
 			repaint();
 		}

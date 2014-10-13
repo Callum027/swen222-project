@@ -7,13 +7,10 @@ import game.world.Position;
 import game.world.items.Equipment;
 import game.world.items.EquippedItems;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.JPanel;
 
@@ -204,7 +201,6 @@ public class EquipPanel extends JPanel implements GameComponent {
 	 */
 	private int findEquip(int x, int y) {
 		int equip = -1;
-
 		if (y >= HEAD_Y && y < HEAD_Y + squareSize && x >= HEAD_X
 				&& x < HEAD_X + squareSize) {
 			equip = HEAD_SLOT;
@@ -239,9 +235,9 @@ public class EquipPanel extends JPanel implements GameComponent {
 		switch (equip) {
 		case HEAD_SLOT:
 			if (items.getHead() == null) {
-				System.out.println("No item equiped on head");
+				frame.append("No item equiped on head");
 			} else {
-				System.out.println("Equiped item on head "
+				frame.append("Equiped item on head "
 						+ items.getHead().toString());
 				equipSelected = items.getHead();
 				frame.setSelectedItem(equipSelected);
@@ -250,9 +246,9 @@ public class EquipPanel extends JPanel implements GameComponent {
 			break;
 		case MAIN_HAND:
 			if (items.getMainHand() == null) {
-				System.out.println("No item equiped in main hand");
+				frame.append("No item equiped in main hand");
 			} else {
-				System.out.println("Equiped item in main hand "
+				frame.append("Equiped item in main hand "
 						+ items.getMainHand().toString());
 				equipSelected = items.getMainHand();
 				frame.setSelectedItem(equipSelected);
@@ -261,9 +257,9 @@ public class EquipPanel extends JPanel implements GameComponent {
 			break;
 		case OFF_HAND:
 			if (items.getoffHand() == null) {
-				System.out.println("No item equiped in off hand");
+				frame.append("No item equiped in off hand");
 			} else {
-				System.out.println("Equiped item in off hand "
+				frame.append("Equiped item in off hand "
 						+ items.getoffHand().toString());
 				equipSelected = items.getoffHand();
 				frame.setSelectedItem(equipSelected);
@@ -272,9 +268,9 @@ public class EquipPanel extends JPanel implements GameComponent {
 			break;
 		case CHEST_SLOT:
 			if (items.getBody() == null) {
-				System.out.println("No items equiped on chest");
+				frame.append("No items equiped on chest");
 			} else {
-				System.out.println("Equiped item on chest "
+				frame.append("Equiped item on chest "
 						+ items.getBody().toString());
 				equipSelected = items.getBody();
 				frame.setSelectedItem(equipSelected);
@@ -283,9 +279,9 @@ public class EquipPanel extends JPanel implements GameComponent {
 			break;
 		case FEET_SLOT:
 			if (items.getBoots() == null) {
-				System.out.println("No items equiped on feet");
+				frame.append("No items equiped on feet");
 			} else {
-				System.out.println("Equiped item on feet "
+				frame.append("Equiped item on feet "
 						+ items.getBoots().toString());
 				equipSelected = items.getBoots();
 				frame.setSelectedItem(equipSelected);
@@ -424,52 +420,6 @@ public class EquipPanel extends JPanel implements GameComponent {
 		default:
 			break;
 		}
-	}
-
-	/**
-	 * Gets the stats for the equiped item that the mouse is hovering over, not
-	 * working yet
-	 *
-	 * @param equip
-	 *            The value of the slot of the equiped item
-	 */
-	private void equipStats(int equip) {
-		switch (equip) {
-		case HEAD_SLOT:
-			if (items.getHead() == null) {
-			} else {
-				stats.getStats();
-			}
-			break;
-		case MAIN_HAND:
-			if (items.getMainHand() == null) {
-			} else {
-				stats.getStats();
-			}
-			break;
-		case OFF_HAND:
-			if (items.getoffHand() == null) {
-			} else {
-				stats.getStats();
-			}
-			break;
-		case CHEST_SLOT:
-			if (items.getBody() == null) {
-			} else {
-				stats.getStats();
-			}
-			break;
-		case FEET_SLOT:
-			if (items.getBoots() == null) {
-				System.out.println("No items equiped on feet");
-			} else {
-				stats.getStats();
-			}
-			break;
-		default:
-			break;
-		}
-
 	}
 
 	/**
