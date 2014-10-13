@@ -1,5 +1,7 @@
 package game.world.characters;
 
+import java.awt.Graphics;
+import java.awt.Image;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -27,8 +29,9 @@ public class Enemy extends GameCharacter implements Attackable{
 	private int health;
 	private int attack;
 	private int defence;
-	
+
 	private GameClass gameClass; //either Warrior, Mage or Rogue
+	private Image[] images;
 
 	/**
 	 * The Constructor
@@ -40,6 +43,7 @@ public class Enemy extends GameCharacter implements Attackable{
 	public Enemy(Position position, String name, int uid, GameClass.playerClass playerClass){
 		super(position, name, uid);
 		assignClass(playerClass); //gives the player a class (behaviour)
+		images = new Image[]{Main.getImage("SpriteTEST.png")};
 	}
 
 	/**
@@ -120,9 +124,9 @@ public class Enemy extends GameCharacter implements Attackable{
 
 	@Override
 	public void write(OutputStream os) throws IOException {
-		NetIO.writeByte(os, (byte)super.getId());	
+		NetIO.writeByte(os, (byte)super.getId());
 	}
-	
+
 	/**
 	 * reads an enemy from the inputstream
 	 * @param is the inputstream
@@ -138,5 +142,11 @@ public class Enemy extends GameCharacter implements Attackable{
 			throw new EnemyIDNotFoundException(id);
 
 		return enemy;
+	}
+
+	@Override
+	public void draw(Graphics g, int x, int y, int direction) {
+		g.drawImage(images[0], x, y, null);
+
 	}
 }

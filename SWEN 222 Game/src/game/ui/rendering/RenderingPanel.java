@@ -181,7 +181,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 			y = startY + DY * ((draw.getX()) + (height + draw.getY())) - yOffset;
 		}
 
-		test.draw(g, x, y, direction);
+		player.draw(g, x, y, direction);
 	}
 
 	/**
@@ -509,19 +509,19 @@ public class RenderingPanel extends JPanel implements GameComponent {
 			}
 		}
 		repaint();
-		
+
 	}
 
 	@Override
 	public void mouseReleased(GameFrame frame, MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mousePressed(GameFrame frame, MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
 

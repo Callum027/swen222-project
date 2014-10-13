@@ -1,8 +1,11 @@
 package game.world.characters;
 
+import java.awt.Graphics;
+import java.awt.Image;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import game.Main;
 import game.world.Interactable;
 import game.world.Position;
 import game.world.items.MoveableItem;
@@ -14,6 +17,8 @@ import game.world.items.MoveableItem;
  */
 public class Merchant extends GameCharacter implements Interactable{
 
+	private Image[] images;
+
 	/**
 	 * The Constructor:
 	 * @param position the position that the Merchant will be spawned at
@@ -22,6 +27,7 @@ public class Merchant extends GameCharacter implements Interactable{
 	 */
 	public Merchant(Position position, String name, int id){
 		super(position, name, id);
+		images = new Image[]{Main.getImage("SpriteTEST.png")};
 	}
 
 	/**
@@ -38,12 +44,18 @@ public class Merchant extends GameCharacter implements Interactable{
 
 	@Override
 	public void interact(Player player) {
-		
+
 	}
 
 	@Override
 	public void write(OutputStream os) throws IOException {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	@Override
+	public void draw(Graphics g, int x, int y, int direction) {
+		g.drawImage(images[0], x, y, null);
+
 	}
 }

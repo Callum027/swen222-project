@@ -12,6 +12,8 @@ import game.world.characters.classes.RogueClass;
 import game.world.characters.classes.WarriorClass;
 import game.world.items.EquippedItems;
 
+import java.awt.Graphics;
+import java.awt.Image;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -32,6 +34,7 @@ public class Player extends GameCharacter implements Streamable, Attackable{
 
 	private EquippedItems equipped; //the items that is currently equipped to the player
 	private GameClass gameClass; //either Warrior, Mage or Rogue
+	private Image[] images;
 
 	/**
 	 * The constructor
@@ -43,6 +46,7 @@ public class Player extends GameCharacter implements Streamable, Attackable{
 	public Player(Position position, String name, int uid, GameClass.playerClass playerClass){
 		super(position, name, uid);
 		assignClass(playerClass); //gives the player a class (behaviour)
+		images = new Image[]{Main.getImage("SpriteTEST.png")};
 	}
 
 	/**
@@ -149,5 +153,11 @@ public class Player extends GameCharacter implements Streamable, Attackable{
 	 */
 	public void setDefence(int defence) {
 		this.defence = defence;
+	}
+
+	@Override
+	public void draw(Graphics g, int x, int y, int direction) {
+		g.drawImage(images[0], x, y, null);
+
 	}
 }

@@ -148,9 +148,7 @@ public abstract class GameCharacter implements Streamable, Drawable{
 		return id;
 	}
 
-	public void draw(Graphics g, int x, int y, int direction){
-		g.drawImage(images[0], x, y, null);
-	}
+	public abstract void draw(Graphics g, int x, int y, int direction);
 
 	public BoundingBox getBoundingBox(int x, int y, Position p){
 		int itemY = y - (height * FloorTile.HEIGHT);
