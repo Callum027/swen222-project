@@ -18,8 +18,8 @@ public class Consumables extends MoveableItem{
 	 * The Constructor
 	 * @param buffPercentage the percentage the player's health gets increased by
 	 */
-	public Consumables (Position position, int height, String name, int worth, float buffPercentage){
-		super(position, height, name, worth);
+	public Consumables (Position position, int height, int id, String name, int worth, float buffPercentage){
+		super(position, height, id, name, worth);
 		this.buffPercentage = buffPercentage;
 	}
 	

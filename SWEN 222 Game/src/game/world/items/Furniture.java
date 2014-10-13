@@ -23,8 +23,8 @@ public class Furniture extends Item{
 	 * @param name the name of the furniture
 	 * @param item the item you can get from interacting with the furniture
 	 */
-	public Furniture(Position position, int height, String name, MoveableItem item) {
-		super(position, height, name);
+	public Furniture(Position position, int height, int id,  String name, MoveableItem item) {
+		super(position, height, id, name);
 		this.setItem(item);
 	}
 
