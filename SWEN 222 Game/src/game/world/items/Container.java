@@ -1,11 +1,18 @@
 package game.world.items;
 
+import game.Main;
+import game.exceptions.GameException;
+import game.exceptions.ItemIDNotFoundException;
+import game.net.NetIO;
+import game.world.Area;
 import game.world.Position;
 import game.world.characters.Player;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Map.Entry;
 
 /**
  * A container is an item that contains movable items and cats.
@@ -70,8 +77,33 @@ public class Container extends Item{
 
 	@Override
 	public void write(OutputStream os) throws IOException {
-		// TODO Auto-generated method stub
-		
+		NetIO.writeByte(os, (byte)super.getID());
 	}
+	
+	/**
+	 * reads a player from the inputstream
+	 * @param is the inputstream
+	 * @return the player with the given id that is received form the inputstream
+	 * @throws IOException
+	 * @throws GameException
+	 */
+	public static MoveableItem read(InputStream is) throws IOException, GameException {
+		byte id = NetIO.readByte(is);
+		MoveableItem moveableItem = null;
 
+		/*
+		 * iterates over all the areas and returns the moveable item with the given id
+		 */
+		for (Entry<Integer,Area> entry : Main.getGameWorld().getAreas().entrySet()){
+			if (moveableItem != null){
+				return moveableItem;
+			}
+			moveableItem = (MoveableItem) entry.getValue().getItem(id);
+		}
+
+		if (moveableItem == null)
+			throw new ItemIDNotFoundException(id);
+
+		return moveableItem;
+	}
 }

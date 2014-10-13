@@ -142,6 +142,15 @@ public class Area  implements Streamable{
 	}
 	
 	/**
+	 * retrieves the items contained within the world using their id
+	 * @param id the id that is used to get the item with this id
+	 * @return the item with the given id
+	 */
+	public Item getItem(int id){
+		return items.get(id);
+	}
+	
+	/**
 	 * Returns  a shallow clone of the map of enemies 
 	 * that are currently in this area.
 	 * 
@@ -179,9 +188,9 @@ public class Area  implements Streamable{
 	}
 	
 	/**
-	 * retrieves the players contained within the world using their id
-	 * @param id the id that is used to get the player with this id
-	 * @return the player with the given id
+	 * retrieves the enemies contained within the world using their id
+	 * @param id the id that is used to get the enemy with this id
+	 * @return the enemy with the given id
 	 */
 	public Enemy getEnemy(int id){
 		return enemies.get(id);
