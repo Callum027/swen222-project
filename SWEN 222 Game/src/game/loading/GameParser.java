@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 import game.world.Area;
 import game.world.Position;
+import game.world.items.Consumables;
 import game.world.items.Container;
 import game.world.items.Equipment;
 import game.world.items.Furniture;
@@ -88,6 +89,7 @@ public class GameParser {
 			int y = parseInt(scan, "YPos");
 			int height = parseInt(scan, "Height");
 			Position pos = new Position(x, y);
+			int ID = parseInt(scan, "ID");
 			if (!gobble(scan, "<Name>")) {
 				throw new ParserError(
 						"Parsing ItemType: Expecting <Name>, got "
@@ -105,16 +107,19 @@ public class GameParser {
 			}
 
 			if (gobble(scan, "<Container>")) {
-				return parseContainer(scan, pos, height, name);
+				return parseContainer(scan, pos, height, name, ID);
+			}
+			if (gobble(scan, "<Consumable>")) {
+				return parseConsumable(scan, pos, height, name, ID);
 			}
 			if (gobble(scan, "<Equipment>")) {
-				return parseEquipment(scan, pos, height, name);
+				return parseEquipment(scan, pos, height, name, ID);
 			}
 			if (gobble(scan, "<Furniture>")) {
-				return parseFurniture(scan, pos, height, name);
+				return parseFurniture(scan, pos, height, name, ID);
 			}
 			if (gobble(scan, "<MoveableItem>")) {
-				return parseMoveableItem(scan, pos, height, name);
+				return parseMoveableItem(scan, pos, height, name, ID);
 			}
 		} catch (ParserError error) {
 			error.printStackTrace();
@@ -122,10 +127,38 @@ public class GameParser {
 		return null;
 	}
 
-	private static MoveableItem parseMoveableItem(Scanner scan, Position pos,
-			int height, String name) {
+	private static Item parseConsumable(Scanner scan, Position pos, int height,
+			String name, int ID) {
 		try {
 			int worth = parseInt(scan, "Worth");
+			if (!gobble(scan, "<BuffPercentage>")) {
+				throw new ParserError(
+						"Parsing Consumable: Expecting <BuffPercentage>, got "
+								+ scan.next());
+			}
+			if (!scan.hasNextFloat()) {
+				throw new ParserError(
+						"Parsing Consumable: Expecting Float, got Nothing");
+			}
+			Float buff = scan.nextFloat();
+			if (!gobble(scan, "</BuffPercentage>")) {
+				throw new ParserError(
+						"Parsing Consumable: Expecting </BuffPercentage>, got "
+								+ scan.next());
+			}
+			return new Consumables(pos, height,ID ,name,  worth, buff);
+		} catch (ParserError e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	private static MoveableItem parseMoveableItem(Scanner scan, Position pos,
+			int height, String name, int ID) {
+		try {
+			int worth = parseInt(scan, "Worth");
+			return new MoveableItem(pos, height, ID, name, worth);
 		} catch (ParserError e) {
 			e.printStackTrace();
 		}
@@ -136,6 +169,7 @@ public class GameParser {
 	private static MoveableItem parseStoredItem(Scanner scan) {
 		try {
 			int height = parseInt(scan, "Height");
+			int ID = parseInt(scan, "ID");
 			if (!gobble(scan, "<Name>")) {
 				throw new ParserError(
 						"Parsing ItemType: Expecting <Name>, got "
@@ -152,7 +186,8 @@ public class GameParser {
 								+ scan.next());
 			}
 			int worth = parseInt(scan, "Worth");
-			return new MoveableItem(new Position(-1, -1), height, name, worth);
+			return new MoveableItem(new Position(-1, -1), height, ID, name,
+					worth);
 		} catch (ParserError e) {
 			e.printStackTrace();
 		}
@@ -161,15 +196,20 @@ public class GameParser {
 	}
 
 	private static Furniture parseFurniture(Scanner scan, Position pos,
-			int height, String name) {
+			int height, String name, int ID) {
 		try {
 			if (!gobble(scan, "<StoredItem>")) {
 				throw new ParserError(
-						"Parsing Furniture: Expected StoredItem declaration, got "
+						"Parsing Furniture: Expected <StoredItem>, got "
 								+ scan.next());
 			}
 			MoveableItem storedItem = parseStoredItem(scan);
-			return new Furniture(pos, height, name, storedItem);
+			if (!gobble(scan, "</StoredItem>")) {
+				throw new ParserError(
+						"Parsing Furniture: Expected </StoredItem>, got "
+								+ scan.next());
+			}
+			return new Furniture(pos, height,ID, name, storedItem);
 
 		} catch (ParserError error) {
 			error.printStackTrace();
@@ -178,7 +218,7 @@ public class GameParser {
 	}
 
 	private static Item parseEquipment(Scanner scan, Position pos, int height,
-			String name) {
+			String name, int ID) {
 		try {
 			int attack = parseInt(scan, "Attack");
 			int defence = parseInt(scan, "Defence");
@@ -189,7 +229,7 @@ public class GameParser {
 						"Parsing ItemType: Expecting </Equipment>, got "
 								+ scan.next());
 			}
-			return new Equipment(pos, height, name, attack, defence, worth,
+			return new Equipment(pos, height, ID, name, attack, defence, worth,
 					slot);
 		} catch (ParserError error) {
 			error.printStackTrace();
@@ -198,14 +238,13 @@ public class GameParser {
 	}
 
 	private static Item parseContainer(Scanner scan, Position pos, int height,
-			String name) {
+			String name, int ID) {
 		try {
 			int cats = parseInt(scan, "Cats");
-			Container tempContainer = new Container(pos, height, name, cats);
+			Container tempContainer = new Container(pos, height,ID, name, cats);
 			List<MoveableItem> loot = new ArrayList<MoveableItem>();
 			while (!gobble(scan, "</Container>")) {
-				loot.add(parseMoveableItem(scan, new Position(-1, -1), cats,
-						name));
+				loot.add(parseStoredItem(scan));
 			}
 			tempContainer.setLoot(loot);
 			return tempContainer;
