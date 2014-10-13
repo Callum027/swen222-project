@@ -376,7 +376,8 @@ public class EquipPanel extends JPanel implements GameComponent {
 	 * when moving items from inventory to equip
 	 */
 	private void returnItem() {
-		switch (previousSelected) {
+		int slot = equipSelected.getSlot();
+		switch (slot) {
 		case HEAD_SLOT:
 			items.equipHead(equipSelected);
 			equipSelected = null;
