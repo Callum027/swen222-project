@@ -14,6 +14,22 @@ import java.awt.Graphics;
 public interface Drawable {
 
 	/**
+	 * Returns the height of the object.
+	 *
+	 * @return
+	 * 		--- height of object
+	 */
+	public int getHeight();
+
+	/**
+	 * Returns the position of the object.
+	 *
+	 * @return
+	 * 		--- position of object
+	 */
+	public Position getPosition();
+
+	/**
 	 * Draws an instance of the object to the specified
 	 * graphics pane.
 	 *
