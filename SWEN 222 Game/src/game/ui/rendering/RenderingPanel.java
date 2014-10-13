@@ -10,6 +10,7 @@ import game.world.characters.Enemy;
 import game.world.characters.Player;
 import game.world.characters.classes.GameClass;
 import game.world.events.MoveEvent;
+import game.world.items.Furniture;
 import game.world.items.Item;
 import game.world.tiles.FloorTile;
 import game.world.tiles.Tile;
@@ -49,6 +50,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 	private int direction;
 
 	private Player player;
+	private Furniture shelf;
 
 	/**
 	 * Constructor:
@@ -59,6 +61,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 		this.direction = direction;
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		player = new Player(new Position(0,0), "Frank", 1, GameClass.playerClass.WARRIOR);
+		shelf = new Furniture(new Position(3, 4), 2, 1, "Shelf", null);
 
 	}
 
@@ -71,6 +74,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 	 */
 	public void setArea(Area area) {
 		this.area = area;
+		area.addItem(shelf);
 		calculateConstants();
 	}
 
@@ -520,7 +524,24 @@ public class RenderingPanel extends JPanel implements GameComponent {
 	}
 
 	// unneeded game component methods
-	public void mouseReleased(GameFrame frame, MouseEvent e) {}
+	public void mouseReleased(GameFrame frame, MouseEvent e) {
+		if(frame.getSelectedItem() != null){
+			Position release = new Position(e.getX(), e.getY());
+			Position p = findPosition(release);
+			boolean positionClear = true;
+			for(Item item : area.getItems().values()){
+				if(item.getPosition().equals(p)){
+					positionClear = false;
+					break;
+				}
+			}
+			if(positionClear){
+				area.addItem(frame.getSelectedItem()); // should be a GameEvent
+				frame.setSelectedItem(null);
+				repaint();
+			}
+		}
+	}
 	public void mousePressed(GameFrame frame, MouseEvent e) {}
 }
 
