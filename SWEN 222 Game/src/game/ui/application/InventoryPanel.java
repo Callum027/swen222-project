@@ -43,7 +43,6 @@ public class InventoryPanel extends JPanel implements GameComponent {
 	private int previousSlot = -1;
 	private Image background;
 
-
 	/**
 	 * Makes a new InventoryPanel which extends JPanel and sets the width and
 	 * height fields so that the panel can be a certain size
@@ -285,10 +284,9 @@ public class InventoryPanel extends JPanel implements GameComponent {
 			int inv = findInventorySquare(x, y);
 			// if (inv < 0) {
 			if (frame.getSelectedItem() != null) {
-				itemSelected=frame.getSelectedItem();
 				dropItem(inv);
 				frame.setSelectedItem(null);
-				itemSelected=null;
+				itemSelected = null;
 			}
 			repaint();
 			// }
@@ -315,6 +313,5 @@ public class InventoryPanel extends JPanel implements GameComponent {
 		}
 
 	}
-
 
 }
