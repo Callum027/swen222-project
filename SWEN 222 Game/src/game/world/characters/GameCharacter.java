@@ -5,6 +5,7 @@ import game.world.BoundingBox;
 import game.world.Drawable;
 import game.world.Position;
 import game.world.items.MoveableItem;
+import game.world.tiles.FloorTile;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -30,6 +31,7 @@ public abstract class GameCharacter implements Streamable, Drawable{
 	private final String name;
 	private Image[] images;
 	private int direction;
+	private int height = 2; // occupies a space 2 squares high
 	private final int id;
 	private int cats; //the amount of money/points the player has
 
@@ -147,11 +149,19 @@ public abstract class GameCharacter implements Streamable, Drawable{
 	}
 
 	public void draw(Graphics g, int x, int y, int direction){
-
+		g.drawImage(images[0], x, y, null);
 	}
 
 	public BoundingBox getBoundingBox(int x, int y, Position p){
-
-		return null;
+		int itemY = y - (height * FloorTile.HEIGHT);
+		int dy = FloorTile.HEIGHT / 2;
+		int[] xPoints = new int[] { x, x + (FloorTile.WIDTH / 2),
+				x + FloorTile.WIDTH, x + FloorTile.WIDTH,
+				x + (FloorTile.WIDTH / 2), x };
+		int[] yPoints = new int[] { itemY + dy, itemY, itemY + dy,
+				itemY + ((height + 1) * FloorTile.HEIGHT) - dy,
+				itemY + ((height + 1) * FloorTile.HEIGHT),
+				itemY + ((height + 1) * FloorTile.HEIGHT) - dy };
+		return new BoundingBox(xPoints, yPoints, xPoints.length, p);
 	}
 }
