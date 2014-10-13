@@ -12,6 +12,7 @@ import game.world.characters.classes.GameClass;
 import game.world.events.MoveEvent;
 import game.world.items.Furniture;
 import game.world.items.Item;
+import game.world.items.MoveableItem;
 import game.world.tiles.FloorTile;
 import game.world.tiles.Tile;
 
@@ -541,7 +542,20 @@ public class RenderingPanel extends JPanel implements GameComponent {
 				repaint();
 			}
 		}
+		
+		for(Item item : area.getItems().values()){
+			frame.append(""+item.getPosition());
+		}
 	}
-	public void mousePressed(GameFrame frame, MouseEvent e) {}
+	public void mousePressed(GameFrame frame, MouseEvent e) {
+		Position pressed = new Position(e.getX(), e.getY());
+		Position p = findPosition(pressed);
+		for(Item item : area.getItems().values()){
+			if(item.getPosition().equals(p) && item instanceof MoveableItem){
+				frame.setSelectedItem((MoveableItem)item);
+				break;
+			}
+		}
+	}
 }
 
