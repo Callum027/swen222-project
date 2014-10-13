@@ -98,6 +98,28 @@ public class MoveableItem extends Item {
 			moveableItem = (MoveableItem) entry.getValue().getItem(id);
 		}
 
+		/*
+		 * iterates over all the players and returns the moveable item with the given id
+		 */
+		for (Entry<Integer,Player> entry : Main.getGameWorld().getPlayers().entrySet()){
+			if (moveableItem != null){
+				return moveableItem;
+			}
+			moveableItem = (MoveableItem) entry.getValue().getItem(id);
+		}
+		
+		/*
+		 * iterates over all the enemies and returns the moveable item with the given id
+		 */
+		for (Entry<Integer,Area> entry : Main.getGameWorld().getAreas().entrySet()){
+			for (Entry<Integer,Enemy> entry2 : entry.getValue().getEnemies().entrySet()){
+				if (moveableItem != null){
+					return moveableItem;
+				}
+				moveableItem = (MoveableItem) entry2.getValue().getItem(id);
+			}
+		}
+		
 		if (moveableItem == null)
 			throw new ItemIDNotFoundException(id);
 

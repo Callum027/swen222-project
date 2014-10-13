@@ -11,6 +11,7 @@ import game.world.characters.classes.MageClass;
 import game.world.characters.classes.RogueClass;
 import game.world.characters.classes.WarriorClass;
 import game.world.items.EquippedItems;
+import game.world.items.MoveableItem;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -165,5 +166,9 @@ public class Player extends GameCharacter implements Streamable, Attackable{
 	public void draw(Graphics g, int x, int y, int direction) {
 		g.drawImage(images[0], x, y, null);
 
+	}
+
+	public MoveableItem getItem(int id) {
+		return super.getItems().get(id);
 	}
 }

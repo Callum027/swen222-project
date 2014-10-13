@@ -17,6 +17,7 @@ import game.world.characters.classes.GameClass;
 import game.world.characters.classes.MageClass;
 import game.world.characters.classes.RogueClass;
 import game.world.characters.classes.WarriorClass;
+import game.world.items.MoveableItem;
 
 /**
  * The enemies within the game. When they die, they drop items and cats. This, like the Players, are also context classes for the strategy pattern
@@ -170,5 +171,9 @@ public class Enemy extends GameCharacter implements Attackable{
 	@Override
 	public int getHeight() {
 		return height;
+	}
+
+	public MoveableItem getItem(int id) {
+		return super.getItems().get(id);
 	}
 }
