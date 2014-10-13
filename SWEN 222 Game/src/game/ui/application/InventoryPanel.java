@@ -55,7 +55,7 @@ public class InventoryPanel extends JPanel implements GameComponent {
 	public InventoryPanel() {
 		Position p = new Position(0, 0);
 		addItem(new MoveableItem(p, 1, 0, "cat-inv", 9001));
-		addItem(new Equipment(p, 1, 0, "wizard-hat", 20, 500, equip.HEAD_SLOT));
+		addItem(new Equipment(p, 1, 0, "wizard-hat", 0, 20, 500, equip.HEAD_SLOT));
 		addItem(new Equipment(p, 1, 0, "mithril-sword", 200, 0, 500,
 				equip.MAIN_HAND));
 		addItem(new Equipment(p, 1, 0, "mithril-shield", 1, 200, 500,
