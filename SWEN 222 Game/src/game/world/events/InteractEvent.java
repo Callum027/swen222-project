@@ -20,7 +20,7 @@ import game.world.items.MoveableItem;
  */
 public class InteractEvent extends GameEvent {
 	
-	private final Player player;
+	private static Player player;
 	private static Item item;
 	
 	public InteractEvent(Player player, Item item){
@@ -32,8 +32,8 @@ public class InteractEvent extends GameEvent {
 			throw new IllegalArgumentException("item is null");
 		}
 		
-		this.player = player;
-		this.item = item;
+		InteractEvent.player = player;
+		InteractEvent.item = item;
 	}
 	
 	public GameEvent.Type getType() {

@@ -1,12 +1,19 @@
 package game.world;
 
 import game.world.characters.GameCharacter;
+import game.world.characters.Merchant;
 import game.world.characters.Player;
+import game.world.events.BuyEvent;
 import game.world.events.DropItemEvent;
+import game.world.events.EquipEvent;
 import game.world.events.InteractEvent;
 import game.world.events.MoveEvent;
+import game.world.events.PickUpEvent;
 import game.world.events.TransportEvent;
+import game.world.items.Consumables;
+import game.world.items.Equipment;
 import game.world.items.Item;
+import game.world.items.MoveableItem;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -112,6 +119,38 @@ public class GameWorld implements GameEventListener{
 			int areaID = transport.getAreaID();
 			if(areas.containsKey(areaID)){
 				areas.get(areaID).addPlayer(player);
+			}
+		}
+		if(ge instanceof PickUpEvent){
+			PickUpEvent pickUp = (PickUpEvent) ge;
+			Player player = pickUp.getPlayer();
+			MoveableItem item = pickUp.getItem();
+			int areaID = pickUp.getAreaID();
+			Area area = areas.get(areaID);
+			player.addItem(item);
+			area.removeItem(item);
+		}
+		if (ge instanceof BuyEvent){
+			BuyEvent buy = (BuyEvent) ge;
+			Player player = buy.getPlayer();
+			Merchant merchant = buy.getMerchant();
+			MoveableItem item = buy.getItem();
+			
+			/*
+			 * Only consumable items and equippable items are sellable
+			 */
+			if (!(item instanceof Equipment) || !(item instanceof Consumables)){
+				throw new IllegalArgumentException("This type of item is not sellable!");
+			}
+			
+			merchant.sellWares(item, player);
+		}
+		if (ge instanceof EquipEvent){
+			EquipEvent equip = (EquipEvent) ge;
+			Player player = equip.getPlayer();
+			Equipment item = equip.getItem();
+			if (item.getSlot() == 0){
+				player.getEquipped().equipHead(item);
 			}
 		}
 	}

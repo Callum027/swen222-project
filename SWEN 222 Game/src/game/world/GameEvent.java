@@ -8,7 +8,9 @@ import game.exceptions.GameException;
 import game.exceptions.InvalidGameEventException;
 import game.net.NetIO;
 import game.net.Streamable;
+import game.world.events.BuyEvent;
 import game.world.events.DropItemEvent;
+import game.world.events.EquipEvent;
 import game.world.events.InteractEvent;
 import game.world.events.MoveEvent;
 
@@ -44,6 +46,10 @@ public abstract class GameEvent implements Streamable {
 				return InteractEvent.read(is);
 			case DROP_ITEM:
 				return DropItemEvent.read(is);
+			case BUY:
+				return BuyEvent.read(is);
+			case EQUIP:
+				return EquipEvent.read(is);
 			default:
 				throw new InvalidGameEventException(t);
 		}
@@ -74,7 +80,9 @@ public abstract class GameEvent implements Streamable {
 		INTERACT(1),
 		DROP_ITEM(2),
 		PICK_UP(3),
-		TRANSPORT(4);
+		TRANSPORT(4),
+		BUY(5),
+		EQUIP(6);
 		
 
 		// The unique ID of the event.
