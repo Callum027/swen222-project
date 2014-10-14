@@ -372,6 +372,9 @@ public class RenderingPanel extends JPanel implements GameComponent {
 		public int compare(Drawable o1, Drawable o2) {
 			Position p1 = o1.getPosition();
 			Position p2 = o2.getPosition();
+			if(p2 == null){
+				System.out.println("P2 is null");
+			}
 			int i = length - (int)(p1.getX() - p1.getY());
 			int j = length - (int)(p2.getX() - p2.getY());
 			return i - j;
@@ -538,6 +541,10 @@ public class RenderingPanel extends JPanel implements GameComponent {
 				}
 			}
 			if(positionClear){
+				//frame.getSelectedItem().setPosition(p);
+				//frame.append("Dropped Item new position: "+frame.getSelectedItem().getPosition());
+				Item i = frame.getSelectedItem();
+				i.setPosition(p);
 				area.addItem(frame.getSelectedItem()); // should be a GameEvent
 				frame.setSelectedItem(null);
 				repaint();
