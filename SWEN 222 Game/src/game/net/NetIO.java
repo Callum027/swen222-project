@@ -22,12 +22,12 @@ public class NetIO {
 	 * @throws IOException
 	 */
 	public static byte readByte(InputStream is) throws IOException {
-		int i = is.read();
+		int b = is.read();
 
-		if (i == -1)
+		if (b == -1)
 			throw new EOFException("reached end of input stream in readByte");
 
-		return (byte)is.read();
+		return (byte)b;
 	}
 
 	/**
