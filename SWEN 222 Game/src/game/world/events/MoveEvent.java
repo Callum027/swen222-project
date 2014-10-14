@@ -9,6 +9,7 @@ import game.world.GameEvent;
 import game.world.Position;
 import game.world.characters.Enemy;
 import game.world.characters.GameCharacter;
+import game.world.characters.Merchant;
 import game.world.characters.Player;
 
 /**
@@ -53,9 +54,9 @@ public class MoveEvent extends GameEvent {
 	}
 
 	/**
-	 * Get the affected player.
+	 * Get the affected game character.
 	 *
-	 * @return affected player
+	 * @return affected game character
 	 */
 	public GameCharacter getGameCharacter() {
 		return gameCharacter;
@@ -81,6 +82,10 @@ public class MoveEvent extends GameEvent {
 			return new MoveEvent(position, gameCharacter);
 		}
 
+		if (gameCharacter instanceof Merchant){
+			GameCharacter gameCharacter = Merchant.read(is);
+			return new MoveEvent(position, gameCharacter);
+		}
 		return new MoveEvent(position, gameCharacter);
 	}
 

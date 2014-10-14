@@ -1,6 +1,5 @@
 package game.world;
 
-import game.world.characters.Enemy;
 import game.world.characters.GameCharacter;
 import game.world.characters.Player;
 import game.world.events.MoveEvent;
