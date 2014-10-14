@@ -2,7 +2,8 @@ package game;
 
 import game.control.Client;
 import game.control.Server;
-import game.loading.GameParser;
+import game.loading.AreaParser;
+import game.loading.ItemParser;
 import game.ui.GameFrame;
 import game.world.Area;
 import game.world.GameWorld;
@@ -96,8 +97,8 @@ public class Main {
 
 			// Load the tile map and the game world areas.
 			tileMap = createTileMap(TILES_FILE);
-			area = GameParser.parseArea(AREA_FILE, tileMap);
-			GameParser.parseItemList(ITEMS_FILE, area);
+			area = AreaParser.parseArea(AREA_FILE, tileMap);
+			ItemParser.parseItemList(ITEMS_FILE, area);
 
 			// Add the main area to the game world, but only if the area
 			// successfully loaded.
