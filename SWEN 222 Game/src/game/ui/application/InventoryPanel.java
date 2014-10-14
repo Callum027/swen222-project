@@ -51,18 +51,17 @@ public class InventoryPanel extends JPanel implements GameComponent {
 	 *            the height of the panel
 	 */
 	public InventoryPanel() {
-		Position p = new Position(8, 0);
-		addItem(new MoveableItem(p, 1, 15, "cat-inv", 9001));
-		addItem(new Equipment(p, 1, 16, "wizard-hat", 0, 20, 500,
-				EquipPanel.HEAD_SLOT));
-		addItem(new Equipment(p, 1, 17, "mithril-sword", 200, 0, 500,
-				EquipPanel.MAIN_HAND));
-		addItem(new Equipment(p, 1, 18, "mithril-shield", 1, 200, 500,
-				EquipPanel.OFF_HAND));
-		addItem(new Equipment(p, 1, 19, "mithril-armour", 0, 200, 500,
-				EquipPanel.CHEST_SLOT));
-		addItem(new Equipment(p, 1, 20, "mithril-boots", 0, 200, 500,
-				EquipPanel.FEET_SLOT));
+		addItem(new MoveableItem(new Position(8, 0), 1, 15, "cat-inv", 9001));
+		addItem(new Equipment(new Position(8, 0), 1, 16, "wizard-hat", 0, 20,
+				500, EquipPanel.HEAD_SLOT));
+		addItem(new Equipment(new Position(8, 0), 1, 17, "mithril-sword", 200,
+				0, 500, EquipPanel.MAIN_HAND));
+		addItem(new Equipment(new Position(8, 0), 1, 18, "mithril-shield", 1,
+				200, 500, EquipPanel.OFF_HAND));
+		addItem(new Equipment(new Position(8, 0), 1, 19, "mithril-armour", 0,
+				200, 500, EquipPanel.CHEST_SLOT));
+		addItem(new Equipment(new Position(8, 0), 1, 20, "mithril-boots", 0,
+				200, 500, EquipPanel.FEET_SLOT));
 		setPreferredSize(new Dimension(width, height));
 		// addMouseListener(this);
 		background = Main.getImage("Inventory.png");
