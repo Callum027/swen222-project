@@ -4,23 +4,22 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import game.exceptions.GameException;
 import game.net.Streamable;
 
-public class QuitPacket implements Streamable {
-
+public class ErrPacket implements Streamable {
 	/**
-	 * Read a QuitPacket from this input stream.
+	 * Read an ErrPacket from this input stream.
 	 *
 	 * @param is Input stream
-	 * @return QuitPacket
+	 * @return AckPacket
 	 * @throws IOException
 	 */
-	public static QuitPacket read(InputStream is) throws IOException {
-		return new QuitPacket();
+	public static ErrPacket read(InputStream is) throws IOException, GameException {
+		return new ErrPacket();
 	}
 
 	public void write(OutputStream os) throws IOException {
-
 	}
 
 }

@@ -3,6 +3,9 @@ package game.net;
 import game.exceptions.GameException;
 import game.exceptions.InvalidGamePacketException;
 import game.exceptions.UnsupportedGamePacketException;
+import game.net.packets.AckPacket;
+import game.net.packets.ErrPacket;
+import game.net.packets.QuitPacket;
 import game.world.GameEvent;
 
 import java.io.IOException;
@@ -68,7 +71,17 @@ public class GamePacket implements Streamable {
 		switch (t)
 		{
 			case EVENT:
+				System.out.println("server: reading a new EVENT packet");
 				s = GameEvent.read(is);
+				break;
+			case ACK:
+				s = AckPacket.read(is);
+				break;
+			case ERR:
+				s = ErrPacket.read(is);
+				break;
+			case QUIT:
+				s = QuitPacket.read(is);
 				break;
 			/*case STATE:
 				s = GameState.read(is);
@@ -101,12 +114,14 @@ public class GamePacket implements Streamable {
 		QUIT(1),
 		// Acknowledgement reply after a communication was sent.
 		ACK(2),
+		// Error thrown on the other host.
+		ERR(3),
 		// Join a game.
-		JOIN(3),
+		JOIN(4),
 		// Game state transfers.
-		STATE(4),
+		STATE(5),
 		// Game event updates.
-		EVENT(5);
+		EVENT(6);
 
 		// The unique ID of the event.
 		private final byte id;
@@ -149,10 +164,13 @@ public class GamePacket implements Streamable {
 		 * @return GamePacket.Type
 		 */
 		public static Type read(InputStream is) throws IOException, GameException {
-			return getTypeFromID(NetIO.readByte(is));
+			byte id = NetIO.readByte(is);
+			System.out.println("reading GamePacket from stream: " + id);
+			return getTypeFromID(id);
 		}
 
 		public void write(OutputStream os) throws IOException {
+			System.out.println("writing GamePacket to stream: " + id);
 			NetIO.writeByte(os, id);
 		}
 	}
