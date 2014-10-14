@@ -1,5 +1,6 @@
 package game.ui;
 
+import game.ui.application.ChestPanel;
 import game.ui.application.EquipPanel;
 import game.ui.application.InventoryPanel;
 import game.ui.application.StatsPanel;
@@ -52,6 +53,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 	private EquipPanel equip;
 	private StatsPanel stats;
 	private InventoryPanel inventory;
+	private ChestPanel chest;
 
 	private MoveableItem selectedItem;
 	/*
@@ -85,8 +87,10 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 		inventory = new InventoryPanel();
 		equip = new EquipPanel(inventory);
 		stats = new StatsPanel(equip);
+		chest = new ChestPanel(9001);
 		inventory.setEquip(equip);
 		equip.setStats(stats);
+
 
 		// setup the render pane
 		JPanel renderPane = new JPanel();
@@ -101,12 +105,15 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 		JPanel appPane = new JPanel();
 		appPane.setLayout(new BoxLayout(appPane, BoxLayout.Y_AXIS));
 
-		appPane.add(stats);
 		stats.addMouseListener(this);
 		appPane.add(equip);
 		equip.addMouseListener(this);
 		appPane.add(inventory);
 		appPane.add(stats);
+		appPane.add(chest);
+		chest.addMouseListener(this);
+		stats.setVisible(false);
+		chest.setVisible(true);
 		inventory.addMouseListener(this);
 		appPane.addMouseListener(this);
 

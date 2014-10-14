@@ -68,7 +68,6 @@ public class InventoryPanel extends JPanel implements GameComponent {
 		addItem(new MoveableItem(new Position(1, 3), 1, 40, "key", 0));
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
-		// addMouseListener(this);
 		background = Main.getImage("Inventory.png");
 	}
 
