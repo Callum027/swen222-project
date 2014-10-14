@@ -27,8 +27,8 @@ import javax.swing.JPanel;
 public class InventoryPanel extends JPanel implements GameComponent {
 
 	private static final long serialVersionUID = 1L;
-	private final int width = INVENTORY_WIDTH * squareSize + 20;
-	private final int height = INVENTORY_HEIGHT * squareSize + 60;
+	private static final int WIDTH = 155;
+	private static final int HEIGHT = 330;
 	public static final int INVENTORY_WIDTH = 3;
 	public static final int INVENTORY_HEIGHT = 6;
 	public static final int squareSize = 45;
@@ -45,9 +45,9 @@ public class InventoryPanel extends JPanel implements GameComponent {
 	 * Makes a new InventoryPanel which extends JPanel and sets the width and
 	 * height fields so that the panel can be a certain size
 	 *
-	 * @param width
+	 * @param WIDTH
 	 *            the width of the panel
-	 * @param height
+	 * @param HEIGHT
 	 *            the height of the panel
 	 */
 	public InventoryPanel() {
@@ -62,7 +62,7 @@ public class InventoryPanel extends JPanel implements GameComponent {
 				200, 500, EquipPanel.CHEST_SLOT));
 		addItem(new Equipment(new Position(8, 0), 1, 20, "mithril-boots", 0,
 				200, 500, EquipPanel.FEET_SLOT));
-		setPreferredSize(new Dimension(width, height));
+		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		// addMouseListener(this);
 		background = Main.getImage("Inventory.png");
 		selectedImage = null;
@@ -70,18 +70,18 @@ public class InventoryPanel extends JPanel implements GameComponent {
 
 	@Override
 	public int getWidth() {
-		return width;
+		return WIDTH;
 	}
 
 	@Override
 	public int getHeight() {
-		return height;
+		return HEIGHT;
 	}
 
 	@Override
 	public void paintComponent(Graphics g) {
 		g.setColor(Color.black);
-		g.fillRect(0, 0, width, height);
+		g.fillRect(0, 0, WIDTH, HEIGHT);
 		drawBlankInventory(g);
 	}
 
@@ -94,7 +94,7 @@ public class InventoryPanel extends JPanel implements GameComponent {
 	 */
 	private void drawBlankInventory(Graphics g) {
 		g.drawImage(background, 0, 0, null);
-		g.drawString("" + cats, 40, height - 11);
+		g.drawString("" + cats, 40, HEIGHT - 11);
 		// used to display the amount of cats the player has
 		drawInventoryItems(g);
 	}

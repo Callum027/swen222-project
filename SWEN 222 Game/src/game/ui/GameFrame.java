@@ -292,10 +292,20 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		GameComponent current = getCurrentGameComponent();
-		current.mouseReleased(this, e);
-
-
+		Component c = e.getComponent();
+		if(c instanceof GameComponent){
+			if(c instanceof EquipPanel){
+				text.append("Came from equip panel");
+			}
+			else if(c instanceof InventoryPanel){
+				text.append("Came from inventory panel");
+			}
+			GameComponent current = getCurrentGameComponent();
+			current.mouseReleased(this, e);
+		}
+		else{
+			e.consume();
+		}
 	}
 
 	@Override

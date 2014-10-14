@@ -373,7 +373,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 		public int compare(Drawable o1, Drawable o2) {
 			Position p1 = o1.getPosition();
 			Position p2 = o2.getPosition();
-			if(p2 == null){
+			if(p1 == null){
 				System.out.println("P2 is null");
 			}
 			int i = length - (int)(p1.getX() - p1.getY());
@@ -533,7 +533,10 @@ public class RenderingPanel extends JPanel implements GameComponent {
 	@Override
 	public void mouseReleased(GameFrame frame, MouseEvent e) {
 		if(frame.getSelectedItem() != null){
-			Position release = new Position(e.getX(), e.getY());
+			Point onScreen = e.getLocationOnScreen();
+			int x = onScreen.x;
+			int y = onScreen.y;
+			Position release = new Position(x, y);
 			Position p = findPosition(release);
 			boolean positionClear = true;
 			for(Item item : area.getItems().values()){
@@ -546,14 +549,15 @@ public class RenderingPanel extends JPanel implements GameComponent {
 				DropItemEvent drop = new DropItemEvent(frame.getSelectedItem(), p, area.getID());
 				frame.getGameEventBroadcaster().broadcastGameEvent(drop);
 				//frame.setSelectedItem(null);
-				repaint();
 			}
 		}
 	}
 
 	@Override
 	public void mousePressed(GameFrame frame, MouseEvent e) {
-		Position pressed = new Position(e.getX(), e.getY());
+		int x = e.getX();
+		int y = e.getY();
+		Position pressed = new Position(x, y);
 		Position p = findPosition(pressed);
 		for(Item item : area.getItems().values()){
 			if(item.getPosition().equals(p) && item instanceof MoveableItem){

@@ -28,8 +28,8 @@ public class StatsPanel extends JPanel implements GameComponent {
 	private int attack = 0;
 	private int defence = 0;
 
-	private int width;
-	private int height;
+	private static final int WIDTH = 155;
+	private static final int HEIGHT = 160;
 
 	private final int HP_X;
 	private final int HP_Y;
@@ -51,25 +51,16 @@ public class StatsPanel extends JPanel implements GameComponent {
 	 */
 	public StatsPanel(EquipPanel equip) {
 		this.equip = equip;
-		this.width = equip.getWidth();
-		/*
-		 * sets the width to the same as the equipment, which in turn is the
-		 * same as the inventory
-		 */
-		this.height = equip.getHeight();
-		/*
-		 * Also sets the height to be the same as the equipPanel so it looks
-		 * nicer and makes the overall panels look nice
-		 */
-		HP_X = width - 110;
-		HP_Y = height - 150;
 
-		ATTACK_X = width - 110;
-		ATTACK_Y = height - 135;
+		HP_X = WIDTH - 110;
+		HP_Y = HEIGHT - 150;
 
-		DEFENCE_X = width - 110;
-		DEFENCE_Y = height - 120;
-		setPreferredSize(new Dimension(width, height));
+		ATTACK_X = WIDTH - 110;
+		ATTACK_Y = HEIGHT - 135;
+
+		DEFENCE_X = WIDTH - 110;
+		DEFENCE_Y = HEIGHT - 120;
+		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		background = Main.getImage("Stats.png");
 		repaint();
 	}

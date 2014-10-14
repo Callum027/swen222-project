@@ -26,8 +26,8 @@ public class EquipPanel extends JPanel implements GameComponent {
 
 	private static final long serialVersionUID = 1L;
 	private final int equipSize = 5;
-	private final int width;
-	private final int height;
+	private static final int WIDTH = 155;
+	private static final int HEIGHT = 169;
 
 	public static final int HEAD_SLOT = 0;
 	public static final int OFF_HAND = 2;
@@ -64,25 +64,22 @@ public class EquipPanel extends JPanel implements GameComponent {
 	 *
 	 * @param width
 	 *            the width of the panel
-	 * @param height
+	 * @param HEIGHT
 	 *            the height of the panel
 	 */
 	public EquipPanel(InventoryPanel inventory) {
 		this.inventory = inventory;
 
-		width = inventory.getWidth();
-		height = 169;
-
-		HEAD_X = width - 100;
-		HEAD_Y = height - 146;
-		BODY_X = width - 100;
-		BODY_Y = height - 100;
-		OFF_X = width - 53;
-		OFF_Y = height - 100;
-		MAIN_X = width - 147;
-		MAIN_Y = height - 100;
-		BOOTS_X = width - 100;
-		BOOTS_Y = height - 52;
+		HEAD_X = WIDTH - 100;
+		HEAD_Y = HEIGHT - 146;
+		BODY_X = WIDTH - 100;
+		BODY_Y = HEIGHT - 100;
+		OFF_X = WIDTH - 53;
+		OFF_Y = HEIGHT - 100;
+		MAIN_X = WIDTH - 147;
+		MAIN_Y = HEIGHT - 100;
+		BOOTS_X = WIDTH - 100;
+		BOOTS_Y = HEIGHT - 52;
 
 		items.equipHead(new Equipment(new Position(0, 0), 1, 10, "iron-hat", 0, 50, 50, HEAD_SLOT));
 		items.equipMainHand(new Equipment(new Position(0, 0), 1, 11, "iron-sword", 50, 0, 50,
@@ -93,19 +90,19 @@ public class EquipPanel extends JPanel implements GameComponent {
 				FEET_SLOT));
 		items.equipOffHand(new Equipment(new Position(0, 0), 1, 14, "iron-shield", 0, 50, 50,
 				OFF_HAND));
-		setPreferredSize(new Dimension(width, height));
+		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		background = Main.getImage("Equip.png");
 		repaint();
 	}
 
 	@Override
 	public int getWidth() {
-		return width;
+		return WIDTH;
 	}
 
 	@Override
 	public int getHeight() {
-		return height;
+		return HEIGHT;
 	}
 
 	@Override
