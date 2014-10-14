@@ -8,6 +8,7 @@ import game.exceptions.GameException;
 import game.exceptions.InvalidGameEventException;
 import game.net.NetIO;
 import game.net.Streamable;
+import game.world.events.DropItemEvent;
 import game.world.events.InteractEvent;
 import game.world.events.MoveEvent;
 
@@ -41,6 +42,8 @@ public abstract class GameEvent implements Streamable {
 				return MoveEvent.read(is);
 			case INTERACT:
 				return InteractEvent.read(is);
+			case DROP_ITEM:
+				return DropItemEvent.read(is);
 			default:
 				throw new InvalidGameEventException(t);
 		}
@@ -69,7 +72,9 @@ public abstract class GameEvent implements Streamable {
 		// All of the known possible game events.
 		MOVE(0),
 		INTERACT(1),
-		DROP_ITEM(1);
+		DROP_ITEM(2),
+		PICK_UP(3);
+		
 
 		// The unique ID of the event.
 		private final byte id;

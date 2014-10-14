@@ -5,6 +5,7 @@ import game.net.Streamable;
 import game.world.BoundingBox;
 import game.world.Drawable;
 import game.world.Position;
+import game.world.characters.Player;
 import game.world.tiles.FloorTile;
 
 import java.awt.Graphics;
@@ -66,6 +67,12 @@ public abstract class Item implements Drawable, Streamable{
 	public String getName() {
 		return name;
 	}
+	
+	/**
+	 * The method called when the player interacts with this item
+	 * @param player the player interacting
+	 */
+	public abstract void interact(Player player);
 
 	/**
 	 * Draw this item on the specified graphics object

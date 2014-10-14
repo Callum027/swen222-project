@@ -6,7 +6,6 @@ import java.io.OutputStream;
 
 import game.exceptions.GameException;
 import game.world.GameEvent;
-import game.world.Position;
 import game.world.characters.Player;
 import game.world.items.Container;
 import game.world.items.Furniture;
@@ -25,6 +24,14 @@ public class InteractEvent extends GameEvent {
 	private static Item item;
 	
 	public InteractEvent(Player player, Item item){
+		if (player == null){
+			throw new IllegalArgumentException("player is null");
+		}
+		
+		if (item == null){
+			throw new IllegalArgumentException("item is null");
+		}
+		
 		this.player = player;
 		this.item = item;
 	}
