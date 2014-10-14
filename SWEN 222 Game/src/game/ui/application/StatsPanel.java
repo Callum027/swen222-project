@@ -11,10 +11,19 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JPanel;
 
-public class StatsPanel extends JPanel implements GameComponent{
+/**
+ * Extends JPanel and holds the stats of the player. Makes it look nice-ish and
+ * is updated every time the equipment of the player is updated. Doesn't store
+ * any of the equipment information other than the equipPanel. Does store the
+ * total values of the equipment as well as the hp of the player
+ *
+ * @author Harry King
+ *
+ */
+public class StatsPanel extends JPanel implements GameComponent {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private int hp = 100;
 	private int attack = 0;
 	private int defence = 0;
@@ -33,10 +42,25 @@ public class StatsPanel extends JPanel implements GameComponent{
 
 	private EquipPanel equip;
 
+	/**
+	 * Constructor. Sets up the StatsPanel, uses references from the equipPanel
+	 * to set up the dimensions
+	 *
+	 * @param equip
+	 *            The equip panel so it can get the stats of the player
+	 */
 	public StatsPanel(EquipPanel equip) {
 		this.equip = equip;
 		this.width = equip.getWidth();
+		/*
+		 * sets the width to the same as the equipment, which in turn is the
+		 * same as the inventory
+		 */
 		this.height = equip.getHeight();
+		/*
+		 * Also sets the height to be the same as the equipPanel so it looks
+		 * nicer and makes the overall panels look nice
+		 */
 		HP_X = width - 110;
 		HP_Y = height - 150;
 
@@ -81,19 +105,19 @@ public class StatsPanel extends JPanel implements GameComponent{
 	@Override
 	public void mouseClicked(GameFrame frame, MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseReleased(GameFrame frame, MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mousePressed(GameFrame frame, MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

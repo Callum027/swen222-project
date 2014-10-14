@@ -29,7 +29,6 @@ public abstract class GameCharacter implements Streamable, Drawable{
 	private final int MAXIMUM_CAPACITY = 18; //the limit on the amount of items each character can hold
 	private Position position;
 	private final String name;
-	private Image[] images;
 	private int direction;
 	private int height = 2; // occupies a space 2 squares high
 	private final int id;

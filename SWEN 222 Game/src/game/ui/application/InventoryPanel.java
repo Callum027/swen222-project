@@ -53,7 +53,8 @@ public class InventoryPanel extends JPanel implements GameComponent {
 	public InventoryPanel() {
 		Position p = new Position(0, 0);
 		addItem(new MoveableItem(p, 1, 0, "cat-inv", 9001));
-		addItem(new Equipment(p, 1, 0, "wizard-hat", 0, 20, 500, EquipPanel.HEAD_SLOT));
+		addItem(new Equipment(p, 1, 0, "wizard-hat", 0, 20, 500,
+				EquipPanel.HEAD_SLOT));
 		addItem(new Equipment(p, 1, 0, "mithril-sword", 200, 0, 500,
 				EquipPanel.MAIN_HAND));
 		addItem(new Equipment(p, 1, 0, "mithril-shield", 1, 200, 500,
@@ -95,6 +96,7 @@ public class InventoryPanel extends JPanel implements GameComponent {
 	private void drawBlankInventory(Graphics g) {
 		g.drawImage(background, 0, 0, null);
 		g.drawString("" + cats, 40, height - 11);
+		// used to display the amount of cats the player has
 		drawInventoryItems(g);
 	}
 
@@ -102,6 +104,7 @@ public class InventoryPanel extends JPanel implements GameComponent {
 	 * Iterates through the whole inventory drawing the items in it
 	 *
 	 * @param g
+	 *            The graphics component
 	 */
 	private void drawInventoryItems(Graphics g) {
 		int j = 0;
@@ -161,9 +164,13 @@ public class InventoryPanel extends JPanel implements GameComponent {
 	 */
 	private void selectItem(GameFrame frame, int inv) {
 		if (inv >= 0 && inv < items.length) {
-			itemSelected = items[inv];
+			itemSelected = items[inv]; // gets the item from the array
 			frame.setSelectedItem(itemSelected);
 			items[inv] = null;
+			/*
+			 * Sets the slot in the inventory to be null. Essentially it frees
+			 * up the slot.
+			 */
 			previousSlot = inv;
 		}
 	}
@@ -177,10 +184,18 @@ public class InventoryPanel extends JPanel implements GameComponent {
 	private void dropItem(int inv) {
 		if (inv >= 0 && inv < INVENTORY_HEIGHT * INVENTORY_WIDTH) {
 			if (items[inv] != null) {
+				// if the slot that the item was dropped in is not free
 				returnItem(itemSelected);
+				/*
+				 * then it returns the item back to where it was, this stops
+				 * items from disappearing and overwriting other items in the
+				 * inventory
+				 */
 			} else {
+				// otherwise it puts the item into the slot
 				items[inv] = itemSelected;
 				itemSelected = null;
+				// sets the selected item to null to stop duplication
 				previousSlot = -1;
 			}
 		}
@@ -196,7 +211,14 @@ public class InventoryPanel extends JPanel implements GameComponent {
 	 */
 	public void returnItem(MoveableItem item) {
 		if (previousSlot != -1) {
+			// Checks that the item was taken from somewhere in the inventory
 			itemSelected = item;
+			/*
+			 * if so it sets the selected item to the item passed in in most
+			 * cases the selected item is the item passed in. However there are
+			 * a few cases where this is not the case, such as being moved into
+			 * the inventory from the equipPanel.
+			 */
 			dropItem(previousSlot);
 			itemSelected = null;
 			previousSlot = -1;
@@ -245,7 +267,9 @@ public class InventoryPanel extends JPanel implements GameComponent {
 	 */
 	public int addItem(MoveableItem item) {
 		for (int i = 0; i < items.length; i++) {
+			// checks if the item in the slot is not full
 			if (items[i] == null) {
+				// if it's not then add it to the array in the slot
 				items[i] = item;
 				repaint();
 				return i;
@@ -253,6 +277,7 @@ public class InventoryPanel extends JPanel implements GameComponent {
 		}
 		repaint();
 		return -1;
+
 	}
 
 	@Override
@@ -264,15 +289,21 @@ public class InventoryPanel extends JPanel implements GameComponent {
 	@Override
 	public void mouseReleased(GameFrame frame, MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON1) {
-			/* int x = e.getX(); */
-			/* int y = e.getY(); */
-			/* int inv = findInventorySquare(x, y); */
+			/*
+			 * if there is no selected item, ie the slot that was clicked had no
+			 * item in it or the click was out of bounds then it doesn't try to
+			 * place the item. Otherwise it adds the item into the correct slot
+			 */
 			if (frame.getSelectedItem() != null) {
 				itemSelected = frame.getSelectedItem();
 				addItem(itemSelected);
 				frame.setSelectedItem(null);
 				itemSelected = null;
 			}
+			/*
+			 * regardless if it succeeds or not it resets the itemSelected and
+			 * the previousSlot
+			 */
 			repaint();
 			itemSelected = null;
 			previousSlot = -1;
@@ -285,7 +316,7 @@ public class InventoryPanel extends JPanel implements GameComponent {
 			int x = e.getX();
 			int y = e.getY();
 			int inv = findInventorySquare(x, y);
-			/* finds the inventory slot by using to ints */
+			/* finds the inventory slot by using two ints */
 			selectItem(frame, inv);
 			if (itemSelected != null) {
 				frame.append("Item: " + itemSelected.toString());

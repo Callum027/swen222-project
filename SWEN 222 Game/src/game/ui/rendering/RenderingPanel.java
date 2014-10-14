@@ -544,6 +544,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 			}
 		}
 	}
+
 	@Override
 	public void mousePressed(GameFrame frame, MouseEvent e) {
 		Position pressed = new Position(e.getX(), e.getY());
@@ -551,6 +552,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 		for(Item item : area.getItems().values()){
 			if(item.getPosition().equals(p) && item instanceof MoveableItem){
 				frame.setSelectedItem((MoveableItem)item);
+				frame.append(frame.getSelectedItem().toString());
 				area.removeItem(item);
 				repaint();
 				break;

@@ -57,7 +57,10 @@ public class EquipPanel extends JPanel implements GameComponent {
 	private Image background;
 
 	/**
-	 * Makes a new EquipPanel sets the width and height of the panel
+	 * Makes a new EquipPanel sets the width and height of the panel. It bases
+	 * the width of the inventory width. However the height it hard coded as the
+	 * height of the equipPanel is a set size due to the image used as the
+	 * background
 	 *
 	 * @param width
 	 *            the width of the panel
@@ -94,7 +97,6 @@ public class EquipPanel extends JPanel implements GameComponent {
 				OFF_HAND));
 		setPreferredSize(new Dimension(width, height));
 		background = Main.getImage("Equip.png");
-		// setVisible(true);
 		repaint();
 	}
 
@@ -116,12 +118,14 @@ public class EquipPanel extends JPanel implements GameComponent {
 	}
 
 	/**
-	 * Adds up the defence for all the equiped items
+	 * Adds up the defence for all the equiped items. Checks if there is an item
+	 * in the slot and if there it is adds the defence from that item to the
+	 * total value
 	 *
 	 * @return The total defence value
 	 */
 	public int getDefence() {
-		int def = 0;
+		int def = 0; // the total defence
 		if (items.getHead() != null) {
 			def += items.getHead().getDefence();
 		}
@@ -141,12 +145,14 @@ public class EquipPanel extends JPanel implements GameComponent {
 	}
 
 	/**
-	 * Used to get the total attack value of the all equipment
+	 * Used to get the total attack value of the all equipment. Checks if there
+	 * is an item in the slot and if there it is adds the attack from that item
+	 * to the total value
 	 *
 	 * @return The attack value of the total equipment
 	 */
 	public int getTotalAttack() {
-		int at = 0;
+		int at = 0; // the total attack
 		if (items.getHead() != null) {
 			at += items.getHead().getAttack();
 		}
@@ -166,8 +172,9 @@ public class EquipPanel extends JPanel implements GameComponent {
 	}
 
 	/**
-	 * Draws the equiped items of the character if they have an item equiped in
-	 * the slot
+	 * Draws the equipped items of the character if they have an item equipped
+	 * in the slot. It checks if there is an equipped item in the slot and then
+	 * if there is then it draws the item in there.
 	 *
 	 * @param g
 	 *            The Graphics component
@@ -192,7 +199,10 @@ public class EquipPanel extends JPanel implements GameComponent {
 
 	/**
 	 * Works out what equipment slot has been clicked on based on where the
-	 * mouse was clicked
+	 * mouse was clicked. Uses if else statements rather than switch case like
+	 * the other methods as it needs to check if the click is within bounds
+	 * rather than checking a single int. Otherwise a switch case would have
+	 * probably been used.
 	 *
 	 * @param x
 	 *            The mouse X
@@ -223,7 +233,9 @@ public class EquipPanel extends JPanel implements GameComponent {
 	/**
 	 * Selects the equipment found by the findEquip() method, if there is no
 	 * item equiped it tells the player. Otherwise, it tells the player what the
-	 * equipment is and its stats.
+	 * equipment is and its stats. Uses a switch case to check between the
+	 * different slots as there is only 5 slots, and they are all definite and
+	 * is jus checking an int against another int.
 	 *
 	 * @param equip
 	 *            The int value that represents the slot that the equipment is
@@ -447,7 +459,9 @@ public class EquipPanel extends JPanel implements GameComponent {
 	/**
 	 * Adds the equipment to the correct slot that it belongs in. Used when
 	 * moving an item from the inventory to the equipment slot. If the slot is
-	 * full it returns -1 rather than the equipment position it was put in
+	 * full it returns -1 rather than the equipment position it was put in. Uses
+	 * a switch case again as there is only 5 different values that it can
+	 * choose from.
 	 *
 	 * @param equipment
 	 *            The equipment to be added
@@ -504,10 +518,21 @@ public class EquipPanel extends JPanel implements GameComponent {
 		return -1;
 	}
 
+	/**
+	 * Gets the StatsPanel associated with this object
+	 *
+	 * @return the StatsPanel associated with this object
+	 */
 	public StatsPanel getStats() {
 		return stats;
 	}
 
+	/**
+	 * Sets the statsPanel to this object, called from GameFrame
+	 *
+	 * @param stats
+	 *            the StatsPanel to be set
+	 */
 	public void setStats(StatsPanel stats) {
 		this.stats = stats;
 	}
