@@ -96,18 +96,6 @@ public class RenderingPanel extends JPanel implements GameComponent {
 		}
 	}
 
-	
-	/*private Position rotatePosition(Position p, int width, int height, int count) {
-		if (count < direction) {
-			int length = (count % 2 == 0) ? height : width;
-			int y = p.getX();
-			int x = length - p.getY() - 1;
-			// swap height and width around to simulate array rotating
-			rotatePosition(new Position(x, y), height, width, count + 1);
-		}
-		return p;
-	}*/
-
 	/**
 	 * Calculates the constant values that are used regularly in rendering the
 	 * Area view.
@@ -161,35 +149,41 @@ public class RenderingPanel extends JPanel implements GameComponent {
 			List<Drawable> toDraw = new ArrayList<Drawable>(items);
 			toDraw.addAll(enemies);
 			drawFloors(g, tiles, items);
-			drawDrawable(g, toDraw, tiles);
-			//drawBoundingBoxes(g);
+			drawDrawableObjects(g, toDraw, tiles);
 		}
 	}
-
-	private void drawDrawable(Graphics g, List<Drawable> toDraw, Tile[][] tiles) {
+	
+	private void sortDrawableObjects(List<Drawable> drawable, int width, int height){
 		// sort toDraw based on the current direction
 		Comparator<Drawable> comp = null;
 		if(direction == GameFrame.NORTH){
-			comp = new NorthComparator(tiles.length, tiles[0].length);
+			comp = new NorthComparator(height, width);
 		}
 		else if(direction == GameFrame.EAST){
-			comp = new EastComparator(tiles.length, tiles[0].length);
+			comp = new EastComparator(height, width);
 		}
 		else if(direction == GameFrame.SOUTH){
-			comp = new SouthComparator(tiles.length, tiles[0].length);
+			comp = new SouthComparator(height, width);
 		}
 		else if(direction == GameFrame.WEST){
-			comp = new WestComparator(tiles.length, tiles[0].length);
+			comp = new WestComparator(height, width);
 		}
-		Collections.sort(toDraw, comp);
+		Collections.sort(drawable, comp);
+	}
+
+	private void drawDrawableObjects(Graphics g, List<Drawable> toDraw, Tile[][] tiles) {
+		// sort toDraw based on the current direction
+		sortDrawableObjects(toDraw, tiles[0].length, tiles.length);
 
 		drawableBoundingBoxes = new ArrayList<BoundingBox>();
-
-		for(Drawable d : toDraw){
+		
+		// start iteration from back to draw items further away first
+		int width = area.getTiles()[0].length - 1;
+		int height = area.getTiles().length - 1;
+		for(int i = toDraw.size() - 1; i >= 0; i--){
+			Drawable d = toDraw.get(i);
 			int x = 0;
 			int y = 0;
-			int width = area.getTiles()[0].length - 1;
-			int height = area.getTiles().length - 1;
 			int yOffset = d.getHeight() * FloorTile.HEIGHT;
 			Position p = d.getPosition();
 			if (direction == GameFrame.NORTH) {
@@ -201,7 +195,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 				y = startY + DY * ((width - p.getX()) + (p.getY())) - yOffset;
 			}
 			else if (direction == GameFrame.SOUTH) {
-				x = startX + DX * (p.getY() - p.getX());//((height - p.getY()) - (width - p.getX()));
+				x = startX + DX * (p.getY() - p.getX());
 				y = startY + DY * ((width - p.getX()) + (height - p.getY())) - yOffset;
 			}
 			else if (direction == GameFrame.WEST) {
@@ -473,8 +467,14 @@ public class RenderingPanel extends JPanel implements GameComponent {
 		 *
 		 */
 		public int compare(Drawable o1, Drawable o2) {
-
-			return 0;
+			Position p1 = o1.getPosition();
+			Position p2 = o2.getPosition();
+			if(p1 == null){
+				System.out.println("P2 is null");
+			}
+			int i = length - (int)(p1.getX() - p1.getY());
+			int j = length - (int)(p2.getX() - p2.getY());
+			return j - i;
 		}
 	}
 
@@ -568,9 +568,6 @@ public class RenderingPanel extends JPanel implements GameComponent {
 	@Override
 	public void mouseReleased(GameFrame frame, MouseEvent e) {
 		if(frame.getSelectedItem() != null){
-			Point onScreen = e.getLocationOnScreen();
-			int x = onScreen.x;
-			int y = onScreen.y;
 			Position release = new Position(e.getX(), e.getY());
 			Position p = findPosition(release);
 			if(p == null){
