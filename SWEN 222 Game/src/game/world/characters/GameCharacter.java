@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public abstract class GameCharacter implements Streamable, Drawable{
 
 	/*
-	 * Each game character utilizes a bunch if items one way or another.
+	 * Each game character utilizes a bunch of items one way or another.
 	 * The player has a list of items in their inventory
 	 * The enemy has a list of items that they drop when they die
 	 * The Merchant has a list of items that they can sell

@@ -51,7 +51,7 @@ public class InventoryPanel extends JPanel implements GameComponent {
 	 *            the height of the panel
 	 */
 	public InventoryPanel() {
-		Position p = new Position(0, 0);
+		Position p = new Position(8, 0);
 		addItem(new MoveableItem(p, 1, 0, "cat-inv", 9001));
 		addItem(new Equipment(p, 1, 0, "wizard-hat", 0, 20, 500,
 				EquipPanel.HEAD_SLOT));
