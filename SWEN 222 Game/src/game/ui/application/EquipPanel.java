@@ -25,7 +25,6 @@ import javax.swing.JPanel;
 public class EquipPanel extends JPanel implements GameComponent {
 
 	private static final long serialVersionUID = 1L;
-	private final int equipSize = 5;
 	public static final int WIDTH = 155;
 	public static final int HEIGHT = 169;
 
@@ -55,7 +54,6 @@ public class EquipPanel extends JPanel implements GameComponent {
 
 	private EquippedItems items = new EquippedItems();
 	private Equipment equipSelected;
-	private int previousSelected = -1;
 	private InventoryPanel inventory;
 	private Image background;
 
@@ -239,7 +237,6 @@ public class EquipPanel extends JPanel implements GameComponent {
 	 *            stored in.
 	 */
 	private void selectEquip(GameFrame frame, int equip) {
-		previousSelected = equip;
 		stats.getStats();
 		switch (equip) {
 		case HEAD_SLOT:
@@ -321,7 +318,6 @@ public class EquipPanel extends JPanel implements GameComponent {
 			if (items.getHead() == null && equipSelected.getSlot() == HEAD_SLOT) {
 				items.equipHead(equipSelected);
 				equipSelected = null;
-				previousSelected = -1;
 			} else {
 				returnItem();
 			}
@@ -331,7 +327,6 @@ public class EquipPanel extends JPanel implements GameComponent {
 					&& equipSelected.getSlot() == MAIN_HAND) {
 				items.equipMainHand(equipSelected);
 				equipSelected = null;
-				previousSelected = -1;
 			} else {
 				returnItem();
 			}
@@ -341,7 +336,6 @@ public class EquipPanel extends JPanel implements GameComponent {
 					&& equipSelected.getSlot() == OFF_HAND) {
 				items.equipOffHand(equipSelected);
 				equipSelected = null;
-				previousSelected = -1;
 			} else {
 				returnItem();
 			}
@@ -351,7 +345,6 @@ public class EquipPanel extends JPanel implements GameComponent {
 					&& equipSelected.getSlot() == CHEST_SLOT) {
 				items.equipBody(equipSelected);
 				equipSelected = null;
-				previousSelected = -1;
 			} else {
 				returnItem();
 			}
@@ -361,7 +354,6 @@ public class EquipPanel extends JPanel implements GameComponent {
 					&& equipSelected.getSlot() == FEET_SLOT) {
 				items.equipBoots(equipSelected);
 				equipSelected = null;
-				previousSelected = -1;
 			} else {
 				returnItem();
 			}
@@ -385,7 +377,6 @@ public class EquipPanel extends JPanel implements GameComponent {
 			if (items.getHead() == null) {
 				items.equipHead(equipSelected);
 				equipSelected = null;
-				previousSelected = -1;
 			} else {
 				inventory.addItem(equipSelected);
 			}
@@ -394,7 +385,6 @@ public class EquipPanel extends JPanel implements GameComponent {
 			if (items.getMainHand() == null) {
 				items.equipMainHand(equipSelected);
 				equipSelected = null;
-				previousSelected = -1;
 			} else {
 				inventory.addItem(equipSelected);
 			}
@@ -403,7 +393,6 @@ public class EquipPanel extends JPanel implements GameComponent {
 			if (items.getoffHand() == null) {
 				items.equipOffHand(equipSelected);
 				equipSelected = null;
-				previousSelected = -1;
 			} else {
 				inventory.addItem(equipSelected);
 			}
@@ -412,7 +401,6 @@ public class EquipPanel extends JPanel implements GameComponent {
 			if (items.getBody() == null) {
 				items.equipBody(equipSelected);
 				equipSelected = null;
-				previousSelected = -1;
 			} else {
 				inventory.addItem(equipSelected);
 			}
@@ -421,7 +409,6 @@ public class EquipPanel extends JPanel implements GameComponent {
 			if (items.getBoots() == null) {
 				items.equipBoots(equipSelected);
 				equipSelected = null;
-				previousSelected = -1;
 			} else {
 				inventory.addItem(equipSelected);
 			}

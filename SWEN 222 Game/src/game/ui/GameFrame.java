@@ -1,6 +1,5 @@
 package game.ui;
 
-import game.Main;
 import game.ui.application.EquipPanel;
 import game.ui.application.InventoryPanel;
 import game.ui.application.StatsPanel;
@@ -10,11 +9,7 @@ import game.world.GameEventListener;
 import game.world.items.MoveableItem;
 
 import java.awt.Component;
-import java.awt.Cursor;
 import java.awt.FlowLayout;
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -331,7 +326,6 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 

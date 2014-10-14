@@ -40,8 +40,6 @@ public class InventoryPanel extends JPanel implements GameComponent {
 
 	private int cats = 1;
 	private MoveableItem itemSelected;
-	private Graphics selectedImage;
-	private EquipPanel equip;
 	private int previousSlot = -1;
 	private Image background;
 
@@ -71,7 +69,6 @@ public class InventoryPanel extends JPanel implements GameComponent {
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		// addMouseListener(this);
 		background = Main.getImage("Inventory.png");
-		selectedImage = null;
 	}
 
 	@Override
@@ -257,7 +254,6 @@ public class InventoryPanel extends JPanel implements GameComponent {
 	 *            the equipment panel.
 	 */
 	public void setEquip(EquipPanel equip) {
-		this.equip = equip;
 
 	}
 
