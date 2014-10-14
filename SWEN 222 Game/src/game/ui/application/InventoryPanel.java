@@ -34,6 +34,10 @@ public class InventoryPanel extends JPanel implements GameComponent {
 	public static final int squareSize = 45;
 	private MoveableItem[] items = new MoveableItem[INVENTORY_HEIGHT
 			* INVENTORY_WIDTH];
+
+	private final int X_OFFSET = 9;
+	private final int Y_OFFSET = 10;
+
 	private int cats = 1;
 	private MoveableItem itemSelected;
 	private Graphics selectedImage;
@@ -51,7 +55,7 @@ public class InventoryPanel extends JPanel implements GameComponent {
 	 *            the height of the panel
 	 */
 	public InventoryPanel() {
-		addItem(new MoveableItem(new Position(8, 0), 1, 15, "cat-inv", 9001));
+		//addItem(new MoveableItem(new Position(8, 0), 1, 15, "cat-inv", 9001));
 		addItem(new Equipment(new Position(8, 0), 1, 16, "wizard-hat", 0, 20,
 				500, EquipPanel.HEAD_SLOT));
 		addItem(new Equipment(new Position(8, 0), 1, 17, "mithril-sword", 200,
@@ -62,6 +66,8 @@ public class InventoryPanel extends JPanel implements GameComponent {
 				200, 500, EquipPanel.CHEST_SLOT));
 		addItem(new Equipment(new Position(8, 0), 1, 20, "mithril-boots", 0,
 				200, 500, EquipPanel.FEET_SLOT));
+		addItem(new Equipment(new Position(8, 0), 1, 21, "mithril-hat", 0, 200,
+				500, EquipPanel.HEAD_SLOT));
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		// addMouseListener(this);
 		background = Main.getImage("Inventory.png");
@@ -110,8 +116,8 @@ public class InventoryPanel extends JPanel implements GameComponent {
 		int k = 0;
 		for (int i = 0; i < items.length; i++) {
 			if (items[i] != null) {
-				items[i].draw(g, (j * (squareSize + 2)) + 8,
-						(k * (squareSize + 2)) + 22, 0);
+				items[i].draw(g, (j * (squareSize + 2)) + 8 - X_OFFSET,
+						(k * (squareSize + 2)) + 22 - Y_OFFSET, 0);
 			}
 			j++;
 			if (j == INVENTORY_WIDTH) {
