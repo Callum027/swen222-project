@@ -53,14 +53,14 @@ public class DropItemEvent extends GameEvent{
 	 * @throws IOException
 	 */
 	public static DropItemEvent read(InputStream is) throws IOException, GameException {
-		if (item instanceof MoveableItem){
-			MoveableItem move = MoveableItem.read(is);
-			return new DropItemEvent(move, position, areaID);
-		}
-
 		if (item instanceof Equipment){
 			Equipment equipment = (Equipment) Equipment.read(is);
 			return new DropItemEvent(equipment, position, areaID);
+		}
+
+		if (item instanceof MoveableItem){
+			MoveableItem move = MoveableItem.read(is);
+			return new DropItemEvent(move, position, areaID);
 		}
 
 		return new DropItemEvent(item, position, areaID);
