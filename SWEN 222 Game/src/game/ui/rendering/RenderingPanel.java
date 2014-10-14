@@ -536,8 +536,11 @@ public class RenderingPanel extends JPanel implements GameComponent {
 			Point onScreen = e.getLocationOnScreen();
 			int x = onScreen.x;
 			int y = onScreen.y;
-			Position release = new Position(x, y);
+			Position release = new Position(e.getX(), e.getY());
 			Position p = findPosition(release);
+			if(p == null){
+				return;
+			}
 			boolean positionClear = true;
 			for(Item item : area.getItems().values()){
 				if(item.getPosition().equals(p)){
@@ -548,7 +551,8 @@ public class RenderingPanel extends JPanel implements GameComponent {
 			if(positionClear){
 				DropItemEvent drop = new DropItemEvent(frame.getSelectedItem(), p, area.getID());
 				frame.getGameEventBroadcaster().broadcastGameEvent(drop);
-				//frame.setSelectedItem(null);
+				frame.setSelectedItem(null);
+				repaint();
 			}
 		}
 	}

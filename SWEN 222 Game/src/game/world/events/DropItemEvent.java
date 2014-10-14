@@ -25,6 +25,7 @@ public class DropItemEvent extends GameEvent{
 		}
 
 		DropItemEvent.item = item;
+		DropItemEvent.position = position;
 		DropItemEvent.areaID = areaID;
 	}
 
