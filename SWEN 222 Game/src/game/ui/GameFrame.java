@@ -269,14 +269,18 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		GameComponent current = getCurrentGameComponent();
-		current.mouseClicked(this, e);
+		if(current != null){
+			current.mouseClicked(this, e);
+		}
 
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		GameComponent current = getCurrentGameComponent();
-		current.mousePressed(this, e);
+		if(current != null){
+			current.mousePressed(this, e);
+		}
 
 	}
 
