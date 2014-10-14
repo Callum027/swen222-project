@@ -287,7 +287,6 @@ public class InventoryPanel extends JPanel implements GameComponent {
 
 	@Override
 	public void mouseClicked(GameFrame frame, MouseEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 

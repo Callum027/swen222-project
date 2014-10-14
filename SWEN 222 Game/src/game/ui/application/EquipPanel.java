@@ -199,8 +199,7 @@ public class EquipPanel extends JPanel implements GameComponent {
 	 * Works out what equipment slot has been clicked on based on where the
 	 * mouse was clicked. Uses if else statements rather than switch case like
 	 * the other methods as it needs to check if the click is within bounds
-	 * rather than checking a single int. Otherwise a switch case would have
-	 * probably been used.
+	 * rather than checking a single int.
 	 *
 	 * @param x
 	 *            The mouse X
@@ -233,7 +232,7 @@ public class EquipPanel extends JPanel implements GameComponent {
 	 * item equiped it tells the player. Otherwise, it tells the player what the
 	 * equipment is and its stats. Uses a switch case to check between the
 	 * different slots as there is only 5 slots, and they are all definite and
-	 * is jus checking an int against another int.
+	 * is just checking an int against another int.
 	 *
 	 * @param equip
 	 *            The int value that represents the slot that the equipment is
@@ -537,7 +536,6 @@ public class EquipPanel extends JPanel implements GameComponent {
 
 	@Override
 	public void mouseClicked(GameFrame frame, MouseEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 

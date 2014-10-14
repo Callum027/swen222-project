@@ -95,19 +95,16 @@ public class StatsPanel extends JPanel implements GameComponent {
 
 	@Override
 	public void mouseClicked(GameFrame frame, MouseEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void mouseReleased(GameFrame frame, MouseEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void mousePressed(GameFrame frame, MouseEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 

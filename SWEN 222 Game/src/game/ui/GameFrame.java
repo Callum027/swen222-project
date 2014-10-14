@@ -82,7 +82,6 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 		setupMenuBar();
 		direction = NORTH;
 		// set the frame to have a layout so that the screens are in proportion
-		//setLayout(new FlowLayout());
 
 		// setup the components of the game frame
 		render = new RenderingPanel(direction);
@@ -123,12 +122,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 
 		addMouseListener(this);
 		addKeyListener(this);
-		Toolkit tk = Toolkit.getDefaultToolkit();
-		Image img = Main.getImage("ff_cursor.png");
-		Cursor cursor = (img != null) ? tk.createCustomCursor(img, new Point(0,
-				0), "cursor") : Cursor.getDefaultCursor();
-		// makes a custom cursor from an image file
-		//setCursor(cursor);
+
 		setFocusable(true);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -237,6 +231,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 	}
 
 	// unneeded method
+	@Override
 	public void keyReleased(KeyEvent e) {
 	}
 
@@ -295,13 +290,13 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 		Component c = e.getComponent();
 		if(c instanceof GameComponent){
 			if(c instanceof EquipPanel){
-				text.append("Came from equip panel");
+				append("Came from equip panel");
 				int x = e.getXOnScreen();
 				int y = e.getY();
 				e = new MouseEvent(c, e.getID(), e.getWhen(), e.getModifiers(), x, y, e.getClickCount(), e.isPopupTrigger());
 			}
 			else if(c instanceof InventoryPanel){
-				text.append("Came from inventory panel");
+				append("Came from inventory panel");
 				int x = e.getXOnScreen();
 				int y = EquipPanel.HEIGHT + e.getY();
 				e = new MouseEvent(c, e.getID(), e.getWhen(), e.getModifiers(), x, y, e.getClickCount(), e.isPopupTrigger());
