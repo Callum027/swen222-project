@@ -152,7 +152,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 			drawDrawableObjects(g, toDraw, tiles);
 		}
 	}
-	
+
 	private void sortDrawableObjects(List<Drawable> drawable, int width, int height){
 		// sort toDraw based on the current direction
 		Comparator<Drawable> comp = null;
@@ -176,11 +176,12 @@ public class RenderingPanel extends JPanel implements GameComponent {
 		sortDrawableObjects(toDraw, tiles[0].length, tiles.length);
 
 		drawableBoundingBoxes = new ArrayList<BoundingBox>();
-		
-		// start iteration from back to draw items further away first
+
 		int width = area.getTiles()[0].length - 1;
 		int height = area.getTiles().length - 1;
+		// start iteration from back to draw items further away first
 		for(int i = toDraw.size() - 1; i >= 0; i--){
+		//for(int i = 0; i < toDraw.size(); i++){
 			Drawable d = toDraw.get(i);
 			int x = 0;
 			int y = 0;
@@ -207,7 +208,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 			drawableBoundingBoxes.add(d.getBoundingBox(x, y, p));
 		}
 	}
-	
+
 	public void drawBoundingBoxes(Graphics g){
 		g.setColor(Color.cyan);
 		for(BoundingBox b : drawableBoundingBoxes){
@@ -219,21 +220,15 @@ public class RenderingPanel extends JPanel implements GameComponent {
 	 * Draw the floor of the current area to the render panel.
 	 */
 	private void drawFloors(Graphics g, Tile[][] tiles, List<Item> items) {
-		//Comparator<Item> comp = null;
 		if (direction == GameFrame.NORTH) {
-			//comp = new NorthComparator(tiles.length, tiles[0].length);
 			drawNorthFloorLayout(g, tiles);
 		} else if (direction == GameFrame.EAST) {
-			//comp = new EastComparator(tiles.length, tiles[0].length);
 			drawEastFloorLayout(g, tiles);
 		} else if (direction == GameFrame.SOUTH) {
-			//comp = new SouthComparator(tiles.length, tiles[0].length);
 			drawSouthFloorLayout(g, tiles);
 		} else if (direction == GameFrame.WEST) {
-			//comp = new WestComparator(tiles.length, tiles[0].length);
 			drawWestFloorLayout(g, tiles);
 		}
-		//Collections.sort(items, comp);
 	}
 
 	/**
@@ -276,7 +271,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 			for (int j = 0; j < tiles.length; j++) {
 				tiles[j][i].draw(g, x, y, direction);
 				tileBoundingBoxes.add(tiles[j][i].getBoundingBox(x, y,
-						new Position(j, i)));
+						new Position(i, j)));
 				x += DX;
 				y += DY;
 			}
@@ -300,7 +295,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 			for (int j = tiles[i].length - 1; j >= 0; j--) {
 				tiles[i][j].draw(g, x, y, direction);
 				tileBoundingBoxes.add(tiles[i][j].getBoundingBox(x, y,
-						new Position(i, j)));
+						new Position(j, i)));
 				x += DX;
 				y += DY;
 			}
@@ -323,7 +318,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 			for (int j = tiles.length - 1; j >= 0; j--) {
 				tiles[j][i].draw(g, x, y, direction);
 				tileBoundingBoxes.add(tiles[j][i].getBoundingBox(x, y,
-						new Position(j, i)));
+						new Position(i, j)));
 				x += DX;
 				y += DY;
 			}
@@ -338,6 +333,94 @@ public class RenderingPanel extends JPanel implements GameComponent {
 	}
 
 	// comparators for sorting items
+
+	@Override
+	public void mouseClicked(GameFrame frame, MouseEvent e) {
+		if (e.getButton() == MouseEvent.BUTTON3) {
+			mouseRightClicked(frame, e);
+		}
+		else if(e.getButton() == MouseEvent.BUTTON1){
+			mouseLeftClicked(frame, e);
+		}
+	}
+
+	private void mouseLeftClicked(GameFrame frame, MouseEvent e){
+		for(BoundingBox b : drawableBoundingBoxes){
+			if(b.contains(new Point(e.getX(), e.getY()))){
+				Drawable drawable = area.getDrawableObject(b.getPosition());
+				interact(frame, drawable);
+			}
+		}
+	}
+
+	private void interact(GameFrame frame, Drawable drawable){
+		if(drawable instanceof Door){
+			((Door)drawable).interact(player, frame.getGameEventBroadcaster());
+			frame.append("Interacted with a door.");
+		}
+		else if(drawable instanceof Item){
+			((Item)drawable).interact(player);
+			frame.append("Interaction Occurred");
+		}
+	}
+
+	private void mouseRightClicked(GameFrame frame, MouseEvent e){
+		Position p = findPosition(new Position(e.getX(), e.getY()));
+		if (p != null) {
+			frame.append("Clicked at position: "+p);
+			Position current = player.getPosition();
+			Stack<Position> moves = area.findPath(current, p);
+			if(!moves.isEmpty()){
+				moves.pop();
+			}
+			if(!moves.isEmpty()){
+				MoveEvent move = new MoveEvent(moves.pop(), player);
+				frame.getGameEventBroadcaster().broadcastGameEvent(move);
+			}
+			repaint();
+		}
+	}
+
+	@Override
+	public void mouseReleased(GameFrame frame, MouseEvent e) {
+		if(frame.getSelectedItem() != null){
+			Position release = new Position(e.getX(), e.getY());
+			Position p = findPosition(release);
+			if(p == null){
+				return;
+			}
+			boolean positionClear = true;
+			for(Item item : area.getItems().values()){
+				if(item.getPosition().equals(p)){
+					positionClear = false;
+					break;
+				}
+			}
+			if(positionClear){
+				DropItemEvent drop = new DropItemEvent(frame.getSelectedItem(), p, area.getID());
+				frame.getGameEventBroadcaster().broadcastGameEvent(drop);
+				frame.setSelectedItem(null);
+				repaint();
+			}
+		}
+	}
+
+	@Override
+	public void mousePressed(GameFrame frame, MouseEvent e) {
+		int x = e.getX();
+		int y = e.getY();
+		Position pressed = new Position(x, y);
+		Position p = findPosition(pressed);
+		for(Item item : area.getItems().values()){
+			if(item.getPosition().equals(p) && item instanceof MoveableItem){
+				frame.setSelectedItem((MoveableItem)item);
+				frame.append(frame.getSelectedItem().toString());
+				area.removeItem(item);
+				repaint();
+				break;
+			}
+		}
+	}
 
 	/**
 	 * A private class that is used to sort Items in an area so that when the
@@ -375,11 +458,8 @@ public class RenderingPanel extends JPanel implements GameComponent {
 		public int compare(Drawable o1, Drawable o2) {
 			Position p1 = o1.getPosition();
 			Position p2 = o2.getPosition();
-			if(p1 == null){
-				System.out.println("P2 is null");
-			}
-			int i = length - (int)(p1.getX() - p1.getY());
-			int j = length - (int)(p2.getX() - p2.getY());
+			int i = length - (p1.getX() + p1.getY());
+			int j = length - (p2.getX() + p2.getY());
 			return i - j;
 		}
 	}
@@ -396,6 +476,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 
 		// field
 		private int length;
+		private int width;
 
 		/**
 		 * Constructor: Constructs a EastComparator, which takes a width and
@@ -408,6 +489,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 		 */
 		public EastComparator(int width, int height) {
 			length = width + height - 1;
+			this.width = width;
 		}
 
 		/**
@@ -418,8 +500,11 @@ public class RenderingPanel extends JPanel implements GameComponent {
 		 *
 		 */
 		public int compare(Drawable o1, Drawable o2) {
-
-			return 0;
+			Position p1 = o1.getPosition();
+			Position p2 = o2.getPosition();
+			int i = length - ((width - p1.getX()) + p1.getY());
+			int j = length - ((width - p2.getX()) + p2.getY());
+			return i - j;
 		}
 	}
 
@@ -469,11 +554,8 @@ public class RenderingPanel extends JPanel implements GameComponent {
 		public int compare(Drawable o1, Drawable o2) {
 			Position p1 = o1.getPosition();
 			Position p2 = o2.getPosition();
-			if(p1 == null){
-				System.out.println("P2 is null");
-			}
-			int i = length - (int)(p1.getX() - p1.getY());
-			int j = length - (int)(p2.getX() - p2.getY());
+			int i = length - (p1.getX() + p1.getY());
+			int j = length - (p2.getX() + p2.getY());
 			return j - i;
 		}
 	}
@@ -490,6 +572,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 
 		// field
 		private int length;
+		private int height;
 
 		/**
 		 * Constructor: Constructs a WestComparator, which takes a width and
@@ -502,6 +585,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 		 */
 		public WestComparator(int width, int height) {
 			length = width + height - 1;
+			this.height = height;
 		}
 
 		/**
@@ -512,97 +596,11 @@ public class RenderingPanel extends JPanel implements GameComponent {
 		 *
 		 */
 		public int compare(Drawable o1, Drawable o2) {
-
-			return 0;
-		}
-	}
-
-	@Override
-	public void mouseClicked(GameFrame frame, MouseEvent e) {
-		if (e.getButton() == MouseEvent.BUTTON3) {
-			mouseRightClicked(frame, e);
-		}
-		else if(e.getButton() == MouseEvent.BUTTON1){
-			mouseLeftClicked(frame, e);
-		}
-	}
-	
-	private void mouseLeftClicked(GameFrame frame, MouseEvent e){
-		for(BoundingBox b : drawableBoundingBoxes){
-			if(b.contains(new Point(e.getX(), e.getY()))){
-				Drawable drawable = area.getDrawableObject(b.getPosition());
-				interact(frame, drawable);
-			}
-		}
-	}
-	
-	private void interact(GameFrame frame, Drawable drawable){
-		if(drawable instanceof Door){
-			((Door)drawable).interact(player, frame.getGameEventBroadcaster());
-			frame.append("Interacted with a door.");
-		}
-		else if(drawable instanceof Item){
-			((Item)drawable).interact(player);
-			frame.append("Interaction Occurred");
-		}
-	}
-	
-	private void mouseRightClicked(GameFrame frame, MouseEvent e){
-		Position p = findPosition(new Position(e.getX(), e.getY()));
-		if (p != null) {
-			frame.append("Clicked at position: "+p);
-			Position current = player.getPosition();
-			Stack<Position> moves = area.findPath(current, p);
-			if(!moves.isEmpty()){
-				moves.pop();
-			}
-			if(!moves.isEmpty()){
-				MoveEvent move = new MoveEvent(moves.pop(), player);
-				frame.getGameEventBroadcaster().broadcastGameEvent(move);
-			}
-			repaint();
-		}
-	}
-
-	// unneeded game component methods
-	@Override
-	public void mouseReleased(GameFrame frame, MouseEvent e) {
-		if(frame.getSelectedItem() != null){
-			Position release = new Position(e.getX(), e.getY());
-			Position p = findPosition(release);
-			if(p == null){
-				return;
-			}
-			boolean positionClear = true;
-			for(Item item : area.getItems().values()){
-				if(item.getPosition().equals(p)){
-					positionClear = false;
-					break;
-				}
-			}
-			if(positionClear){
-				DropItemEvent drop = new DropItemEvent(frame.getSelectedItem(), p, area.getID());
-				frame.getGameEventBroadcaster().broadcastGameEvent(drop);
-				frame.setSelectedItem(null);
-				repaint();
-			}
-		}
-	}
-
-	@Override
-	public void mousePressed(GameFrame frame, MouseEvent e) {
-		int x = e.getX();
-		int y = e.getY();
-		Position pressed = new Position(x, y);
-		Position p = findPosition(pressed);
-		for(Item item : area.getItems().values()){
-			if(item.getPosition().equals(p) && item instanceof MoveableItem){
-				frame.setSelectedItem((MoveableItem)item);
-				frame.append(frame.getSelectedItem().toString());
-				area.removeItem(item);
-				repaint();
-				break;
-			}
+			Position p1 = o1.getPosition();
+			Position p2 = o2.getPosition();
+			int i = length - (p1.getX() + (height - p1.getY()));
+			int j = length - (p2.getX() + (height - p2.getY()));
+			return i - j;
 		}
 	}
 }
