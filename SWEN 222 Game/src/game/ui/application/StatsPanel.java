@@ -29,7 +29,7 @@ public class StatsPanel extends JPanel implements GameComponent {
 	private int defence = 0;
 
 	private static final int WIDTH = 155;
-	private static final int HEIGHT = 160;
+	private static final int HEIGHT = 169;
 
 	private final int HP_X;
 	private final int HP_Y;
@@ -53,13 +53,13 @@ public class StatsPanel extends JPanel implements GameComponent {
 		this.equip = equip;
 
 		HP_X = WIDTH - 110;
-		HP_Y = HEIGHT - 150;
+		HP_Y = HEIGHT - 130;
 
 		ATTACK_X = WIDTH - 110;
-		ATTACK_Y = HEIGHT - 135;
+		ATTACK_Y = HEIGHT - 115;
 
 		DEFENCE_X = WIDTH - 110;
-		DEFENCE_Y = HEIGHT - 120;
+		DEFENCE_Y = HEIGHT - 100;
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		background = Main.getImage("Stats.png");
 		repaint();
