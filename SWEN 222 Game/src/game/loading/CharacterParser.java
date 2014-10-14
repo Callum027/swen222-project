@@ -29,15 +29,7 @@ public class CharacterParser {
 							"Parsing Characters: Expecting <Character>, got "
 									+ scan.next());
 				}
-				if (gobble(scan, "<Player>")) {
-					Player player = parsePlayer(scan, world);
-					if (!gobble(scan, "</Player>")) {
-						throw new ParserError(
-								"Parsing Characters: Expecting <Player>, got "
-										+ scan.next());
-					}
-					world.addPlayer(player);
-				}
+				parseCharacterType(scan, world);
 
 				if (!gobble(scan, "</Character>")) {
 					throw new ParserError(
@@ -50,10 +42,29 @@ public class CharacterParser {
 		}
 	}
 
-	private static Player parsePlayer(Scanner scan, GameWorld world) {
-		return null;
-		// TODO Auto-generated method stub
+	private static void parseCharacterType(Scanner scan, GameWorld world) {
+		try {
+			if (gobble(scan, "<Player>")) {
+				Player player = parsePlayer(scan, world);
+				if (!gobble(scan, "</Player>")) {
 
+					throw new ParserError(
+							"Parsing Characters: Expecting <Player>, got "
+									+ scan.next());
+
+				}
+				world.addPlayer(player);
+			}
+		} catch (ParserError e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	private static Player parsePlayer(Scanner scan, GameWorld world) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	private static int parseInt(Scanner scan, String type) throws ParserError {
