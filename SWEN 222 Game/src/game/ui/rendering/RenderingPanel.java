@@ -62,7 +62,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 		this.direction = direction;
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		player = new Player(new Position(0,0), "Frank", 1, GameClass.playerClass.WARRIOR);
-		shelf = new Furniture(new Position(0, 1), 2, 1, "Shelf", null);
+		shelf = new Furniture(new Position(0, 1), 2, 1, "shelf", null);
 
 	}
 
