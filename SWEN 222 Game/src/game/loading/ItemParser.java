@@ -43,6 +43,7 @@ public class ItemParser {
 									+ scan.next());
 				}
 			}
+			scan.close();
 		} catch (ParserError error) {
 			error.printStackTrace();
 		}
@@ -121,6 +122,11 @@ public class ItemParser {
 			int height, String name, int ID) {
 		try {
 			int worth = parseInt(scan, "Worth");
+			if (!gobble(scan, "</MoveableItem>")) {
+				throw new ParserError(
+						"Parsing MoveableItem: Expecting </MoveableItem>, got "
+								+ scan.next());
+			}
 			return new MoveableItem(pos, height, ID, name, worth);
 		} catch (ParserError e) {
 			e.printStackTrace();
@@ -149,6 +155,7 @@ public class ItemParser {
 								+ scan.next());
 			}
 			int worth = parseInt(scan, "Worth");
+
 			return new MoveableItem(new Position(-1, -1), height, ID, name,
 					worth);
 		} catch (ParserError e) {

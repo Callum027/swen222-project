@@ -9,17 +9,17 @@
 		</Furniture>
 	</Item>
 	<Item>
-		<XPos> 2 </XPos>
+		<XPos> 5 </XPos>
 		<YPos> 0 </YPos>
 		<Height> 2 </Height>
 		<ID> 1 </ID>
-		<Name> wizard-hat </Name>
+		<Name> shelf </Name>
 		<Furniture>
 		</Furniture>
 	</Item>
 	<Item>
-		<XPos> 10 </XPos>
-		<YPos> 10 </YPos>
+		<XPos> 9 </XPos>
+		<YPos> 9 </YPos>
 		<Height> 1 </Height>
 		<ID> 2 </ID>
 		<Name> wizard-hat </Name>
