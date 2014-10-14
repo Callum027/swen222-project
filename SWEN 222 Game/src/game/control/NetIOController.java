@@ -6,6 +6,7 @@ import game.net.packets.AckPacket;
 import game.net.packets.ErrPacket;
 import game.net.packets.QuitPacket;
 
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -21,7 +22,8 @@ import java.net.SocketTimeoutException;
  *
  */
 public abstract class NetIOController extends Thread {
-	private static final int SOCKET_TIMEOUT = 50;
+	private static final int SOCKET_TIMEOUT = 50; // 50ms
+	private static final int MAIN_LOOP_COOLDOWN = 50; // 50ms
 	
 	private boolean closing = false;
 	private boolean pauseMainLoop = false;
@@ -60,6 +62,14 @@ public abstract class NetIOController extends Thread {
 								// Do nothing, try reading from the socket again...
 							}
 						}
+						
+						// Sleep the current thread, to give other threads
+						// the opportunity to lock the socket for sending packets.
+						try {
+							Thread.sleep(MAIN_LOOP_COOLDOWN);
+						}
+						catch (InterruptedException e1) {
+						}
 					}
 
 					// Check the incoming packet to see what type of packet it is,
@@ -79,7 +89,7 @@ public abstract class NetIOController extends Thread {
 								break;
 							default:
 								System.out.println("read: sending ACK to peer");
-								new GamePacket(GamePacket.Type.ACK, new AckPacket()).write(socket.getOutputStream());
+								write(socket.getOutputStream(), new GamePacket(GamePacket.Type.ACK, new AckPacket()));
 								break;
 						}
 					}
@@ -97,7 +107,7 @@ public abstract class NetIOController extends Thread {
 					is.skip(is.available());
 
 					// Send an ERR packet to the server, to get them to resend their last packet.
-					new GamePacket(GamePacket.Type.ERR, new ErrPacket()).write(os);
+					write(os, new GamePacket(GamePacket.Type.ERR, new ErrPacket()));
 				}
 			}
 			catch (SocketException e) {
@@ -112,6 +122,22 @@ public abstract class NetIOController extends Thread {
 		}
 
 		return null;
+	}
+	
+	/**
+	 * Actually perform the writing operation to the output stream. Store the
+	 * write operations into a buffer before sending them, in one go.
+	 * @param os
+	 * @param gp
+	 */
+	private void write(OutputStream os, GamePacket gp) throws IOException {
+		BufferedOutputStream bos = new BufferedOutputStream(os);
+		
+		// Write the game packet to the buffered output stream.
+		gp.write(bos);
+		
+		// Send the packet to the output stream, in one go!
+		bos.flush();
 	}
 
 	/**
@@ -134,8 +160,8 @@ public abstract class NetIOController extends Thread {
 					while (!success) {
 						System.out.println("write: sending GamePacket to peer");
 						
-						// Send off the game packet to the server!
-						gp.write(socket.getOutputStream());
+						// Send the packet to the output stream!
+						write(socket.getOutputStream(), gp);
 
 						System.out.println("write: waiting for reply from peer");
 
@@ -201,7 +227,7 @@ public abstract class NetIOController extends Thread {
 	protected void close(Socket socket) {
 			closing = true;
 			try {
-				new GamePacket(GamePacket.Type.QUIT, new QuitPacket()).write(socket.getOutputStream());
+				write(socket.getOutputStream(), new GamePacket(GamePacket.Type.QUIT, new QuitPacket()));
 				socket.close();
 			}
 			catch (IOException e) {

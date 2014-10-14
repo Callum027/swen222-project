@@ -112,6 +112,7 @@ public class Client extends NetIOController implements GameEventListener {
 	public void gameEventOccurred(GameEvent ge) {
 		System.out.println("client: sending a GameEvent of type " + ge.getType() + " to the server");
 		write(socket, new GamePacket(GamePacket.Type.EVENT, ge));
+		System.out.println("client: done sending");
 	}
 
 	/**

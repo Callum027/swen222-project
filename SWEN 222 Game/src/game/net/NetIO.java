@@ -121,6 +121,7 @@ public class NetIO {
 	 * @throws IOException
 	 */
 	public static void writeByte(OutputStream os, byte b) throws IOException {
+		System.out.println("NetIO.writeByte: writing to output stream: " + (int)b);
 		os.write((int)b);
 	}
 

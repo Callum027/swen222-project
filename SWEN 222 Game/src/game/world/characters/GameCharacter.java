@@ -197,9 +197,9 @@ public abstract class GameCharacter implements Streamable, Drawable{
 	 *
 	 */
 	public enum Type implements Streamable {
-		PLAYER(0),
-		ENEMY(1),
-		MERCHANT(2);
+		ENEMY(0),
+		MERCHANT(1),
+		PLAYER(2);
 
 		// The unique ID of the event.
 		private final byte id;

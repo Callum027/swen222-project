@@ -167,7 +167,7 @@ public class Server extends Thread {
 
 		public void run() {
 			System.out.println("server: accepted connection from " + clientSocket.getInetAddress());
-
+			System.out.println("server: reading packet from client...");
 			while (!isClosing()) {
 				GamePacket gp = read(clientSocket);
 				
@@ -204,6 +204,8 @@ public class Server extends Thread {
 							break;
 					}
 				}
+				else
+					System.out.println("server: timed out, attemping another read from client");
 			}
 		}
 		
