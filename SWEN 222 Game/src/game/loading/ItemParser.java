@@ -57,10 +57,10 @@ public class ItemParser {
 			int height = parseInt(scan, "Height");
 			Position pos = new Position(x, y);
 			int ID = parseInt(scan, "ID");
-			if (!gobble(scan, "<Name>")) {
-				throw new ParserError("Parsing Item: Expecting <Name>, got "
-						+ scan.next());
-			}
+			//if (!gobble(scan, "<Name>")) {
+			//	throw new ParserError("Parsing Item: Expecting <Name>, got "
+			//			+ scan.next());
+			//}
 			String name = parseString(scan, "Name");
 			if (gobble(scan, "<Container>")) {
 				return parseContainer(scan, pos, height, name, ID);
@@ -203,13 +203,16 @@ public class ItemParser {
 			String name, int ID) {
 		try {
 			int areaID = parseInt(scan, "AreaID");
+			int x = parseInt(scan, "XPos");
+			int y = parseInt(scan, "YPos");
+			Position transport =  new Position(x, y);
 			boolean keyRequired = parseBoolean(scan, "KeyRequired");
 
 			if (!gobble(scan, "</Door>")) {
 				throw new ParserError("Parsing Door: Expecting </Door>, got"
 						+ scan.next());
 			}
-			return new Door(pos, height, ID, name, null, areaID, keyRequired);
+			return new Door(pos, height, ID, name, null, areaID, transport, keyRequired);
 		} catch (ParserError error) {
 			error.printStackTrace();
 		}

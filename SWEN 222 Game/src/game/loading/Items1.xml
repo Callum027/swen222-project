@@ -35,6 +35,8 @@
 		<Name> Door </Name>
 		<Door>
 			<AreaID> 2 </AreaID>
+			<XPos> 4 </XPos>
+			<YPos> 9 </YPos>
 			<KeyRequired> false </KeyRequired>
 		</Door>
 	</Item>
