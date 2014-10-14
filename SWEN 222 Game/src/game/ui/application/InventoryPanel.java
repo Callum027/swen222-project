@@ -27,8 +27,8 @@ import javax.swing.JPanel;
 public class InventoryPanel extends JPanel implements GameComponent {
 
 	private static final long serialVersionUID = 1L;
-	private static final int WIDTH = 155;
-	private static final int HEIGHT = 330;
+	public static final int WIDTH = 155;
+	public static final int HEIGHT = 330;
 	public static final int INVENTORY_WIDTH = 3;
 	public static final int INVENTORY_HEIGHT = 6;
 	public static final int squareSize = 45;

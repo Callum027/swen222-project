@@ -26,8 +26,8 @@ public class EquipPanel extends JPanel implements GameComponent {
 
 	private static final long serialVersionUID = 1L;
 	private final int equipSize = 5;
-	private static final int WIDTH = 155;
-	private static final int HEIGHT = 169;
+	public static final int WIDTH = 155;
+	public static final int HEIGHT = 169;
 
 	public static final int HEAD_SLOT = 0;
 	public static final int OFF_HAND = 2;
