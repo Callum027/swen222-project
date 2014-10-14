@@ -286,6 +286,39 @@ public class Area  implements Streamable{
 	}
 	
 	/**
+	 * Returns the Drawable object that is situated at the specified
+	 * position. If there is not a Drawable object at that position
+	 * then null is returned.
+	 * @param p
+	 * 		--- the position to check
+	 * @return
+	 * 		--- Drawable object, or null
+	 */
+	public Drawable getDrawableObject(Position p){
+		for(Item i : items.values()){
+			if(i.getPosition().equals(p)){
+				return i;
+			}
+		}
+		for(Player pl : players.values()){
+			if(pl.getPosition().equals(p)){
+				return pl;
+			}
+		}
+		for(Enemy e : enemies.values()){
+			if(e.getPosition().equals(p)){
+				return e;
+			}
+		}
+		for(Merchant m : merchants.values()){
+			if(m.getPosition().equals(p)){
+				return m;
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * Returns true if the specified position is a moveable position.
 	 * A moveable position is defined as a position within the bounds
 	 * of the area that does not have a non moveable item on it.

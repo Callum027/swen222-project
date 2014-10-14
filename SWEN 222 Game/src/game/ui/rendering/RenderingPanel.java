@@ -161,6 +161,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 			toDraw.addAll(enemies);
 			drawFloors(g, tiles, items);
 			drawDrawable(g, toDraw, tiles);
+			drawBoundingBoxes(g);
 		}
 	}
 
@@ -210,6 +211,13 @@ public class RenderingPanel extends JPanel implements GameComponent {
 
 			d.draw(g, x, y, direction);
 			drawableBoundingBoxes.add(d.getBoundingBox(x, y, p));
+		}
+	}
+	
+	public void drawBoundingBoxes(Graphics g){
+		g.setColor(Color.cyan);
+		for(BoundingBox b : drawableBoundingBoxes){
+			g.fillPolygon(b);
 		}
 	}
 
@@ -512,20 +520,43 @@ public class RenderingPanel extends JPanel implements GameComponent {
 	@Override
 	public void mouseClicked(GameFrame frame, MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON3) {
-			Position p = findPosition(new Position(e.getX(), e.getY()));
-			if (p != null) {
-				frame.append("Clicked at position: "+p);
-				Position current = player.getPosition();
-				Stack<Position> moves = area.findPath(current, p);
-				if(!moves.isEmpty()){
-					moves.pop();
-				}
-				if(!moves.isEmpty()){
-					MoveEvent move = new MoveEvent(moves.pop(), player);
-					frame.getGameEventBroadcaster().broadcastGameEvent(move);
-				}
-				repaint();
+			mouseRightClicked(frame, e);
+		}
+		else if(e.getButton() == MouseEvent.BUTTON1){
+			mouseLeftClicked(frame, e);
+		}
+	}
+	
+	private void mouseLeftClicked(GameFrame frame, MouseEvent e){
+		for(BoundingBox b : drawableBoundingBoxes){
+			if(b.contains(new Point(e.getX(), e.getY()))){
+				Drawable drawable = area.getDrawableObject(b.getPosition());
+				interact(frame, drawable);
 			}
+		}
+	}
+	
+	private void interact(GameFrame frame, Drawable drawable){
+		if(drawable instanceof Item){
+			((Item)drawable).interact(player);
+			frame.append("Interaction Occurred");
+		}
+	}
+	
+	private void mouseRightClicked(GameFrame frame, MouseEvent e){
+		Position p = findPosition(new Position(e.getX(), e.getY()));
+		if (p != null) {
+			frame.append("Clicked at position: "+p);
+			Position current = player.getPosition();
+			Stack<Position> moves = area.findPath(current, p);
+			if(!moves.isEmpty()){
+				moves.pop();
+			}
+			if(!moves.isEmpty()){
+				MoveEvent move = new MoveEvent(moves.pop(), player);
+				frame.getGameEventBroadcaster().broadcastGameEvent(move);
+			}
+			repaint();
 		}
 	}
 
