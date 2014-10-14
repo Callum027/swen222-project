@@ -3,9 +3,16 @@ package game.world.characters;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Map.Entry;
 
 import game.Main;
+import game.exceptions.EnemyIDNotFoundException;
+import game.exceptions.GameException;
+import game.exceptions.MerchantIDNotFoundException;
+import game.net.NetIO;
+import game.world.Area;
 import game.world.Position;
 import game.world.items.MoveableItem;
 
@@ -53,8 +60,34 @@ public class Merchant extends GameCharacter{
 
 	@Override
 	public void write(OutputStream os) throws IOException {
-		// TODO Auto-generated method stub
+		NetIO.writeByte(os, (byte)super.getId());
+	}
 
+	/**
+	 * reads a merchant from the inputstream
+	 * @param is the inputstream
+	 * @return the merchant with the given id that is received form the inputstream
+	 * @throws IOException
+	 * @throws GameException
+	 */
+	public static Merchant read(InputStream is) throws IOException, GameException {
+		byte id = NetIO.readByte(is);
+		Merchant merchant = null;
+
+		/*
+		 * iterates over all the areas and returns the merchant with the given id
+		 */
+		for (Entry<Integer,Area> entry : Main.getGameWorld().getAreas().entrySet()){
+			if (merchant != null){
+				return merchant;
+			}
+			merchant = entry.getValue().getMerchant(id);
+		}
+
+		if (merchant == null)
+			throw new MerchantIDNotFoundException(id);
+
+		return merchant;
 	}
 
 	@Override
