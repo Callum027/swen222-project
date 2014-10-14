@@ -1,8 +1,10 @@
 package game.loading;
 
 import game.world.GameWorld;
+import game.world.Position;
 import game.world.characters.Enemy;
 import game.world.characters.Player;
+import game.world.characters.classes.GameClass;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,20 +23,20 @@ public class CharacterParser {
 			if (!gobble(scan, "<CharList>")) {
 
 				throw new ParserError(
-						"Parsing Characters: Expecting <CharList>, got "
+						"Parsing Character: Expecting <CharList>, got "
 								+ scan.next());
 			}
 			while (!gobble(scan, "</CharList>")) {
 				if (!gobble(scan, "<Character>")) {
 					throw new ParserError(
-							"Parsing Characters: Expecting <Character>, got "
+							"Parsing Character: Expecting <Character>, got "
 									+ scan.next());
 				}
 				parseCharacterType(scan, world);
 
 				if (!gobble(scan, "</Character>")) {
 					throw new ParserError(
-							"Parsing Items: Expecting </Character>, got "
+							"Parsing Character: Expecting </Character>, got "
 									+ scan.next());
 				}
 			}
@@ -45,20 +47,19 @@ public class CharacterParser {
 
 	private static void parseCharacterType(Scanner scan, GameWorld world) {
 		try {
-			
+
 			if (gobble(scan, "<Player>")) {
 				parsePlayer(scan, world);
 				return;
-			}
-			else if(gobble(scan, "<Enemy>")){
+			} else if (gobble(scan, "<Enemy>")) {
 				parseEnemy(scan, world);
 				return;
-			}
-			else if(gobble(scan, "<Merchant>")){
+			} else if (gobble(scan, "<Merchant>")) {
 				parseMerchant(scan, world);
-			}
-			else{
-				throw new ParserError("Parsing CharacterType: Invalid Character type.");
+			} else {
+				throw new ParserError(
+						"Parsing CharacterType: Expecting a valid character type, got "
+								+ scan.next());
 			}
 		} catch (ParserError e) {
 			e.printStackTrace();
@@ -68,15 +69,63 @@ public class CharacterParser {
 
 	private static void parseMerchant(Scanner scan, GameWorld world) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	private static Enemy parseEnemy(Scanner scan, GameWorld world) {
-		// TODO Auto-generated method stub
-		return null;
+	private static void parseEnemy(Scanner scan, GameWorld world) {
+		try {
+			int AreaID = parseInt(scan, "AreaID");
+			int x = parseInt(scan, "XPos");
+			int y = parseInt(scan, "YPos");
+			Position pos = new Position(x, y);
+			String name = parseString(scan, "Name");
+			int id = parseInt(scan, "ID");
+			Enemy enemy  = new Enemy(pos, name, id,
+					GameClass.playerClass.WARRIOR);
+			if (!gobble(scan, "</Enemy>")) {
+				throw new ParserError(
+						"Parsing Enemy: Expecting </Enemy>, got "
+								+ scan.next());
+			}
+			world.getArea(AreaID).addEnemy(enemy);
+			
+		} catch (ParserError e) {
+			e.printStackTrace();
+		}
 	}
 
 	private static void parsePlayer(Scanner scan, GameWorld world) {
+		try {
+			int x = parseInt(scan, "XPos");
+			int y = parseInt(scan, "YPos");
+			Position pos = new Position(x, y);
+			String name = parseString(scan, "Name");
+			int id = parseInt(scan, "ID");
+			Player player = new Player(pos, name, id,
+					GameClass.playerClass.WARRIOR);
+			if (!gobble(scan, "</Player>")) {
+				throw new ParserError(
+						"Parsing Player: Expecting </Player>, got "
+								+ scan.next());
+			}
+			world.addPlayer(player);
+		} catch (ParserError e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static String parseString(Scanner scan, String type)
+			throws ParserError {
+		if (!gobble(scan, "<" + type + ">")) {
+			throw new ParserError("Parsing String: Expecting <" + type
+					+ ">, got " + scan.next());
+		}
+		String value = scan.next();
+		if (!gobble(scan, "</" + type + ">")) {
+			throw new ParserError("Parsing String: Expecting </" + type
+					+ ">, got " + scan.next());
+		}
+		return value;
 	}
 
 	private static int parseInt(Scanner scan, String type) throws ParserError {

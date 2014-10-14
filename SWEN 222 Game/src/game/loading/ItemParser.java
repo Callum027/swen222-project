@@ -61,32 +61,18 @@ public class ItemParser {
 				throw new ParserError("Parsing Item: Expecting <Name>, got "
 						+ scan.next());
 			}
-			if (!scan.hasNext()) {
-				throw new ParserError(
-						"Parsing Item: Expected String, got nothing.");
-			}
-			String name = scan.next();
-			if (!gobble(scan, "</Name>")) {
-				throw new ParserError("Parsing Item: Expecting </Name>, got "
-						+ scan.next());
-			}
-
+			String name = parseString(scan, "Name");
 			if (gobble(scan, "<Container>")) {
 				return parseContainer(scan, pos, height, name, ID);
-			}
-			if (gobble(scan, "<Consumable>")) {
+			} else if (gobble(scan, "<Consumable>")) {
 				return parseConsumable(scan, pos, height, name, ID);
-			}
-			if (gobble(scan, "<Equipment>")) {
+			} else if (gobble(scan, "<Equipment>")) {
 				return parseEquipment(scan, pos, height, name, ID);
-			}
-			if (gobble(scan, "<Furniture>")) {
+			} else if (gobble(scan, "<Furniture>")) {
 				return parseFurniture(scan, pos, height, name, ID);
-			}
-			if (gobble(scan, "<MoveableItem>")) {
+			} else if (gobble(scan, "<MoveableItem>")) {
 				return parseMoveableItem(scan, pos, height, name, ID);
-			}
-			if(gobble(scan, "<Door>")){
+			} else if (gobble(scan, "<Door>")) {
 				return parseDoor(scan, pos, height, name, ID);
 			}
 		} catch (ParserError error) {
@@ -143,21 +129,7 @@ public class ItemParser {
 		try {
 			int height = parseInt(scan, "Height");
 			int ID = parseInt(scan, "ID");
-			if (!gobble(scan, "<Name>")) {
-				throw new ParserError(
-						"Parsing StoredItem: Expecting <Name>, got "
-								+ scan.next());
-			}
-			if (!scan.hasNext()) {
-				throw new ParserError(
-						"Parsing StoredItem: Expected String, got nothing.");
-			}
-			String name = scan.next();
-			if (!gobble(scan, "</Name>")) {
-				throw new ParserError(
-						"Parsing StoredItem: Expecting </Name>, got "
-								+ scan.next());
-			}
+			String name = parseString(scan, "Name");
 			int worth = parseInt(scan, "Worth");
 
 			return new MoveableItem(new Position(-1, -1), height, ID, name,
@@ -226,17 +198,19 @@ public class ItemParser {
 		}
 		return null;
 	}
-	
-	private static Item parseDoor(Scanner scan, Position pos, int height, String name, int ID){
-		try{
+
+	private static Item parseDoor(Scanner scan, Position pos, int height,
+			String name, int ID) {
+		try {
 			int areaID = parseInt(scan, "AreaID");
 			boolean keyRequired = parseBoolean(scan, "KeyRequired");
-			
-			if(!gobble(scan, "</Door>")){
-				throw new ParserError("Parsing Door: Expecting </Door>, got"+scan.next());
+
+			if (!gobble(scan, "</Door>")) {
+				throw new ParserError("Parsing Door: Expecting </Door>, got"
+						+ scan.next());
 			}
 			return new Door(pos, height, ID, name, null, areaID, keyRequired);
-		}catch(ParserError error){
+		} catch (ParserError error) {
 			error.printStackTrace();
 		}
 		return null;
@@ -255,15 +229,32 @@ public class ItemParser {
 		}
 		return value;
 	}
-	
-	private static boolean parseBoolean(Scanner scan, String type) throws ParserError{
-		if(!gobble(scan, "<"+type+">")){
-			throw new ParserError("Parsing Boolean: Expecting <"+type+">, got "+scan.next());
+
+	private static String parseString(Scanner scan, String type)
+			throws ParserError {
+		if (!gobble(scan, "<" + type + ">")) {
+			throw new ParserError("Parsing String: Expecting <" + type
+					+ ">, got " + scan.next());
+		}
+		String value = scan.next();
+		if (!gobble(scan, "</" + type + ">")) {
+			throw new ParserError("Parsing String: Expecting </" + type
+					+ ">, got " + scan.next());
+		}
+		return value;
+	}
+
+	private static boolean parseBoolean(Scanner scan, String type)
+			throws ParserError {
+		if (!gobble(scan, "<" + type + ">")) {
+			throw new ParserError("Parsing Boolean: Expecting <" + type
+					+ ">, got " + scan.next());
 		}
 		boolean value = scan.nextBoolean();
-		
-		if(!gobble(scan, "</"+type+">")){
-			throw new ParserError("Parsing Boolean: Expecting </"+type+">, got "+scan.next());
+
+		if (!gobble(scan, "</" + type + ">")) {
+			throw new ParserError("Parsing Boolean: Expecting </" + type
+					+ ">, got " + scan.next());
 		}
 		return value;
 	}
