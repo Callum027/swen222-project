@@ -41,6 +41,7 @@ public class Area  implements Streamable{
 	private Map<Integer,Merchant> merchants; //a mapping from a unique identifier to the respective merchant character
 	private Map<Integer,Enemy> enemies; //a mapping from unique identifiers to their respective enemy character
 	private Map<Integer,Item> items; //a mapping from unique identifiers to the items located in this area
+	private Map<Integer, Player> players;
 	private Tile[][] tiles; //the tiles that make up this area
 	private Tile[][][] walls;
 
@@ -65,6 +66,7 @@ public class Area  implements Streamable{
 		this.tiles = tiles;
 		items = new HashMap<Integer,Item>();
 		enemies = new HashMap<Integer,Enemy>();
+		players = new HashMap<Integer, Player>();
 		this.id = areaID;
 		this.walls = walls;
 	}
@@ -207,6 +209,45 @@ public class Area  implements Streamable{
 	 */
 	public Map<Integer,Merchant> getMerchants() {
 		return new HashMap<Integer,Merchant>(merchants);
+	}
+	
+	/**
+	 * Adds a player to this Area.
+	 * 
+	 * @param player
+	 * 		--- player to add
+	 */
+	public void addPlayer(Player player){
+		players.put(player.getId(), player);
+	}
+	
+	/**
+	 * Returns the player with the specified ID. if that
+	 * player is not located in this area, return null.
+	 * 
+	 * @param playerID
+	 * 		--- unique id of player
+	 * @return
+	 * 		--- player, or null
+	 */
+	public Player getPlayer(int playerID){
+		if(players.containsKey(playerID)){
+			return players.get(playerID);
+		}
+		return null;
+	}
+	
+	/**
+	 * Removes the player with the specified ID from this
+	 * Area.
+	 * 
+	 * @param playerID
+	 * 		--- id of player to remove
+	 */
+	public void removePlayer(int playerID){
+		if(players.containsKey(playerID)){
+			players.remove(playerID);
+		}
 	}
 
 	/**

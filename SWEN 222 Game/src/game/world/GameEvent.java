@@ -73,7 +73,8 @@ public abstract class GameEvent implements Streamable {
 		MOVE(0),
 		INTERACT(1),
 		DROP_ITEM(2),
-		PICK_UP(3);
+		PICK_UP(3),
+		TRANSPORT(4);
 		
 
 		// The unique ID of the event.

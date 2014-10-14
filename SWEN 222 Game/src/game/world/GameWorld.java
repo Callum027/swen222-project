@@ -5,6 +5,7 @@ import game.world.characters.Player;
 import game.world.events.DropItemEvent;
 import game.world.events.InteractEvent;
 import game.world.events.MoveEvent;
+import game.world.events.TransportEvent;
 import game.world.items.Item;
 
 import java.util.HashMap;
@@ -104,6 +105,14 @@ public class GameWorld implements GameEventListener{
 			Item item = interact.getItem();
 			Player player = interact.getPlayer();
 			item.interact(player);
+		}
+		if(ge instanceof TransportEvent){
+			TransportEvent transport = (TransportEvent) ge;
+			Player player = transport.getPlayer();
+			int areaID = transport.getAreaID();
+			if(areas.containsKey(areaID)){
+				areas.get(areaID).addPlayer(player);
+			}
 		}
 	}
 
