@@ -79,11 +79,6 @@ public class Player extends GameCharacter implements Streamable, Attackable{
 		gameClass.calculateDamage();
 	}
 
-	@Override
-	public void write(OutputStream os) throws IOException {
-		NetIO.writeByte(os, (byte)super.getId());
-	}
-
 	/**
 	 * gets the items that are currently equipped by the player
 	 * @return an ArrayList containing the equipped items
@@ -112,6 +107,12 @@ public class Player extends GameCharacter implements Streamable, Attackable{
 			throw new PlayerIDNotFoundException(id);
 
 		return player;
+	}
+
+	@Override
+	public void write(OutputStream os) throws IOException {
+		super.write(os);
+		NetIO.writeByte(os, (byte)super.getId());
 	}
 
 	/**
@@ -170,5 +171,9 @@ public class Player extends GameCharacter implements Streamable, Attackable{
 
 	public MoveableItem getItem(int id) {
 		return super.getItems().get(id);
+	}
+
+	public GameCharacter.Type getType() {
+		return GameCharacter.Type.PLAYER;
 	}
 }

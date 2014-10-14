@@ -1,5 +1,9 @@
 package game.world.characters;
 
+import game.exceptions.GameException;
+import game.exceptions.InvalidGameCharacterException;
+import game.exceptions.UnsupportedGameCharacterException;
+import game.net.NetIO;
 import game.net.Streamable;
 import game.world.BoundingBox;
 import game.world.Drawable;
@@ -8,7 +12,9 @@ import game.world.items.MoveableItem;
 import game.world.tiles.FloorTile;
 
 import java.awt.Graphics;
-import java.awt.Image;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 /**
@@ -160,5 +166,87 @@ public abstract class GameCharacter implements Streamable, Drawable{
 				itemY + ((height + 1) * FloorTile.HEIGHT),
 				itemY + ((height + 1) * FloorTile.HEIGHT) - dy };
 		return new BoundingBox(xPoints, yPoints, xPoints.length, p);
+	}
+
+	public abstract GameCharacter.Type getType();
+
+	public static GameCharacter read(InputStream is) throws IOException, GameException {
+		GameCharacter.Type t = GameCharacter.Type.read(is);
+
+		switch (t) {
+			case PLAYER:
+				return Player.read(is);
+			case ENEMY:
+				return Enemy.read(is);
+			case MERCHANT:
+				return Merchant.read(is);
+			default:
+				throw new UnsupportedGameCharacterException(t);
+		}
+	}
+
+	public void write(OutputStream os) throws IOException {
+		getType().write(os);
+	}
+
+	/**
+	 * A Type enumeration system to uniquely identify types of GamePackets,
+	 * using unique IDs.
+	 *
+	 * @author Callum
+	 *
+	 */
+	public enum Type implements Streamable {
+		PLAYER(0),
+		ENEMY(1),
+		MERCHANT(2);
+
+		// The unique ID of the event.
+		private final byte id;
+
+		/*
+		 * construct a GamePacket.Type object.
+		 * @param i ID number
+		 */
+		private Type(int i) {
+			id = (byte)i;
+		}
+
+		/**
+		 * Get the type's unique ID.
+		 *
+		 * @return type ID
+		 */
+		public byte getID() {
+			return id;
+		}
+
+		/**
+		 * Return the GameCharacter.Type version of a given ID.
+		 *
+		 * @param id ID to convert
+		 * @return GameCharacter.Type version
+		 */
+		public static Type getTypeFromID(byte id) throws GameException {
+			for (Type t: values())
+				if (t.getID() == id)
+					return t;
+
+			throw new InvalidGameCharacterException(id);
+		}
+
+		/**
+		 * Read a GamePacket.Type from the input stream. Returns null if it fails.
+		 *
+		 * @param is InputStream
+		 * @return GamePacket.Type
+		 */
+		public static Type read(InputStream is) throws IOException, GameException {
+			return getTypeFromID(NetIO.readByte(is));
+		}
+
+		public void write(OutputStream os) throws IOException {
+			NetIO.writeByte(os, id);
+		}
 	}
 }

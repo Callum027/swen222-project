@@ -128,6 +128,7 @@ public class Enemy extends GameCharacter implements Attackable{
 
 	@Override
 	public void write(OutputStream os) throws IOException {
+		super.write(os);
 		NetIO.writeByte(os, (byte)super.getId());
 	}
 
@@ -175,5 +176,9 @@ public class Enemy extends GameCharacter implements Attackable{
 
 	public MoveableItem getItem(int id) {
 		return super.getItems().get(id);
+	}
+
+	public GameCharacter.Type getType() {
+		return GameCharacter.Type.ENEMY;
 	}
 }

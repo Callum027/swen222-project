@@ -1,16 +1,13 @@
 package game.world.events;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 import game.exceptions.GameException;
 import game.world.GameEvent;
 import game.world.Position;
-import game.world.characters.Enemy;
 import game.world.characters.GameCharacter;
-import game.world.characters.Merchant;
-import game.world.characters.Player;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Events that represent moving characters in the game world.
@@ -20,7 +17,7 @@ import game.world.characters.Player;
  */
 public class MoveEvent extends GameEvent {
 
-	private static GameCharacter gameCharacter;
+	private GameCharacter gameCharacter;
 	private final Position position;
 
 	/**
@@ -71,21 +68,8 @@ public class MoveEvent extends GameEvent {
 	 */
 	public static MoveEvent read(InputStream is) throws IOException, GameException {
 		Position position = Position.read(is);
-		
-		if (gameCharacter instanceof Player){
-			GameCharacter gameCharacter = Player.read(is);
-			return new MoveEvent(position, gameCharacter);
-		}
-		
-		if (gameCharacter instanceof Enemy){
-			GameCharacter gameCharacter = Enemy.read(is);
-			return new MoveEvent(position, gameCharacter);
-		}
+		GameCharacter gameCharacter = GameCharacter.read(is);
 
-		if (gameCharacter instanceof Merchant){
-			GameCharacter gameCharacter = Merchant.read(is);
-			return new MoveEvent(position, gameCharacter);
-		}
 		return new MoveEvent(position, gameCharacter);
 	}
 
