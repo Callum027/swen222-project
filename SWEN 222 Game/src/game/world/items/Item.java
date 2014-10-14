@@ -89,7 +89,7 @@ public abstract class Item implements Drawable, Streamable{
 	}
 
 	public BoundingBox getBoundingBox(int x, int y, Position p) {
-		int itemY = y - (height * FloorTile.HEIGHT);
+		int itemY = y;//y - (height * FloorTile.HEIGHT);
 		int dy = FloorTile.HEIGHT / 2;
 		int[] xPoints = new int[] { x, x + (FloorTile.WIDTH / 2),
 				x + FloorTile.WIDTH, x + FloorTile.WIDTH,

@@ -5,6 +5,7 @@ import game.world.tiles.Tile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -15,6 +16,31 @@ import java.util.Scanner;
  *
  */
 public class AreaParser {
+	
+	public static Map<Integer, Area> parseAreas(String filename, Map<Integer, Tile> tileMap){
+		Map<Integer, Area> areaMap = new HashMap<Integer, Area>();
+		Scanner scan = null;
+		try{
+			scan = new Scanner(new File(filename));
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+		
+		try{
+			if(!gobble(scan, "<Areas>")){
+				throw new ParserError("Parsing Areas: Expecting <Areas>, got "+scan.next());
+			}
+			while(!gobble(scan, "</Areas>")){
+				Area area = parseArea(scan, tileMap);
+				areaMap.put(area.getID(), area);
+			}
+		}catch(ParserError error){
+			error.printStackTrace();
+		}
+		
+		scan.close();
+		return areaMap;
+	}
 	/**
 	 * Parse Area method, takes a filename and a map of tiles and returns an
 	 * area
@@ -56,6 +82,46 @@ public class AreaParser {
 						+ scan.next());
 			}
 			scan.close();
+			return new Area(floor, walls, ID);
+		} catch (ParserError error) {
+			error.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
+	 * Parse Area method, takes a Scanner and a map of tiles and returns an
+	 * area
+	 *
+	 * @param scan
+	 *            - Scanner which is currently scanning areas file.
+	 * @param tileMap
+	 *            - map of tiles to be used to convert int values to their
+	 *            corresponding tiles.
+	 * @return Area parsed in from file.
+	 */
+	public static Area parseArea(Scanner scan, Map<Integer, Tile> tileMap) {
+		try {
+			if (!gobble(scan, "<Area>")) {
+				throw new ParserError("Parsing Area: Expecting <Area>, got "
+						+ scan.next());
+			}
+
+			int ID = parseInt(scan, "ID");
+			int width = parseInt(scan, "Width");
+			int height = parseInt(scan, "Height");
+			Tile[][] floor = parse2DTileArray(scan, "Floor", width, height,
+					tileMap);
+			Tile[][][] walls = new Tile[4][][];
+			walls[0] = parse2DTileArray(scan, "NorthWall", width, 3, tileMap);
+			walls[1] = parse2DTileArray(scan, "EastWall", height, 3, tileMap);
+			walls[2] = parse2DTileArray(scan, "SouthWall", width, 3, tileMap);
+			walls[3] = parse2DTileArray(scan, "WestWall", height, 3, tileMap);
+
+			if (!gobble(scan, "</Area>")) {
+				throw new ParserError("Parsing Area: Expecting </Area>, got "
+						+ scan.next());
+			}
 			return new Area(floor, walls, ID);
 		} catch (ParserError error) {
 			error.printStackTrace();

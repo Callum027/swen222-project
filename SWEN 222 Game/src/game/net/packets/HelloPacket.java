@@ -16,7 +16,7 @@ public class HelloPacket implements Streamable {
 	 * @throws IOException
 	 */
 	public static HelloPacket read(InputStream is) throws IOException {
-		return null;
+		return new HelloPacket();
 	}
 
 	public void write(OutputStream os) throws IOException {

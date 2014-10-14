@@ -1,5 +1,7 @@
 package game.world.items;
 
+import java.awt.Graphics;
+import java.awt.Image;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -19,8 +21,10 @@ import game.world.characters.Player;
  *
  */
 public class Furniture extends Item{
-
+	
+	private final String[] directions = new String[]{"North", "East", "South", "West"};
 	private MoveableItem item; //you can get items by interacting with certain pieces of furniture
+	private Image[] images;
 
 	/**
 	 * The Constructor
@@ -33,6 +37,10 @@ public class Furniture extends Item{
 	public Furniture(Position position, int height, int id,  String name, MoveableItem item) {
 		super(position, height, id, name);
 		this.setItem(item);
+		this.images = new Image[directions.length];
+		for(int i = 0; i < directions.length; i++){
+			images[i] = Main.getImage(name+"_"+directions[i]+".png");
+		}
 	}
 
 	/**
@@ -63,6 +71,21 @@ public class Furniture extends Item{
 	@Override
 	public void write(OutputStream os) throws IOException {
 		NetIO.writeByte(os, (byte)super.getID());
+	}
+	
+	/**
+	 * Draw this item on the specified graphics object
+	 *
+	 * @param g
+	 *            - graphics object
+	 * @param x
+	 *            - x position to draw to
+	 * @param y
+	 *            - y position to draw to
+	 */
+	@Override
+	public void draw(Graphics g, int x, int y, int direction) {
+		g.drawImage(images[direction], x, y, null);
 	}
 	
 	/**

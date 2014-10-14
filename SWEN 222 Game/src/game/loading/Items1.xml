@@ -32,7 +32,7 @@
 		<YPos> 0 </YPos>
 		<Height> 2 </Height>
 		<ID> 3 </ID>
-		<Name> Door_North </Name>
+		<Name> Door </Name>
 		<Door>
 			<AreaID> 2 </AreaID>
 			<KeyRequired> false </KeyRequired>

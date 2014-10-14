@@ -1,7 +1,9 @@
 package game.world.items;
 
+import game.world.GameEventBroadcaster;
 import game.world.Position;
 import game.world.characters.Player;
+import game.world.events.TransportEvent;
 
 /**
  * A Door is a special extension of the Furniture class which is used
@@ -58,7 +60,11 @@ public class Door extends Furniture{
 	 * have one then the Player will not be able to transport to the
 	 * next Area.
 	 */
-	public void interact(Player player){
-		
+	public void interact(Player player, GameEventBroadcaster geb){
+		if(keyRequired){
+			
+		}
+		TransportEvent transport = new TransportEvent(player, areaID);
+		geb.broadcastGameEvent(transport);
 	}
 }

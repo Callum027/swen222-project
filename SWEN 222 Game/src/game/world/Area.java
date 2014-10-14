@@ -286,6 +286,39 @@ public class Area  implements Streamable{
 	}
 	
 	/**
+	 * Returns the Drawable object that is situated at the specified
+	 * position. If there is not a Drawable object at that position
+	 * then null is returned.
+	 * @param p
+	 * 		--- the position to check
+	 * @return
+	 * 		--- Drawable object, or null
+	 */
+	public Drawable getDrawableObject(Position p){
+		for(Item i : items.values()){
+			if(i.getPosition().equals(p)){
+				return i;
+			}
+		}
+		for(Player pl : players.values()){
+			if(pl.getPosition().equals(p)){
+				return pl;
+			}
+		}
+		for(Enemy e : enemies.values()){
+			if(e.getPosition().equals(p)){
+				return e;
+			}
+		}
+		for(Merchant m : merchants.values()){
+			if(m.getPosition().equals(p)){
+				return m;
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * Returns true if the specified position is a moveable position.
 	 * A moveable position is defined as a position within the bounds
 	 * of the area that does not have a non moveable item on it.
@@ -323,6 +356,23 @@ public class Area  implements Streamable{
 	public Stack<Position> findPath(Position start, Position goal){
 		AStar aStar = new AStar(start, goal);
 		return aStar.runAlgorithm();
+	}
+	
+	/**
+	 * Calculates the distance between two positions and returns the result.
+	 * Uses Pythagoras Theorem to do this.
+	 * 
+	 * @param p1
+	 * 		--- the first position
+	 * @param p2
+	 * 		--- the second position
+	 * @return
+	 * 		--- the distance between the two positions
+	 */
+	public double findDistance(Position p1, Position p2){
+		int width = Math.abs(p1.getX() - p2.getX());
+		int height = Math.abs(p1.getY() - p2.getY());
+		return Math.sqrt((width*width) + (height*height));
 	}
 
 	/**
@@ -445,7 +495,6 @@ public class Area  implements Streamable{
 
 		// fields
 		private Position position;
-		private Position goal;
 		private FringeNode from;
 		private int distance;
 		private double heuristic;
@@ -465,10 +514,9 @@ public class Area  implements Streamable{
 		 */
 		public FringeNode(Position position, Position goal, FringeNode from, int distance){
 			this.position = position;
-			this.goal = goal;
 			this.from = from;
 			this.distance = distance;
-			heuristic = calculateHeuristic();
+			heuristic = findDistance(position, goal);
 		}
 
 		/**
@@ -499,20 +547,6 @@ public class Area  implements Streamable{
 		 */
 		public int getDistance(){
 			return distance;
-		}
-
-		/**
-		 * Returns the estimated remaining distance from the position of this FringeNode
-		 * to the goal position. The heuristic utilizes the Pythagoras Theorem
-		 * to work out the straight line distance between the two positions.
-		 *
-		 * @return
-		 * 			--- estimated remaining distance to goal
-		 */
-		private double calculateHeuristic(){
-			int width = Math.abs(position.getX() - goal.getX());
-			int height = Math.abs(position.getY() - goal.getY());
-			return Math.sqrt((width*width) + (height*height));
 		}
 
 		/**

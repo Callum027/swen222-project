@@ -23,9 +23,9 @@ public class Main {
 
 	/** Constants used internally in the Main class. */
 	private static final String IMAGE_PATH = "src" + File.separatorChar + "game" + File.separatorChar + "ui" + File.separatorChar + "images";
-	private static final String AREA_FILE = "src" + File.separatorChar + "game" + File.separatorChar + "loading" + File.separatorChar + "Area.xml";
+	private static final String AREA_FILE = "src" + File.separatorChar + "game" + File.separatorChar + "loading" + File.separatorChar + "Areas.xml";
 	private static final String ITEMS_FILE = "src" + File.separatorChar + "game" + File.separatorChar + "loading" + File.separatorChar + "Items1.xml";
-	private static final String[] TILES_FILE = new String[] { "1, FloorTile, floor_tile3" };
+	private static final String[] TILES_FILE = new String[] { "1, FloorTile, floor_tile3", "2, FloorTile, Carpet_Centre" };
 
 	/** Game mode: client, server, or client and server. */
 	private static GameMode mode = GameMode.CLIENTANDSERVER;
@@ -39,6 +39,7 @@ public class Main {
 	/** Tile map and area which gets added to the game world. */
 	private static Map<Integer, Tile> tileMap = null;
 	private static Area area = null;
+	private static Map<Integer, Area> areaMap = null;
 
 	/** Game world and game window. */
 	private static GameWorld gameWorld = null;
@@ -97,15 +98,17 @@ public class Main {
 
 			// Load the tile map and the game world areas.
 			tileMap = createTileMap(TILES_FILE);
-			area = AreaParser.parseArea(AREA_FILE, tileMap);
+			//area = AreaParser.parseArea(AREA_FILE, tileMap);
+			areaMap = AreaParser.parseAreas(AREA_FILE, tileMap);
+			area = areaMap.get(1);
 			ItemParser.parseItemList(ITEMS_FILE, area);
 
 			// Add the main area to the game world, but only if the area
 			// successfully loaded.
-			if (area != null)
+			if (!areaMap.isEmpty())
 			{
 				gameWorld = new GameWorld();
-				gameWorld.addArea(area);
+				gameWorld.addAreas(areaMap);
 			}
 			else
 			{

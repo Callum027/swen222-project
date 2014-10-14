@@ -161,8 +161,10 @@ public class Server extends Thread {
 
 			while (!isClosing()) {
 				GamePacket gp = read(clientSocket);
-
+				
 				if (gp != null) {
+					System.out.println("server: read GamePacket from " + clientSocket.getInetAddress());
+					
 					switch (gp.getType())
 					{
 						// We have received a game event from a client.
@@ -176,13 +178,13 @@ public class Server extends Thread {
 
 							// TODO: Send the updated game state to the rest of the clients.
 							break;
-						case ACK:
-						case ERR:
+						case QUIT:
+							System.out.println("server: read QUIT packet, closing connection");
+							close();
 							break;
 						default:
-							continue;
+							break;
 					}
-
 				}
 			}
 		}
