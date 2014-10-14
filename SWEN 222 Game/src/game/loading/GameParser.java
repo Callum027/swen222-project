@@ -17,8 +17,24 @@ import game.world.items.Item;
 import game.world.items.MoveableItem;
 import game.world.tiles.Tile;
 
+/**
+ * Game Parser class, to be used in parsing objects in from an xml file.
+ *
+ * @author Chris Allen
+ *
+ */
 public class GameParser {
-
+	/**
+	 * Parse Area method, takes a filename and a map of tiles and returns an
+	 * area
+	 *
+	 * @param filename
+	 *            - filepath towards the xml file we wish to be parsed in.
+	 * @param tileMap
+	 *            - map of tiles to be used to convert int values to their
+	 *            corresponding tiles.
+	 * @return Area parsed in from file.
+	 */
 	public static Area parseArea(String filename, Map<Integer, Tile> tileMap) {
 		Scanner scan = null;
 		try {
@@ -77,6 +93,11 @@ public class GameParser {
 									+ scan.next());
 				}
 				area.addItem(parseItem(scan));
+				if (!gobble(scan, "</Item>")) {
+					throw new ParserError(
+							"Parsing Items: Expecting </Item>, got "
+									+ scan.next());
+				}
 			}
 		} catch (ParserError error) {
 			error.printStackTrace();
@@ -91,19 +112,17 @@ public class GameParser {
 			Position pos = new Position(x, y);
 			int ID = parseInt(scan, "ID");
 			if (!gobble(scan, "<Name>")) {
-				throw new ParserError(
-						"Parsing ItemType: Expecting <Name>, got "
-								+ scan.next());
+				throw new ParserError("Parsing Item: Expecting <Name>, got "
+						+ scan.next());
 			}
 			if (!scan.hasNext()) {
 				throw new ParserError(
-						"Parsing ItemType: Expected String, got nothing.");
+						"Parsing Item: Expected String, got nothing.");
 			}
 			String name = scan.next();
 			if (!gobble(scan, "</Name>")) {
-				throw new ParserError(
-						"Parsing ItemType: Expecting </Name>, got "
-								+ scan.next());
+				throw new ParserError("Parsing Item: Expecting </Name>, got "
+						+ scan.next());
 			}
 
 			if (gobble(scan, "<Container>")) {
@@ -146,7 +165,7 @@ public class GameParser {
 						"Parsing Consumable: Expecting </BuffPercentage>, got "
 								+ scan.next());
 			}
-			return new Consumables(pos, height,ID ,name,  worth, buff);
+			return new Consumables(pos, height, ID, name, worth, buff);
 		} catch (ParserError e) {
 			e.printStackTrace();
 		}
@@ -172,17 +191,17 @@ public class GameParser {
 			int ID = parseInt(scan, "ID");
 			if (!gobble(scan, "<Name>")) {
 				throw new ParserError(
-						"Parsing ItemType: Expecting <Name>, got "
+						"Parsing StoredItem: Expecting <Name>, got "
 								+ scan.next());
 			}
 			if (!scan.hasNext()) {
 				throw new ParserError(
-						"Parsing ItemType: Expected String, got nothing.");
+						"Parsing StoredItem: Expected String, got nothing.");
 			}
 			String name = scan.next();
 			if (!gobble(scan, "</Name>")) {
 				throw new ParserError(
-						"Parsing ItemType: Expecting </Name>, got "
+						"Parsing StoredItem: Expecting </Name>, got "
 								+ scan.next());
 			}
 			int worth = parseInt(scan, "Worth");
@@ -198,21 +217,20 @@ public class GameParser {
 	private static Furniture parseFurniture(Scanner scan, Position pos,
 			int height, String name, int ID) {
 		try {
-			if (!gobble(scan, "<StoredItem>")) {
-				throw new ParserError(
-						"Parsing Furniture: Expected <StoredItem>, got "
-								+ scan.next());
-			}
-			MoveableItem storedItem = parseStoredItem(scan);
-			if (!gobble(scan, "</StoredItem>")) {
-				throw new ParserError(
-						"Parsing Furniture: Expected </StoredItem>, got "
-								+ scan.next());
-			}
-			return new Furniture(pos, height,ID, name, storedItem);
+			if (gobble(scan, "<StoredItem>")) {
+				MoveableItem storedItem = parseStoredItem(scan);
+				return new Furniture(pos, height, ID, name, storedItem);
+			} else if (gobble(scan, "</Furniture>")) {
+				return new Furniture(pos, height, ID, name, null);
+			} else {
 
-		} catch (ParserError error) {
-			error.printStackTrace();
+				throw new ParserError(
+						"Parsing Furniture: Expecting </Furniture>, got "
+								+ scan.next());
+			}
+		} catch (ParserError e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -226,7 +244,7 @@ public class GameParser {
 			int slot = parseInt(scan, "Slot");
 			if (!gobble(scan, "</Equipment>")) {
 				throw new ParserError(
-						"Parsing ItemType: Expecting </Equipment>, got "
+						"Parsing Equipment: Expecting </Equipment>, got "
 								+ scan.next());
 			}
 			return new Equipment(pos, height, ID, name, attack, defence, worth,
@@ -241,7 +259,7 @@ public class GameParser {
 			String name, int ID) {
 		try {
 			int cats = parseInt(scan, "Cats");
-			Container tempContainer = new Container(pos, height,ID, name, cats);
+			Container tempContainer = new Container(pos, height, ID, name, cats);
 			List<MoveableItem> loot = new ArrayList<MoveableItem>();
 			while (!gobble(scan, "</Container>")) {
 				loot.add(parseStoredItem(scan));

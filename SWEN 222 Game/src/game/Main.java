@@ -23,6 +23,7 @@ public class Main {
 	/** Constants used internally in the Main class. */
 	private static final String IMAGE_PATH = "src" + File.separatorChar + "game" + File.separatorChar + "ui" + File.separatorChar + "images";
 	private static final String AREA_FILE = "src" + File.separatorChar + "game" + File.separatorChar + "loading" + File.separatorChar + "Area.xml";
+	private static final String ITEMS_FILE = "src" + File.separatorChar + "game" + File.separatorChar + "loading" + File.separatorChar + "Items1.xml";
 	private static final String[] TILES_FILE = new String[] { "1, FloorTile, floor_tile3" };
 
 	/** Game mode: client, server, or client and server. */
@@ -96,6 +97,7 @@ public class Main {
 			// Load the tile map and the game world areas.
 			tileMap = createTileMap(TILES_FILE);
 			area = GameParser.parseArea(AREA_FILE, tileMap);
+			GameParser.parseItemList(ITEMS_FILE, area);
 
 			// Add the main area to the game world, but only if the area
 			// successfully loaded.
