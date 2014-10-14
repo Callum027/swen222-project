@@ -62,7 +62,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 		this.direction = direction;
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		player = new Player(new Position(0,0), "Frank", 1, GameClass.playerClass.WARRIOR);
-		shelf = new Furniture(new Position(0, 1), 2, 1, "shelf", null);
+		shelf = new Furniture(new Position(5, 5), 2, 1, "shelf", null);
 
 	}
 
@@ -525,6 +525,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 	}
 
 	// unneeded game component methods
+	@Override
 	public void mouseReleased(GameFrame frame, MouseEvent e) {
 		if(frame.getSelectedItem() != null){
 			Position release = new Position(e.getX(), e.getY());
@@ -543,12 +544,15 @@ public class RenderingPanel extends JPanel implements GameComponent {
 			}
 		}
 	}
+	@Override
 	public void mousePressed(GameFrame frame, MouseEvent e) {
 		Position pressed = new Position(e.getX(), e.getY());
 		Position p = findPosition(pressed);
 		for(Item item : area.getItems().values()){
 			if(item.getPosition().equals(p) && item instanceof MoveableItem){
 				frame.setSelectedItem((MoveableItem)item);
+				area.removeItem(item);
+				repaint();
 				break;
 			}
 		}

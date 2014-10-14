@@ -34,20 +34,20 @@ import game.world.tiles.Tile;
  *
  */
 public class Area  implements Streamable{
-	
+
 	// fields
 	private final int id;
 	private Map<Integer,Enemy> enemies; //a mapping from unique identifiers to their respective enemy character
 	private Map<Integer,Item> items; //a mapping from unique identifiers to the items located in this area
 	private Tile[][] tiles; //the tiles that make up this area
 	private Tile[][][] walls;
-	
+
 	/**
 	 * Constructor:
 	 * Constructs an instance of an Area. takes a 2D array of Tiles which
 	 * represent the floor layout, a 3D array of tiles which represents the wall
 	 * layout and a unique identifying integer.
-	 * 
+	 *
 	 * @param tiles
 	 * 			--- floor layout
 	 * @param walls
@@ -66,7 +66,7 @@ public class Area  implements Streamable{
 		this.id = areaID;
 		this.walls = walls;
 	}
-	
+
 	/**
 	 * Returns the unique identifier for this Area.
 	 * @return
@@ -75,23 +75,23 @@ public class Area  implements Streamable{
 		return id;
 	}
 
-	
+
 	/**
 	 * Returns the 2D array of tiles which represent the
 	 * floor layout of this Area.
-	 * 
+	 *
 	 * @return
 	 * 		--- floor layout
 	 */
 	public Tile[][] getTiles() {
 		return tiles;
 	}
-	
+
 	/**
 	 * Returns the 2D array of tiles which represents the wall
 	 * specified by the given direction. The direction must be a
 	 * value between 0 and 3.
-	 * 
+	 *
 	 * @param direction
 	 * 			--- the position of the wall
 	 * @return
@@ -103,22 +103,22 @@ public class Area  implements Streamable{
 		}
 		return walls[0];
 	}
-	
+
 	/**
-	 * Returns  a shallow clone of the map of items 
+	 * Returns  a shallow clone of the map of items
 	 * that are currently in this area.
-	 * 
+	 *
 	 * @return
 	 * 		--- map of integers to items
 	 */
 	public Map<Integer,Item> getItems() {
 		return new HashMap<Integer,Item>(items);
 	}
-	
+
 	/**
 	 * Adds the specified item to the map of items currently
 	 * in this area.
-	 * 
+	 *
 	 * @param item
 	 * 		--- the item to add
 	 * @return
@@ -127,20 +127,20 @@ public class Area  implements Streamable{
 	public Item addItem(Item item){
 		return items.put(item.getID(), item);
 	}
-	
+
 	/**
 	 * Removes the specified item from the map of items currently in
 	 * this area.
-	 * 
+	 *
 	 * @param item
 	 * 		--- the item to be removed
 	 * @return
-	 * 		---	the previous item associated with the ID, or null if there was no mapping for the ID. 
+	 * 		---	the previous item associated with the ID, or null if there was no mapping for the ID.
 	 */
 	public Item removeItem(Item item){
-		return items.remove(item);
+		return items.remove(item.getID());
 	}
-	
+
 	/**
 	 * retrieves the items contained within the world using their id
 	 * @param id the id that is used to get the item with this id
@@ -149,22 +149,22 @@ public class Area  implements Streamable{
 	public Item getItem(int id){
 		return items.get(id);
 	}
-	
+
 	/**
-	 * Returns  a shallow clone of the map of enemies 
+	 * Returns  a shallow clone of the map of enemies
 	 * that are currently in this area.
-	 * 
+	 *
 	 * @return
 	 * 		--- map of integers to enemies
 	 */
 	public Map<Integer,Enemy> getEnemies() {
 		return new HashMap<Integer,Enemy>(enemies);
 	}
-	
+
 	/**
 	 * Adds the specified enemy to the map of enemies currently
 	 * in this area.
-	 * 
+	 *
 	 * @param enemy
 	 * 		--- the enemy to add
 	 * @return
@@ -173,20 +173,20 @@ public class Area  implements Streamable{
 	public Enemy addEnemy(Enemy enemy){
 		return enemies.put(enemy.getID(), enemy);
 	}
-	
+
 	/**
 	 * Removes the specified enemy from the map of enemies currently in
 	 * this area.
-	 * 
+	 *
 	 * @param enemy
 	 * 		--- the enemy to be removed
 	 * @return
-	 * 		---	the previous enemy associated with the ID, or null if there was no mapping for the ID. 
+	 * 		---	the previous enemy associated with the ID, or null if there was no mapping for the ID.
 	 */
 	public Enemy removeEnemy(Enemy enemy){
 		return enemies.remove(enemy);
 	}
-	
+
 	/**
 	 * retrieves the enemies contained within the world using their id
 	 * @param id the id that is used to get the enemy with this id
@@ -195,12 +195,12 @@ public class Area  implements Streamable{
 	public Enemy getEnemy(int id){
 		return enemies.get(id);
 	}
-	
+
 	/**
 	 * Returns true if the specified position is a moveable position.
 	 * A moveable position is defined as a position within the bounds
 	 * of the area that does not have a non moveable item on it.
-	 * 
+	 *
 	 * @param p
 	 * 		--- position to check
 	 * @return
@@ -219,7 +219,7 @@ public class Area  implements Streamable{
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Finds the path from the specified start position to the goal. Uses a version
 	 * of the A* algorithm to do this. Returns the path between the two positions
@@ -478,7 +478,7 @@ public class Area  implements Streamable{
 	public void write(OutputStream os) throws IOException {
 		NetIO.writeByte(os, (byte)getID());
 	}
-	
+
 	/**
 	 * reads an area from the inputstream
 	 * @param is the inputstream
