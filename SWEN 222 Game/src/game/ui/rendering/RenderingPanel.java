@@ -9,6 +9,7 @@ import game.world.Position;
 import game.world.characters.Enemy;
 import game.world.characters.Player;
 import game.world.characters.classes.GameClass;
+import game.world.events.DropItemEvent;
 import game.world.events.MoveEvent;
 import game.world.items.Furniture;
 import game.world.items.Item;
@@ -249,7 +250,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 			int y = startY + (DY * i);
 			for (int j = 0; j < tiles[i].length; j++) {
 				tiles[i][j].draw(g, x, y, direction);
-				tileBoundingBoxes.add(tiles[i][j].getBoundingBox(x, y, new Position(i, j)));
+				tileBoundingBoxes.add(tiles[j][i].getBoundingBox(x, y, new Position(j, i)));
 				x += DX;
 				y += DY;
 			}
@@ -513,6 +514,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 		if (e.getButton() == MouseEvent.BUTTON3) {
 			Position p = findPosition(new Position(e.getX(), e.getY()));
 			if (p != null) {
+				frame.append("Clicked at position: "+p);
 				Position current = player.getPosition();
 				Stack<Position> moves = area.findPath(current, p);
 				if(!moves.isEmpty()){
@@ -541,9 +543,9 @@ public class RenderingPanel extends JPanel implements GameComponent {
 				}
 			}
 			if(positionClear){
-				frame.getSelectedItem();
-				area.addItem(frame.getSelectedItem()); // should be a GameEvent
-				frame.setSelectedItem(null);
+				DropItemEvent drop = new DropItemEvent(frame.getSelectedItem(), p, area.getID());
+				frame.getGameEventBroadcaster().broadcastGameEvent(drop);
+				//frame.setSelectedItem(null);
 				repaint();
 			}
 		}
