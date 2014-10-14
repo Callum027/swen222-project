@@ -206,20 +206,6 @@ public class ItemParser {
 		return null;
 	}
 
-	private static int parseInt(Scanner scan, String type) throws ParserError {
-		if (!gobble(scan, "<" + type + ">")) {
-			throw new ParserError("Parsing Int: Expecting <" + type + ">, got "
-					+ scan.next());
-		}
-		int value = scan.nextInt();
-
-		if (!gobble(scan, "</" + type + ">")) {
-			throw new ParserError("Parsing Int: Expecting </" + type
-					+ ">, got " + scan.next());
-		}
-		return value;
-	}
-
 	private static Item parseContainer(Scanner scan, Position pos, int height,
 			String name, int ID) {
 		try {
@@ -235,6 +221,20 @@ public class ItemParser {
 			error.printStackTrace();
 		}
 		return null;
+	}
+
+	private static int parseInt(Scanner scan, String type) throws ParserError {
+		if (!gobble(scan, "<" + type + ">")) {
+			throw new ParserError("Parsing Int: Expecting <" + type + ">, got "
+					+ scan.next());
+		}
+		int value = scan.nextInt();
+
+		if (!gobble(scan, "</" + type + ">")) {
+			throw new ParserError("Parsing Int: Expecting </" + type
+					+ ">, got " + scan.next());
+		}
+		return value;
 	}
 
 	private static boolean gobble(Scanner scan, String s) {
