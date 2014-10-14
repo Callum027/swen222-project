@@ -60,6 +60,7 @@ public class Merchant extends GameCharacter{
 
 	@Override
 	public void write(OutputStream os) throws IOException {
+		super.write(os);
 		NetIO.writeByte(os, (byte)super.getId());
 	}
 
@@ -94,5 +95,9 @@ public class Merchant extends GameCharacter{
 	public void draw(Graphics g, int x, int y, int direction) {
 		g.drawImage(images[0], x, y, null);
 
+	}
+
+	public GameCharacter.Type getType() {
+		return GameCharacter.Type.MERCHANT;
 	}
 }
