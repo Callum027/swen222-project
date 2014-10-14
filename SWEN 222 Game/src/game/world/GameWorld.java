@@ -2,7 +2,9 @@ package game.world;
 
 import game.world.characters.GameCharacter;
 import game.world.characters.Player;
+import game.world.events.DropItemEvent;
 import game.world.events.MoveEvent;
+import game.world.items.Item;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -58,7 +60,7 @@ public class GameWorld implements GameEventListener{
 	public Map<Integer,Player> getPlayers(){
 		return players;
 	}
-	
+
 	/**
 	 * retrieves the players contained within the world using their id
 	 * @param id the id that is used to get the player with this id
@@ -67,7 +69,7 @@ public class GameWorld implements GameEventListener{
 	public Player getPlayer(int id){
 		return players.get(id);
 	}
-	
+
 	/**
 	 * retrieves the areas contained within the world using their id
 	 * @param id the id that is used to get the area with this id
@@ -86,6 +88,15 @@ public class GameWorld implements GameEventListener{
 			MoveEvent move = (MoveEvent) ge;
 			GameCharacter gameCharacter = move.getGameCharacter();
 			gameCharacter.moveToPosition(move.getPosition());
+		}
+		if(ge instanceof DropItemEvent){
+			DropItemEvent drop = (DropItemEvent) ge;
+			Item item = drop.getItem();
+			Position p = drop.getPosition();
+			int areaID = drop.getAreaID();
+			Area area = areas.get(areaID);
+			item.setPosition(p);
+			area.addItem(item);
 		}
 	}
 

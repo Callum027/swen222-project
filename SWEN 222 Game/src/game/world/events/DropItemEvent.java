@@ -5,8 +5,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import game.exceptions.GameException;
+import game.net.NetIO;
 import game.world.Area;
 import game.world.GameEvent;
+import game.world.Position;
 import game.world.items.Equipment;
 import game.world.items.Item;
 import game.world.items.MoveableItem;
@@ -14,26 +16,28 @@ import game.world.items.MoveableItem;
 public class DropItemEvent extends GameEvent{
 
 	private static Item item;
-	private static Area area;
+	private static Position position;
+	private static int areaID;
 
-	public DropItemEvent(Item item, Area area){
+	public DropItemEvent(Item item, Position position, int areaID){
 		if(item == null){
 			throw new IllegalArgumentException("item is null");
 		}
-		if(area == null){
-			throw new IllegalArgumentException("area is null");
-		}
 
 		DropItemEvent.item = item;
-		DropItemEvent.area = area;
+		DropItemEvent.areaID = areaID;
 	}
 
 	public Item getItem(){
 		return item;
 	}
 
-	public Area getArea(){
-		return area;
+	public Position getPosition(){
+		return position;
+	}
+
+	public int getAreaID(){
+		return areaID;
 	}
 
 	@Override
@@ -51,15 +55,15 @@ public class DropItemEvent extends GameEvent{
 	public static DropItemEvent read(InputStream is) throws IOException, GameException {
 		if (item instanceof MoveableItem){
 			MoveableItem move = MoveableItem.read(is);
-			return new DropItemEvent(move, area);
+			return new DropItemEvent(move, position, areaID);
 		}
 
 		if (item instanceof Equipment){
 			Equipment equipment = (Equipment) Equipment.read(is);
-			return new DropItemEvent(equipment, area);
+			return new DropItemEvent(equipment, position, areaID);
 		}
 
-		return new DropItemEvent(item, area);
+		return new DropItemEvent(item, position, areaID);
 	}
 
 	public void write(OutputStream os) throws IOException {
@@ -67,7 +71,8 @@ public class DropItemEvent extends GameEvent{
 
 		// Write the changes this event causes to the output stream.
 		item.write(os);
-		area.write(os);
+		position.write(os);
+		NetIO.writeInt(os, areaID);
 	}
 
 }
