@@ -541,10 +541,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 				}
 			}
 			if(positionClear){
-				//frame.getSelectedItem().setPosition(p);
-				//frame.append("Dropped Item new position: "+frame.getSelectedItem().getPosition());
-				Item i = frame.getSelectedItem();
-				i.setPosition(p);
+				frame.getSelectedItem();
 				area.addItem(frame.getSelectedItem()); // should be a GameEvent
 				frame.setSelectedItem(null);
 				repaint();
