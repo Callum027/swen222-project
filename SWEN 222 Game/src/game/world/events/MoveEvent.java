@@ -7,6 +7,8 @@ import java.io.OutputStream;
 import game.exceptions.GameException;
 import game.world.GameEvent;
 import game.world.Position;
+import game.world.characters.Enemy;
+import game.world.characters.GameCharacter;
 import game.world.characters.Player;
 
 /**
@@ -17,7 +19,7 @@ import game.world.characters.Player;
  */
 public class MoveEvent extends GameEvent {
 
-	private final Player player;
+	private static GameCharacter gameCharacter;
 	private final Position position;
 
 	/**
@@ -25,16 +27,16 @@ public class MoveEvent extends GameEvent {
 	 * @param position Position moved to
 	 * @param player Played affected
 	 */
-	public MoveEvent(Position position, Player player){
+	public MoveEvent(Position position, GameCharacter gameCharacter){
 		if (position == null)
 			throw new IllegalArgumentException("position is null");
 
-		if (player == null)
+		if (gameCharacter == null)
 			throw new IllegalArgumentException("player is null");
 
 
 		this.position = position;
-		this.player = player;
+		this.gameCharacter = gameCharacter;
 	}
 
 	public GameEvent.Type getType() {
@@ -55,8 +57,8 @@ public class MoveEvent extends GameEvent {
 	 *
 	 * @return affected player
 	 */
-	public Player getPlayer() {
-		return player;
+	public GameCharacter getGameCharacter() {
+		return gameCharacter;
 	}
 
 	/**
@@ -68,9 +70,18 @@ public class MoveEvent extends GameEvent {
 	 */
 	public static MoveEvent read(InputStream is) throws IOException, GameException {
 		Position position = Position.read(is);
-		Player player = Player.read(is);
+		
+		if (gameCharacter instanceof Player){
+			GameCharacter gameCharacter = Player.read(is);
+			return new MoveEvent(position, gameCharacter);
+		}
+		
+		if (gameCharacter instanceof Enemy){
+			GameCharacter gameCharacter = Enemy.read(is);
+			return new MoveEvent(position, gameCharacter);
+		}
 
-		return new MoveEvent(position, player);
+		return new MoveEvent(position, gameCharacter);
 	}
 
 	public void write(OutputStream os) throws IOException {
@@ -78,6 +89,6 @@ public class MoveEvent extends GameEvent {
 
 		// Write the changes this event causes to the output stream.
 		position.write(os);
-		player.write(os);
+		gameCharacter.write(os);
 	}
 }

@@ -22,6 +22,7 @@ import game.exceptions.PlayerIDNotFoundException;
 import game.net.NetIO;
 import game.net.Streamable;
 import game.world.characters.Enemy;
+import game.world.characters.Merchant;
 import game.world.characters.Player;
 import game.world.items.Item;
 import game.world.items.MoveableItem;
@@ -37,6 +38,7 @@ public class Area  implements Streamable{
 
 	// fields
 	private final int id;
+	private Map<Integer,Merchant> merchants; //a mapping from a unique identifier to the respective merchant character
 	private Map<Integer,Enemy> enemies; //a mapping from unique identifiers to their respective enemy character
 	private Map<Integer,Item> items; //a mapping from unique identifiers to the items located in this area
 	private Tile[][] tiles; //the tiles that make up this area
@@ -184,7 +186,7 @@ public class Area  implements Streamable{
 	 * 		---	the previous enemy associated with the ID, or null if there was no mapping for the ID.
 	 */
 	public Enemy removeEnemy(Enemy enemy){
-		return enemies.remove(enemy);
+		return enemies.remove(enemy.getID());
 	}
 
 	/**
@@ -196,6 +198,52 @@ public class Area  implements Streamable{
 		return enemies.get(id);
 	}
 
+	/**
+	 * Returns  a shallow clone of the map of a merchant
+	 * that are currently in this area.
+	 *
+	 * @return
+	 * 		--- map of integers to merchants
+	 */
+	public Map<Integer,Merchant> getMerchants() {
+		return new HashMap<Integer,Merchant>(merchants);
+	}
+
+	/**
+	 * Adds the specified merchant to the map of merchants currently
+	 * in this area.
+	 *
+	 * @param merchant
+	 * 		--- the merchant to add
+	 * @return
+	 * 		--- returns the previous merchant associated with the ID or null if there was no previous mapping of the ID
+	 */
+	public Merchant addMerchant(Merchant merchant){
+		return merchants.put(merchant.getId(), merchant);
+	}
+
+	/**
+	 * Removes the specified merchant from the map of merchants currently in
+	 * this area.
+	 *
+	 * @param merchant
+	 * 		--- the merchant to be removed
+	 * @return
+	 * 		---	the previous merchant associated with the ID, or null if there was no mapping for the ID.
+	 */
+	public Merchant removeMerchant(Merchant merchant){
+		return merchants.remove(merchant.getId());
+	}
+
+	/**
+	 * retrieves the merchants contained within the world using their id
+	 * @param id the id that is used to get the merchant with this id
+	 * @return the merchant with the given id
+	 */
+	public Merchant getMerchant(int id){
+		return merchants.get(id);
+	}
+	
 	/**
 	 * Returns true if the specified position is a moveable position.
 	 * A moveable position is defined as a position within the bounds

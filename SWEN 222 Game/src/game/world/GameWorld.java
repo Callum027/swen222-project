@@ -1,6 +1,7 @@
 package game.world;
 
 import game.world.characters.Enemy;
+import game.world.characters.GameCharacter;
 import game.world.characters.Player;
 import game.world.events.MoveEvent;
 
@@ -84,8 +85,8 @@ public class GameWorld implements GameEventListener{
 	public void gameEventOccurred(GameEvent ge) {
 		if (ge instanceof MoveEvent){
 			MoveEvent move = (MoveEvent) ge;
-			Player player = move.getPlayer();
-			player.moveToPosition(move.getPosition());
+			GameCharacter gameCharacter = move.getGameCharacter();
+			gameCharacter.moveToPosition(move.getPosition());
 		}
 	}
 
