@@ -307,7 +307,9 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 				e = new MouseEvent(c, e.getID(), e.getWhen(), e.getModifiers(), x, y, e.getClickCount(), e.isPopupTrigger());
 			}
 			GameComponent current = getCurrentGameComponent();
-			current.mouseReleased(this, e);
+			if(current != null){
+				current.mouseReleased(this, e);
+			}
 		}
 		else{
 			e.consume();
