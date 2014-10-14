@@ -53,7 +53,6 @@ public class InventoryPanel extends JPanel implements GameComponent {
 	 *            the height of the panel
 	 */
 	public InventoryPanel() {
-		//addItem(new MoveableItem(new Position(8, 0), 1, 15, "cat-inv", 9001));
 		addItem(new Equipment(new Position(8, 0), 1, 16, "wizard-hat", 0, 20,
 				500, EquipPanel.HEAD_SLOT));
 		addItem(new Equipment(new Position(8, 0), 1, 17, "mithril-sword", 200,
@@ -66,7 +65,9 @@ public class InventoryPanel extends JPanel implements GameComponent {
 				200, 500, EquipPanel.FEET_SLOT));
 		addItem(new Equipment(new Position(8, 0), 1, 21, "mithril-hat", 0, 200,
 				500, EquipPanel.HEAD_SLOT));
+		addItem(new MoveableItem(new Position(1, 3), 1, 40, "key", 0));
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
+
 		// addMouseListener(this);
 		background = Main.getImage("Inventory.png");
 	}
