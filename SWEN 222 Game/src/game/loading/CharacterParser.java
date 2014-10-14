@@ -1,6 +1,7 @@
 package game.loading;
 
 import game.world.GameWorld;
+import game.world.characters.Enemy;
 import game.world.characters.Player;
 
 import java.io.File;
@@ -44,27 +45,38 @@ public class CharacterParser {
 
 	private static void parseCharacterType(Scanner scan, GameWorld world) {
 		try {
+			
 			if (gobble(scan, "<Player>")) {
-				Player player = parsePlayer(scan, world);
-				if (!gobble(scan, "</Player>")) {
-
-					throw new ParserError(
-							"Parsing Characters: Expecting <Player>, got "
-									+ scan.next());
-
-				}
-				world.addPlayer(player);
+				parsePlayer(scan, world);
+				return;
+			}
+			else if(gobble(scan, "<Enemy>")){
+				parseEnemy(scan, world);
+				return;
+			}
+			else if(gobble(scan, "<Merchant>")){
+				parseMerchant(scan, world);
+			}
+			else{
+				throw new ParserError("Parsing CharacterType: Invalid Character type.");
 			}
 		} catch (ParserError e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
 
-	private static Player parsePlayer(Scanner scan, GameWorld world) {
+	private static void parseMerchant(Scanner scan, GameWorld world) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private static Enemy parseEnemy(Scanner scan, GameWorld world) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	private static void parsePlayer(Scanner scan, GameWorld world) {
 	}
 
 	private static int parseInt(Scanner scan, String type) throws ParserError {
