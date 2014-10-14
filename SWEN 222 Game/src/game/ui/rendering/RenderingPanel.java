@@ -11,6 +11,7 @@ import game.world.characters.Player;
 import game.world.characters.classes.GameClass;
 import game.world.events.DropItemEvent;
 import game.world.events.MoveEvent;
+import game.world.items.Door;
 import game.world.items.Furniture;
 import game.world.items.Item;
 import game.world.items.MoveableItem;
@@ -95,14 +96,14 @@ public class RenderingPanel extends JPanel implements GameComponent {
 		}
 	}
 
-	/*
-	private Point rotatePosition(Point p, int width, int height, int count) {
+	
+	/*private Position rotatePosition(Position p, int width, int height, int count) {
 		if (count < direction) {
 			int length = (count % 2 == 0) ? height : width;
-			int y = p.x;
-			int x = length - p.y - 1;
+			int y = p.getX();
+			int x = length - p.getY() - 1;
 			// swap height and width around to simulate array rotating
-			rotatePosition(new Point(x, y), height, width, count + 1);
+			rotatePosition(new Position(x, y), height, width, count + 1);
 		}
 		return p;
 	}*/
@@ -161,7 +162,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 			toDraw.addAll(enemies);
 			drawFloors(g, tiles, items);
 			drawDrawable(g, toDraw, tiles);
-			drawBoundingBoxes(g);
+			//drawBoundingBoxes(g);
 		}
 	}
 
@@ -191,22 +192,21 @@ public class RenderingPanel extends JPanel implements GameComponent {
 			int height = area.getTiles().length - 1;
 			int yOffset = d.getHeight() * FloorTile.HEIGHT;
 			Position p = d.getPosition();
-
 			if (direction == GameFrame.NORTH) {
 				x = startX + DX * (p.getX() - p.getY());
 				y = startY + DY * (p.getX() + p.getY()) - yOffset;
 			}
 			else if (direction == GameFrame.EAST) {
-				x = startX + DX * ((height - p.getY()) - (width - p.getX()));
-				y = startY + DY * ((width - p.getX()) + (height - p.getY())) - yOffset;
+				x = startX + DX * (p.getY() - (width - p.getX()));
+				y = startY + DY * ((width - p.getX()) + (p.getY())) - yOffset;
 			}
 			else if (direction == GameFrame.SOUTH) {
-				x = startX + DX * ((height - p.getY()) - (width - p.getX()));
+				x = startX + DX * (p.getY() - p.getX());//((height - p.getY()) - (width - p.getX()));
 				y = startY + DY * ((width - p.getX()) + (height - p.getY())) - yOffset;
 			}
 			else if (direction == GameFrame.WEST) {
-				x = startX + DX * ((height + p.getY()) - (p.getX()));
-				y = startY + DY * ((p.getX()) + (height + p.getY())) - yOffset;
+				x = startX + DX * ((width - p.getX()) - p.getY());
+				y = startY + DY * (p.getX() + (height - p.getY())) - yOffset;
 			}
 
 			d.draw(g, x, y, direction);
@@ -537,7 +537,11 @@ public class RenderingPanel extends JPanel implements GameComponent {
 	}
 	
 	private void interact(GameFrame frame, Drawable drawable){
-		if(drawable instanceof Item){
+		if(drawable instanceof Door){
+			((Door)drawable).interact(player, frame.getGameEventBroadcaster());
+			frame.append("Interacted with a door.");
+		}
+		else if(drawable instanceof Item){
 			((Item)drawable).interact(player);
 			frame.append("Interaction Occurred");
 		}

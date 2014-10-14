@@ -38,6 +38,14 @@ public class GameWorld implements GameEventListener{
 	public void addArea(Area area){
 		areas.put(area.getID(), area);
 	}
+	
+	/**
+	 * Sets areas to be the specifed areaMap
+	 * @param areaMap
+	 */
+	public void addAreas(Map<Integer, Area> areaMap){
+		this.areas = areaMap;
+	}
 
 	/**
 	 * adds a player with it's id to the map of players

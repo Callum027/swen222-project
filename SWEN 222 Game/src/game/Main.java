@@ -105,10 +105,10 @@ public class Main {
 
 			// Add the main area to the game world, but only if the area
 			// successfully loaded.
-			if (area != null)
+			if (!areaMap.isEmpty())
 			{
 				gameWorld = new GameWorld();
-				gameWorld.addArea(area);
+				gameWorld.addAreas(areaMap);
 			}
 			else
 			{

@@ -208,19 +208,20 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 		} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			quitGame();
 		}
-		// render.setDirection(direction);
-		// render.repaint();
+		render.setDirection(direction);
+		render.repaint();
 
 		if (direction == NORTH) {
-			System.out.println("facing north");
+			text.append("Facing north\n");
 		}
-		if (direction == EAST) {
-			System.out.println("facing east");
+		else if (direction == EAST) {
+			text.append("Facing east\n");
 		}
-		if (direction == SOUTH) {
-			System.out.println("facing south");
-		} else if (direction == WEST) {
-			System.out.println("facing west");
+		else if (direction == SOUTH) {
+			text.append("facing south\n");
+		}
+		else if (direction == WEST) {
+			text.append("Facing west\n");
 		}
 
 	}
