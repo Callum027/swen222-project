@@ -84,8 +84,6 @@ public class EquipPanel extends JPanel implements GameComponent {
 		BOOTS_X = width - 100;
 		BOOTS_Y = height - 52;
 
-		Position p = new Position(0, 0);
-
 		items.equipHead(new Equipment(new Position(0, 0), 1, 10, "iron-hat", 0, 50, 50, HEAD_SLOT));
 		items.equipMainHand(new Equipment(new Position(0, 0), 1, 11, "iron-sword", 50, 0, 50,
 				MAIN_HAND));
