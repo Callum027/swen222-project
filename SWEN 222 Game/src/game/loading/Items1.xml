@@ -1,0 +1,30 @@
+<ItemList>
+	<Item>
+		<XPos> 0 </XPos>
+		<YPos> 1 </YPos>
+		<Height> 2 </Height>
+		<ID> 0 </ID>
+		<Name> shelf </Name>
+		<Furniture>
+		</Furniture>
+	</Item>
+	<Item>
+		<XPos> 2 </XPos>
+		<YPos> 0 </YPos>
+		<Height> 2 </Height>
+		<ID> 1 </ID>
+		<Name> wizard-hat </Name>
+		<Furniture>
+		</Furniture>
+	</Item>
+	<Item>
+		<XPos> 10 </XPos>
+		<YPos> 10 </YPos>
+		<Height> 1 </Height>
+		<ID> 2 </ID>
+		<Name> wizard-hat </Name>
+		<MoveableItem>
+		    <Worth> 90 </Worth>
+		</MoveableItem>
+	</Item>
+</ItemList>
