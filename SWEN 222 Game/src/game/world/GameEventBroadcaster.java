@@ -17,7 +17,7 @@ public class GameEventBroadcaster {
 	 * 
 	 * @param gel Game event listener
 	 */
-	public void addGameEventListener(GameEventListener gel)
+	public synchronized void addGameEventListener(GameEventListener gel)
 	{
 		gameEventListeners.add(gel);
 	}
@@ -26,7 +26,7 @@ public class GameEventBroadcaster {
 	 * Broadcast the given game event to all listeners.
 	 * @param ge Game event listener
 	 */
-	public void broadcastGameEvent(GameEvent ge)
+	public synchronized void broadcastGameEvent(GameEvent ge)
 	{
 		for (GameEventListener gel: gameEventListeners)
 			gel.gameEventOccurred(ge);
