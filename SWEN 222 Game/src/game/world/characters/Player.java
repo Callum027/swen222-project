@@ -20,7 +20,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * Represents the character that the player controls. THis is the context class for our strategy pattern
+ * Represents the character that the player controls. This is the context class for our strategy pattern
  * @author Nick Tran
  *
  */
