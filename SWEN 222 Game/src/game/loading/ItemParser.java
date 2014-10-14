@@ -4,6 +4,7 @@ import game.world.Area;
 import game.world.Position;
 import game.world.items.Consumables;
 import game.world.items.Container;
+import game.world.items.Door;
 import game.world.items.Equipment;
 import game.world.items.Furniture;
 import game.world.items.Item;
@@ -84,6 +85,9 @@ public class ItemParser {
 			}
 			if (gobble(scan, "<MoveableItem>")) {
 				return parseMoveableItem(scan, pos, height, name, ID);
+			}
+			if(gobble(scan, "<Door>")){
+				return parseDoor(scan, pos, height, name, ID);
 			}
 		} catch (ParserError error) {
 			error.printStackTrace();
@@ -222,6 +226,21 @@ public class ItemParser {
 		}
 		return null;
 	}
+	
+	private static Item parseDoor(Scanner scan, Position pos, int height, String name, int ID){
+		try{
+			int areaID = parseInt(scan, "AreaID");
+			boolean keyRequired = parseBoolean(scan, "KeyRequired");
+			
+			if(!gobble(scan, "</Door>")){
+				throw new ParserError("Parsing Door: Expecting </Door>, got"+scan.next());
+			}
+			return new Door(pos, height, ID, name, null, areaID, keyRequired);
+		}catch(ParserError error){
+			error.printStackTrace();
+		}
+		return null;
+	}
 
 	private static int parseInt(Scanner scan, String type) throws ParserError {
 		if (!gobble(scan, "<" + type + ">")) {
@@ -233,6 +252,18 @@ public class ItemParser {
 		if (!gobble(scan, "</" + type + ">")) {
 			throw new ParserError("Parsing Int: Expecting </" + type
 					+ ">, got " + scan.next());
+		}
+		return value;
+	}
+	
+	private static boolean parseBoolean(Scanner scan, String type) throws ParserError{
+		if(!gobble(scan, "<"+type+">")){
+			throw new ParserError("Parsing Boolean: Expecting <"+type+">, got "+scan.next());
+		}
+		boolean value = scan.nextBoolean();
+		
+		if(!gobble(scan, "</"+type+">")){
+			throw new ParserError("Parsing Boolean: Expecting </"+type+">, got "+scan.next());
 		}
 		return value;
 	}

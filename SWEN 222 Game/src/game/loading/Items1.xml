@@ -27,4 +27,15 @@
 		    <Worth> 90 </Worth>
 		</MoveableItem>
 	</Item>
+	<Item>
+		<XPos> 5 </XPos>
+		<YPos> 0 </YPos>
+		<Height> 2 </Height>
+		<ID> 3 </ID>
+		<Name> Door_North </Name>
+		<Door>
+			<AreaID> 2 </AreaID>
+			<KeyRequired> false </KeyRequired>
+		</Door>
+	</Item>
 </ItemList>
