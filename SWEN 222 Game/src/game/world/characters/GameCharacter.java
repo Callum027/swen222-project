@@ -26,7 +26,7 @@ public abstract class GameCharacter implements Streamable, Drawable{
 	 */
 	private ArrayList<MoveableItem> items;
 
-	private final int MAXIMUM_CAPACITY = 20; //the limit on the amount of items each character can hold
+	private final int MAXIMUM_CAPACITY = 18; //the limit on the amount of items each character can hold
 	private Position position;
 	private final String name;
 	private Image[] images;
