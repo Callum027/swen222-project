@@ -22,7 +22,9 @@ import java.net.SocketTimeoutException;
  */
 public abstract class NetIOController extends Thread {
 	private static final int SOCKET_TIMEOUT = 50;
+	
 	private boolean closing = false;
+	private boolean pauseMainLoop = false;
 
 	/**
 	 * Read a GamePacket from the given socket, with error checking.
@@ -35,13 +37,6 @@ public abstract class NetIOController extends Thread {
 	protected GamePacket read(Socket socket) {
 		if (socket != null && !closing) {
 			try {
-				// Get the output stream of the socket.
-				InputStream is = socket.getInputStream();
-				OutputStream os = socket.getOutputStream();
-
-				// Set the normal timeout on this socket.
-				socket.setSoTimeout(SOCKET_TIMEOUT);
-
 				try {
 					GamePacket gp = null;
 
@@ -50,17 +45,26 @@ public abstract class NetIOController extends Thread {
 					// Read a game packet from the server. Keep trying to read a packet
 					// until we get one.
 					while (gp == null) {
-						try {
-							gp = GamePacket.read(is);
-						}
-						catch (SocketTimeoutException e) {
-							// Do nothing, try reading from the socket again...
+						// Provide a point which the main reading loop can be
+						// interrupted with.
+						if (pauseMainLoop)
+							continue;
+						
+						synchronized (socket) {
+							try {
+								// Set the normal timeout on this socket.
+								socket.setSoTimeout(SOCKET_TIMEOUT);
+								gp = GamePacket.read(socket.getInputStream());
+							}
+							catch (SocketTimeoutException e) {
+								// Do nothing, try reading from the socket again...
+							}
 						}
 					}
 
+					// Check the incoming packet to see what type of packet it is,
+					// and respond to the server accordingly.
 					synchronized (socket) {
-
-
 						// Send an ACK back to the server, if this packet is not an ACK, ERR or QUIT itself.
 						// ACKs and ERRs shouldn't come through here. write() should be calling the GamePacket
 						// read()/write() methods directly.
@@ -70,7 +74,7 @@ public abstract class NetIOController extends Thread {
 								System.out.println("read: received " + gp.getType() + " from peer??? This should not be handled here");
 								break;
 							case QUIT:
-								System.out.println("read: received QUIT");
+								System.out.println("read: received QUIT, closing connection");
 								socket.close();
 								break;
 							default:
@@ -78,13 +82,16 @@ public abstract class NetIOController extends Thread {
 								new GamePacket(GamePacket.Type.ACK, new AckPacket()).write(socket.getOutputStream());
 								break;
 						}
-
-						// Return the successfully read GamePacket.
-						return gp;
 					}
+					
+					// Return the successfully read GamePacket.
+					return gp;
 				}
 				catch (GameException e) {
-					System.err.println("read: while reading packet from peer: " + e);
+					InputStream is = socket.getInputStream();
+					OutputStream os = socket.getOutputStream();
+					
+					System.out.println("read: while reading packet from peer: " + e);
 
 					// Drop the rest of the packet from the input stream.
 					is.skip(is.available());
@@ -94,11 +101,11 @@ public abstract class NetIOController extends Thread {
 				}
 			}
 			catch (SocketException e) {
-				System.err.println("read: closing connection: " + e.getMessage());
+				System.out.println("read: closing connection: " + e.getMessage());
 				close(socket);
 			}
 			catch (IOException e) {
-				System.err.println("read: unhandled, unknown IOException");
+				System.out.println("read: unhandled, unknown IOException");
 				e.printStackTrace();
 				close(socket);
 			}
@@ -119,8 +126,14 @@ public abstract class NetIOController extends Thread {
 			try {
 				synchronized (socket) {
 					boolean success = false;
+					
+					// Pause the main listening loop while we start our communication
+					// with the server.
+					pauseMainLoop = true;
 
 					while (!success) {
+						System.out.println("write: sending GamePacket to peer");
+						
 						// Send off the game packet to the server!
 						gp.write(socket.getOutputStream());
 
@@ -133,15 +146,18 @@ public abstract class NetIOController extends Thread {
 							// Permanently block while we wait for a reply.
 							socket.setSoTimeout(0);
 
-							while (reply == null)
+							/*while (reply == null)
 							{
 								try {
 									reply = GamePacket.read(socket.getInputStream());
 								}
 								catch (SocketTimeoutException e) {
 								}
-							}
-
+								
+								System.out.println("looping");
+							}*/
+							reply = GamePacket.read(socket.getInputStream());
+							
 							// Check if this reply is an ACK or ERR, and if so, handle accordingly.
 							switch (reply.getType()) {
 								case ACK:
@@ -161,6 +177,9 @@ public abstract class NetIOController extends Thread {
 							e.printStackTrace();
 						}
 					}
+					
+					// Unpause the main loop, let it start reading packets again.
+					pauseMainLoop = false;
 				}
 			}
 			catch (SocketException e) {

@@ -79,7 +79,7 @@ public class NetIO {
 		if (i == -1)
 			throw new EOFException("reached end of input stream in readLong");
 
-		l = (int)((bytes[0] << 56)
+		l = (long)((bytes[0] << 56)
 				| (bytes[1] << 48)
 				| (bytes[2] << 40)
 				| (bytes[3] << 32)

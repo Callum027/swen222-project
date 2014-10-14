@@ -71,7 +71,6 @@ public class GamePacket implements Streamable {
 		switch (t)
 		{
 			case EVENT:
-				System.out.println("server: reading a new EVENT packet");
 				s = GameEvent.read(is);
 				break;
 			case ACK:
@@ -164,13 +163,10 @@ public class GamePacket implements Streamable {
 		 * @return GamePacket.Type
 		 */
 		public static Type read(InputStream is) throws IOException, GameException {
-			byte id = NetIO.readByte(is);
-			System.out.println("reading GamePacket from stream: " + id);
-			return getTypeFromID(id);
+			return getTypeFromID(NetIO.readByte(is));
 		}
 
 		public void write(OutputStream os) throws IOException {
-			System.out.println("writing GamePacket to stream: " + id);
 			NetIO.writeByte(os, id);
 		}
 	}
