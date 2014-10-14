@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import game.Main;
-import game.world.Interactable;
 import game.world.Position;
 import game.world.items.MoveableItem;
 
@@ -15,7 +14,7 @@ import game.world.items.MoveableItem;
  * @author Nick Tran
  *
  */
-public class Merchant extends GameCharacter implements Interactable{
+public class Merchant extends GameCharacter{
 
 	private Image[] images;
 	private int height = 2;
@@ -48,7 +47,6 @@ public class Merchant extends GameCharacter implements Interactable{
 		this.setCats(this.getCats()+item.getWorth()); //increase the Merchant's money
 	}
 
-	@Override
 	public void interact(Player player) {
 
 	}

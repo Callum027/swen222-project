@@ -4,7 +4,6 @@ import game.Main;
 import game.net.Streamable;
 import game.world.BoundingBox;
 import game.world.Drawable;
-import game.world.Interactable;
 import game.world.Position;
 import game.world.tiles.FloorTile;
 
@@ -18,7 +17,7 @@ import java.awt.Image;
  * @author Nick Tran
  *
  */
-public abstract class Item implements Drawable, Interactable, Streamable{
+public abstract class Item implements Drawable, Streamable{
 
 	private Position position;
 	private final String name;

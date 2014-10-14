@@ -66,7 +66,6 @@ public class MoveableItem extends Item {
 		this.worth = worth;
 	}
 
-	@Override
 	public void interact(Player player) {
 		// TODO Auto-generated method stub
 		

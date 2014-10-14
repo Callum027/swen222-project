@@ -68,8 +68,7 @@ public class Container extends Item{
 	public void setLoot(List<MoveableItem> loot) {
 		this.loot = loot;
 	}
-
-	@Override
+	
 	public void interact(Player player) {
 		// TODO Auto-generated method stub
 		

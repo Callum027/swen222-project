@@ -6,7 +6,6 @@ import java.io.OutputStream;
 
 import game.exceptions.GameException;
 import game.world.GameEvent;
-import game.world.Interactable;
 import game.world.Position;
 import game.world.characters.Player;
 
@@ -19,11 +18,9 @@ import game.world.characters.Player;
 public class InteractEvent extends GameEvent {
 	
 	private final Player player;
-	private final Interactable interactable;
 	
-	public InteractEvent(Player player, Interactable interactable){
+	public InteractEvent(Player player){
 		this.player = player;
-		this.interactable = interactable;
 	}
 	
 	public GameEvent.Type getType() {
