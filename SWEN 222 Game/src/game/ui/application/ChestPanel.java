@@ -6,6 +6,7 @@ import game.ui.GameFrame;
 import game.world.Position;
 import game.world.items.MoveableItem;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -23,8 +24,8 @@ public class ChestPanel extends JPanel implements GameComponent{
 	private final int INVENTORY_WIDTH = 3;
 	private final int INVENTORY_HEIGHT = 3;
 	private final int squareSize = 45;
-	private final int X_OFFSET = 9;
-	private final int Y_OFFSET = 10;
+	private final int X_OFFSET = 0;
+	private final int Y_OFFSET = 4;
 
 	private MoveableItem itemSelected;
 
@@ -53,7 +54,10 @@ public class ChestPanel extends JPanel implements GameComponent{
 
 	@Override
 	public void paintComponent(Graphics g){
+		g.setColor(Color.BLACK);
+
 		g.drawImage(background, 0, 0, null);
+		g.drawString("" + cats, 43, HEIGHT-7);
 		drawItems(g);
 	}
 
@@ -62,8 +66,8 @@ public class ChestPanel extends JPanel implements GameComponent{
 		int k = 0;
 		for (int i = 0; i < chest.length; i++) {
 			if (chest[i] != null) {
-				chest[i].draw(g, (j * (squareSize + 2)) + 8 - X_OFFSET,
-						(k * (squareSize + 2)) + 22 - Y_OFFSET, 0);
+				chest[i].draw(g, (j * (squareSize + 2)) - X_OFFSET,
+						(k * (squareSize + 2)) - Y_OFFSET, 0);
 			}
 			j++;
 			if (j == INVENTORY_WIDTH) {

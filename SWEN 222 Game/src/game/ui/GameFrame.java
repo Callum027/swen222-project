@@ -87,7 +87,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 		inventory = new InventoryPanel();
 		equip = new EquipPanel(inventory);
 		stats = new StatsPanel(equip);
-		chest = new ChestPanel(9001);
+		chest = new ChestPanel(90);
 		inventory.setEquip(equip);
 		equip.setStats(stats);
 
@@ -267,6 +267,9 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 		else if(currentComponent instanceof StatsPanel){
 			return stats;
 		}
+		else if(currentComponent instanceof ChestPanel){
+			return chest;
+		}
 		return null;
 	}
 
@@ -306,6 +309,12 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 				append("Came from inventory panel");
 				int x = e.getXOnScreen();
 				int y = EquipPanel.HEIGHT + e.getY();
+				e = new MouseEvent(c, e.getID(), e.getWhen(), e.getModifiers(), x, y, e.getClickCount(), e.isPopupTrigger());
+			}
+			else if(c instanceof ChestPanel){
+				append("Came from chest panel");
+				int x = e.getXOnScreen();
+				int y = EquipPanel.HEIGHT + InventoryPanel.HEIGHT + e.getY();
 				e = new MouseEvent(c, e.getID(), e.getWhen(), e.getModifiers(), x, y, e.getClickCount(), e.isPopupTrigger());
 			}
 			GameComponent current = getCurrentGameComponent();
