@@ -28,8 +28,8 @@ public class StatsPanel extends JPanel implements GameComponent {
 	private int attack = 0;
 	private int defence = 0;
 
-	private static final int WIDTH = 155;
-	private static final int HEIGHT = 160;
+	public static final int WIDTH = 155;
+	public static final int HEIGHT = 160;
 
 	private final int HP_X;
 	private final int HP_Y;

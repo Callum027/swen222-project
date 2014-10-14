@@ -299,6 +299,8 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 			}
 			else if(c instanceof InventoryPanel){
 				text.append("Came from inventory panel");
+				int x = e.getXOnScreen();
+				int y = EquipPanel.HEIGHT;
 			}
 			GameComponent current = getCurrentGameComponent();
 			current.mouseReleased(this, e);
