@@ -68,7 +68,8 @@ public abstract class GameEvent implements Streamable {
 	public enum Type implements Streamable {
 		// All of the known possible game events.
 		MOVE(0),
-		INTERACT(1);
+		INTERACT(1),
+		DROP_ITEM(1);
 
 		// The unique ID of the event.
 		private final byte id;
