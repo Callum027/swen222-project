@@ -33,7 +33,7 @@ public class Server extends Thread {
 	private ServerSocket serverSocket = null;
 	private List<ServerConnection> serverConnections = new ArrayList<ServerConnection>();
 
-	private GameEventBroadcaster geb = new GameEventBroadcaster();
+	private GameEventBroadcaster serverBroadcaster = new GameEventBroadcaster();
 
 	/**
 	 * Private helper method for the constructors, to set up the server socket
@@ -87,10 +87,12 @@ public class Server extends Thread {
 		// as they come.
 		try {
 			while (!closing) {
+				// Accept a new client connection.
 				Socket clientSocket = serverSocket.accept();
 				ServerConnection sc = new ServerConnection(clientSocket);
 
-				serverConnections.add(sc);
+				// When the server connection is constructed, it will automatically
+				// get added to the list of server connections, so just start it.
 				sc.start();
 			}
 		}
@@ -136,7 +138,7 @@ public class Server extends Thread {
 	}
 
 	public void addGameEventListener(GameEventListener gel) {
-		geb.addGameEventListener(gel);
+		serverBroadcaster.addGameEventListener(gel);
 	}
 
 	/**
@@ -146,14 +148,21 @@ public class Server extends Thread {
 	 * @author Callum
 	 *
 	 */
-	private class ServerConnection extends NetIOController {
+	private class ServerConnection extends NetIOController implements GameEventListener {
 		private final Socket clientSocket;
 
 		public ServerConnection(Socket cs) {
 			if (cs == null)
 				throw new IllegalArgumentException();
 
+			// Associate the given client socket with this server connection.
 			clientSocket = cs;
+			
+			// Add this server connection to the list of server connections,
+			// and add the other server connections as GameEventListeners.
+			synchronized (serverConnections) {
+				serverConnections.add(this);
+			}
 		}
 
 		public void run() {
@@ -174,9 +183,18 @@ public class Server extends Thread {
 							System.out.println("server: GameEvent type is: " + ge.getType());
 
 							// Update the game world.
-							geb.broadcastGameEvent(ge);
+							serverBroadcaster.broadcastGameEvent(ge);
 
-							// TODO: Send the updated game state to the rest of the clients.
+							// Send the updated game state to the rest of the clients.
+							// Not the best solution for this since it doesn't use
+							// a GameEventBroadcaster call, but I don't want to make
+							// GameEventBroadcaster too complicated by having it broadcast
+							// on an array that is being changed outside its scope.
+							synchronized (serverConnections) {
+								for (ServerConnection sc: serverConnections)
+									if (sc != this)
+										sc.gameEventOccurred(ge);
+							}
 							break;
 						case QUIT:
 							System.out.println("server: read QUIT packet, closing connection");
@@ -187,6 +205,11 @@ public class Server extends Thread {
 					}
 				}
 			}
+		}
+		
+		public void gameEventOccurred(GameEvent ge) {
+			System.out.println("server: sending a GameEvent of type " + ge.getType() + " to the client");
+			write(clientSocket, new GamePacket(GamePacket.Type.EVENT, ge));
 		}
 
 		public void close() {
