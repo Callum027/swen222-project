@@ -1,5 +1,6 @@
 package game.world;
 
+import game.world.characters.Enemy;
 import game.world.characters.GameCharacter;
 import game.world.characters.Merchant;
 import game.world.characters.Player;
@@ -11,6 +12,7 @@ import game.world.events.InteractEvent;
 import game.world.events.MoveEvent;
 import game.world.events.PickUpEvent;
 import game.world.events.TransportEvent;
+import game.world.events.CombatEvent;
 import game.world.items.Consumables;
 import game.world.items.Equipment;
 import game.world.items.Item;
@@ -207,6 +209,9 @@ public class GameWorld implements GameEventListener{
 		if (ge instanceof ConsumeEvent){
 			consumeEvent(ge);
 		}
+		if (ge instanceof CombatEvent){
+			combatEvent(ge);
+		}
 	}
 
 	public void moveEvent(GameEvent ge){
@@ -283,5 +288,13 @@ public class GameWorld implements GameEventListener{
 		Consumables item = consume.getItem();
 		player.getItems().remove(item);
 		item.buff(player);
+	}
+
+	public void combatEvent(GameEvent ge){
+		CombatEvent combat = (CombatEvent) ge;
+		Player player = combat.getPlayer();
+		Enemy enemy = combat.getEnemy();
+		player.attack(enemy);
+		enemy.attack(player);
 	}
 }
