@@ -1,6 +1,5 @@
 package game.control;
 
-import game.exceptions.ErrPacketException;
 import game.exceptions.GameException;
 import game.net.GamePacket;
 import game.world.GameEvent;
