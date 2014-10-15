@@ -64,10 +64,10 @@ public class Player extends GameCharacter implements Streamable, Attackable{
 				gameClass = new WarriorClass(this);
 				break;
 			case ROGUE:
-				gameClass = new RogueClass();
+				gameClass = new RogueClass(this);
 				break;
 			case MAGE:
-				gameClass = new MageClass();
+				gameClass = new MageClass(this);
 				break;
 		}
 	}

@@ -44,6 +44,7 @@ public class WarriorClass implements GameClass{
 		}
 
 	}
+	
 	@Override
 	public int calculateDamage() {
 		return thisCharacter.getAttack();

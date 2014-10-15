@@ -61,10 +61,10 @@ public class Enemy extends GameCharacter implements Attackable{
 				gameClass = new WarriorClass(this);
 				break;
 			case ROGUE:
-				gameClass = new RogueClass();
+				gameClass = new RogueClass(this);
 				break;
 			case MAGE:
-				gameClass = new MageClass();
+				gameClass = new MageClass(this);
 				break;
 		}
 	}

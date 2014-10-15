@@ -16,7 +16,11 @@ public class MageClass implements GameClass{
 	private final int dexterity = 15;
 	private final int intelligence = 25;
 
-	private Attackable attackable;
+	private final Attackable thisCharacter;
+
+	public MageClass(Attackable thisCharacter){
+		this.thisCharacter = thisCharacter;
+	}
 
 	public int getStrength() {
 		return strength;
@@ -30,18 +34,36 @@ public class MageClass implements GameClass{
 
 	@Override
 	public void attack(Attackable target) {
-		// TODO Auto-generated method stub
-
+		if (calculateDistance(target, thisCharacter) != 1){
+			throw new IllegalArgumentException("Target is not in range");
+		}
+		target.setHealth(target.getHealth() - thisCharacter.calculateDamage());
+		if (target.getHealth()<=0){
+			target.setIsDead(true);
+		}
 	}
 
 	@Override
 	public int calculateDamage() {
-		return attackable.calculateDamage();
+		return thisCharacter.getAttack();
+	}
 
+	public Attackable getThisCharacter() {
+		return thisCharacter;
 	}
 
 	@Override
 	public int calculateDistance(Attackable target, Attackable attacker) {
-		return 0;
+		int attackerPosX = attacker.getPosition().getX();
+		int attackerPosY = attacker.getPosition().getY();
+		int targetPosX = target.getPosition().getX();
+		int targetPosY = target.getPosition().getY();
+		if ((targetPosX <= attackerPosX+2 && targetPosY == attackerPosY) || (targetPosX <= attackerPosX-2 && targetPosY == attackerPosY)
+				|| (targetPosX == attackerPosX && targetPosY <= attackerPosY+2) || (targetPosX == attackerPosX && targetPosY <= attackerPosY-2)
+				|| (targetPosX <= attackerPosX+2 && targetPosY <= attackerPosY-2) || (targetPosX <= attackerPosX+2 && targetPosY <= attackerPosY+2)
+				|| (targetPosX <= attackerPosX-2 && targetPosY <= attackerPosY-2) || (targetPosX <= attackerPosX-2 && targetPosY <= attackerPosY+2)){
+			return 1;
+		}
+		return -1;
 	}
 }
