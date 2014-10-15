@@ -14,7 +14,9 @@ import game.world.events.ConsumeEvent;
 import game.world.events.DropItemEvent;
 import game.world.events.EquipEvent;
 import game.world.events.InteractEvent;
+import game.world.events.InventoryEvent;
 import game.world.events.MoveEvent;
+import game.world.events.TransferEvent;
 
 /**
  * Represent game events using a standard interface, so they can be
@@ -56,6 +58,10 @@ public abstract class GameEvent implements Streamable {
 				return ConsumeEvent.read(is);
 			case COMBAT:
 				return CombatEvent.read(is);
+			case TRANSFER:
+				return TransferEvent.read(is);
+			case INVENTORY:
+				return InventoryEvent.read(is);
 			default:
 				throw new InvalidGameEventException(t);
 		}

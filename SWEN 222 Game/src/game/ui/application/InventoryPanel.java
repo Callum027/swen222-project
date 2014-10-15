@@ -1,6 +1,7 @@
 package game.ui.application;
 
 import game.Main;
+import game.exceptions.GameException;
 import game.ui.GameComponent;
 import game.ui.GameFrame;
 import game.world.Position;
@@ -290,6 +291,12 @@ public class InventoryPanel extends JPanel implements GameComponent {
 				itemSelected = frame.getSelectedItem();
 				addItem(itemSelected);
 				InventoryEvent inv = new InventoryEvent(itemSelected, frame.getPlayerID(), cont.getID());
+				try {
+					frame.broadcastGameEvent(inv);
+				} catch (GameException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				frame.setSelectedItem(null);
 				itemSelected = null;
 			}
