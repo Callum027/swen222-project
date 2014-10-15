@@ -122,6 +122,11 @@ public class GameWorld implements GameEventListener{
 	public Player getPlayer(int id){
 		return players.get(id);
 	}
+	
+	public boolean removePlayer(int playerID) {
+		players.remove(playerID);
+		return true;
+	}
 
 	/**
 	 * retrieves the areas contained within the world using their id

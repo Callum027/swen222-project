@@ -217,6 +217,7 @@ public class Area  implements Streamable{
 	 * 		--- player to add
 	 */
 	public void addPlayer(Player player){
+		Main.getGameWorld().addPlayer(player);
 		players.put(player.getId(), player);
 	}
 
@@ -256,6 +257,7 @@ public class Area  implements Streamable{
 	 */
 	public void removePlayer(int playerID){
 		if(players.containsKey(playerID)){
+			Main.getGameWorld().removePlayer(playerID);
 			players.remove(playerID);
 		}
 	}
