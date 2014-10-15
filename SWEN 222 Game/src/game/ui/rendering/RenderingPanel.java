@@ -459,11 +459,13 @@ public class RenderingPanel extends JPanel implements GameComponent {
 	}
 
 	private void interact(GameFrame frame, Drawable drawable){
+
 		if (drawable instanceof Item) {
 			if(drawable instanceof Door){
 				frame.setChestVisible(false);
 				frame.setStatsVisible(true);
 				frame.append("Interacted with a door.");
+				frame.addChestContents(null);
 			}
 			else if(drawable instanceof Container){
 				Container cont = (Container) drawable;
@@ -479,6 +481,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 				frame.setChestVisible(false);
 				frame.setStatsVisible(true);
 				frame.append("Interaction Occurred");
+				frame.addChestContents(null);
 			}
 
 			// Broadcast the game event to all other peers.

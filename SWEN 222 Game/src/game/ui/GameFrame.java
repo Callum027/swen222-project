@@ -477,6 +477,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener,
 	}
 
 	public void addChestContents(List<MoveableItem> loot) {
+		chest.setItems(null);
 		for(MoveableItem i : loot){
 			chest.addItem(i);
 		}

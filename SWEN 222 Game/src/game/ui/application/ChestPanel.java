@@ -241,4 +241,9 @@ public class ChestPanel extends JPanel implements GameComponent {
 		this.cont = cont;
 	}
 
+	public void setItems(MoveableItem[] item) {
+		this.chest = item;
+
+	}
+
 }
