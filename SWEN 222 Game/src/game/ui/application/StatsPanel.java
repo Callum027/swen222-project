@@ -102,8 +102,9 @@ public class StatsPanel extends JPanel implements GameComponent {
 
 	@Override
 	public void mouseReleased(GameFrame frame, MouseEvent e) {
-		if(inventory.addItem(frame.getSelectedItem()) == -1){
 
+		if(inventory.addItem(frame.getSelectedItem()) != -1){
+			frame.setSelectedItem(null);
 		}
 	}
 
