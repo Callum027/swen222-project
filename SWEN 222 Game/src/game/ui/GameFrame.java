@@ -40,9 +40,13 @@ import javax.swing.JTextField;
  * @author Harry
  *
  */
-public class GameFrame extends JFrame implements ActionListener, KeyListener, MouseListener {
+public class GameFrame extends JFrame implements ActionListener, KeyListener,
+		MouseListener {
 
-	private enum State {START, IN_GAME};
+	private enum State {
+		START, IN_GAME
+	};
+
 	private static final long serialVersionUID = 1L;
 
 	private State state = State.START;
@@ -151,16 +155,23 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 		setJMenuBar(menuBar);
 	}
 
-	public void changeState(State s){
-		if(s == state){
+	/**
+	 * Called when either New Game or Menu is pressed. Changes the game state
+	 * from one to the other so it knows to display either the main menu or the
+	 * game view.
+	 *
+	 * @param s
+	 *            The state to change to
+	 */
+	public void changeState(State s) {
+		if (s == state) {
 			return;
 		}
-		if(s == State.START){
+		if (s == State.START) {
 			remove(renderPane);
 			remove(appPane);
 			setupStartState();
-		}
-		else if(s == State.IN_GAME){
+		} else if (s == State.IN_GAME) {
 			remove(start);
 			setupInGameState();
 		}
@@ -168,11 +179,19 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 		pack();
 	}
 
-	public void setupStartState(){
+	/**
+	 * Sets up the start state when the game is initially called. It is also
+	 * used when the Menu is selected from the File menu.
+	 */
+	public void setupStartState() {
 		add(start);
 	}
 
-	public void setupInGameState(){
+	/**
+	 * Sets up the game state, that is the state that the actual game can be
+	 * played in. This is called when New Game is pressed from the start menu
+	 */
+	public void setupInGameState() {
 		// setup the render pane
 		renderPane = new JPanel();
 		renderPane.addMouseListener(this);
@@ -205,7 +224,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 	}
 
 	@Override
-	public void removeAll(){
+	public void removeAll() {
 		remove(start);
 		remove(renderPane);
 		remove(appPane);
@@ -234,18 +253,16 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 		String action = null;
 		if (source instanceof JMenuItem) {
 			action = ((JMenuItem) source).getText();
-		}
-		else if (source instanceof JButton){
-			action = ((JButton)source).getText();
+		} else if (source instanceof JButton) {
+			action = ((JButton) source).getText();
 		}
 
-		if(action.equals("Menu")){
+		if (action.equals("Menu")) {
 			changeState(State.START);
-		}
-		else if (action.equals("Quit")) {
+		} else if (action.equals("Quit")) {
 			quitGame();
 		}
-		if(action.equals("New Game")){
+		if (action.equals("New Game")) {
 			String name = start.getNameText();
 			changeState(State.IN_GAME);
 		}
