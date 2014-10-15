@@ -116,8 +116,8 @@ public class Main {
 					gameWorld = new GameWorld();
 					gameWorld.addAreas(areaMap);
 					ItemParser.parseItemList(ITEMS_FILE, area, gameWorld);
-					CharacterParser.parseCharacters(CHARACTER_FILE, area,
-							gameWorld);
+					//CharacterParser.parseCharacters(CHARACTER_FILE, area,
+							//gameWorld);
 				} else {
 					System.err
 							.println("main: ERROR: could not load game world area");
@@ -276,19 +276,19 @@ public class Main {
 	public static GameWorld getGameWorld() {
 		return gameWorld;
 	}
-	
+
 	/**
 	 * Return the client for this game.
-	 * 
+	 *
 	 * @return Server
 	 */
 	public static Client getClient() {
 		return client;
 	}
-	
+
 	/**
 	 * Return the server for this game.
-	 * 
+	 *
 	 * @return Server
 	 */
 	public static Server getServer() {
