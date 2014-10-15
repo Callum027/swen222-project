@@ -52,6 +52,9 @@ public class MageClass implements GameClass{
 		return thisCharacter;
 	}
 
+	/**
+	 * Masge hits 2 squares around the,
+	 */
 	@Override
 	public int calculateDistance(Attackable target, Attackable attacker) {
 		int attackerPosX = attacker.getPosition().getX();

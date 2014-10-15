@@ -52,6 +52,9 @@ public class RogueClass implements GameClass{
 		return thisCharacter;
 	}
 
+	/**
+	 * Rogues hit 4 squares around the,
+	 */
 	@Override
 	public int calculateDistance(Attackable target, Attackable attacker) {
 		int attackerPosX = attacker.getPosition().getX();
