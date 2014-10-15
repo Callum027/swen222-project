@@ -36,6 +36,7 @@ public class Enemy extends GameCharacter implements Attackable{
 	private GameClass gameClass; //either Warrior, Mage or Rogue
 	private Image[] images;
 	private int height = 2;
+	private boolean isDead;
 
 	/**
 	 * The Constructor
@@ -57,7 +58,7 @@ public class Enemy extends GameCharacter implements Attackable{
 	public void assignClass(GameClass.playerClass playerClass){
 		switch (playerClass){
 			case WARRIOR:
-				gameClass = new WarriorClass();
+				gameClass = new WarriorClass(this);
 				break;
 			case ROGUE:
 				gameClass = new RogueClass();
@@ -69,15 +70,16 @@ public class Enemy extends GameCharacter implements Attackable{
 	}
 
 	@Override
-	public void attack() {
-		gameClass.attack();
+	public void attack(Attackable target) {
+		gameClass.attack(target);
 	}
 
 	@Override
-	public void calculateDamage() {
-		gameClass.calculateDamage();
+	public int calculateDamage() {
+		return gameClass.calculateDamage();
 	}
 
+	@Override
 	/**
 	 * retrieves the health of the player
 	 * @return the health of the player
@@ -86,6 +88,7 @@ public class Enemy extends GameCharacter implements Attackable{
 		return health;
 	}
 
+	@Override
 	/**
 	 * changes the player's health by the specified amount
 	 * @param health
@@ -180,5 +183,20 @@ public class Enemy extends GameCharacter implements Attackable{
 
 	public GameCharacter.Type getType() {
 		return GameCharacter.Type.ENEMY;
+	}
+
+	@Override
+	public int calculateDistance(Attackable target, Attackable attacker) {
+		return gameClass.calculateDistance(target, attacker);
+	}
+
+	@Override
+	public boolean getIsDead() {
+		return isDead;
+	}
+
+	@Override
+	public void setIsDead(boolean deadOrAlive) {
+		this.isDead = deadOrAlive;
 	}
 }

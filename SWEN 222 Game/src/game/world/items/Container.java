@@ -68,17 +68,18 @@ public class Container extends Item{
 	public void setLoot(List<MoveableItem> loot) {
 		this.loot = loot;
 	}
-	
+
 	public void interact(Player player) {
-		// TODO Auto-generated method stub
-		
+		player.setCats(player.getCats() + this.cats);
+		this.cats = 0;
+
 	}
 
 	@Override
 	public void write(OutputStream os) throws IOException {
 		NetIO.writeByte(os, (byte)super.getID());
 	}
-	
+
 	/**
 	 * reads a container from the inputstream
 	 * @param is the inputstream

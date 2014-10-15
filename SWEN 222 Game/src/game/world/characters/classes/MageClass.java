@@ -1,5 +1,7 @@
 package game.world.characters.classes;
 
+import game.world.characters.Attackable;
+
 /**
  * The magic-user class that deals with magical items. It's a medium range class that deal high magic damage.
  * The class uses staves and wears robes.
@@ -14,6 +16,8 @@ public class MageClass implements GameClass{
 	private final int dexterity = 15;
 	private final int intelligence = 25;
 
+	private Attackable attackable;
+
 	public int getStrength() {
 		return strength;
 	}
@@ -23,14 +27,21 @@ public class MageClass implements GameClass{
 	public int getIntelligence() {
 		return intelligence;
 	}
+
 	@Override
-	public void attack() {
+	public void attack(Attackable target) {
 		// TODO Auto-generated method stub
 
 	}
-	@Override
-	public void calculateDamage() {
-		// TODO Auto-generated method stub
 
+	@Override
+	public int calculateDamage() {
+		return attackable.calculateDamage();
+
+	}
+
+	@Override
+	public int calculateDistance(Attackable target, Attackable attacker) {
+		return 0;
 	}
 }

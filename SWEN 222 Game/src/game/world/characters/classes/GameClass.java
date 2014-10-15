@@ -1,5 +1,7 @@
 package game.world.characters.classes;
 
+import game.world.characters.Attackable;
+
 /**
  * The strategy interface for the game classes
  * @author Nick Tran
@@ -35,10 +37,13 @@ public interface GameClass {
 	/**
 	 * handles the logic when a character attacks a target
 	 */
-	public void attack();
+	public void attack(Attackable target);
 
 	/**
 	 * calculates the damage the character deals to another character
+	 * @return
 	 */
-	public void calculateDamage();
+	public int calculateDamage();
+
+	public int calculateDistance(Attackable target, Attackable attacker);
 }

@@ -37,6 +37,7 @@ public class Player extends GameCharacter implements Streamable, Attackable{
 	private GameClass gameClass; //either Warrior, Mage or Rogue
 	private Image[] images;
 	private int height = 2;
+	private boolean isDead;
 
 	/**
 	 * The constructor
@@ -48,6 +49,8 @@ public class Player extends GameCharacter implements Streamable, Attackable{
 	public Player(Position position, String name, int uid, GameClass.playerClass playerClass){
 		super(position, name, uid);
 		assignClass(playerClass); //gives the player a class (behaviour)
+		setStats();
+		setIsDead(false);
 		images = new Image[]{Main.getImage("SpriteTEST.png")};
 	}
 
@@ -58,7 +61,7 @@ public class Player extends GameCharacter implements Streamable, Attackable{
 	public void assignClass(GameClass.playerClass playerClass){
 		switch (playerClass){
 			case WARRIOR:
-				gameClass = new WarriorClass();
+				gameClass = new WarriorClass(this);
 				break;
 			case ROGUE:
 				gameClass = new RogueClass();
@@ -70,13 +73,13 @@ public class Player extends GameCharacter implements Streamable, Attackable{
 	}
 
 	@Override
-	public void attack() {
-		gameClass.attack();
+	public void attack(Attackable target) {
+		gameClass.attack(target);
 	}
 
 	@Override
-	public void calculateDamage() {
-		gameClass.calculateDamage();
+	public int calculateDamage() {
+		return gameClass.calculateDamage();
 	}
 
 	/**
@@ -115,6 +118,7 @@ public class Player extends GameCharacter implements Streamable, Attackable{
 		NetIO.writeByte(os, (byte)super.getId());
 	}
 
+	@Override
 	/**
 	 * retrieves the health of the player
 	 * @return the health of the player
@@ -123,6 +127,7 @@ public class Player extends GameCharacter implements Streamable, Attackable{
 		return health;
 	}
 
+	@Override
 	/**
 	 * changes the player's health by the specified amount
 	 * @param health
@@ -175,5 +180,45 @@ public class Player extends GameCharacter implements Streamable, Attackable{
 
 	public GameCharacter.Type getType() {
 		return GameCharacter.Type.PLAYER;
+	}
+
+	public int calculateAttack(){
+		int baseStats = (int) (this.attack + gameClass.getStrength() + (0.5*gameClass.getDexterity() +
+				(0.5*gameClass.getIntelligence())));
+		int equipmentStats = equipped.getMainHand().getAttack() + equipped.getoffHand().getAttack();
+		return (int) (baseStats+equipmentStats);
+	}
+
+	public int calculateDefence(){
+		int baseStats = this.defence;
+		int equipmentStats = equipped.getHead().getDefence() + equipped.getBody().getDefence() +
+				equipped.getBoots().getDefence();
+		return baseStats + equipmentStats;
+	}
+
+	public void setStats(){
+		setAttack(calculateAttack());
+		setDefence(calculateDefence());
+	}
+
+	@Override
+	public Position getPosition(){
+		return super.getPosition();
+	}
+
+	@Override
+	public int calculateDistance(Attackable target, Attackable attacker) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean getIsDead() {
+		return isDead;
+	}
+
+	@Override
+	public void setIsDead(boolean deadOrAlive) {
+		this.isDead = deadOrAlive;
 	}
 }

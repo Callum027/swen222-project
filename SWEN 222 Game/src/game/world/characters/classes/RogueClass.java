@@ -1,5 +1,7 @@
 package game.world.characters.classes;
 
+import game.world.characters.Attackable;
+
 /**
  * The range class that deals with sneaky tactics. It's a long range class that deal high projectile damage.
  * The class uses Bows and wears leather armour.
@@ -14,6 +16,8 @@ public class RogueClass implements GameClass{
 	private final int dexterity = 25;
 	private final int intelligence = 10;
 
+	private Attackable attackable;
+
 	public int getStrength() {
 		return strength;
 	}
@@ -24,13 +28,18 @@ public class RogueClass implements GameClass{
 		return intelligence;
 	}
 	@Override
-	public void attack() {
+	public void attack(Attackable target) {
 		// TODO Auto-generated method stub
 
 	}
 	@Override
-	public void calculateDamage() {
-		// TODO Auto-generated method stub
+	public int calculateDamage() {
+		return attackable.getAttack();
 
+	}
+	@Override
+	public int calculateDistance(Attackable target, Attackable attacker) {
+
+		return 0;
 	}
 }
