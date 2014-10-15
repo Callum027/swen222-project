@@ -1,10 +1,6 @@
 package game.ui;
 
-import game.Main;
-import game.ui.application.ChestPanel;
-import game.ui.application.EquipPanel;
-import game.ui.application.InventoryPanel;
-import game.ui.application.StatsPanel;
+import game.ui.application.*;
 import game.ui.rendering.RenderingPanel;
 import game.world.GameEvent;
 import game.world.GameEventBroadcaster;
@@ -30,7 +26,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 /**
  * A custom JFrame used to hold all the panels of the game. Implements
@@ -425,7 +420,6 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener,
 	 */
 	public void setStatsVisible(boolean b) {
 		stats.setVisible(b);
-
 	}
 
 	/**
@@ -436,7 +430,6 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener,
 	 */
 	public void setChestVisible(boolean b) {
 		chest.setVisible(b);
-
 	}
 
 }

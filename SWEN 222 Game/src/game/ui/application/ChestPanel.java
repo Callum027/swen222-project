@@ -74,7 +74,6 @@ public class ChestPanel extends JPanel implements GameComponent {
 	@Override
 	public void paintComponent(Graphics g) {
 		g.setColor(Color.BLACK);
-
 		g.drawImage(background, 0, 0, null);
 		g.drawString("" + cats, 43, HEIGHT - 7);
 		drawItems(g);
@@ -152,7 +151,6 @@ public class ChestPanel extends JPanel implements GameComponent {
 
 	@Override
 	public void mouseClicked(GameFrame frame, MouseEvent e) {
-
 	}
 
 	@Override
@@ -193,7 +191,6 @@ public class ChestPanel extends JPanel implements GameComponent {
 			}
 			repaint();
 		}
-
 	}
 
 	private void selectItem(GameFrame frame, int inv) {
@@ -207,7 +204,6 @@ public class ChestPanel extends JPanel implements GameComponent {
 			 */
 			previousSlot = inv;
 		}
-
 	}
 
 	public MoveableItem[] getChest() {
