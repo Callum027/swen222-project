@@ -1,9 +1,12 @@
 package game.loading;
 
 import game.world.Area;
+import game.world.tiles.FloorTile;
 import game.world.tiles.Tile;
+import game.world.tiles.WallTile;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,32 +19,32 @@ import java.util.Scanner;
  *
  */
 public class AreaParser {
+	private static final String[] TILES_FILE = new String[] {
+			"1, FloorTile, floor_tile3", "2, FloorTile, Carpet_Centre" };
 
-	public static Map<Integer, Area> parseAreas(String filename, Map<Integer, Tile> tileMap) throws ParserError{
+	public static Map<Integer, Area> parseAreas(String filename)
+			throws ParserError, FileNotFoundException {
+		Map<Integer, Tile> tileMap = createTileMap(TILES_FILE);
 		Map<Integer, Area> areaMap = new HashMap<Integer, Area>();
 		Scanner scan = null;
-		try{
-			scan = new Scanner(new File(filename));
-		}catch(IOException e){
-			e.printStackTrace();
-		}
-
-		try{
-			if(!gobble(scan, "<Areas>")){
-				throw new ParserError("Parsing Areas: Expecting <Areas>, got "+scan.next());
+		scan = new Scanner(new File(filename));
+		try {
+			if (!gobble(scan, "<Areas>")) {
+				throw new ParserError("Parsing Areas: Expecting <Areas>, got "
+						+ scan.next());
 			}
-			while(!gobble(scan, "</Areas>")){
+			while (!gobble(scan, "</Areas>")) {
 				Area area = parseArea(scan, tileMap);
 				areaMap.put(area.getID(), area);
 			}
-		}catch(ParserError error){
-			error.printStackTrace();
+		} catch (ParserError error) {
 			throw error;
 		}
 
 		scan.close();
 		return areaMap;
 	}
+
 	/**
 	 * Parse Area method, takes a filename and a map of tiles and returns an
 	 * area
@@ -54,7 +57,8 @@ public class AreaParser {
 	 * @return Area parsed in from file.
 	 * @throws ParserError
 	 */
-	public static Area parseArea(String filename, Map<Integer, Tile> tileMap) throws ParserError {
+	public static Area parseArea(String filename, Map<Integer, Tile> tileMap)
+			throws ParserError {
 		Scanner scan = null;
 		try {
 			scan = new Scanner(new File(filename));
@@ -92,8 +96,7 @@ public class AreaParser {
 	}
 
 	/**
-	 * Parse Area method, takes a Scanner and a map of tiles and returns an
-	 * area
+	 * Parse Area method, takes a Scanner and a map of tiles and returns an area
 	 *
 	 * @param scan
 	 *            - Scanner which is currently scanning areas file.
@@ -103,28 +106,28 @@ public class AreaParser {
 	 * @return Area parsed in from file.
 	 * @throws ParserError
 	 */
-	public static Area parseArea(Scanner scan, Map<Integer, Tile> tileMap) throws ParserError {
-			if (!gobble(scan, "<Area>")) {
-				throw new ParserError("Parsing Area: Expecting <Area>, got "
-						+ scan.next());
-			}
+	public static Area parseArea(Scanner scan, Map<Integer, Tile> tileMap)
+			throws ParserError {
+		if (!gobble(scan, "<Area>")) {
+			throw new ParserError("Parsing Area: Expecting <Area>, got "
+					+ scan.next());
+		}
 
-			int ID = parseInt(scan, "ID");
-			int width = parseInt(scan, "Width");
-			int height = parseInt(scan, "Height");
-			Tile[][] floor = parse2DTileArray(scan, "Floor", width, height,
-					tileMap);
-			Tile[][][] walls = new Tile[4][][];
-			walls[0] = parse2DTileArray(scan, "NorthWall", width, 3, tileMap);
-			walls[1] = parse2DTileArray(scan, "EastWall", height, 3, tileMap);
-			walls[2] = parse2DTileArray(scan, "SouthWall", width, 3, tileMap);
-			walls[3] = parse2DTileArray(scan, "WestWall", height, 3, tileMap);
+		int ID = parseInt(scan, "ID");
+		int width = parseInt(scan, "Width");
+		int height = parseInt(scan, "Height");
+		Tile[][] floor = parse2DTileArray(scan, "Floor", width, height, tileMap);
+		Tile[][][] walls = new Tile[4][][];
+		walls[0] = parse2DTileArray(scan, "NorthWall", width, 3, tileMap);
+		walls[1] = parse2DTileArray(scan, "EastWall", height, 3, tileMap);
+		walls[2] = parse2DTileArray(scan, "SouthWall", width, 3, tileMap);
+		walls[3] = parse2DTileArray(scan, "WestWall", height, 3, tileMap);
 
-			if (!gobble(scan, "</Area>")) {
-				throw new ParserError("Parsing Area: Expecting </Area>, got "
-						+ scan.next());
-			}
-			return new Area(floor, walls, ID);
+		if (!gobble(scan, "</Area>")) {
+			throw new ParserError("Parsing Area: Expecting </Area>, got "
+					+ scan.next());
+		}
+		return new Area(floor, walls, ID);
 	}
 
 	private static int parseInt(Scanner scan, String type) throws ParserError {
@@ -162,6 +165,37 @@ public class AreaParser {
 		}
 
 		return tiles;
+	}
+
+	/**
+	 * Creates a tile map which maps a unique integer value to a unique tile, to
+	 * be used in rendering the game world.
+	 *
+	 * The file format is: ID, TileType, Image_Name.png
+	 *
+	 * Where commas separate the values. ID is the integer value which maps to
+	 * the tile, the TileType is either "Floor" or "Wall" and Image_Name.png is
+	 * the file name of the image representing the tile.
+	 *
+	 * @param file
+	 *            --- contains data about the tiles
+	 * @return --- mapping of integers to tiles
+	 */
+	public static Map<Integer, Tile> createTileMap(String[] data) {
+		Map<Integer, Tile> tileMap = new HashMap<Integer, Tile>();
+		for (int i = 0; i < data.length; i++) {
+			String[] line = data[i].split(", ");
+			int id = Integer.parseInt(line[0]);
+			// Image image = getImage(line[2]);
+			Tile tile = null;
+			if (line[1].equals("FloorTile")) {
+				tile = new FloorTile(line[2]);
+			} else if (line[1].equals("WallTile")) {
+				tile = new WallTile(line[2]);
+			}
+			tileMap.put(id, tile);
+		}
+		return tileMap;
 	}
 
 	private static boolean gobble(Scanner scan, String s) {

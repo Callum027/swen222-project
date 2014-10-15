@@ -35,8 +35,6 @@ public class Main {
 	private static final String CHARACTER_FILE = "src" + File.separatorChar
 			+ "game" + File.separatorChar + "loading" + File.separatorChar
 			+ "characters.xml";
-	private static final String[] TILES_FILE = new String[] {
-			"1, FloorTile, floor_tile3", "2, FloorTile, Carpet_Centre" };
 
 	/** Game mode: client, server, or client and server. */
 	private static GameMode mode = GameMode.CLIENTANDSERVER;
@@ -114,10 +112,7 @@ public class Main {
 			if (gameWorldSetUp)
 				return true;
 			try {
-				// Load the tile map and the game world areas.
-				tileMap = createTileMap(TILES_FILE);
-				// area = AreaParser.parseArea(AREA_FILE, tileMap);
-				areaMap = AreaParser.parseAreas(AREA_FILE, tileMap);
+				areaMap = AreaParser.parseAreas(AREA_FILE);
 				area = areaMap.get(1);
 				int nextID = ItemParser.parseItemList(ITEMS_FILE, area, 0);
 
@@ -139,7 +134,10 @@ public class Main {
 				return true;
 			} catch (ParserError e) {
 				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
+
 		}
 		return false;
 	}
@@ -255,37 +253,6 @@ public class Main {
 		// gameWindow.addGameEventListener(gameWorld);
 
 		return true;
-	}
-
-	/**
-	 * Creates a tile map which maps a unique integer value to a unique tile, to
-	 * be used in rendering the game world.
-	 *
-	 * The file format is: ID, TileType, Image_Name.png
-	 *
-	 * Where commas separate the values. ID is the integer value which maps to
-	 * the tile, the TileType is either "Floor" or "Wall" and Image_Name.png is
-	 * the file name of the image representing the tile.
-	 *
-	 * @param file
-	 *            --- contains data about the tiles
-	 * @return --- mapping of integers to tiles
-	 */
-	public static Map<Integer, Tile> createTileMap(String[] data) {
-		Map<Integer, Tile> tileMap = new HashMap<Integer, Tile>();
-		for (int i = 0; i < data.length; i++) {
-			String[] line = data[i].split(", ");
-			int id = Integer.parseInt(line[0]);
-			// Image image = getImage(line[2]);
-			Tile tile = null;
-			if (line[1].equals("FloorTile")) {
-				tile = new FloorTile(line[2]);
-			} else if (line[1].equals("WallTile")) {
-				tile = new WallTile(line[2]);
-			}
-			tileMap.put(id, tile);
-		}
-		return tileMap;
 	}
 
 	/**

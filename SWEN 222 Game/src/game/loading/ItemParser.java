@@ -1,6 +1,5 @@
 package game.loading;
 
-import game.Main;
 import game.world.Area;
 import game.world.Position;
 import game.world.items.Consumables;
