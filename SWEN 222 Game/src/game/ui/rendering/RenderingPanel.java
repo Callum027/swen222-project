@@ -146,8 +146,10 @@ public class RenderingPanel extends JPanel implements GameComponent {
 			Tile[][] tiles = area.getTiles();
 			List<Item> items = new ArrayList<Item>(area.getItems().values());
 			List<Enemy> enemies = new ArrayList<Enemy>(area.getEnemies().values());
+			List<Player> players = new ArrayList<Player>(area.getPlayers().values());
 			List<Drawable> toDraw = new ArrayList<Drawable>(items);
 			toDraw.addAll(enemies);
+			toDraw.addAll(players);
 			drawFloors(g, tiles, items);
 			drawDrawableObjects(g, toDraw, tiles);
 		}
@@ -430,7 +432,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 	 * @author David Sheridan
 	 *
 	 */
-	private class NorthComparator implements Comparator<Drawable> {
+	public class NorthComparator implements Comparator<Drawable> {
 
 		// field
 		private int length;
@@ -472,7 +474,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 	 * @author David Sheridan
 	 *
 	 */
-	private class EastComparator implements Comparator<Drawable> {
+	public class EastComparator implements Comparator<Drawable> {
 
 		// field
 		private int length;
@@ -526,7 +528,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 	 * @author David Sheridan
 	 *
 	 */
-	private class SouthComparator implements Comparator<Drawable> {
+	public class SouthComparator implements Comparator<Drawable> {
 
 		// field
 		private int length;
@@ -568,7 +570,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 	 * @author David Sheridan
 	 *
 	 */
-	private class WestComparator implements Comparator<Drawable> {
+	public class WestComparator implements Comparator<Drawable> {
 
 		// field
 		private int length;

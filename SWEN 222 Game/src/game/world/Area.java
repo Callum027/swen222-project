@@ -210,21 +210,21 @@ public class Area  implements Streamable{
 	public Map<Integer,Merchant> getMerchants() {
 		return new HashMap<Integer,Merchant>(merchants);
 	}
-	
+
 	/**
 	 * Adds a player to this Area.
-	 * 
+	 *
 	 * @param player
 	 * 		--- player to add
 	 */
 	public void addPlayer(Player player){
 		players.put(player.getId(), player);
 	}
-	
+
 	/**
 	 * Returns the player with the specified ID. if that
 	 * player is not located in this area, return null.
-	 * 
+	 *
 	 * @param playerID
 	 * 		--- unique id of player
 	 * @return
@@ -236,11 +236,22 @@ public class Area  implements Streamable{
 		}
 		return null;
 	}
-	
+
+	/**
+	 * Returns the map of Players that area currently in this
+	 * Area.
+	 *
+	 * @return
+	 * 		--- map of ids to players
+	 */
+	public Map<Integer, Player> getPlayers(){
+		return players;
+	}
+
 	/**
 	 * Removes the player with the specified ID from this
 	 * Area.
-	 * 
+	 *
 	 * @param playerID
 	 * 		--- id of player to remove
 	 */
@@ -284,7 +295,7 @@ public class Area  implements Streamable{
 	public Merchant getMerchant(int id){
 		return merchants.get(id);
 	}
-	
+
 	/**
 	 * Returns the Drawable object that is situated at the specified
 	 * position. If there is not a Drawable object at that position
@@ -317,7 +328,7 @@ public class Area  implements Streamable{
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Returns true if the specified position is a moveable position.
 	 * A moveable position is defined as a position within the bounds
@@ -357,11 +368,11 @@ public class Area  implements Streamable{
 		AStar aStar = new AStar(start, goal);
 		return aStar.runAlgorithm();
 	}
-	
+
 	/**
 	 * Calculates the distance between two positions and returns the result.
 	 * Uses Pythagoras Theorem to do this.
-	 * 
+	 *
 	 * @param p1
 	 * 		--- the first position
 	 * @param p2
