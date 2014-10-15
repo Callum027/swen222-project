@@ -37,10 +37,12 @@ import javax.swing.JTextArea;
  * @author Harry
  *
  */
-public class GameFrame extends JFrame implements ActionListener, KeyListener,
-		MouseListener {
+public class GameFrame extends JFrame implements ActionListener, KeyListener, MouseListener {
 
+	private enum State {START, IN_GAME};
 	private static final long serialVersionUID = 1L;
+
+	private State state = State.START;
 
 	private GameEventBroadcaster geb = new GameEventBroadcaster();
 
@@ -56,6 +58,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener,
 	private StatsPanel stats;
 	private InventoryPanel inventory;
 	private ChestPanel chest;
+	private StartPanel start;
 
 	private MoveableItem selectedItem;
 	/*
@@ -78,6 +81,10 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener,
 	 */
 	public GameFrame(int gameWindowX, int gameWindowY) {
 		super("It's a Catastrophe!");
+
+		start = new StartPanel(this);
+		add(start);
+
 		setupMenuBar();
 		direction = NORTH;
 		// set the frame to have a layout so that the screens are in proportion
@@ -92,36 +99,6 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener,
 		chest = new ChestPanel(90);
 		inventory.setEquip(equip);
 		equip.setStats(stats);
-
-		// setup the render pane
-		JPanel renderPane = new JPanel();
-		renderPane.addMouseListener(this);
-		renderPane.setLayout(new BoxLayout(renderPane, BoxLayout.Y_AXIS));
-		renderPane.add(render);
-		render.addMouseListener(this);
-		renderPane.add(scroll);
-		renderPane.addMouseListener(this);
-
-		// setup app pane
-		JPanel appPane = new JPanel();
-		appPane.setLayout(new BoxLayout(appPane, BoxLayout.Y_AXIS));
-
-		stats.addMouseListener(this);
-		appPane.add(equip);
-		equip.addMouseListener(this);
-		appPane.add(inventory);
-		appPane.add(stats);
-		appPane.add(chest);
-		chest.addMouseListener(this);
-		stats.setVisible(true);
-		chest.setVisible(false);
-		inventory.addMouseListener(this);
-		appPane.addMouseListener(this);
-
-		// setup the game frame layout
-		setLayout(new FlowLayout());
-		add(renderPane);
-		add(appPane);
 
 		addMouseListener(this);
 		addKeyListener(this);
@@ -162,6 +139,56 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener,
 		file.add(quit);
 		menu.add(file);
 		setJMenuBar(menu);
+	}
+
+	public void changeState(State s){
+		if(s == state){
+			return;
+		}
+		if(s == State.START){
+			setupStartState();
+		}
+		else if(s == State.IN_GAME){
+			setupInGameState();
+		}
+		pack();
+	}
+
+	public void setupStartState(){
+		add(start);
+	}
+
+	public void setupInGameState(){
+		removeAll();
+		// setup the render pane
+		JPanel renderPane = new JPanel();
+		renderPane.addMouseListener(this);
+		renderPane.setLayout(new BoxLayout(renderPane, BoxLayout.Y_AXIS));
+		renderPane.add(render);
+		render.addMouseListener(this);
+		renderPane.add(scroll);
+		renderPane.addMouseListener(this);
+
+		// setup app pane
+		JPanel appPane = new JPanel();
+		appPane.setLayout(new BoxLayout(appPane, BoxLayout.Y_AXIS));
+
+		stats.addMouseListener(this);
+		appPane.add(equip);
+		equip.addMouseListener(this);
+		appPane.add(inventory);
+		appPane.add(stats);
+		appPane.add(chest);
+		chest.addMouseListener(this);
+		stats.setVisible(true);
+		chest.setVisible(false);
+		inventory.addMouseListener(this);
+		appPane.addMouseListener(this);
+
+		// setup the game frame layout
+		setLayout(new FlowLayout());
+		add(renderPane);
+		add(appPane);
 	}
 
 	/**
@@ -267,7 +294,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener,
 		return null;
 	}
 
-	public void broadcastGameEvent(GameEvent ge){
+	public void broadcastGameEvent(GameEvent ge) {
 		geb.broadcastGameEvent(ge);
 	}
 

@@ -1,5 +1,7 @@
 package game.ui;
 
+import java.awt.event.ActionListener;
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -22,12 +24,16 @@ public class StartPanel extends JPanel{
 	 * Constructor:
 	 * Constructs an instance of a StartPanel.
 	 */
-	public StartPanel(){
+	public StartPanel(ActionListener action){
 		// initialise components for start panel
 		JTextField name = new JTextField();
+		name.addActionListener(action);
 		JButton newGame = new JButton("New Game");
+		newGame.addActionListener(action);
 		JButton hostGame = new JButton("Host New Game");
+		hostGame.addActionListener(action);
 		JButton joinGame = new JButton("Join Game");
+		joinGame.addActionListener(action);
 
 		// add components to StartPanel
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -36,6 +42,4 @@ public class StartPanel extends JPanel{
 		add(hostGame);
 		add(joinGame);
 	}
-
-
 }
