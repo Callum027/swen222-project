@@ -31,7 +31,7 @@ public class GameWorld implements GameEventListener{
 
 	private Map<Integer, Player> players; // A mapping from unique identifiers to their respective players
 	private int nextPlayerID = 0; // The next unique player ID that can be used
-	
+
 	private Map<Integer, Item> items; // A mapping from unique identifiers to their respective items
 	private int nextItemID = 0; // The next unique item ID that can be used
 
@@ -68,7 +68,7 @@ public class GameWorld implements GameEventListener{
 	public int getNextPlayerID(){
 		return nextPlayerID;
 	}
-	
+
 	/**
 	 * Add a new player to the game world.
 	 * @param i
@@ -79,7 +79,7 @@ public class GameWorld implements GameEventListener{
 		// If the ID of the new player equals the current next ID,
 		// increment the ID until it is unique again.
 		if (id == nextPlayerID)
-			while (!players.containsKey(++nextPlayerID));
+			while (players.containsKey(++nextPlayerID));
 
 		// Add the item into the hash map, but only if there isn't
 		// an item there with the same ID already.
@@ -91,7 +91,7 @@ public class GameWorld implements GameEventListener{
 
 		return false;
 	}
-	
+
 	/**
 	 * retrieves the areas contained within the world
 	 * @return a map of the areas
@@ -136,7 +136,7 @@ public class GameWorld implements GameEventListener{
 		// If the ID of the new item equals the current next ID,
 		// increment the ID until it is unique again.
 		if (id == nextItemID)
-			while (!items.containsKey(++nextItemID));
+			while (items.containsKey(++nextItemID));
 
 		// Add the item into the hash map, but only if there isn't
 		// an item there with the same ID already.
@@ -148,10 +148,10 @@ public class GameWorld implements GameEventListener{
 
 		return false;
 	}
-	
+
 	/**
 	 * Remove an item from the game world.
-	 * 
+	 *
 	 * @param i Item ID to remove
 	 * @return true if removed
 	 */
