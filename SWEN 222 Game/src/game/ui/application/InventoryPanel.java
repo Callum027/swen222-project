@@ -278,7 +278,6 @@ public class InventoryPanel extends JPanel implements GameComponent {
 		}
 		repaint();
 		return -1;
-
 	}
 
 	@Override
@@ -323,7 +322,5 @@ public class InventoryPanel extends JPanel implements GameComponent {
 			}
 			repaint();
 		}
-
 	}
-
 }

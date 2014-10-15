@@ -41,13 +41,17 @@
 		</Door>
 	</Item>
 	<Item>
-	    <XPos> 0 </XPos>
-	    <YPos> 9 </YPos>
+	    <XPos> 9 </XPos>
+	    <YPos> 0 </YPos>
 	    <Height> 1 </Height>
 	    <ID> 4 </ID>
 	    <Name> Chest </Name>
-	    <Furniture>
-
-	    </Furniture>
+	    <Container>
+	        <Cats> 5 </Cats>
+				<Height> 1 </Height>
+				<ID> 2 </ID>
+				<Name> wizard-hat </Name>
+		    	<Worth> 90 </Worth>
+	    </Container>
 	</Item>
 </ItemList>
