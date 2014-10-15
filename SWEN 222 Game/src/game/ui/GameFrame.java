@@ -127,7 +127,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener,
 
 		setFocusable(true);
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pack();
 		setVisible(true);
 	}
