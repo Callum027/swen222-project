@@ -44,7 +44,7 @@ public class WarriorClass implements GameClass{
 		}
 
 	}
-	
+
 	@Override
 	public int calculateDamage() {
 		return thisCharacter.getAttack();
@@ -56,6 +56,9 @@ public class WarriorClass implements GameClass{
 		return thisCharacter;
 	}
 
+	/**
+	 * Warriors hits 1 square around them
+	 */
 	@Override
 	public int calculateDistance(Attackable target, Attackable attacker) {
 		int attackerPosX = attacker.getPosition().getX();
