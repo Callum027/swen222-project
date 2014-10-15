@@ -59,16 +59,14 @@ public abstract class NetIOController extends Thread {
 								gp = GamePacket.read(socket.getInputStream());
 							}
 							catch (SocketTimeoutException e) {
-								// Do nothing, try reading from the socket again...
+								// Sleep the current thread, to give other threads
+								// the opportunity to lock the socket for sending packets.
+								try {
+									Thread.sleep(MAIN_LOOP_COOLDOWN);
+								}
+								catch (InterruptedException e1) {
+								}
 							}
-						}
-						
-						// Sleep the current thread, to give other threads
-						// the opportunity to lock the socket for sending packets.
-						try {
-							Thread.sleep(MAIN_LOOP_COOLDOWN);
-						}
-						catch (InterruptedException e1) {
 						}
 					}
 					
