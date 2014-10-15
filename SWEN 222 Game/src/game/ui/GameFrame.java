@@ -16,6 +16,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Collection;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -456,5 +457,11 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener,
 		}
 
 	}
+
+	public MoveableItem[] getChestItems() {
+		return chest.getChest();
+	}
+
+
 
 }

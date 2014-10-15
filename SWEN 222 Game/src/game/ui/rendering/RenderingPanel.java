@@ -26,6 +26,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -400,7 +401,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 			if(positionClear){
 				DropItemEvent drop = new DropItemEvent(frame.getSelectedItem(), p, area.getID());
 				try{
-				frame.broadcastGameEvent(drop);
+					frame.broadcastGameEvent(drop);
 				} catch (GameException e1){
 					frame.returnItem();
 				}
@@ -471,6 +472,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 				Container cont = (Container) drawable;
 				frame.setStatsVisible(false);
 				frame.addChestContents(cont.getLoot());
+				cont.setLoot(new ArrayList<MoveableItem>(Arrays.asList(frame.getChestItems())));
 				frame.setChestVisible(true);
 
 				frame.append("It is a chest!");
