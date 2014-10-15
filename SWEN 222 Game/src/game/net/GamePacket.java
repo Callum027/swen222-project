@@ -6,6 +6,7 @@ import game.exceptions.UnsupportedGamePacketException;
 import game.net.packets.AckPacket;
 import game.net.packets.ErrPacket;
 import game.net.packets.HelloPacket;
+import game.net.packets.JoinPacket;
 import game.net.packets.PlayerPacket;
 import game.net.packets.QuitPacket;
 import game.net.packets.TestPacket;
@@ -84,6 +85,9 @@ public class GamePacket implements Streamable {
 				break;
 			case ERR:
 				s = ErrPacket.read(is);
+				break;
+			case JOIN:
+				s = JoinPacket.read(is);
 				break;
 			case PLAYER:
 				s = PlayerPacket.read(is);

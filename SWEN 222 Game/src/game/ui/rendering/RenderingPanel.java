@@ -1,5 +1,6 @@
 package game.ui.rendering;
 
+import game.Main;
 import game.exceptions.GameException;
 import game.ui.GameComponent;
 import game.ui.GameFrame;
@@ -9,7 +10,6 @@ import game.world.Drawable;
 import game.world.Position;
 import game.world.characters.Enemy;
 import game.world.characters.Player;
-import game.world.characters.classes.GameClass;
 import game.world.events.DropItemEvent;
 import game.world.events.InteractEvent;
 import game.world.events.MoveEvent;
@@ -26,7 +26,6 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -56,8 +55,6 @@ public class RenderingPanel extends JPanel implements GameComponent {
 	private int startY;
 	private int direction;
 
-	private Player player;
-
 	/**
 	 * Constructor:
 	 * Constructs an instance of RenderingPanel
@@ -69,7 +66,6 @@ public class RenderingPanel extends JPanel implements GameComponent {
 		super();
 		this.direction = direction;
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
-		player = new Player(new Position(0,0), "Frank", 1, GameClass.CharacterClass.WARRIOR);
 	}
 
 	/**
@@ -444,6 +440,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 	private void mouseRightClicked(GameFrame frame, MouseEvent e){
 		Position p = findPosition(new Position(e.getX(), e.getY()));
 		if (p != null) {
+			Player player = Main.getGameWorld().getPlayer(frame.getPlayerID());
 			Position current = player.getPosition();
 			Stack<Position> moves = area.findPath(current, p);
 			if(!moves.isEmpty()){
@@ -485,6 +482,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 
 			// Broadcast the game event to all other peers.
 			try {
+				Player player = Main.getGameWorld().getPlayer(frame.getPlayerID());
 				frame.broadcastGameEvent(new InteractEvent(player, ((Item)drawable)));
 			} catch (GameException e) {
 
