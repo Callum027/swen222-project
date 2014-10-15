@@ -5,6 +5,6 @@ public class PlayerIDNotFoundException extends GameException {
 
 	public PlayerIDNotFoundException(byte id)
 	{
-		super("player ID not found: " + id);
+		super(false, "player ID not found: " + id);
 	}
 }

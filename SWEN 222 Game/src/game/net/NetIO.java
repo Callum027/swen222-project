@@ -14,9 +14,26 @@ public class NetIO {
 	public static final int INTEGER_LENGTH = 4;
 	/** Size of a long on network input/output. */
 	public static final int LONG_LENGTH = 8;
+	
+	/**
+	 * Read a boolean from the input stream.
+	 * 
+	 * @param is Input stream
+	 * @return Boolean
+	 * @throws IOException
+	 */
+	public static boolean readBoolean(InputStream is) throws IOException {
+		int b = is.read();
+
+		if (b == -1)
+			throw new EOFException("reached end of input stream in readBoolean");
+
+		return (b == 1) ? true : false;
+	}
 
 	/**
 	 * Read a byte from the input stream.
+	 * 
 	 * @param is Input stream
 	 * @return Byte
 	 * @throws IOException
@@ -32,6 +49,7 @@ public class NetIO {
 
 	/**
 	 * Read a short from the input stream.
+	 * 
 	 * @param is Input stream
 	 * @return Short
 	 * @throws IOException
@@ -50,6 +68,7 @@ public class NetIO {
 
 	/**
 	 * Read an int from the input stream.
+	 * 
 	 * @param is Input stream
 	 * @return Integer
 	 * @throws IOException
@@ -67,6 +86,7 @@ public class NetIO {
 
 	/**
 	 * Read a long from the input stream.
+	 * 
 	 * @param is Input stream
 	 * @return Long
 	 * @throws IOException
@@ -114,6 +134,17 @@ public class NetIO {
 	}
 
 	/**
+	 * Write a boolean to the output stream.
+	 *
+	 * @param os Output stream
+	 * @param b Boolean
+	 * @throws IOException
+	 */
+	public static void writeBoolean(OutputStream os, boolean b) throws IOException {
+		os.write((b) ? 1 : 0);
+	}
+
+	/**
 	 * Write a byte to the output stream.
 	 *
 	 * @param os Output stream
@@ -121,7 +152,6 @@ public class NetIO {
 	 * @throws IOException
 	 */
 	public static void writeByte(OutputStream os, byte b) throws IOException {
-		System.out.println("NetIO.writeByte: writing to output stream: " + (int)b);
 		os.write((int)b);
 	}
 

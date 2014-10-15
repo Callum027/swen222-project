@@ -205,7 +205,7 @@ public class Server extends Thread {
 					}
 				}
 				else
-					System.out.println("server: timed out, attemping another read from client");
+					System.out.println("server: timed out, attempting another read from client");
 			}
 		}
 		

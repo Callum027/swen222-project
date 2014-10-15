@@ -31,7 +31,7 @@ public abstract class NetIOController extends Thread {
 	/**
 	 * Read a GamePacket from the given socket, with error checking.
 	 * Sends an ACK back to the socket if a successful read (and that packet is not an ACK/ERR itself),
-	 * and sends an ERR if an error occured.
+	 * and sends an ERR if an error occurred.
 	 *
 	 * @param socket Socket to read from
 	 * @return GamePacket
@@ -107,7 +107,7 @@ public abstract class NetIOController extends Thread {
 					is.skip(is.available());
 
 					// Send an ERR packet to the server, to get them to resend their last packet.
-					write(os, new GamePacket(GamePacket.Type.ERR, new ErrPacket()));
+					write(os, new GamePacket(GamePacket.Type.ERR, new ErrPacket(e.shouldResendPacket())));
 				}
 			}
 			catch (SocketException e) {
@@ -151,13 +151,13 @@ public abstract class NetIOController extends Thread {
 		if (socket != null && !closing) {
 			try {
 				synchronized (socket) {
-					boolean success = false;
+					boolean resendPacket = false;
 					
 					// Pause the main listening loop while we start our communication
 					// with the server.
 					pauseMainLoop = true;
 
-					while (!success) {
+					while (resendPacket) {
 						System.out.println("write: sending GamePacket to peer");
 						
 						// Send the packet to the output stream!
@@ -171,30 +171,28 @@ public abstract class NetIOController extends Thread {
 
 							// Permanently block while we wait for a reply.
 							socket.setSoTimeout(0);
-
-							/*while (reply == null)
-							{
-								try {
-									reply = GamePacket.read(socket.getInputStream());
-								}
-								catch (SocketTimeoutException e) {
-								}
-								
-								System.out.println("looping");
-							}*/
 							reply = GamePacket.read(socket.getInputStream());
 							
 							// Check if this reply is an ACK or ERR, and if so, handle accordingly.
 							switch (reply.getType()) {
 								case ACK:
 									System.out.println("write: received ACK from peer");
-									success = true;
 									break;
 								case ERR:
-									System.out.println("write: received ERR from peer, resending packet");
+									System.out.println("write: received ERR from peer");
+									ErrPacket ep = (ErrPacket)reply.getPayload();
+									
+									if (ep.shouldResendPacket())
+									{
+										System.out.println("write: resending packet");
+										resendPacket = true;
+									}
+									else
+										System.out.println("write: NOT resending packet");
 									break;
 								default:
 									System.out.println("write: ERROR: illegal state: received " + reply.getType() + " packet in ACK/ERR check, resending");
+									resendPacket = true;
 									break;
 							}
 						}
