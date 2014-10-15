@@ -274,7 +274,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener,
 			String name = start.getNameText();
 			Client client = Main.getClient();
 			try {
-				client.join(new Position(0, 0), "Frank",
+				client.join(1, new Position(0, 0), "Frank",
 						GameClass.CharacterClass.WARRIOR);
 				playerID = client.getPlayerID();
 				Main.getClient().connect();
