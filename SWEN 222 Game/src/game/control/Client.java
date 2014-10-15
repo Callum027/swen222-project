@@ -1,5 +1,6 @@
 package game.control;
 
+import game.exceptions.ErrPacketException;
 import game.exceptions.GameException;
 import game.net.GamePacket;
 import game.net.packets.JoinPacket;
@@ -24,6 +25,7 @@ import java.net.UnknownHostException;
  *
  */
 public class Client extends NetIOController implements GameEventListener {
+	private boolean gettingPlayerID = false;
 	private int playerID = -1;
 	private Socket socket = null;
 	public GameEventBroadcaster geb = new GameEventBroadcaster();
@@ -145,8 +147,16 @@ public class Client extends NetIOController implements GameEventListener {
 	 * @throws GameException
 	 */
 	public void join(Position position, String name, GameClass.CharacterClass playerClass) throws GameException {
-		if (playerID < 0) {
-			write(socket, new GamePacket(GamePacket.Type.JOIN, new JoinPacket(position, name, playerClass)));
+		if (!gettingPlayerID && playerID < 0) {
+			gettingPlayerID = true;
+			
+			try {
+				write(socket, new GamePacket(GamePacket.Type.JOIN, new JoinPacket(position, name, playerClass)));
+			}
+			catch (ErrPacketException e) {
+				gettingPlayerID = false;
+				throw e;
+			}
 		}
 	}
 
