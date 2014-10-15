@@ -5,6 +5,7 @@ import game.exceptions.InvalidGamePacketException;
 import game.exceptions.UnsupportedGamePacketException;
 import game.net.packets.AckPacket;
 import game.net.packets.ErrPacket;
+import game.net.packets.PlayerPacket;
 import game.net.packets.QuitPacket;
 import game.world.GameEvent;
 
@@ -79,6 +80,8 @@ public class GamePacket implements Streamable {
 			case ERR:
 				s = ErrPacket.read(is);
 				break;
+			case PLAYER:
+				s = PlayerPacket.read(is);
 			case QUIT:
 				s = QuitPacket.read(is);
 				break;
@@ -117,12 +120,14 @@ public class GamePacket implements Streamable {
 		ERR(3),
 		// Join a game.
 		JOIN(4),
+		// Player number.
+		PLAYER(5),
 		// Game state transfers.
 		STATE(5),
 		// Game event updates.
 		EVENT(6);
 
-		// The unique ID of the event.
+		// The unique ID of the packet.
 		private final byte id;
 
 		/*
