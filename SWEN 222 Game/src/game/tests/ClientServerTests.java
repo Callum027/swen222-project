@@ -4,6 +4,7 @@ import java.awt.Point;
 
 import game.control.Client;
 import game.control.Server;
+import game.exceptions.GameException;
 import game.world.Area;
 import game.world.GameWorld;
 import game.world.Position;
@@ -63,7 +64,11 @@ public class ClientServerTests {
 		client.connect();
 		client.start();
 
-		client.gameEventOccurred(getTestMoveEvent());
+		try {
+			client.gameEventOccurred(getTestMoveEvent());
+		} catch (GameException e) {
+			e.printStackTrace();
+		}
 
 		client.close();
 	}
