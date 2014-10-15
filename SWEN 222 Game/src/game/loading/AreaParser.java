@@ -16,8 +16,8 @@ import java.util.Scanner;
  *
  */
 public class AreaParser {
-	
-	public static Map<Integer, Area> parseAreas(String filename, Map<Integer, Tile> tileMap){
+
+	public static Map<Integer, Area> parseAreas(String filename, Map<Integer, Tile> tileMap) throws ParserError{
 		Map<Integer, Area> areaMap = new HashMap<Integer, Area>();
 		Scanner scan = null;
 		try{
@@ -25,7 +25,7 @@ public class AreaParser {
 		}catch(IOException e){
 			e.printStackTrace();
 		}
-		
+
 		try{
 			if(!gobble(scan, "<Areas>")){
 				throw new ParserError("Parsing Areas: Expecting <Areas>, got "+scan.next());
@@ -36,8 +36,9 @@ public class AreaParser {
 			}
 		}catch(ParserError error){
 			error.printStackTrace();
+			throw error;
 		}
-		
+
 		scan.close();
 		return areaMap;
 	}
@@ -51,8 +52,9 @@ public class AreaParser {
 	 *            - map of tiles to be used to convert int values to their
 	 *            corresponding tiles.
 	 * @return Area parsed in from file.
+	 * @throws ParserError
 	 */
-	public static Area parseArea(String filename, Map<Integer, Tile> tileMap) {
+	public static Area parseArea(String filename, Map<Integer, Tile> tileMap) throws ParserError {
 		Scanner scan = null;
 		try {
 			scan = new Scanner(new File(filename));
@@ -85,10 +87,10 @@ public class AreaParser {
 			return new Area(floor, walls, ID);
 		} catch (ParserError error) {
 			error.printStackTrace();
+			throw error;
 		}
-		return null;
 	}
-	
+
 	/**
 	 * Parse Area method, takes a Scanner and a map of tiles and returns an
 	 * area
@@ -99,9 +101,9 @@ public class AreaParser {
 	 *            - map of tiles to be used to convert int values to their
 	 *            corresponding tiles.
 	 * @return Area parsed in from file.
+	 * @throws ParserError
 	 */
-	public static Area parseArea(Scanner scan, Map<Integer, Tile> tileMap) {
-		try {
+	public static Area parseArea(Scanner scan, Map<Integer, Tile> tileMap) throws ParserError {
 			if (!gobble(scan, "<Area>")) {
 				throw new ParserError("Parsing Area: Expecting <Area>, got "
 						+ scan.next());
@@ -123,10 +125,6 @@ public class AreaParser {
 						+ scan.next());
 			}
 			return new Area(floor, walls, ID);
-		} catch (ParserError error) {
-			error.printStackTrace();
-		}
-		return null;
 	}
 
 	private static int parseInt(Scanner scan, String type) throws ParserError {

@@ -14,7 +14,8 @@ import java.util.Scanner;
 
 public class CharacterParser {
 
-	public static void parseCharacters(String fileName, Area area, GameWorld world) {
+	public static void parseCharacters(String fileName, Area area,
+			GameWorld world) throws ParserError {
 		Scanner scan = null;
 		try {
 			scan = new Scanner(new File(fileName));
@@ -44,85 +45,67 @@ public class CharacterParser {
 			}
 		} catch (ParserError e) {
 			e.printStackTrace();
+			throw e;
 		}
 	}
 
-	private static void parseCharacterType(Scanner scan, Area area, GameWorld world) {
-		try {
-
-			if (gobble(scan, "<Player>")) {
-				parsePlayer(scan, area, world);
-				return;
-			} else if (gobble(scan, "<Enemy>")) {
-				parseEnemy(scan, area);
-				return;
-			} else if (gobble(scan, "<Merchant>")) {
-				parseMerchant(scan, area);
-			} else {
-				throw new ParserError(
-						"Parsing CharacterType: Expecting a valid character type, got "
-								+ scan.next());
-			}
-		} catch (ParserError e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	private static void parseMerchant(Scanner scan, Area area) {
-		try {
-			int x = parseInt(scan, "XPos");
-			int y = parseInt(scan, "YPos");
-			Position pos = new Position(x, y);
-			String name = parseString(scan, "Name");
-			int id = parseInt(scan, "ID");
-			Merchant merchant = new Merchant(pos, name, id);
-			area.addMerchant(merchant);
-		} catch (ParserError e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	private static void parseEnemy(Scanner scan, Area area) {
-		try {
-			int x = parseInt(scan, "XPos");
-			int y = parseInt(scan, "YPos");
-			Position pos = new Position(x, y);
-			String name = parseString(scan, "Name");
-			int id = parseInt(scan, "ID");
-			Enemy enemy = new Enemy(pos, name, id,
-					GameClass.playerClass.WARRIOR);
-			if (!gobble(scan, "</Enemy>")) {
-				throw new ParserError("Parsing Enemy: Expecting </Enemy>, got "
-						+ scan.next());
-			}
-			area.addEnemy(enemy);
-
-		} catch (ParserError e) {
-			e.printStackTrace();
+	private static void parseCharacterType(Scanner scan, Area area,
+			GameWorld world) throws ParserError {
+		if (gobble(scan, "<Player>")) {
+			parsePlayer(scan, area, world);
+			return;
+		} else if (gobble(scan, "<Enemy>")) {
+			parseEnemy(scan, area);
+			return;
+		} else if (gobble(scan, "<Merchant>")) {
+			parseMerchant(scan, area);
+		} else {
+			throw new ParserError(
+					"Parsing CharacterType: Expecting a valid character type, got "
+							+ scan.next());
 		}
 	}
 
-	private static void parsePlayer(Scanner scan, Area area, GameWorld world) {
-		try {
-			int x = parseInt(scan, "XPos");
-			int y = parseInt(scan, "YPos");
-			Position pos = new Position(x, y);
-			String name = parseString(scan, "Name");
-			int id = parseInt(scan, "ID");
-			Player player = new Player(pos, name, id,
-					GameClass.playerClass.WARRIOR);
-			if (!gobble(scan, "</Player>")) {
-				throw new ParserError(
-						"Parsing Player: Expecting </Player>, got "
-								+ scan.next());
-			}
-			area.addPlayer(player);
-			world.addPlayer(player);
-		} catch (ParserError e) {
-			e.printStackTrace();
+	private static void parseMerchant(Scanner scan, Area area)
+			throws ParserError {
+		int x = parseInt(scan, "XPos");
+		int y = parseInt(scan, "YPos");
+		Position pos = new Position(x, y);
+		String name = parseString(scan, "Name");
+		int id = parseInt(scan, "ID");
+		Merchant merchant = new Merchant(pos, name, id);
+		area.addMerchant(merchant);
+
+	}
+
+	private static void parseEnemy(Scanner scan, Area area) throws ParserError {
+		int x = parseInt(scan, "XPos");
+		int y = parseInt(scan, "YPos");
+		Position pos = new Position(x, y);
+		String name = parseString(scan, "Name");
+		int id = parseInt(scan, "ID");
+		Enemy enemy = new Enemy(pos, name, id, GameClass.playerClass.WARRIOR);
+		if (!gobble(scan, "</Enemy>")) {
+			throw new ParserError("Parsing Enemy: Expecting </Enemy>, got "
+					+ scan.next());
 		}
+		area.addEnemy(enemy);
+	}
+
+	private static void parsePlayer(Scanner scan, Area area, GameWorld world)
+			throws ParserError {
+		int x = parseInt(scan, "XPos");
+		int y = parseInt(scan, "YPos");
+		Position pos = new Position(x, y);
+		String name = parseString(scan, "Name");
+		int id = parseInt(scan, "ID");
+		Player player = new Player(pos, name, id, GameClass.playerClass.WARRIOR);
+		if (!gobble(scan, "</Player>")) {
+			throw new ParserError("Parsing Player: Expecting </Player>, got "
+					+ scan.next());
+		}
+		area.addPlayer(player);
+		world.addPlayer(player);
 	}
 
 	private static String parseString(Scanner scan, String type)

@@ -3,7 +3,6 @@
 		<XPos> 0 </XPos>
 		<YPos> 1 </YPos>
 		<Height> 2 </Height>
-		<ID> 0 </ID>
 		<Name> shelf </Name>
 		<Furniture>
 		</Furniture>
@@ -12,7 +11,6 @@
 		<XPos> 5 </XPos>
 		<YPos> 0 </YPos>
 		<Height> 2 </Height>
-		<ID> 1 </ID>
 		<Name> shelf </Name>
 		<Furniture>
 		</Furniture>
@@ -21,7 +19,6 @@
 		<XPos> 9 </XPos>
 		<YPos> 9 </YPos>
 		<Height> 1 </Height>
-		<ID> 2 </ID>
 		<Name> wizard-hat </Name>
 		<MoveableItem>
 		    <Worth> 90 </Worth>
@@ -31,7 +28,6 @@
 		<XPos> 4 </XPos>
 		<YPos> 0 </YPos>
 		<Height> 2 </Height>
-		<ID> 3 </ID>
 		<Name> Door </Name>
 		<Door>
 			<AreaID> 2 </AreaID>
@@ -44,7 +40,6 @@
 	    <XPos> 9 </XPos>
 	    <YPos> 0 </YPos>
 	    <Height> 1 </Height>
-	    <ID> 4 </ID>
 	    <Name> Chest </Name>
 	    <Container>
 	        <Cats> 5 </Cats>
