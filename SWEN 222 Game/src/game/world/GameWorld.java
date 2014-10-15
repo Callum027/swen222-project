@@ -219,26 +219,27 @@ public class GameWorld implements GameEventListener{
 		if (ge instanceof TransferEvent){
 			transferEvent(ge);
 		}
-		if(ge instanceof InventoryEvent){
-			inventoryEvent(ge);
-		}
+		//if(ge instanceof InventoryEvent){
+			//inventoryEvent(ge);
+		//}
 	}
 
 
-
-
+	/*
+	 * delegated the event handling to the methods below
+	 */
 
 	public void moveEvent(GameEvent ge){
 		MoveEvent move = (MoveEvent) ge;
 		GameCharacter gameCharacter = move.getGameCharacter();
-		gameCharacter.moveToPosition(move.getPosition());
+		gameCharacter.moveToPosition(move.getPosition()); //moves a charcter to a potsition
 	}
 
 	public void interactEvent(GameEvent ge){
 		InteractEvent interact = (InteractEvent) ge;
 		Item item = interact.getItem();
 		Player player = interact.getPlayer();
-		item.interact(player);
+		item.interact(player); //player interacts with an object
 	}
 
 	public void dropItemEvent(GameEvent ge){
@@ -247,8 +248,8 @@ public class GameWorld implements GameEventListener{
 		Position p = drop.getPosition();
 		int areaID = drop.getAreaID();
 		Area area = areas.get(areaID);
-		item.setPosition(p);
-		area.addItem(item);
+		item.setPosition(p); //drops the item  at the current position
+		area.addItem(item); //the area owns the item now
 	}
 
 	public void pickUpEvent(GameEvent ge){
@@ -257,8 +258,8 @@ public class GameWorld implements GameEventListener{
 		MoveableItem item = pickUp.getItem();
 		int areaID = pickUp.getAreaID();
 		Area area = areas.get(areaID);
-		player.addItem(item);
-		area.removeItem(item);
+		player.addItem(item); //added item into the player's inventory
+		area.removeItem(item); //removes an item from the area, the item gets picked-up
 	}
 
 	public void transportEvent(GameEvent ge){
@@ -266,7 +267,7 @@ public class GameWorld implements GameEventListener{
 		Player player = transport.getPlayer();
 		int areaID = transport.getAreaID();
 		if(areas.containsKey(areaID)){
-			areas.get(areaID).addPlayer(player);
+			areas.get(areaID).addPlayer(player); //player travels to a new area
 		}
 	}
 
@@ -283,7 +284,7 @@ public class GameWorld implements GameEventListener{
 			throw new IllegalArgumentException("This type of item is not sellable!");
 		}
 
-		merchant.sellWares(item, player);
+		merchant.sellWares(item, player); //sells an item to the player
 	}
 
 	public void equipEvent(GameEvent ge){
@@ -294,6 +295,22 @@ public class GameWorld implements GameEventListener{
 			player.getEquipped().equipHead(item);
 			player.getItems().remove(item);
 		}
+		if (item.getSlot() == 1){
+			player.getEquipped().equipMainHand(item);
+			player.getItems().remove(item);
+		}
+		if (item.getSlot() == 2){
+			player.getEquipped().equipOffHand(item);
+			player.getItems().remove(item);
+		}
+		if (item.getSlot() == 3){
+			player.getEquipped().equipBody(item);
+			player.getItems().remove(item);
+		}
+		if (item.getSlot() == 4){
+			player.getEquipped().equipBoots(item);
+			player.getItems().remove(item);
+		}
 	}
 
 	public void consumeEvent(GameEvent ge){
@@ -301,15 +318,15 @@ public class GameWorld implements GameEventListener{
 		Player player = consume.getPlayer();
 		Consumables item = consume.getItem();
 		player.getItems().remove(item);
-		item.buff(player);
+		item.buff(player); //increases the player's health
 	}
 
 	public void combatEvent(GameEvent ge){
 		CombatEvent combat = (CombatEvent) ge;
 		Player player = combat.getPlayer();
 		Enemy enemy = combat.getEnemy();
-		player.attack(enemy);
-		enemy.attack(player);
+		player.attack(enemy); //player attacks an enemy
+		enemy.attack(player); //the enemy retaliates
 	}
 
 	public void transferEvent(GameEvent ge) {
@@ -317,24 +334,7 @@ public class GameWorld implements GameEventListener{
 		int playerID = transfer.getPlayerID();
 		Player player = players.get(playerID);
 		MoveableItem item = transfer.getItem();
-		int cont = transfer.getCont();
-		Container container = (Container) items.get(cont);
-		List<MoveableItem> loot = container.getLoot();
-		loot.add(item);
-		container.setLoot(loot);
-		player.removeItem(item);
-	}
-
-	public void inventoryEvent(GameEvent ge) {
-		InventoryEvent transfer = (InventoryEvent) ge;
-		int playerID = transfer.getPlayerID();
-		Player player = players.get(playerID);
-		MoveableItem item = transfer.getItem();
-		int cont = transfer.getCont();
-		Container container = (Container) items.get(cont);
-		List<MoveableItem> loot = container.getLoot();
-		loot.remove(item);
-		container.setLoot(loot);
-		player.addItem(item);
+		//Container cont = transfer.getCont();
+		//List<MoveableItem> loot
 	}
 }
