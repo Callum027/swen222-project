@@ -7,6 +7,7 @@ import game.ui.rendering.RenderingPanel;
 import game.world.GameEvent;
 import game.world.GameEventBroadcaster;
 import game.world.GameEventListener;
+import game.world.items.Container;
 import game.world.items.MoveableItem;
 
 import java.awt.Component;
@@ -465,10 +466,11 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener,
 		this.from = from;
 	}
 
-	public void addChestContents(List<MoveableItem> loot) {
+	public void addChestContents(List<MoveableItem> loot, Container c) {
 		for(MoveableItem i : loot){
 			chest.addItem(i);
 		}
+		chest.setCont(c);
 
 	}
 

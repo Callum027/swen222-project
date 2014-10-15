@@ -1,9 +1,12 @@
 package game.ui.application;
 
 import game.Main;
+import game.exceptions.GameException;
 import game.ui.GameComponent;
 import game.ui.GameFrame;
 import game.world.Position;
+import game.world.events.TransferEvent;
+import game.world.items.Container;
 import game.world.items.MoveableItem;
 
 import java.awt.Color;
@@ -43,6 +46,7 @@ public class ChestPanel extends JPanel implements GameComponent {
 	private int cats;
 
 	private int previousSlot;
+	private Container cont;
 
 	/**
 	 * Sets up the panel, adds in cats that have been passed to it as a
@@ -163,8 +167,12 @@ public class ChestPanel extends JPanel implements GameComponent {
 			 */
 			if (frame.getSelectedItem() != null) {
 				itemSelected = frame.getSelectedItem();
-				//TransferEvent transfer = new TransferEvent(frame.getSelectedItem(), frame.getPlayerID());
-				//frame.broadcastGameEvent(transfer);
+				TransferEvent transfer = new TransferEvent(frame.getSelectedItem(), frame.getPlayerID(), cont);
+				try {
+					frame.broadcastGameEvent(transfer);
+				} catch (GameException e1) {
+
+				}
 				addItem(itemSelected);
 				frame.setSelectedItem(null);
 				itemSelected = null;
@@ -223,6 +231,14 @@ public class ChestPanel extends JPanel implements GameComponent {
 
 	public void setCats(int cats) {
 		this.cats = cats;
+	}
+
+	public Container getCont() {
+		return cont;
+	}
+
+	public void setCont(Container cont) {
+		this.cont = cont;
 	}
 
 }

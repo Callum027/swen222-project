@@ -11,9 +11,11 @@ import game.world.events.EquipEvent;
 import game.world.events.InteractEvent;
 import game.world.events.MoveEvent;
 import game.world.events.PickUpEvent;
+import game.world.events.TransferEvent;
 import game.world.events.TransportEvent;
 import game.world.events.CombatEvent;
 import game.world.items.Consumables;
+import game.world.items.Container;
 import game.world.items.Equipment;
 import game.world.items.Item;
 import game.world.items.MoveableItem;
@@ -86,7 +88,7 @@ public class GameWorld implements GameEventListener{
 			// increment the ID until it is unique again.
 			if (id == nextPlayerID)
 				while (players.containsKey(++nextPlayerID));
-			
+
 			players.put(id, p);
 			return true;
 		};
@@ -143,7 +145,7 @@ public class GameWorld implements GameEventListener{
 			// increment the ID until it is unique again.
 			if (id == nextItemID)
 				while (items.containsKey(++nextItemID));
-			
+
 			items.put(i.getID(), i);
 			return true;
 		};
@@ -212,7 +214,12 @@ public class GameWorld implements GameEventListener{
 		if (ge instanceof CombatEvent){
 			combatEvent(ge);
 		}
+		if (ge instanceof TransferEvent){
+			transferEvent(ge);
+		}
 	}
+
+
 
 	public void moveEvent(GameEvent ge){
 		MoveEvent move = (MoveEvent) ge;
@@ -296,5 +303,14 @@ public class GameWorld implements GameEventListener{
 		Enemy enemy = combat.getEnemy();
 		player.attack(enemy);
 		enemy.attack(player);
+	}
+
+	public void transferEvent(GameEvent ge) {
+		TransferEvent transfer = (TransferEvent) ge;
+		int playerID = transfer.getPlayerID();
+		Player player = players.get(playerID);
+		MoveableItem item = transfer.getItem();
+		Container cont = transfer.getCont();
+		//List<MoveableItem> loot
 	}
 }
