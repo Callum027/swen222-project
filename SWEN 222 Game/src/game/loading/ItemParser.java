@@ -24,7 +24,6 @@ public class ItemParser {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 		try {
 			if (!gobble(scan, "<ItemList>")) {
 				throw new ParserError(
@@ -57,10 +56,6 @@ public class ItemParser {
 			int height = parseInt(scan, "Height");
 			Position pos = new Position(x, y);
 			int ID = parseInt(scan, "ID");
-			//if (!gobble(scan, "<Name>")) {
-			//	throw new ParserError("Parsing Item: Expecting <Name>, got "
-			//			+ scan.next());
-			//}
 			String name = parseString(scan, "Name");
 			if (gobble(scan, "<Container>")) {
 				return parseContainer(scan, pos, height, name, ID);
@@ -74,6 +69,8 @@ public class ItemParser {
 				return parseMoveableItem(scan, pos, height, name, ID);
 			} else if (gobble(scan, "<Door>")) {
 				return parseDoor(scan, pos, height, name, ID);
+			}else{
+				throw new ParserError("Parsing Item: Expecting a valid item type, got "+scan.next());
 			}
 		} catch (ParserError error) {
 			error.printStackTrace();
@@ -205,14 +202,15 @@ public class ItemParser {
 			int areaID = parseInt(scan, "AreaID");
 			int x = parseInt(scan, "XPos");
 			int y = parseInt(scan, "YPos");
-			Position transport =  new Position(x, y);
+			Position transport = new Position(x, y);
 			boolean keyRequired = parseBoolean(scan, "KeyRequired");
 
 			if (!gobble(scan, "</Door>")) {
 				throw new ParserError("Parsing Door: Expecting </Door>, got"
 						+ scan.next());
 			}
-			return new Door(pos, height, ID, name, null, areaID, transport, keyRequired);
+			return new Door(pos, height, ID, name, null, areaID, transport,
+					keyRequired);
 		} catch (ParserError error) {
 			error.printStackTrace();
 		}

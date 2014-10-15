@@ -3,6 +3,7 @@ package game;
 import game.control.Client;
 import game.control.Server;
 import game.loading.AreaParser;
+import game.loading.CharacterParser;
 import game.loading.ItemParser;
 import game.ui.GameFrame;
 import game.world.Area;
@@ -25,6 +26,7 @@ public class Main {
 	private static final String IMAGE_PATH = "src" + File.separatorChar + "game" + File.separatorChar + "ui" + File.separatorChar + "images";
 	private static final String AREA_FILE = "src" + File.separatorChar + "game" + File.separatorChar + "loading" + File.separatorChar + "Areas.xml";
 	private static final String ITEMS_FILE = "src" + File.separatorChar + "game" + File.separatorChar + "loading" + File.separatorChar + "Items1.xml";
+	private static final String CHARACTER_FILE = "src" + File.separatorChar + "game" + File.separatorChar + "loading" + File.separatorChar + "characters1.xml";
 	private static final String[] TILES_FILE = new String[] { "1, FloorTile, floor_tile3", "2, FloorTile, Carpet_Centre" };
 
 	/** Game mode: client, server, or client and server. */
@@ -103,12 +105,14 @@ public class Main {
 			area = areaMap.get(1);
 			ItemParser.parseItemList(ITEMS_FILE, area);
 
+
 			// Add the main area to the game world, but only if the area
 			// successfully loaded.
 			if (!areaMap.isEmpty())
 			{
 				gameWorld = new GameWorld();
 				gameWorld.addAreas(areaMap);
+				CharacterParser.parseCharacters(CHARACTER_FILE, gameWorld);
 			}
 			else
 			{

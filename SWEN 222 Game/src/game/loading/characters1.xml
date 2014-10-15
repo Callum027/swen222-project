@@ -1,0 +1,10 @@
+<CharList>
+    <Character>
+        <Player>
+            <XPos> 3 </XPos>
+            <YPos> 3 </YPos>
+            <Name> Bob </Name>
+            <ID> 9001 </ID>
+        </Player>
+    </Character>
+</CharList>
