@@ -164,7 +164,6 @@ public class Main {
 
 		// Create a new client object, and make this client listen to game events from the GUI.
 		client = new Client();
-		//gameWindow.addGameEventListener(client);
 
 		// Connect the client to the server.
 		if (addr == null && port <= 0)
@@ -226,6 +225,11 @@ public class Main {
 		// Render the area.
 		gameWindow.getRender().setArea(area);
 		gameWindow.getRender().repaint();
+		
+		// Add the client as a game event listener to this game window.
+		gameWindow.addGameEventListener(client);
+		// Only do this if the brown stuff hits the fan!
+		// gameWindow.addGameEventListener(gameWorld);
 
 		return true;
 	}
@@ -324,8 +328,6 @@ public class Main {
 
 		if (!setupGameWindow())
 			System.exit(6);
-
-		gameWindow.getGameEventBroadcaster().addGameEventListener(gameWorld);
 	}
 
 	/**
