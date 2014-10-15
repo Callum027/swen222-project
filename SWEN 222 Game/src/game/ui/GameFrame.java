@@ -20,6 +20,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -60,6 +61,9 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 	private ChestPanel chest;
 	private StartPanel start;
 
+	private JPanel renderPane;
+	private JPanel appPane;
+
 	private MoveableItem selectedItem;
 	/*
 	 * selectedItem is the item that has been selected in one of the panels and
@@ -99,7 +103,8 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 		chest = new ChestPanel(90);
 		inventory.setEquip(equip);
 		equip.setStats(stats);
-
+		renderPane = new JPanel();
+		appPane = new JPanel();
 		addMouseListener(this);
 		addKeyListener(this);
 
@@ -132,13 +137,16 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 	 * Sets up the menu bar at the top of the GameFrame.
 	 */
 	private void setupMenuBar() {
-		JMenuBar menu = new JMenuBar();
+		JMenuBar menuBar = new JMenuBar();
 		JMenu file = new JMenu("File");
+		JMenuItem menu = new JMenuItem("Menu");
 		JMenuItem quit = new JMenuItem("Quit");
+		menu.addActionListener(this);
 		quit.addActionListener(this);
+		file.add(menu);
 		file.add(quit);
-		menu.add(file);
-		setJMenuBar(menu);
+		menuBar.add(file);
+		setJMenuBar(menuBar);
 	}
 
 	public void changeState(State s){
@@ -146,11 +154,15 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 			return;
 		}
 		if(s == State.START){
+			remove(renderPane);
+			remove(appPane);
 			setupStartState();
 		}
 		else if(s == State.IN_GAME){
+			remove(start);
 			setupInGameState();
 		}
+		state = s;
 		pack();
 	}
 
@@ -159,9 +171,8 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 	}
 
 	public void setupInGameState(){
-		removeAll();
 		// setup the render pane
-		JPanel renderPane = new JPanel();
+		renderPane = new JPanel();
 		renderPane.addMouseListener(this);
 		renderPane.setLayout(new BoxLayout(renderPane, BoxLayout.Y_AXIS));
 		renderPane.add(render);
@@ -170,7 +181,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 		renderPane.addMouseListener(this);
 
 		// setup app pane
-		JPanel appPane = new JPanel();
+		appPane = new JPanel();
 		appPane.setLayout(new BoxLayout(appPane, BoxLayout.Y_AXIS));
 
 		stats.addMouseListener(this);
@@ -191,6 +202,13 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 		add(appPane);
 	}
 
+	@Override
+	public void removeAll(){
+		remove(start);
+		remove(renderPane);
+		remove(appPane);
+	}
+
 	/**
 	 * Used to prompt the user with the decision to quit the game. If they
 	 * choose yes, the game is exited.
@@ -209,13 +227,25 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+
 		Object source = e.getSource();
 		String action = null;
 		if (source instanceof JMenuItem) {
 			action = ((JMenuItem) source).getText();
 		}
-		if (action.equals("Quit")) {
+		else if (source instanceof JButton){
+			action = ((JButton)source).getText();
+		}
+
+		if(action.equals("Menu")){
+			System.out.println("in start state");
+			changeState(State.START);
+		}
+		else if (action.equals("Quit")) {
 			quitGame();
+		}
+		if(action.equals("New Game")){
+			changeState(State.IN_GAME);
 		}
 
 	}
