@@ -468,7 +468,9 @@ public class RenderingPanel extends JPanel implements GameComponent {
 				frame.append("Interacted with a door.");
 			}
 			else if(drawable instanceof Container){
+				Container cont = (Container) drawable;
 				frame.setStatsVisible(false);
+				frame.addChestContents(cont.getLoot());
 				frame.setChestVisible(true);
 
 				frame.append("It is a chest!");

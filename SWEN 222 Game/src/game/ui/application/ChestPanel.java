@@ -56,7 +56,6 @@ public class ChestPanel extends JPanel implements GameComponent {
 	 */
 	public ChestPanel(int cats) {
 		this.cats = cats;
-		addItem(new MoveableItem(new Position(0, 0), 1, 90, "key", 0));
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		background = Main.getImage("chest-inventory.png");
 		repaint();
