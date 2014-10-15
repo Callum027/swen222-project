@@ -1,10 +1,16 @@
 package game.control;
 
+import game.Main;
+import game.exceptions.ErrPacketException;
 import game.exceptions.GameException;
 import game.net.GamePacket;
+import game.net.packets.HelloPacket;
+import game.net.packets.JoinPacket;
+import game.net.packets.PlayerPacket;
 import game.world.GameEvent;
 import game.world.GameEventBroadcaster;
 import game.world.GameEventListener;
+import game.world.characters.Player;
 
 import java.io.IOException;
 import java.net.BindException;
@@ -194,6 +200,19 @@ public class Server extends Thread {
 			synchronized (serverConnections) {
 				serverConnections.add(this);
 			}
+			
+			// Send a HELLO packet to the client to test communications.
+			try {
+				write(clientSocket, new GamePacket(GamePacket.Type.HELLO, new HelloPacket()));
+			}
+			catch (ErrPacketException e) {
+				System.out.println("server: received unrecoverable ERR packet from client upon HELLO, closing connection");
+				close();
+			}
+			catch (GameException e) {
+				// It won't throw this, but if it does, we want to know...
+				e.printStackTrace();
+			}
 		}
 
 		public void run() {
@@ -205,8 +224,7 @@ public class Server extends Thread {
 				if (gp != null) {
 					System.out.println("server: read GamePacket from " + clientSocket.getInetAddress());
 					
-					switch (gp.getType())
-					{
+					switch (gp.getType()) {
 						// We have received a game event from a client.
 						case EVENT:
 							GameEvent ge = (GameEvent)gp.getPayload();
@@ -228,10 +246,8 @@ public class Server extends Thread {
 							// GameEventBroadcaster too complicated by having it broadcast
 							// on an array that is being changed outside its scope.
 							synchronized (serverConnections) {
-								for (ServerConnection sc: serverConnections)
-								{
-									if (sc != this)
-									{
+								for (ServerConnection sc: serverConnections) {
+									if (sc != this) {
 										try {
 											sc.gameEventOccurred(ge);
 										}
@@ -241,6 +257,41 @@ public class Server extends Thread {
 										}
 									}
 								}
+							}
+							break;
+						case JOIN:
+							JoinPacket jp = (JoinPacket)gp.getPayload();
+							
+							// Create a new player for the joining client.
+							Player player = new Player(jp.getPosition(),
+									jp.getName(),
+									Main.getGameWorld().getNextPlayerID(),
+									jp.getPlayerClass());
+							
+							// Add this player to the game world.
+							Main.getGameWorld().addPlayer(player);
+							
+							// Broadcast this change to all clients.
+							synchronized (serverConnections) {
+								for (ServerConnection sc: serverConnections) {
+									if (sc != this) {
+										try {
+											sc.write(sc.clientSocket, gp);
+										}
+										catch (GameException e) {
+											System.err.println("server: unexpected GameException when broadcasting game event");
+											e.printStackTrace();
+										}
+									}
+								}
+							}
+							
+							// Send the client their player number.
+							try {
+								write(clientSocket, new GamePacket(GamePacket.Type.PLAYER, new PlayerPacket(player.getId())));
+							} catch (GameException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
 							}
 							break;
 						case QUIT:

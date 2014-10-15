@@ -280,9 +280,6 @@ public class Main {
 	 * @return game world
 	 */
 	public static GameWorld getGameWorld() {
-		// Set up the game world if it has not been set up already.
-		setupGameWorld();
-
 		return gameWorld;
 	}
 
