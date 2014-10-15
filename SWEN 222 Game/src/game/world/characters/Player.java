@@ -185,14 +185,32 @@ public class Player extends GameCharacter implements Streamable, Attackable{
 	public int calculateAttack(){
 		int baseStats = (int) (this.attack + gameClass.getStrength() + (0.5*gameClass.getDexterity() +
 				(0.5*gameClass.getIntelligence())));
-		int equipmentStats = equipped.getMainHand().getAttack() + equipped.getoffHand().getAttack();
+		int equipmentStats = 0;
+		if (equipped != null){
+			if (equipped.getMainHand() != null){
+				equipmentStats += equipped.getMainHand().getAttack();
+			}
+			if (equipped.getoffHand() != null){
+				equipmentStats += equipped.getoffHand().getAttack();
+			}
+		}
 		return (int) (baseStats+equipmentStats);
 	}
 
 	public int calculateDefence(){
 		int baseStats = this.defence;
-		int equipmentStats = equipped.getHead().getDefence() + equipped.getBody().getDefence() +
-				equipped.getBoots().getDefence();
+		int equipmentStats = 0;
+		if (equipped != null){
+			if (equipped.getHead() != null){
+				equipmentStats += equipped.getHead().getDefence();
+			}
+			if (equipped.getBody() != null){
+				equipmentStats += equipped.getBody().getDefence();
+			}
+			if (equipped.getBoots() != null){
+				equipmentStats += equipped.getBoots().getDefence();
+			}
+		}
 		return baseStats + equipmentStats;
 	}
 
