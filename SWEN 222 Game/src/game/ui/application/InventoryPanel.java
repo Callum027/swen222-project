@@ -65,7 +65,6 @@ public class InventoryPanel extends JPanel implements GameComponent {
 				200, 500, EquipPanel.FEET_SLOT));
 		addItem(new Equipment(new Position(8, 0), 1, 21, "mithril-hat", 0, 200,
 				500, EquipPanel.HEAD_SLOT));
-		addItem(new MoveableItem(new Position(1, 3), 1, 40, "key", 0));
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
 		background = Main.getImage("Inventory.png");

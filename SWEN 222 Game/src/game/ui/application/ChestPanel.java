@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 
 public class ChestPanel extends JPanel implements GameComponent {
 
+	private static final long serialVersionUID = 1L;
 	public static final int WIDTH = 155;
 	public static final int HEIGHT = 169;
 
