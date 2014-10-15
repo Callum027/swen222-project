@@ -293,7 +293,24 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener,
 		} else if (action.equals("Host New Game")) {
 
 		} else if (action.equals("Join Game")) {
-
+			Client client = Main.getClient();
+			try {
+				client.join(1, new Position(0, 0), "Frank",
+						GameClass.CharacterClass.WARRIOR);
+				try {
+					Thread.sleep(50);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				playerID = client.getPlayerID();
+				Main.getClient().connect();
+				changeState(State.IN_GAME);
+			} catch (GameException e1) {
+				System.err
+						.println("GameFrame.actionPerformed : GameException while joining game");
+				e1.printStackTrace();
+			}
 		}
 
 	}
