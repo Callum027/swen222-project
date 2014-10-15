@@ -54,20 +54,21 @@ public abstract class NetIOController extends Thread {
 						if (pauseMainLoop)
 							continue;
 						
-						synchronized (socket) {
-							try {
+						
+						try {
+							synchronized (socket) {
 								// Set the normal timeout on this socket.
 								socket.setSoTimeout(SOCKET_TIMEOUT);
 								gp = GamePacket.read(socket.getInputStream());
 							}
-							catch (SocketTimeoutException e) {
-								// Sleep the current thread, to give other threads
-								// the opportunity to lock the socket for sending packets.
-								try {
-									Thread.sleep(MAIN_LOOP_COOLDOWN);
-								}
-								catch (InterruptedException e1) {
-								}
+						}
+						catch (SocketTimeoutException e) {
+							// Sleep the current thread, to give other threads
+							// the opportunity to lock the socket for sending packets.
+							try {
+								Thread.sleep(MAIN_LOOP_COOLDOWN);
+							}
+							catch (InterruptedException e1) {
 							}
 						}
 					}

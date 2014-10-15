@@ -102,24 +102,24 @@ public class Server extends Thread {
 				
 				// Try to accept a new client connection.
 				while (clientSocket == null) {
-					synchronized (serverSocket) {
-						// If the closing state has changed since we
-						// acquired a lock on serverSocket, break out of the loop.
-						if (closing)
-							return;
+					// If the closing state has changed since we
+					// acquired a lock on serverSocket, break out of the loop.
+					if (closing)
+						return;
 						
-						try {
+					try {
+						synchronized (serverSocket) {
 							serverSocket.setSoTimeout(SERVER_SOCKET_TIMEOUT);
 							clientSocket = serverSocket.accept();
 						}
-						catch (SocketTimeoutException e) {
-							// Sleep the current thread, to give other threads
-							// the opportunity to lock the socket for sending packets.
-							try {
-								Thread.sleep(MAIN_LOOP_COOLDOWN);
-							}
-							catch (InterruptedException e1) {
-							}
+					}
+					catch (SocketTimeoutException e) {
+						// Sleep the current thread, to give other threads
+						// the opportunity to lock the socket for sending packets.
+						try {
+							Thread.sleep(MAIN_LOOP_COOLDOWN);
+						}
+						catch (InterruptedException e1) {
 						}
 					}
 				}
