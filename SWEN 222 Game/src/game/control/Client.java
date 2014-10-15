@@ -1,5 +1,6 @@
 package game.control;
 
+import game.Main;
 import game.exceptions.ErrPacketException;
 import game.exceptions.GameException;
 import game.net.GamePacket;
@@ -8,6 +9,7 @@ import game.world.GameEvent;
 import game.world.GameEventBroadcaster;
 import game.world.GameEventListener;
 import game.world.Position;
+import game.world.characters.Player;
 import game.world.characters.classes.GameClass;
 
 import java.io.IOException;
@@ -118,6 +120,17 @@ public class Client extends NetIOController implements GameEventListener {
 							e.printStackTrace();
 						}
 						break;
+					case JOIN:
+						System.out.println("client: adding player to local game world");
+						JoinPacket jp = (JoinPacket)gp.getPayload();
+						
+						// Create a new player for the joining client.
+						Player player = new Player(jp.getPosition(),
+								jp.getName(),
+								Main.getGameWorld().getNextPlayerID(),
+								jp.getPlayerClass());
+						
+						Main.getGameWorld().getArea(jp.getAreaID()).addPlayer(player);
 					case QUIT:
 						System.out.println("client: read QUIT packet, closing connection");
 						close();
@@ -146,12 +159,12 @@ public class Client extends NetIOController implements GameEventListener {
 	 * @param playerClass Player class
 	 * @throws GameException
 	 */
-	public void join(Position position, String name, GameClass.CharacterClass playerClass) throws GameException {
+	public void join(int areaID, Position position, String name, GameClass.CharacterClass playerClass) throws GameException {
 		if (!gettingPlayerID && playerID < 0) {
 			gettingPlayerID = true;
 			
 			try {
-				write(socket, new GamePacket(GamePacket.Type.JOIN, new JoinPacket(position, name, playerClass)));
+				write(socket, new GamePacket(GamePacket.Type.JOIN, new JoinPacket(areaID, position, name, playerClass)));
 			}
 			catch (ErrPacketException e) {
 				gettingPlayerID = false;

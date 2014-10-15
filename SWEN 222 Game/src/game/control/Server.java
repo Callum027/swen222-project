@@ -269,7 +269,7 @@ public class Server extends Thread {
 									jp.getPlayerClass());
 							
 							// Add this player to the game world.
-							Main.getGameWorld().addPlayer(player);
+							Main.getGameWorld().getArea(jp.getAreaID()).addPlayer(player);
 							
 							// Broadcast this change to all clients.
 							synchronized (serverConnections) {
