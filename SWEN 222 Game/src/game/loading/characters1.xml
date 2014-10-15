@@ -7,12 +7,4 @@
             <ID> 9001 </ID>
         </Player>
     </Character>
-     <Character>
-        <Player>
-            <XPos> 0 </XPos>
-            <YPos> 5 </YPos>
-            <Name> Bob2 </Name>
-            <ID> 9002 </ID>
-        </Player>
-    </Character>
 </CharList>
