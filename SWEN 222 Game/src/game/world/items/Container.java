@@ -1,10 +1,13 @@
 package game.world.items;
 
+import game.Main;
 import game.exceptions.GameException;
 import game.exceptions.InvalidItemException;
 import game.world.Position;
 import game.world.characters.Player;
 
+import java.awt.Graphics;
+import java.awt.Image;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -19,7 +22,8 @@ public class Container extends Item{
 
 	private int cats; //the cats contained in the container
 	private List<MoveableItem> loot; //the items in the container
-
+	private final String[] directions = new String[]{"North", "East", "South", "West"};
+	private Image[] images;
 	/**
 	 * The Constructor:
 	 * @param x the x coordinate
@@ -30,6 +34,10 @@ public class Container extends Item{
 	public Container(Position position, int height, int id, String name, int cats) {
 		super(position, height, id, name);
 		this.cats=cats;
+		this.images = new Image[directions.length];
+		for(int i = 0; i < directions.length; i++){
+			images[i] = Main.getImage(name+"_"+directions[i]+".png");
+		}
 	}
 
 	/**
@@ -70,10 +78,25 @@ public class Container extends Item{
 	}
 
 	/**
+	 * Draw this item on the specified graphics object
+	 *
+	 * @param g
+	 *            - graphics object
+	 * @param x
+	 *            - x position to draw to
+	 * @param y
+	 *            - y position to draw to
+	 */
+	@Override
+	public void draw(Graphics g, int x, int y, int direction) {
+		g.drawImage(images[direction], x, y, null);
+	}
+
+	/**
 	 * Reads a consumables from the input stream.
 	 * Differs from Item.read() by actually testing if the read item is
 	 * a Consumables, and if not, throwing an exception.
-	 * 
+	 *
 	 * @param is the inputstream
 	 * @return the consumables with the given id that is received form the inputstream
 	 * @throws IOException
@@ -81,7 +104,7 @@ public class Container extends Item{
 	 */
 	public static Container read(InputStream is) throws IOException, GameException {
 		Item i = Item.read(is);
-		
+
 		if (i instanceof Container)
 			return (Container)i;
 		else
