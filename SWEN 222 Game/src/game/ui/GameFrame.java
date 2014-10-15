@@ -140,7 +140,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener,
 		return selectedItem;
 	}
 
-	public int getPlayerID(){
+	public int getPlayerID() {
 		return playerID;
 	}
 
@@ -270,24 +270,23 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener,
 			changeState(State.START);
 		} else if (action.equals("Quit")) {
 			quitGame();
-		}
-		else if (action.equals("New Game")) {
+		} else if (action.equals("New Game")) {
 			String name = start.getNameText();
 			Client client = Main.getClient();
 			try {
-				client.join(new Position(0,0), "Frank", GameClass.CharacterClass.WARRIOR);
+				client.join(new Position(0, 0), "Frank",
+						GameClass.CharacterClass.WARRIOR);
 				playerID = client.getPlayerID();
 				Main.getClient().connect();
 				changeState(State.IN_GAME);
 			} catch (GameException e1) {
-				System.err.println("GameFrame.actionPerformed : GameException while joining game");
+				System.err
+						.println("GameFrame.actionPerformed : GameException while joining game");
 				e1.printStackTrace();
 			}
-		}
-		else if(action.equals("Host New Game")){
+		} else if (action.equals("Host New Game")) {
 
-		}
-		else if(action.equals("Join Game")){
+		} else if (action.equals("Join Game")) {
 
 		}
 
@@ -462,7 +461,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener,
 	}
 
 	public void returnItem() {
-		if(from !=null){
+		if (from != null) {
 			from.addItem(selectedItem);
 		}
 		from = null;
@@ -478,8 +477,10 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener,
 
 	public void addChestContents(List<MoveableItem> loot) {
 		chest.setItems(null);
-		for(MoveableItem i : loot){
-			chest.addItem(i);
+		if (loot != null) {
+			for (MoveableItem i : loot) {
+				chest.addItem(i);
+			}
 		}
 
 	}
@@ -494,7 +495,4 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener,
 
 	}
 
-
-
 }
-

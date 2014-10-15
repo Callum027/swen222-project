@@ -86,15 +86,17 @@ public class ChestPanel extends JPanel implements GameComponent {
 	private void drawItems(Graphics g) {
 		int j = 0;
 		int k = 0;
-		for (int i = 0; i < chest.length; i++) {
-			if (chest[i] != null) {
-				chest[i].draw(g, (j * (squareSize + 2)) - X_OFFSET,
-						(k * (squareSize + 2)) - Y_OFFSET, 0);
-			}
-			j++;
-			if (j == INVENTORY_WIDTH) {
-				j = 0;
-				k++;
+		if (chest != null) {
+			for (int i = 0; i < chest.length; i++) {
+				if (chest[i] != null) {
+					chest[i].draw(g, (j * (squareSize + 2)) - X_OFFSET,
+							(k * (squareSize + 2)) - Y_OFFSET, 0);
+				}
+				j++;
+				if (j == INVENTORY_WIDTH) {
+					j = 0;
+					k++;
+				}
 			}
 		}
 	}
@@ -109,13 +111,15 @@ public class ChestPanel extends JPanel implements GameComponent {
 	 *         no room left for it in the array.
 	 */
 	public int addItem(MoveableItem item) {
-		for (int i = 0; i < chest.length; i++) {
-			// checks if the item in the slot is not full
-			if (chest[i] == null) {
-				// if it's not then add it to the array in the slot
-				chest[i] = item;
-				repaint();
-				return i;
+		if (chest != null) {
+			for (int i = 0; i < chest.length; i++) {
+				// checks if the item in the slot is not full
+				if (chest[i] == null) {
+					// if it's not then add it to the array in the slot
+					chest[i] = item;
+					repaint();
+					return i;
+				}
 			}
 		}
 		repaint();
@@ -167,7 +171,9 @@ public class ChestPanel extends JPanel implements GameComponent {
 			 */
 			if (frame.getSelectedItem() != null) {
 				itemSelected = frame.getSelectedItem();
-				TransferEvent transfer = new TransferEvent(frame.getSelectedItem(), frame.getPlayerID(), cont.getID());
+				TransferEvent transfer = new TransferEvent(
+						frame.getSelectedItem(), frame.getPlayerID(),
+						cont.getID());
 				try {
 					frame.broadcastGameEvent(transfer);
 				} catch (GameException e1) {
@@ -242,8 +248,11 @@ public class ChestPanel extends JPanel implements GameComponent {
 	}
 
 	public void setItems(MoveableItem[] item) {
-		this.chest = item;
-
+		if (item == null) {
+			chest = new MoveableItem[INVENTORY_HEIGHT * INVENTORY_WIDTH];
+		} else {
+			this.chest = item;
+		}
 	}
 
 }
