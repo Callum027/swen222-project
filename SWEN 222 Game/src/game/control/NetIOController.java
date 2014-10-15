@@ -7,6 +7,7 @@ import game.net.packets.ErrPacket;
 import game.net.packets.QuitPacket;
 
 import java.io.BufferedOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -109,6 +110,9 @@ public abstract class NetIOController extends Thread {
 					// Send an ERR packet to the server, to get them to resend their last packet.
 					write(os, new GamePacket(GamePacket.Type.ERR, new ErrPacket(e.shouldResendPacket())));
 				}
+			}
+			catch (EOFException e) {
+				System.out.println("NetIOController.read: " + e.getMessage());
 			}
 			catch (SocketException e) {
 				System.out.println("NetIOController.read: closing connection: " + e.getMessage());

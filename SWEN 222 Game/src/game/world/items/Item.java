@@ -2,6 +2,7 @@ package game.world.items;
 
 import game.Main;
 import game.exceptions.GameException;
+import game.exceptions.ItemIDNotFoundException;
 import game.net.NetIO;
 import game.net.Streamable;
 import game.world.BoundingBox;
@@ -152,7 +153,12 @@ public abstract class Item implements Drawable, Streamable{
 	 */
 	public static Item read(InputStream is) throws IOException, GameException {
 		int id = NetIO.readInt(is);
-		return Main.getGameWorld().getItem(id);
+		Item item = Main.getGameWorld().getItem(id);
+		
+		if (item == null)
+			throw new ItemIDNotFoundException(id);
+		
+		return item;
 	}
 	
 	public void write(OutputStream os) throws IOException {
