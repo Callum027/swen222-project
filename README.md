@@ -6,6 +6,7 @@ SWEN 222 - Excellent Adventure!
 The aim of the game is to collect cats, there might be more later. Need to change.
 
 CONTROLS:
+
 Right click to move
 
 Left click on objects to interact with them
@@ -25,7 +26,9 @@ Esc brings up the quit menu
 
 From the file menu you can either go back to the main menu or quit the game
 
+
 MAIN MENU:
+
 On the Main Menu you can set your name that you would like to be displayed in game
 
 New Game, starts a new Single Player Game
