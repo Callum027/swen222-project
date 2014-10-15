@@ -2,6 +2,7 @@ package game.world.movement;
 
 import java.util.Random;
 
+import game.exceptions.GameException;
 import game.world.Area;
 import game.world.GameEventBroadcaster;
 import game.world.Position;
@@ -9,7 +10,7 @@ import game.world.characters.Enemy;
 import game.world.events.MoveEvent;
 
 public class RandomMovement implements MovementStrategy {
-	
+
 	public void execute(GameEventBroadcaster geb, Enemy enemy, Area area){
 		Random random = new Random();
 		Position current = enemy.getPosition();
@@ -31,11 +32,14 @@ public class RandomMovement implements MovementStrategy {
 		else if(move == 3){
 			p = new Position(current.getX() - 1, current.getY());
 		}
-		
+
 		// check if position is moveable, if so commit to movement
 		if(p != null && area.isMoveablePosition(p)){
 			MoveEvent m = new MoveEvent(p, enemy);
-			geb.broadcastGameEvent(m);
+			try {
+				geb.broadcastGameEvent(m);
+			} catch (GameException e) {
+			}
 		}
 	}
 }
