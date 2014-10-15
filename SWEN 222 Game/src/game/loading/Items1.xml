@@ -44,7 +44,6 @@
 	    <Container>
 	        <Cats> 5 </Cats>
 				<Height> 1 </Height>
-				<ID> 2 </ID>
 				<Name> wizard-hat </Name>
 		    	<Worth> 90 </Worth>
 	    </Container>

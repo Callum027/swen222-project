@@ -119,12 +119,13 @@ public class Main {
 				// area = AreaParser.parseArea(AREA_FILE, tileMap);
 				areaMap = AreaParser.parseAreas(AREA_FILE, tileMap);
 				area = areaMap.get(1);
-				ItemParser.parseItemList(ITEMS_FILE, area);
+				int nextID = ItemParser.parseItemList(ITEMS_FILE, area, 0);
 
 				// Add the main area to the game world, but only if the area
 				// successfully loaded.
 				if (!areaMap.isEmpty()) {
 					gameWorld = new GameWorld();
+					gameWorld.setNextItemID(nextID);
 					gameWorld.addAreas(areaMap);
 					CharacterParser.parseCharacters(CHARACTER_FILE, area,
 							gameWorld);

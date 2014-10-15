@@ -29,10 +29,10 @@ public class GameWorld implements GameEventListener{
 
 	private Map<Integer, Area> areas; // A mapping from unique identifiers to their respective area
 	private Map<Integer, Player> players; // A mapping from unique identifiers to their respective players
-	
+
 	private Map<Integer, Item> items; // A mapping from unique identifiers to their respective items
 	private int nextItemID = 0; // The next unique item ID that can be used
-	
+
 	/**
 	 * The constructor:
 	 * Initializes the areas and the player maps
@@ -50,7 +50,7 @@ public class GameWorld implements GameEventListener{
 	public void addArea(Area area){
 		areas.put(area.getID(), area);
 	}
-	
+
 	/**
 	 * Sets areas to be the specifed areaMap
 	 * @param areaMap
@@ -100,19 +100,19 @@ public class GameWorld implements GameEventListener{
 	public Area getArea(int id){
 		return areas.get(id);
 	}
-	
+
 	/**
 	 * Add an item to the game world.
 	 * @param i
 	 */
 	public boolean addItem(Item i){
 		int id = i.getID();
-		
+
 		// If the ID of the new item equals the current next ID,
 		// increment the ID until it is unique again.
 		if (id == nextItemID)
 			while (!items.containsKey(++nextItemID));
-		
+
 		// Add the item into the hash map, but only if there isn't
 		// an item there with the same ID already.
 		if (!items.containsKey(id))
@@ -120,10 +120,10 @@ public class GameWorld implements GameEventListener{
 			items.put(i.getID(), i);
 			return true;
 		};
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Get the next unique ID
 	 * @return item ID
@@ -131,10 +131,16 @@ public class GameWorld implements GameEventListener{
 	public int getNextItemID(){
 		return nextItemID;
 	}
-	
+	/**
+	 * Get the next unique ID
+	 * @return item ID
+	 */
+	public void setNextItemID(int id){
+		nextItemID = id;
+	}
 	/**
 	 * Returns the item associated with an ID.
-	 * 
+	 *
 	 * @param id Item ID
 	 * @return Item
 	 */
@@ -172,20 +178,20 @@ public class GameWorld implements GameEventListener{
 			consumeEvent(ge);
 		}
 	}
-	
+
 	public void moveEvent(GameEvent ge){
 		MoveEvent move = (MoveEvent) ge;
 		GameCharacter gameCharacter = move.getGameCharacter();
 		gameCharacter.moveToPosition(move.getPosition());
 	}
-	
+
 	public void interactEvent(GameEvent ge){
 		InteractEvent interact = (InteractEvent) ge;
 		Item item = interact.getItem();
 		Player player = interact.getPlayer();
 		item.interact(player);
 	}
-	
+
 	public void dropItemEvent(GameEvent ge){
 		DropItemEvent drop = (DropItemEvent) ge;
 		Item item = drop.getItem();
@@ -195,7 +201,7 @@ public class GameWorld implements GameEventListener{
 		item.setPosition(p);
 		area.addItem(item);
 	}
-	
+
 	public void pickUpEvent(GameEvent ge){
 		PickUpEvent pickUp = (PickUpEvent) ge;
 		Player player = pickUp.getPlayer();
@@ -205,7 +211,7 @@ public class GameWorld implements GameEventListener{
 		player.addItem(item);
 		area.removeItem(item);
 	}
-	
+
 	public void transportEvent(GameEvent ge){
 		TransportEvent transport = (TransportEvent) ge;
 		Player player = transport.getPlayer();
@@ -214,23 +220,23 @@ public class GameWorld implements GameEventListener{
 			areas.get(areaID).addPlayer(player);
 		}
 	}
-	
+
 	public void buyEvent(GameEvent ge){
 		BuyEvent buy = (BuyEvent) ge;
 		Player player = buy.getPlayer();
 		Merchant merchant = buy.getMerchant();
 		MoveableItem item = buy.getItem();
-		
+
 		/*
 		 * Only consumable items and equippable items are sellable
 		 */
 		if (!(item instanceof Equipment) || !(item instanceof Consumables)){
 			throw new IllegalArgumentException("This type of item is not sellable!");
 		}
-		
+
 		merchant.sellWares(item, player);
 	}
-	
+
 	public void equipEvent(GameEvent ge){
 		EquipEvent equip = (EquipEvent) ge;
 		Player player = equip.getPlayer();

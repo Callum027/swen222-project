@@ -18,8 +18,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ItemParser {
-	public static void parseItemList(String filename, Area area)
+	private static int nextID;
+	public static int parseItemList(String filename, Area area, int itemID)
 			throws ParserError {
+		nextID = itemID;
 		Scanner scan = null;
 		try {
 			scan = new Scanner(new File(filename));
@@ -38,27 +40,29 @@ public class ItemParser {
 							"Parsing Items: Expecting <Item>, got "
 									+ scan.next());
 				}
-				area.addItem(parseItem(scan));
+				area.addItem(parseItem(scan,nextID));
 				if (!gobble(scan, "</Item>")) {
 					throw new ParserError(
 							"Parsing Items: Expecting </Item>, got "
 									+ scan.next());
 				}
+				nextID++;
 			}
 			scan.close();
+			return nextID;
 		} catch (ParserError error) {
 			error.printStackTrace();
 			throw error;
 		}
 	}
 
-	private static Item parseItem(Scanner scan) throws ParserError {
+	private static Item parseItem(Scanner scan,int nextID) throws ParserError {
 
 		int x = parseInt(scan, "XPos");
 		int y = parseInt(scan, "YPos");
 		int height = parseInt(scan, "Height");
 		Position pos = new Position(x, y);
-		int ID = Main.getGameWorld().getNextItemID();
+		int ID = nextID;
 		String name = parseString(scan, "Name");
 		if (gobble(scan, "<Container>")) {
 			return parseContainer(scan, pos, height, name, ID);
@@ -120,7 +124,7 @@ public class ItemParser {
 	private static MoveableItem parseStoredItem(Scanner scan)
 			throws ParserError {
 		int height = parseInt(scan, "Height");
-		int ID = parseInt(scan, "ID");
+		int ID = nextID++;
 		String name = parseString(scan, "Name");
 		int worth = parseInt(scan, "Worth");
 
