@@ -75,11 +75,7 @@ public class Door extends Furniture{
 	 * have one then the Player will not be able to transport to the
 	 * next Area.
 	 */
-	public void interact(Player player, GameEventBroadcaster geb){
-		if(keyRequired){
-
-		}
-		TransportEvent te = new TransportEvent(player, transport, areaID);
-		geb.broadcastGameEvent(te);
+	public void interact(Player player){
+		// Go through the door.
 	}
 }

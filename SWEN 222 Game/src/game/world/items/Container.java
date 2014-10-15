@@ -72,7 +72,6 @@ public class Container extends Item{
 	public void interact(Player player) {
 		player.setCats(player.getCats() + this.cats);
 		this.cats = 0;
-
 	}
 
 	@Override

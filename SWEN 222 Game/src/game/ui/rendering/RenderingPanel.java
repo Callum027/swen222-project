@@ -10,6 +10,7 @@ import game.world.characters.Enemy;
 import game.world.characters.Player;
 import game.world.characters.classes.GameClass;
 import game.world.events.DropItemEvent;
+import game.world.events.InteractEvent;
 import game.world.events.MoveEvent;
 import game.world.items.Container;
 import game.world.items.Door;
@@ -357,25 +358,26 @@ public class RenderingPanel extends JPanel implements GameComponent {
 	}
 
 	private void interact(GameFrame frame, Drawable drawable){
-		if(drawable instanceof Door){
-			((Door)drawable).interact(player, frame.getGameEventBroadcaster());
-			frame.setChestVisible(false);
-			frame.setStatsVisible(true);
-			frame.append("Interacted with a door.");
-		}
-		else if(drawable instanceof Container){
-			((Container) drawable).interact(player);
+		if (drawable instanceof Item) {
+			if(drawable instanceof Door){
+				frame.setChestVisible(false);
+				frame.setStatsVisible(true);
+				frame.append("Interacted with a door.");
+			}
+			else if(drawable instanceof Container){
+				frame.setStatsVisible(false);
+				frame.setChestVisible(true);
 
-			frame.setStatsVisible(false);
-			frame.setChestVisible(true);
+				frame.append("It is a chest!");
+			}
+			else if(drawable instanceof Item){
+				frame.setChestVisible(false);
+				frame.setStatsVisible(true);
+				frame.append("Interaction Occurred");
+			}
 
-			frame.append("It is a chest!");
-		}
-		else if(drawable instanceof Item){
-			((Item)drawable).interact(player);
-			frame.setChestVisible(false);
-			frame.setStatsVisible(true);
-			frame.append("Interaction Occurred");
+			// Broadcast the game event to all other peers.
+			frame.broadcastGameEvent(new InteractEvent(player, ((Item)drawable)));
 		}
 	}
 
@@ -390,7 +392,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 			}
 			if(!moves.isEmpty()){
 				MoveEvent move = new MoveEvent(moves.pop(), player);
-				frame.getGameEventBroadcaster().broadcastGameEvent(move);
+				frame.broadcastGameEvent(move);
 			}
 			repaint();
 		}
@@ -413,7 +415,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 			}
 			if(positionClear){
 				DropItemEvent drop = new DropItemEvent(frame.getSelectedItem(), p, area.getID());
-				frame.getGameEventBroadcaster().broadcastGameEvent(drop);
+				frame.broadcastGameEvent(drop);
 				frame.setSelectedItem(null);
 				repaint();
 			}

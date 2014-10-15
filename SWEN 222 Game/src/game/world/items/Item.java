@@ -67,7 +67,7 @@ public abstract class Item implements Drawable, Streamable{
 	public String getName() {
 		return name;
 	}
-	
+
 	/**
 	 * The method called when the player interacts with this item
 	 * @param player the player interacting
@@ -124,9 +124,9 @@ public abstract class Item implements Drawable, Streamable{
 	public String getDescription() {
 		return description;
 	}
-	
+
 	/**
-	 * changes the description of the item 
+	 * changes the description of the item
 	 * @param description the description we're changing to
 	 */
 	public void setDescription(String description){
