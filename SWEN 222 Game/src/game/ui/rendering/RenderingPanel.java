@@ -11,6 +11,7 @@ import game.world.characters.Player;
 import game.world.characters.classes.GameClass;
 import game.world.events.DropItemEvent;
 import game.world.events.MoveEvent;
+import game.world.items.Container;
 import game.world.items.Door;
 import game.world.items.Furniture;
 import game.world.items.Item;
@@ -358,10 +359,22 @@ public class RenderingPanel extends JPanel implements GameComponent {
 	private void interact(GameFrame frame, Drawable drawable){
 		if(drawable instanceof Door){
 			((Door)drawable).interact(player, frame.getGameEventBroadcaster());
+			frame.setChestVisible(false);
+			frame.setStatsVisible(true);
 			frame.append("Interacted with a door.");
+		}
+		else if(drawable instanceof Container){
+			((Container) drawable).interact(player);
+
+			frame.setStatsVisible(false);
+			frame.setChestVisible(true);
+
+			frame.append("It is a chest!");
 		}
 		else if(drawable instanceof Item){
 			((Item)drawable).interact(player);
+			frame.setChestVisible(false);
+			frame.setStatsVisible(true);
 			frame.append("Interaction Occurred");
 		}
 	}

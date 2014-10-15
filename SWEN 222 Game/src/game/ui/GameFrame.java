@@ -340,4 +340,14 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener,
 		text.append(message + "\n");
 	}
 
+	public void setStatsVisible(boolean b) {
+		stats.setVisible(b);
+
+	}
+
+	public void setChestVisible(boolean b) {
+		chest.setVisible(b);
+
+	}
+
 }
