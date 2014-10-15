@@ -1,5 +1,6 @@
 package game.ui;
 
+import game.Main;
 import game.ui.application.ChestPanel;
 import game.ui.application.EquipPanel;
 import game.ui.application.InventoryPanel;
@@ -29,6 +30,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 /**
  * A custom JFrame used to hold all the panels of the game. Implements
@@ -238,13 +240,13 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 		}
 
 		if(action.equals("Menu")){
-			System.out.println("in start state");
 			changeState(State.START);
 		}
 		else if (action.equals("Quit")) {
 			quitGame();
 		}
 		if(action.equals("New Game")){
+			String name = start.getNameText();
 			changeState(State.IN_GAME);
 		}
 

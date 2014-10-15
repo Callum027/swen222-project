@@ -19,6 +19,7 @@ public class StartPanel extends JPanel{
 	private static final long serialVersionUID = 1L;
 
 	// fields
+	private JTextField name;
 
 	/**
 	 * Constructor:
@@ -26,7 +27,7 @@ public class StartPanel extends JPanel{
 	 */
 	public StartPanel(ActionListener action){
 		// initialise components for start panel
-		JTextField name = new JTextField();
+		name = new JTextField();
 		name.addActionListener(action);
 		JButton newGame = new JButton("New Game");
 		newGame.addActionListener(action);
@@ -41,5 +42,9 @@ public class StartPanel extends JPanel{
 		add(newGame);
 		add(hostGame);
 		add(joinGame);
+	}
+
+	public String getNameText(){
+		return name.getText();
 	}
 }
