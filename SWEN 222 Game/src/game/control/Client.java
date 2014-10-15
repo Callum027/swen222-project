@@ -2,9 +2,8 @@ package game.control;
 
 import game.net.GamePacket;
 import game.world.GameEvent;
+import game.world.GameEventBroadcaster;
 import game.world.GameEventListener;
-import game.world.GameStateBroadcaster;
-import game.world.GameStateListener;
 
 import java.io.IOException;
 import java.net.ConnectException;
@@ -22,7 +21,7 @@ import java.net.UnknownHostException;
  */
 public class Client extends NetIOController implements GameEventListener {
 	private Socket socket = null;
-	public GameStateBroadcaster gsb = new GameStateBroadcaster();
+	public GameEventBroadcaster geb = new GameEventBroadcaster();
 
 	/**
 	 * Connect to the local host on the default port.
@@ -101,7 +100,18 @@ public class Client extends NetIOController implements GameEventListener {
 			GamePacket gp = read(socket);
 
 			if (gp != null) {
-				// Do things...
+				switch (gp.getType()) {
+					case EVENT:
+						System.out.println("client: broadcasting game event to listeners");
+						geb.broadcastGameEvent((GameEvent)gp.getPayload());
+						break;
+					case QUIT:
+						System.out.println("client: read QUIT packet, closing connection");
+						close();
+						break;
+					default:
+						break;
+				}
 			}
 		}
 	}
@@ -116,13 +126,13 @@ public class Client extends NetIOController implements GameEventListener {
 	}
 
 	/**
-	 * Add a game state listener to this client.
+	 * Add a game event listener to this client.
 	 *
-	 * @param gsl Game state listener
+	 * @param gel Game event listener
 	 */
-	public void addGameStateListener(GameStateListener gsl)
+	public void addGameEventListener(GameEventListener gel)
 	{
-		gsb.addGameEventListener(gsl);
+		geb.addGameEventListener(gel);
 	}
 
 	@Override
