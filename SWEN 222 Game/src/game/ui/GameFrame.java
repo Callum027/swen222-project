@@ -1,12 +1,15 @@
 package game.ui;
 
 import game.Main;
+import game.control.Client;
 import game.exceptions.GameException;
 import game.ui.application.*;
 import game.ui.rendering.RenderingPanel;
 import game.world.GameEvent;
 import game.world.GameEventBroadcaster;
 import game.world.GameEventListener;
+import game.world.Position;
+import game.world.characters.classes.GameClass;
 import game.world.items.Container;
 import game.world.items.MoveableItem;
 
@@ -270,9 +273,16 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener,
 		}
 		else if (action.equals("New Game")) {
 			String name = start.getNameText();
-			playerID = Main.getClient().getPlayerID();
-			Main.getClient().connect();
-			changeState(State.IN_GAME);
+			Client client = Main.getClient();
+			try {
+				client.join(new Position(0,0), "Frank", GameClass.CharacterClass.WARRIOR);
+				playerID = client.getPlayerID();
+				Main.getClient().connect();
+				changeState(State.IN_GAME);
+			} catch (GameException e1) {
+				System.err.println("GameFrame.actionPerformed : GameException while joining game");
+				e1.printStackTrace();
+			}
 		}
 		else if(action.equals("Host New Game")){
 
