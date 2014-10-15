@@ -41,6 +41,7 @@ public class ChestPanel extends JPanel implements GameComponent {
 	private MoveableItem chest[] = new MoveableItem[INVENTORY_WIDTH
 			* INVENTORY_HEIGHT];
 	private int cats;
+
 	private int previousSlot;
 
 	/**
@@ -163,6 +164,8 @@ public class ChestPanel extends JPanel implements GameComponent {
 			 */
 			if (frame.getSelectedItem() != null) {
 				itemSelected = frame.getSelectedItem();
+				//TransferEvent transfer = new TransferEvent(frame.getSelectedItem(), frame.getPlayerID());
+				//frame.broadcastGameEvent(transfer);
 				addItem(itemSelected);
 				frame.setSelectedItem(null);
 				itemSelected = null;
