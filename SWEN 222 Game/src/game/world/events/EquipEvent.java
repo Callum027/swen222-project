@@ -1,16 +1,13 @@
 package game.world.events;
 
+import game.exceptions.GameException;
+import game.world.GameEvent;
+import game.world.characters.Player;
+import game.world.items.Equipment;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import game.exceptions.GameException;
-import game.world.GameEvent;
-import game.world.GameEvent.Type;
-import game.world.characters.Merchant;
-import game.world.characters.Player;
-import game.world.items.Equipment;
-import game.world.items.MoveableItem;
 
 /**
  * Event that represents a player equipping an item
@@ -19,8 +16,8 @@ import game.world.items.MoveableItem;
  */
 public class EquipEvent extends GameEvent{
 	
-	private static Player player;
-	private static Equipment item;
+	private final Player player;
+	private final Equipment item;
 	
 	public EquipEvent(Player player, Equipment item){
 		if (player == null){
@@ -30,8 +27,8 @@ public class EquipEvent extends GameEvent{
 			throw new IllegalArgumentException("item is null");
 		}
 		
-		EquipEvent.player = player;
-		EquipEvent.item = item;
+		this.player = player;
+		this.item = item;
 	}
 	
 	@Override

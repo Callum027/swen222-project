@@ -1,18 +1,13 @@
 package game.world.items;
 
-import game.Main;
 import game.exceptions.GameException;
-import game.exceptions.ItemIDNotFoundException;
-import game.net.NetIO;
-import game.world.Area;
+import game.exceptions.InvalidItemException;
 import game.world.Position;
 import game.world.characters.Player;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.List;
-import java.util.Map.Entry;
 
 /**
  * A container is an item that contains movable items and cats.
@@ -74,35 +69,22 @@ public class Container extends Item{
 		this.cats = 0;
 	}
 
-	@Override
-	public void write(OutputStream os) throws IOException {
-		NetIO.writeByte(os, (byte)super.getID());
-	}
-
 	/**
-	 * reads a container from the inputstream
+	 * Reads a consumables from the input stream.
+	 * Differs from Item.read() by actually testing if the read item is
+	 * a Consumables, and if not, throwing an exception.
+	 * 
 	 * @param is the inputstream
-	 * @return the container with the given id that is received form the inputstream
+	 * @return the consumables with the given id that is received form the inputstream
 	 * @throws IOException
 	 * @throws GameException
 	 */
 	public static Container read(InputStream is) throws IOException, GameException {
-		byte id = NetIO.readByte(is);
-		Container container = null;
-
-		/*
-		 * iterates over all the areas and returns the moveable item with the given id
-		 */
-		for (Entry<Integer,Area> entry : Main.getGameWorld().getAreas().entrySet()){
-			if (container != null){
-				return container;
-			}
-			container = (Container) entry.getValue().getItem(id);
-		}
-
-		if (container == null)
-			throw new ItemIDNotFoundException(id);
-
-		return container;
+		Item i = Item.read(is);
+		
+		if (i instanceof Container)
+			return (Container)i;
+		else
+			throw new InvalidItemException(Container.class, i);
 	}
 }

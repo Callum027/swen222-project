@@ -1,5 +1,10 @@
 package game.world.items;
 
+import java.io.IOException;
+import java.io.InputStream;
+
+import game.exceptions.GameException;
+import game.exceptions.InvalidItemException;
 import game.world.Position;
 
 /**
@@ -81,4 +86,22 @@ public class Equipment extends MoveableItem{
 		this.slot = slot;
 	}
 
+	/**
+	 * Reads an equipment from the input stream.
+	 * Differs from Item.read() by actually testing if the read item is
+	 * a Equipment, and if not, throwing an exception.
+	 * 
+	 * @param is the inputstream
+	 * @return the equipment with the given id that is received form the inputstream
+	 * @throws IOException
+	 * @throws GameException
+	 */
+	public static Equipment read(InputStream is) throws IOException, GameException {
+		Item i = Item.read(is);
+		
+		if (i instanceof Equipment)
+			return (Equipment)i;
+		else
+			throw new InvalidItemException(Equipment.class, i);
+	}
 }

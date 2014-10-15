@@ -1,16 +1,13 @@
 package game.world.events;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 import game.exceptions.GameException;
 import game.world.GameEvent;
 import game.world.characters.Player;
-import game.world.items.Container;
-import game.world.items.Furniture;
 import game.world.items.Item;
-import game.world.items.MoveableItem;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Events that represent interacting with objects in the game world.
@@ -20,8 +17,8 @@ import game.world.items.MoveableItem;
  */
 public class InteractEvent extends GameEvent {
 	
-	private static Player player;
-	private static Item item;
+	private final Player player;
+	private final Item item;
 	
 	public InteractEvent(Player player, Item item){
 		if (player == null){
@@ -32,8 +29,8 @@ public class InteractEvent extends GameEvent {
 			throw new IllegalArgumentException("item is null");
 		}
 		
-		InteractEvent.player = player;
-		InteractEvent.item = item;
+		this.player = player;
+		this.item = item;
 	}
 	
 	public GameEvent.Type getType() {
@@ -49,21 +46,7 @@ public class InteractEvent extends GameEvent {
 	 */
 	public static InteractEvent read(InputStream is) throws IOException, GameException {
 		Player player = Player.read(is);
-		
-		if (item instanceof MoveableItem){
-			Item item = MoveableItem.read(is);
-			return new InteractEvent(player, item);
-		}
-		
-		if (item instanceof Container){
-			Item item = Container.read(is);
-			return new InteractEvent(player, item);
-		}
-		
-		if (item instanceof Furniture){
-			Item item = Furniture.read(is);
-			return new InteractEvent(player, item);
-		}
+		Item item = Item.read(is);
 		
 		return new InteractEvent(player, item);
 	}

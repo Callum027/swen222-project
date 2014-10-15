@@ -1,19 +1,12 @@
 package game.world.items;
 
+import game.exceptions.GameException;
+import game.exceptions.InvalidItemException;
+import game.world.Position;
+import game.world.characters.Player;
+
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Map.Entry;
-
-import game.Main;
-import game.exceptions.GameException;
-import game.exceptions.ItemIDNotFoundException;
-import game.exceptions.PlayerIDNotFoundException;
-import game.net.NetIO;
-import game.world.Area;
-import game.world.Position;
-import game.world.characters.Enemy;
-import game.world.characters.Player;
 
 /**
  * Used to differentiate between items that you can move and pick-up from items
@@ -70,58 +63,23 @@ public class MoveableItem extends Item {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void write(OutputStream os) throws IOException {
-		NetIO.writeByte(os, (byte)super.getID());
-	}
 	
 	/**
-	 * reads a moveable item from the inputstream
+	 * Reads a moveable item from the input stream.
+	 * Differs from Item.read() by actually testing if the read item is
+	 * a MoveableItem, and if not, throwing an exception.
+	 * 
 	 * @param is the inputstream
 	 * @return the moveable item with the given id that is received form the inputstream
 	 * @throws IOException
 	 * @throws GameException
 	 */
 	public static MoveableItem read(InputStream is) throws IOException, GameException {
-		byte id = NetIO.readByte(is);
-		MoveableItem moveableItem = null;
-
-		/*
-		 * iterates over all the areas and returns the moveable item with the given id
-		 */
-		for (Entry<Integer,Area> entry : Main.getGameWorld().getAreas().entrySet()){
-			if (moveableItem != null){
-				return moveableItem;
-			}
-			moveableItem = (MoveableItem) entry.getValue().getItem(id);
-		}
-
-		/*
-		 * iterates over all the players and returns the moveable item with the given id
-		 */
-		for (Entry<Integer,Player> entry : Main.getGameWorld().getPlayers().entrySet()){
-			if (moveableItem != null){
-				return moveableItem;
-			}
-			moveableItem = (MoveableItem) entry.getValue().getItem(id);
-		}
+		Item i = Item.read(is);
 		
-		/*
-		 * iterates over all the enemies and returns the moveable item with the given id
-		 */
-		for (Entry<Integer,Area> entry : Main.getGameWorld().getAreas().entrySet()){
-			for (Entry<Integer,Enemy> entry2 : entry.getValue().getEnemies().entrySet()){
-				if (moveableItem != null){
-					return moveableItem;
-				}
-				moveableItem = (MoveableItem) entry2.getValue().getItem(id);
-			}
-		}
-		
-		if (moveableItem == null)
-			throw new ItemIDNotFoundException(id);
-
-		return moveableItem;
+		if (i instanceof MoveableItem)
+			return (MoveableItem)i;
+		else
+			throw new InvalidItemException(MoveableItem.class, i);
 	}
 }

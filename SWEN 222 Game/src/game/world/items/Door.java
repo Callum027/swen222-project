@@ -1,9 +1,12 @@
 package game.world.items;
 
-import game.world.GameEventBroadcaster;
+import game.exceptions.GameException;
+import game.exceptions.InvalidItemException;
 import game.world.Position;
 import game.world.characters.Player;
-import game.world.events.TransportEvent;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * A Door is a special extension of the Furniture class which is used
@@ -77,5 +80,24 @@ public class Door extends Furniture{
 	 */
 	public void interact(Player player){
 		// Go through the door.
+	}
+	
+	/**
+	 * Reads a door from the input stream.
+	 * Differs from Item.read() by actually testing if the read item is
+	 * a Door, and if not, throwing an exception.
+	 * 
+	 * @param is the inputstream
+	 * @return the door with the given id that is received form the inputstream
+	 * @throws IOException
+	 * @throws GameException
+	 */
+	public static Door read(InputStream is) throws IOException, GameException {
+		Item i = Item.read(is);
+		
+		if (i instanceof Door)
+			return (Door)i;
+		else
+			throw new InvalidItemException(Door.class, i);
 	}
 }

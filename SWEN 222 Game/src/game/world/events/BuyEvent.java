@@ -1,18 +1,14 @@
 package game.world.events;
 
+import game.exceptions.GameException;
+import game.world.GameEvent;
+import game.world.characters.Merchant;
+import game.world.characters.Player;
+import game.world.items.MoveableItem;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import game.exceptions.GameException;
-import game.net.NetIO;
-import game.world.GameEvent;
-import game.world.GameEvent.Type;
-import game.world.characters.Merchant;
-import game.world.characters.Player;
-import game.world.items.Consumables;
-import game.world.items.Equipment;
-import game.world.items.MoveableItem;
 
 /**
  * The event that represents the player buying an item from a merchant

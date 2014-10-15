@@ -1,22 +1,21 @@
 package game.world.events;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 import game.exceptions.GameException;
 import game.net.NetIO;
 import game.world.GameEvent;
 import game.world.Position;
-import game.world.characters.GameCharacter;
 import game.world.characters.Player;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class TransportEvent extends GameEvent{
 
 	// fields
-	private Player player;
-	private Position transport;
-	private int areaID;
+	private final Player player;
+	private final Position transport;
+	private final int areaID;
 
 	/**
 	 * Constructor:
@@ -37,6 +36,7 @@ public class TransportEvent extends GameEvent{
 		}
 
 		this.player = player;
+		this.transport = transport;
 		this.areaID = areaID;
 	}
 

@@ -1,17 +1,14 @@
 package game.world.events;
 
+import game.exceptions.GameException;
+import game.net.NetIO;
+import game.world.GameEvent;
+import game.world.Position;
+import game.world.items.Item;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import game.exceptions.GameException;
-import game.net.NetIO;
-import game.world.Area;
-import game.world.GameEvent;
-import game.world.Position;
-import game.world.items.Equipment;
-import game.world.items.Item;
-import game.world.items.MoveableItem;
 
 public class DropItemEvent extends GameEvent{
 
@@ -47,26 +44,16 @@ public class DropItemEvent extends GameEvent{
 	}
 
 	/**
-	 * Read an MoveEvent from the input stream.
+	 * Read an DropItemEvent from the input stream.
 	 *
 	 * @param is Input stream
-	 * @return MoveEvent
+	 * @return DropItemEvent
 	 * @throws IOException
 	 */
 	public static DropItemEvent read(InputStream is) throws IOException, GameException {
 		Item item = Item.read(is);
 		Position position = Position.read(is);
 		int areaID = NetIO.readInt(is);
-		
-		if (item instanceof Equipment){
-			Equipment equipment = (Equipment) Equipment.read(is);
-			return new DropItemEvent(equipment, position, areaID);
-		}
-
-		if (item instanceof MoveableItem){
-			MoveableItem move = MoveableItem.read(is);
-			return new DropItemEvent(move, position, areaID);
-		}
 
 		return new DropItemEvent(item, position, areaID);
 	}

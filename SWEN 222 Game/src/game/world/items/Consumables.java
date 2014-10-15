@@ -1,5 +1,10 @@
 package game.world.items;
 
+import java.io.IOException;
+import java.io.InputStream;
+
+import game.exceptions.GameException;
+import game.exceptions.InvalidItemException;
 import game.world.Position;
 import game.world.characters.Player;
 
@@ -33,5 +38,24 @@ public class Consumables extends MoveableItem{
 			player.setHealth(MAX_HEALTH);
 		}
 		player.setHealth(player.getHealth()+buffAmount);
-	} 
+	}
+	
+	/**
+	 * Reads a consumables from the input stream.
+	 * Differs from Item.read() by actually testing if the read item is
+	 * a Consumables, and if not, throwing an exception.
+	 * 
+	 * @param is the inputstream
+	 * @return the consumables with the given id that is received form the inputstream
+	 * @throws IOException
+	 * @throws GameException
+	 */
+	public static Consumables read(InputStream is) throws IOException, GameException {
+		Item i = Item.read(is);
+		
+		if (i instanceof Consumables)
+			return (Consumables)i;
+		else
+			throw new InvalidItemException(Consumables.class, i);
+	}
 }

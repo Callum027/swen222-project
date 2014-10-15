@@ -1,17 +1,14 @@
 package game.world.events;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 import game.exceptions.GameException;
 import game.net.NetIO;
 import game.world.GameEvent;
 import game.world.characters.Player;
-import game.world.items.Container;
-import game.world.items.Furniture;
-import game.world.items.Item;
 import game.world.items.MoveableItem;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Events that represent the player picking up items 
@@ -20,9 +17,9 @@ import game.world.items.MoveableItem;
  */
 public class PickUpEvent extends GameEvent{
 	
-	private static Player player;
-	private static MoveableItem item;
-	private static int areaID;
+	private final Player player;
+	private final MoveableItem item;
+	private final int areaID;
 
 	public PickUpEvent(Player player, MoveableItem item, int areaID){
 		if (player == null){
@@ -32,9 +29,9 @@ public class PickUpEvent extends GameEvent{
 			throw new IllegalArgumentException("item is null");
 		}
 		
-		PickUpEvent.player = player;
-		PickUpEvent.item = item;
-		PickUpEvent.areaID = areaID;
+		this.player = player;
+		this.item = item;
+		this.areaID = areaID;
 	}
 
 	@Override
@@ -63,8 +60,9 @@ public class PickUpEvent extends GameEvent{
 	 */
 	public static PickUpEvent read(InputStream is) throws IOException, GameException {
 		Player player = Player.read(is);
-		
 		MoveableItem item = MoveableItem.read(is);
+		int areaID = NetIO.readInt(is);
+		
 		return new PickUpEvent(player, item, areaID);
 	}
 
