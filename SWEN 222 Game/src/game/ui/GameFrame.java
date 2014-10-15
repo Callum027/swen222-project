@@ -5,6 +5,7 @@ import game.ui.application.EquipPanel;
 import game.ui.application.InventoryPanel;
 import game.ui.application.StatsPanel;
 import game.ui.rendering.RenderingPanel;
+import game.world.GameEvent;
 import game.world.GameEventBroadcaster;
 import game.world.GameEventListener;
 import game.world.items.MoveableItem;
@@ -266,8 +267,8 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener,
 		return null;
 	}
 
-	public GameEventBroadcaster getGameEventBroadcaster() {
-		return geb;
+	public void broadcastGameEvent(GameEvent ge){
+		geb.broadcastGameEvent(ge);
 	}
 
 	@Override
