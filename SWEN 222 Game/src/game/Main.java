@@ -104,6 +104,7 @@ public class Main {
 			areaMap = AreaParser.parseAreas(AREA_FILE, tileMap);
 			area = areaMap.get(1);
 			ItemParser.parseItemList(ITEMS_FILE, area);
+			CharacterParser.parseCharacters(CHARACTER_FILE, area);
 
 
 			// Add the main area to the game world, but only if the area
@@ -112,7 +113,6 @@ public class Main {
 			{
 				gameWorld = new GameWorld();
 				gameWorld.addAreas(areaMap);
-				CharacterParser.parseCharacters(CHARACTER_FILE, gameWorld);
 			}
 			else
 			{

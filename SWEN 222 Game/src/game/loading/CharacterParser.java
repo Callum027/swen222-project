@@ -1,5 +1,6 @@
 package game.loading;
 
+import game.world.Area;
 import game.world.GameWorld;
 import game.world.Position;
 import game.world.characters.Enemy;
@@ -13,7 +14,7 @@ import java.util.Scanner;
 
 public class CharacterParser {
 
-	public static void parseCharacters(String fileName, GameWorld world) {
+	public static void parseCharacters(String fileName, Area area) {
 		Scanner scan = null;
 		try {
 			scan = new Scanner(new File(fileName));
@@ -33,7 +34,7 @@ public class CharacterParser {
 							"Parsing Characters: Expecting <Character>, got "
 									+ scan.next());
 				}
-				parseCharacterType(scan, world);
+				parseCharacterType(scan, area);
 
 				if (!gobble(scan, "</Character>")) {
 					throw new ParserError(
@@ -46,17 +47,17 @@ public class CharacterParser {
 		}
 	}
 
-	private static void parseCharacterType(Scanner scan, GameWorld world) {
+	private static void parseCharacterType(Scanner scan, Area area) {
 		try {
 
 			if (gobble(scan, "<Player>")) {
-				parsePlayer(scan, world);
+				parsePlayer(scan, area);
 				return;
 			} else if (gobble(scan, "<Enemy>")) {
-				parseEnemy(scan, world);
+				parseEnemy(scan, area);
 				return;
 			} else if (gobble(scan, "<Merchant>")) {
-				parseMerchant(scan, world);
+				parseMerchant(scan, area);
 			} else {
 				throw new ParserError(
 						"Parsing CharacterType: Expecting a valid character type, got "
@@ -68,25 +69,23 @@ public class CharacterParser {
 
 	}
 
-	private static void parseMerchant(Scanner scan, GameWorld world) {
+	private static void parseMerchant(Scanner scan, Area area) {
 		try {
-			int AreaID = parseInt(scan, "AreaID");
 			int x = parseInt(scan, "XPos");
 			int y = parseInt(scan, "YPos");
 			Position pos = new Position(x, y);
 			String name = parseString(scan, "Name");
 			int id = parseInt(scan, "ID");
 			Merchant merchant = new Merchant(pos, name, id);
-			world.getArea(AreaID).addMerchant(merchant);
+			area.addMerchant(merchant);
 		} catch (ParserError e) {
 			e.printStackTrace();
 		}
 
 	}
 
-	private static void parseEnemy(Scanner scan, GameWorld world) {
+	private static void parseEnemy(Scanner scan, Area area) {
 		try {
-			int AreaID = parseInt(scan, "AreaID");
 			int x = parseInt(scan, "XPos");
 			int y = parseInt(scan, "YPos");
 			Position pos = new Position(x, y);
@@ -98,14 +97,14 @@ public class CharacterParser {
 				throw new ParserError("Parsing Enemy: Expecting </Enemy>, got "
 						+ scan.next());
 			}
-			world.getArea(AreaID).addEnemy(enemy);
+			area.addEnemy(enemy);
 
 		} catch (ParserError e) {
 			e.printStackTrace();
 		}
 	}
 
-	private static void parsePlayer(Scanner scan, GameWorld world) {
+	private static void parsePlayer(Scanner scan, Area area) {
 		try {
 			int x = parseInt(scan, "XPos");
 			int y = parseInt(scan, "YPos");
@@ -119,7 +118,7 @@ public class CharacterParser {
 						"Parsing Player: Expecting </Player>, got "
 								+ scan.next());
 			}
-			world.addPlayer(player);
+			area.addPlayer(player);
 		} catch (ParserError e) {
 			e.printStackTrace();
 		}
