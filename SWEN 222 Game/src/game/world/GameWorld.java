@@ -78,15 +78,15 @@ public class GameWorld implements GameEventListener{
 	public boolean addPlayer(Player p){
 		int id = p.getId();
 
-		// If the ID of the new player equals the current next ID,
-		// increment the ID until it is unique again.
-		if (id == nextPlayerID)
-			while (players.containsKey(++nextPlayerID));
-
 		// Add the item into the hash map, but only if there isn't
 		// an item there with the same ID already.
 		if (!players.containsKey(id))
 		{
+			// If the ID of the new player equals the current next ID,
+			// increment the ID until it is unique again.
+			if (id == nextPlayerID)
+				while (players.containsKey(++nextPlayerID));
+			
 			players.put(id, p);
 			return true;
 		};
@@ -135,15 +135,15 @@ public class GameWorld implements GameEventListener{
 	public boolean addItem(Item i){
 		int id = i.getID();
 
-		// If the ID of the new item equals the current next ID,
-		// increment the ID until it is unique again.
-		if (id == nextItemID)
-			while (items.containsKey(++nextItemID));
-
 		// Add the item into the hash map, but only if there isn't
 		// an item there with the same ID already.
 		if (!items.containsKey(id))
 		{
+			// If the ID of the new item equals the current next ID,
+			// increment the ID until it is unique again.
+			if (id == nextItemID)
+				while (items.containsKey(++nextItemID));
+			
 			items.put(i.getID(), i);
 			return true;
 		};
