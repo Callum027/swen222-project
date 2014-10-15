@@ -36,7 +36,8 @@ import javax.swing.JTextArea;
  * @author Harry
  *
  */
-public class GameFrame extends JFrame implements ActionListener, KeyListener, MouseListener{
+public class GameFrame extends JFrame implements ActionListener, KeyListener,
+		MouseListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -86,11 +87,10 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 		scroll = new JScrollPane(text);
 		inventory = new InventoryPanel();
 		equip = new EquipPanel(inventory);
-		stats = new StatsPanel(equip);
+		stats = new StatsPanel(equip, inventory);
 		chest = new ChestPanel(90);
 		inventory.setEquip(equip);
 		equip.setStats(stats);
-
 
 		// setup the render pane
 		JPanel renderPane = new JPanel();
@@ -112,8 +112,8 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 		appPane.add(stats);
 		appPane.add(chest);
 		chest.addMouseListener(this);
-		stats.setVisible(false);
-		chest.setVisible(true);
+		stats.setVisible(true);
+		chest.setVisible(false);
 		inventory.addMouseListener(this);
 		appPane.addMouseListener(this);
 
@@ -142,11 +142,11 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 		return render;
 	}
 
-	public MoveableItem getSelectedItem(){
+	public MoveableItem getSelectedItem() {
 		return selectedItem;
 	}
 
-	public void setSelectedItem(MoveableItem item){
+	public void setSelectedItem(MoveableItem item) {
 		selectedItem = item;
 	}
 
@@ -220,14 +220,11 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 
 		if (direction == NORTH) {
 			text.append("Facing north\n");
-		}
-		else if (direction == EAST) {
+		} else if (direction == EAST) {
 			text.append("Facing east\n");
-		}
-		else if (direction == SOUTH) {
+		} else if (direction == SOUTH) {
 			text.append("facing south\n");
-		}
-		else if (direction == WEST) {
+		} else if (direction == WEST) {
 			text.append("Facing west\n");
 		}
 
@@ -241,46 +238,42 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 	/**
 	 * Add a GameEventListener to this GameFrame.
 	 *
-	 * @param gel Game event listener
+	 * @param gel
+	 *            Game event listener
 	 */
 	public void addGameEventListener(GameEventListener gel) {
 		geb.addGameEventListener(gel);
 	}
 
 	/**
-	 * Finds and returns the current GameComponent that has focus
-	 * on the GameFrame.
+	 * Finds and returns the current GameComponent that has focus on the
+	 * GameFrame.
 	 *
-	 * @return
-	 * 			--- GameComponent currently in focus
+	 * @return --- GameComponent currently in focus
 	 */
-	public GameComponent getCurrentGameComponent(){
-		if(currentComponent instanceof RenderingPanel){
+	public GameComponent getCurrentGameComponent() {
+		if (currentComponent instanceof RenderingPanel) {
 			return render;
-		}
-		else if(currentComponent instanceof InventoryPanel){
+		} else if (currentComponent instanceof InventoryPanel) {
 			return inventory;
-		}
-		else if(currentComponent instanceof EquipPanel){
+		} else if (currentComponent instanceof EquipPanel) {
 			return equip;
-		}
-		else if(currentComponent instanceof StatsPanel){
+		} else if (currentComponent instanceof StatsPanel && stats.isVisible()) {
 			return stats;
-		}
-		else if(currentComponent instanceof ChestPanel){
+		} else if (currentComponent instanceof ChestPanel && chest.isVisible()) {
 			return chest;
 		}
 		return null;
 	}
 
-	public GameEventBroadcaster getGameEventBroadcaster(){
+	public GameEventBroadcaster getGameEventBroadcaster() {
 		return geb;
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		GameComponent current = getCurrentGameComponent();
-		if(current != null){
+		if (current != null) {
 			current.mouseClicked(this, e);
 		}
 
@@ -289,7 +282,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 	@Override
 	public void mousePressed(MouseEvent e) {
 		GameComponent current = getCurrentGameComponent();
-		if(current != null){
+		if (current != null) {
 			current.mousePressed(this, e);
 		}
 
@@ -298,31 +291,28 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		Component c = e.getComponent();
-		if(c instanceof GameComponent){
-			if(c instanceof EquipPanel){
-				append("Came from equip panel");
+		if (c instanceof GameComponent) {
+			if (c instanceof EquipPanel) {
 				int x = e.getXOnScreen();
 				int y = e.getY();
-				e = new MouseEvent(c, e.getID(), e.getWhen(), e.getModifiers(), x, y, e.getClickCount(), e.isPopupTrigger());
-			}
-			else if(c instanceof InventoryPanel){
-				append("Came from inventory panel");
+				e = new MouseEvent(c, e.getID(), e.getWhen(), e.getModifiers(),
+						x, y, e.getClickCount(), e.isPopupTrigger());
+			} else if (c instanceof InventoryPanel) {
 				int x = e.getXOnScreen();
 				int y = EquipPanel.HEIGHT + e.getY();
-				e = new MouseEvent(c, e.getID(), e.getWhen(), e.getModifiers(), x, y, e.getClickCount(), e.isPopupTrigger());
-			}
-			else if(c instanceof ChestPanel){
-				append("Came from chest panel");
+				e = new MouseEvent(c, e.getID(), e.getWhen(), e.getModifiers(),
+						x, y, e.getClickCount(), e.isPopupTrigger());
+			} else if (c instanceof ChestPanel) {
 				int x = e.getXOnScreen();
 				int y = EquipPanel.HEIGHT + InventoryPanel.HEIGHT + e.getY();
-				e = new MouseEvent(c, e.getID(), e.getWhen(), e.getModifiers(), x, y, e.getClickCount(), e.isPopupTrigger());
+				e = new MouseEvent(c, e.getID(), e.getWhen(), e.getModifiers(),
+						x, y, e.getClickCount(), e.isPopupTrigger());
 			}
 			GameComponent current = getCurrentGameComponent();
-			if(current != null){
+			if (current != null) {
 				current.mouseReleased(this, e);
 			}
-		}
-		else{
+		} else {
 			e.consume();
 		}
 	}
@@ -330,28 +320,24 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, Mo
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		currentComponent = e.getComponent();
-		if(currentComponent instanceof RenderingPanel){
-			//text.append("Entered the Rendering Panel\n");
-		}
-		else if(currentComponent instanceof StatsPanel){
-			//text.append("Entered the Stats Panel\n");
-		}
-		else if(currentComponent instanceof EquipPanel){
-			//text.append("Entered the Equipment Panel\n");
-		}
-		else if(currentComponent instanceof InventoryPanel){
-			//text.append("Entered the Inventory Panel\n");
+		if (currentComponent instanceof RenderingPanel) {
+			// text.append("Entered the Rendering Panel\n");
+		} else if (currentComponent instanceof StatsPanel) {
+			// text.append("Entered the Stats Panel\n");
+		} else if (currentComponent instanceof EquipPanel) {
+			// text.append("Entered the Equipment Panel\n");
+		} else if (currentComponent instanceof InventoryPanel) {
+			// text.append("Entered the Inventory Panel\n");
 		}
 	}
-
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 
 	}
 
-	public void append(String message){
-		text.append(message+"\n");
+	public void append(String message) {
+		text.append(message + "\n");
 	}
 
 }

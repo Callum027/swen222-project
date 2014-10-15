@@ -14,7 +14,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JPanel;
 
-public class ChestPanel extends JPanel implements GameComponent{
+public class ChestPanel extends JPanel implements GameComponent {
 
 	public static final int WIDTH = 155;
 	public static final int HEIGHT = 169;
@@ -35,29 +35,29 @@ public class ChestPanel extends JPanel implements GameComponent{
 	private int previousSlot;
 
 	public ChestPanel(int cats) {
-		this.cats=cats;
-		addItem(new MoveableItem(new Position(0,0), 1, 90, "key", 0));
+		this.cats = cats;
+		addItem(new MoveableItem(new Position(0, 0), 1, 90, "key", 0));
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		background = Main.getImage("chest-inventory.png");
 		repaint();
 	}
 
 	@Override
-	public int getWidth(){
+	public int getWidth() {
 		return WIDTH;
 	}
 
 	@Override
-	public int getHeight(){
+	public int getHeight() {
 		return HEIGHT;
 	}
 
 	@Override
-	public void paintComponent(Graphics g){
+	public void paintComponent(Graphics g) {
 		g.setColor(Color.BLACK);
 
 		g.drawImage(background, 0, 0, null);
-		g.drawString("" + cats, 43, HEIGHT-7);
+		g.drawString("" + cats, 43, HEIGHT - 7);
 		drawItems(g);
 	}
 
@@ -77,7 +77,7 @@ public class ChestPanel extends JPanel implements GameComponent{
 		}
 	}
 
-	public int addItem(MoveableItem item){
+	public int addItem(MoveableItem item) {
 		for (int i = 0; i < chest.length; i++) {
 			// checks if the item in the slot is not full
 			if (chest[i] == null) {
@@ -165,7 +165,6 @@ public class ChestPanel extends JPanel implements GameComponent{
 			}
 			repaint();
 		}
-
 
 	}
 

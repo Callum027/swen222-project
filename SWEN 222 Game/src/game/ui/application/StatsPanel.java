@@ -41,6 +41,7 @@ public class StatsPanel extends JPanel implements GameComponent {
 	private Image background;
 
 	private EquipPanel equip;
+	private InventoryPanel inventory;
 
 	/**
 	 * Constructor. Sets up the StatsPanel, uses references from the equipPanel
@@ -49,7 +50,8 @@ public class StatsPanel extends JPanel implements GameComponent {
 	 * @param equip
 	 *            The equip panel so it can get the stats of the player
 	 */
-	public StatsPanel(EquipPanel equip) {
+	public StatsPanel(EquipPanel equip, InventoryPanel inventory) {
+		this.inventory=inventory;
 		this.equip = equip;
 
 		HP_X = WIDTH - 110;
@@ -100,7 +102,9 @@ public class StatsPanel extends JPanel implements GameComponent {
 
 	@Override
 	public void mouseReleased(GameFrame frame, MouseEvent e) {
+		if(inventory.addItem(frame.getSelectedItem()) == -1){
 
+		}
 	}
 
 	@Override

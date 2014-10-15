@@ -63,10 +63,8 @@ public class EquipPanel extends JPanel implements GameComponent {
 	 * height of the equipPanel is a set size due to the image used as the
 	 * background
 	 *
-	 * @param width
-	 *            the width of the panel
-	 * @param HEIGHT
-	 *            the height of the panel
+	 * @param inventory
+	 *            The inventoryPanel associated with the equipment panel
 	 */
 	public EquipPanel(InventoryPanel inventory) {
 		this.inventory = inventory;
@@ -82,15 +80,16 @@ public class EquipPanel extends JPanel implements GameComponent {
 		BOOTS_X = WIDTH - 100;
 		BOOTS_Y = HEIGHT - 52;
 
-		items.equipHead(new Equipment(new Position(0, 0), 1, 10, "iron-hat", 0, 50, 50, HEAD_SLOT));
-		items.equipMainHand(new Equipment(new Position(0, 0), 1, 11, "iron-sword", 50, 0, 50,
-				MAIN_HAND));
-		items.equipBody(new Equipment(new Position(0, 0), 1, 12, "Iron-Armour2", 0, 50, 50,
-				CHEST_SLOT));
-		items.equipBoots(new Equipment(new Position(0, 0), 1, 13, "iron-boots", 0, 50, 50,
-				FEET_SLOT));
-		items.equipOffHand(new Equipment(new Position(0, 0), 1, 14, "iron-shield", 0, 50, 50,
-				OFF_HAND));
+		items.equipHead(new Equipment(new Position(0, 0), 1, 10, "iron-hat", 0,
+				50, 50, HEAD_SLOT));
+		items.equipMainHand(new Equipment(new Position(0, 0), 1, 11,
+				"iron-sword", 50, 0, 50, MAIN_HAND));
+		items.equipBody(new Equipment(new Position(0, 0), 1, 12,
+				"Iron-Armour2", 0, 50, 50, CHEST_SLOT));
+		items.equipBoots(new Equipment(new Position(0, 0), 1, 13, "iron-boots",
+				0, 50, 50, FEET_SLOT));
+		items.equipOffHand(new Equipment(new Position(0, 0), 1, 14,
+				"iron-shield", 0, 50, 50, OFF_HAND));
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		background = Main.getImage("Equip.png");
 		repaint();
@@ -177,19 +176,20 @@ public class EquipPanel extends JPanel implements GameComponent {
 	 */
 	private void drawEquipmentItems(Graphics g) {
 		if (items.getHead() != null) {
-			items.getHead().draw(g, HEAD_X-X_OFFSET, HEAD_Y-Y_OFFSET, 0);
+			items.getHead().draw(g, HEAD_X - X_OFFSET, HEAD_Y - Y_OFFSET, 0);
 		}
 		if (items.getMainHand() != null) {
-			items.getMainHand().draw(g, MAIN_X-X_OFFSET, MAIN_Y-Y_OFFSET, 0);
+			items.getMainHand()
+					.draw(g, MAIN_X - X_OFFSET, MAIN_Y - Y_OFFSET, 0);
 		}
 		if (items.getoffHand() != null) {
-			items.getoffHand().draw(g, OFF_X-X_OFFSET, OFF_Y-Y_OFFSET, 0);
+			items.getoffHand().draw(g, OFF_X - X_OFFSET, OFF_Y - Y_OFFSET, 0);
 		}
 		if (items.getBody() != null) {
-			items.getBody().draw(g, BODY_X-X_OFFSET, BODY_Y-Y_OFFSET, 0);
+			items.getBody().draw(g, BODY_X - X_OFFSET, BODY_Y - Y_OFFSET, 0);
 		}
 		if (items.getBoots() != null) {
-			items.getBoots().draw(g, BOOTS_X-X_OFFSET, BOOTS_Y-Y_OFFSET, 0);
+			items.getBoots().draw(g, BOOTS_X - X_OFFSET, BOOTS_Y - Y_OFFSET, 0);
 		}
 	}
 

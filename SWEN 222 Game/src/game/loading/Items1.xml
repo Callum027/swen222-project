@@ -40,4 +40,14 @@
 			<KeyRequired> false </KeyRequired>
 		</Door>
 	</Item>
+	<Item>
+	    <XPos> 0 </XPos>
+	    <YPos> 9 </YPos>
+	    <Height> 1 </Height>
+	    <ID> 4 </ID>
+	    <Name> Chest </Name>
+	    <Furniture>
+
+	    </Furniture>
+	</Item>
 </ItemList>
