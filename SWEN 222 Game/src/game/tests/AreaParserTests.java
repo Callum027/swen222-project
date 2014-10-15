@@ -11,9 +11,9 @@ import org.junit.Test;
 
 /**
  * Tests to see if Areas are being created properly.
- *
+ * 
  * @author Chris Allen
- *
+ * 
  */
 public class AreaParserTests {
 	// filepath to the test xml files.
@@ -68,6 +68,29 @@ public class AreaParserTests {
 		} catch (ParserError e) {
 			if (!e.getMessage().equals(
 					"Parsing Area: Expecting <Area>, got <NotArea>")) {
+				fail("Error message should be: Parsing Area: Expecting <Area>, got <NotArea>");
+			}
+		} catch (IOException e) {
+			// shouldnt get here, but im bad at implementing parsers, so it
+			// might
+			fail("IOException, check file is valid");
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Test to see if AreaParser can handle missing lines, should throw an
+	 * error.
+	 */
+	@Test
+	public void invalidAreaParserTest1() {
+		try {
+			AreaParser.parseArea(FILE_PATH + "InvalidAreaTest1.xml");
+			// if it gets this far fail, because it should throw an error.
+			fail("Should have thrown a ParserError for the <Area> missing");
+		} catch (ParserError e) {
+			if (!e.getMessage().equals(
+					"Parsing Area: Expecting </Area>, got </NotArea>")) {
 				fail("Error message should be: Parsing Area: Expecting <Area>, got <NotArea>");
 			}
 		} catch (IOException e) {
@@ -177,6 +200,29 @@ public class AreaParserTests {
 		} catch (ParserError e) {
 			if (!e.getMessage().equals(
 					"Parsing Int: Expecting </ID>, got </NotID>")) {
+				fail("got: " + e.getMessage());
+			}
+		} catch (IOException e) {
+			// shouldnt get here, but im bad at implementing parsers, so it
+			// might
+			fail("IOException, check file is valid");
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Test to see if AreaParser can handle invalid </Area> in parseArea, should
+	 * throw a Parser error.
+	 */
+	@Test
+	public void invalidAreasParserTest5() {
+		try {
+			AreaParser.parseAreas(FILE_PATH + "InvalidAreasTest5.xml");
+			// if it gets this far fail, because it should throw an error.
+			fail("Should have thrown a ParserError for the </Area> being something else.");
+		} catch (ParserError e) {
+			if (!e.getMessage().equals(
+					"Parsing Area: Expecting </Area>, got </NotArea>")) {
 				fail("got: " + e.getMessage());
 			}
 		} catch (IOException e) {

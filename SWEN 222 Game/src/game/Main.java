@@ -9,14 +9,10 @@ import game.loading.ParserError;
 import game.ui.GameFrame;
 import game.world.Area;
 import game.world.GameWorld;
-import game.world.tiles.FloorTile;
-import game.world.tiles.Tile;
-import game.world.tiles.WallTile;
 
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -45,8 +41,7 @@ public class Main {
 	private static Server server = null;
 	private static Client client = null;
 
-	/** Tile map and area which gets added to the game world. */
-	private static Map<Integer, Tile> tileMap = null;
+	/** area which gets added to the game world. */
 	private static Area area = null;
 	private static Map<Integer, Area> areaMap = null;
 
@@ -114,14 +109,13 @@ public class Main {
 			try {
 				areaMap = AreaParser.parseAreas(AREA_FILE);
 				area = areaMap.get(1);
-				int nextID = ItemParser.parseItemList(ITEMS_FILE, area, 0);
 
 				// Add the main area to the game world, but only if the area
 				// successfully loaded.
 				if (!areaMap.isEmpty()) {
 					gameWorld = new GameWorld();
-					gameWorld.setNextItemID(nextID);
 					gameWorld.addAreas(areaMap);
+					ItemParser.parseItemList(ITEMS_FILE, area, gameWorld);
 					CharacterParser.parseCharacters(CHARACTER_FILE, area,
 							gameWorld);
 				} else {

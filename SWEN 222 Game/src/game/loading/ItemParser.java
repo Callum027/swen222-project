@@ -1,6 +1,8 @@
 package game.loading;
 
+import game.Main;
 import game.world.Area;
+import game.world.GameWorld;
 import game.world.Position;
 import game.world.items.Consumables;
 import game.world.items.Container;
@@ -17,10 +19,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ItemParser {
-	private static int nextID;
-	public static int parseItemList(String filename, Area area, int itemID)
+	public static void parseItemList(String filename, Area area, GameWorld world)
 			throws ParserError {
-		nextID = itemID;
 		Scanner scan = null;
 		try {
 			scan = new Scanner(new File(filename));
@@ -39,38 +39,37 @@ public class ItemParser {
 							"Parsing Items: Expecting <Item>, got "
 									+ scan.next());
 				}
-				area.addItem(parseItem(scan,nextID));
+				area.addItem(parseItem(scan, world));
 				if (!gobble(scan, "</Item>")) {
 					throw new ParserError(
 							"Parsing Items: Expecting </Item>, got "
 									+ scan.next());
 				}
-				nextID++;
 			}
 			scan.close();
-			return nextID;
 		} catch (ParserError error) {
 			error.printStackTrace();
 			throw error;
 		}
 	}
 
-	private static Item parseItem(Scanner scan,int nextID) throws ParserError {
+	private static Item parseItem(Scanner scan, GameWorld world)
+			throws ParserError {
 
 		int x = parseInt(scan, "XPos");
 		int y = parseInt(scan, "YPos");
 		int height = parseInt(scan, "Height");
 		Position pos = new Position(x, y);
-		int ID = nextID;
+		int ID = world.getNextItemID();
 		String name = parseString(scan, "Name");
 		if (gobble(scan, "<Container>")) {
-			return parseContainer(scan, pos, height, name, ID);
+			return parseContainer(scan, pos, height, name, ID, world);
 		} else if (gobble(scan, "<Consumable>")) {
 			return parseConsumable(scan, pos, height, name, ID);
 		} else if (gobble(scan, "<Equipment>")) {
 			return parseEquipment(scan, pos, height, name, ID);
 		} else if (gobble(scan, "<Furniture>")) {
-			return parseFurniture(scan, pos, height, name, ID);
+			return parseFurniture(scan, pos, height, name, ID, world);
 		} else if (gobble(scan, "<MoveableItem>")) {
 			return parseMoveableItem(scan, pos, height, name, ID);
 		} else if (gobble(scan, "<Door>")) {
@@ -120,10 +119,10 @@ public class ItemParser {
 		return null;
 	}
 
-	private static MoveableItem parseStoredItem(Scanner scan)
+	private static MoveableItem parseStoredItem(Scanner scan, GameWorld world)
 			throws ParserError {
 		int height = parseInt(scan, "Height");
-		int ID = nextID++;
+		int ID = world.getNextItemID();
 		String name = parseString(scan, "Name");
 		int worth = parseInt(scan, "Worth");
 
@@ -131,9 +130,10 @@ public class ItemParser {
 	}
 
 	private static Furniture parseFurniture(Scanner scan, Position pos,
-			int height, String name, int ID) throws ParserError {
+			int height, String name, int ID, GameWorld world)
+			throws ParserError {
 		if (gobble(scan, "<StoredItem>")) {
-			MoveableItem storedItem = parseStoredItem(scan);
+			MoveableItem storedItem = parseStoredItem(scan, world);
 			return new Furniture(pos, height, ID, name, storedItem);
 		} else if (gobble(scan, "</Furniture>")) {
 			return new Furniture(pos, height, ID, name, null);
@@ -161,12 +161,12 @@ public class ItemParser {
 	}
 
 	private static Item parseContainer(Scanner scan, Position pos, int height,
-			String name, int ID) throws ParserError {
+			String name, int ID, GameWorld world) throws ParserError {
 		int cats = parseInt(scan, "Cats");
 		Container tempContainer = new Container(pos, height, ID, name, cats);
 		List<MoveableItem> loot = new ArrayList<MoveableItem>();
 		while (!gobble(scan, "</Container>")) {
-			loot.add(parseStoredItem(scan));
+			loot.add(parseStoredItem(scan, world));
 		}
 		tempContainer.setLoot(loot);
 		return tempContainer;
