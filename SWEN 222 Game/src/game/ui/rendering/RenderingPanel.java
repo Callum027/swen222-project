@@ -449,7 +449,11 @@ public class RenderingPanel extends JPanel implements GameComponent {
 			}
 			if(!moves.isEmpty()){
 				MoveEvent move = new MoveEvent(moves.pop(), player);
-				frame.broadcastGameEvent(move);
+				try {
+					frame.broadcastGameEvent(move);
+				} catch (GameException e1) {
+
+				}
 			}
 			repaint();
 		}
@@ -475,7 +479,11 @@ public class RenderingPanel extends JPanel implements GameComponent {
 			}
 
 			// Broadcast the game event to all other peers.
-			frame.broadcastGameEvent(new InteractEvent(player, ((Item)drawable)));
+			try {
+				frame.broadcastGameEvent(new InteractEvent(player, ((Item)drawable)));
+			} catch (GameException e) {
+
+			}
 		}
 	}
 
@@ -659,6 +667,11 @@ public class RenderingPanel extends JPanel implements GameComponent {
 			int j = length - (p2.getX() + (height - p2.getY()));
 			return i - j;
 		}
+	}
+
+	@Override
+	public int addItem(MoveableItem selectedItem) {
+		return -1;
 	}
 }
 
