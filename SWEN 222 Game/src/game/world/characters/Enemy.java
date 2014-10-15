@@ -135,6 +135,7 @@ public class Enemy extends GameCharacter implements Attackable{
 		NetIO.writeByte(os, (byte)super.getId());
 	}
 
+
 	/**
 	 * reads an enemy from the inputstream
 	 * @param is the inputstream

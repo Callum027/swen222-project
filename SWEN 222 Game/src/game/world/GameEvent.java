@@ -9,6 +9,7 @@ import game.exceptions.InvalidGameEventException;
 import game.net.NetIO;
 import game.net.Streamable;
 import game.world.events.BuyEvent;
+import game.world.events.CombatEvent;
 import game.world.events.ConsumeEvent;
 import game.world.events.DropItemEvent;
 import game.world.events.EquipEvent;
@@ -53,6 +54,8 @@ public abstract class GameEvent implements Streamable {
 				return EquipEvent.read(is);
 			case CONSUME:
 				return ConsumeEvent.read(is);
+			case COMBAT:
+				return CombatEvent.read(is);
 			default:
 				throw new InvalidGameEventException(t);
 		}
@@ -86,8 +89,9 @@ public abstract class GameEvent implements Streamable {
 		BUY(4),
 		EQUIP(5),
 		CONSUME(6),
-		MOVE(7);
-		
+		MOVE(7),
+		COMBAT(8);
+
 
 		// The unique ID of the event.
 		private final byte id;

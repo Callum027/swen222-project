@@ -95,6 +95,7 @@ public class Player extends GameCharacter implements Streamable, Attackable{
 		return height;
 	}
 
+
 	/**
 	 * reads a player from the inputstream
 	 * @param is the inputstream
