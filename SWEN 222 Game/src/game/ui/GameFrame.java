@@ -1,5 +1,6 @@
 package game.ui;
 
+import game.Main;
 import game.exceptions.GameException;
 import game.ui.application.*;
 import game.ui.rendering.RenderingPanel;
@@ -75,6 +76,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener,
 	 * is stored here so that it can be easily moved between panels.
 	 */
 	private int direction;
+	private int playerID;
 
 	private Component currentComponent = null;
 
@@ -132,6 +134,10 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener,
 
 	public MoveableItem getSelectedItem() {
 		return selectedItem;
+	}
+
+	public int getPlayerID(){
+		return playerID;
 	}
 
 	public void setSelectedItem(MoveableItem item) {
@@ -261,9 +267,17 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener,
 		} else if (action.equals("Quit")) {
 			quitGame();
 		}
-		if (action.equals("New Game")) {
+		else if (action.equals("New Game")) {
 			String name = start.getNameText();
+			playerID = Main.getClient().getPlayerID();
+			Main.getClient().connect();
 			changeState(State.IN_GAME);
+		}
+		else if(action.equals("Host New Game")){
+
+		}
+		else if(action.equals("Join Game")){
+
 		}
 
 	}
@@ -465,3 +479,4 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener,
 
 
 }
+
