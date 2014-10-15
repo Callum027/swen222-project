@@ -27,9 +27,12 @@ import java.util.Map;
  */
 public class GameWorld implements GameEventListener{
 
-	private Map<Integer,Area> areas; //a mapping from unique identifiers to their respective area
-	private Map<Integer,Player> players; //a mapping from unique identifiers to their respective players
-
+	private Map<Integer, Area> areas; // A mapping from unique identifiers to their respective area
+	private Map<Integer, Player> players; // A mapping from unique identifiers to their respective players
+	
+	private Map<Integer, Item> items; // A mapping from unique identifiers to their respective items
+	private int nextItemID = 0; // The next unique item ID that can be used
+	
 	/**
 	 * The constructor:
 	 * Initializes the areas and the player maps
@@ -37,6 +40,7 @@ public class GameWorld implements GameEventListener{
 	public GameWorld(){
 		areas = new HashMap<Integer,Area>();
 		players = new HashMap<Integer,Player>();
+		items = new HashMap<Integer, Item>();
 	}
 
 	/**
@@ -95,6 +99,47 @@ public class GameWorld implements GameEventListener{
 	 */
 	public Area getArea(int id){
 		return areas.get(id);
+	}
+	
+	/**
+	 * Add an item to the game world.
+	 * @param i
+	 */
+	public boolean addItem(Item i){
+		int id = i.getID();
+		
+		// If the ID of the new item equals the current next ID,
+		// increment the ID until it is unique again.
+		if (id == nextItemID)
+			while (!items.containsKey(++nextItemID));
+		
+		// Add the item into the hash map, but only if there isn't
+		// an item there with the same ID already.
+		if (!items.containsKey(id))
+		{
+			items.put(i.getID(), i);
+			return true;
+		};
+		
+		return false;
+	}
+	
+	/**
+	 * Get the next unique ID
+	 * @return item ID
+	 */
+	public int getNextItemID(){
+		return nextItemID;
+	}
+	
+	/**
+	 * Returns the item associated with an ID.
+	 * 
+	 * @param id Item ID
+	 * @return Item
+	 */
+	public Item getItem(int id){
+		return items.get(id);
 	}
 
 	/**

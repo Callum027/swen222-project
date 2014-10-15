@@ -1,15 +1,22 @@
 package game.world.items;
 
 import game.Main;
+import game.exceptions.GameException;
+import game.exceptions.InvalidGameEventException;
+import game.net.NetIO;
 import game.net.Streamable;
 import game.world.BoundingBox;
 import game.world.Drawable;
 import game.world.Position;
+import game.world.GameEvent.Type;
 import game.world.characters.Player;
 import game.world.tiles.FloorTile;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * A class for all the items including furniture, chests (containers) and
@@ -135,5 +142,22 @@ public abstract class Item implements Drawable, Streamable{
 
 	public int getID() {
 		return ID;
+	}
+	
+	/**
+	 * Get an item from the input stream.
+	 * 
+	 * @param is Input stream
+	 * @return item
+	 * @throws IOException
+	 * @throws GameException
+	 */
+	public static Item read(InputStream is) throws IOException, GameException {
+		int id = NetIO.readInt(is);
+		return Main.getGameWorld().getItem(id);
+	}
+	
+	public void write(OutputStream os) throws IOException {
+		NetIO.writeInt(os, ID);
 	}
 }

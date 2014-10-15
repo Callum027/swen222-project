@@ -15,18 +15,18 @@ import game.world.items.MoveableItem;
 
 public class DropItemEvent extends GameEvent{
 
-	private static Item item;
-	private static Position position;
-	private static int areaID;
+	private final Item item;
+	private final Position position;
+	private final int areaID;
 
 	public DropItemEvent(Item item, Position position, int areaID){
 		if(item == null){
 			throw new IllegalArgumentException("item is null");
 		}
 
-		DropItemEvent.item = item;
-		DropItemEvent.position = position;
-		DropItemEvent.areaID = areaID;
+		this.item = item;
+		this.position = position;
+		this.areaID = areaID;
 	}
 
 	public Item getItem(){
@@ -54,6 +54,10 @@ public class DropItemEvent extends GameEvent{
 	 * @throws IOException
 	 */
 	public static DropItemEvent read(InputStream is) throws IOException, GameException {
+		Item item = Item.read(is);
+		Position position = Position.read(is);
+		int areaID = NetIO.readInt(is);
+		
 		if (item instanceof Equipment){
 			Equipment equipment = (Equipment) Equipment.read(is);
 			return new DropItemEvent(equipment, position, areaID);
