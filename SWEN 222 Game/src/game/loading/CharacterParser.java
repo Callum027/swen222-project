@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 public class CharacterParser {
 
-	public static void parseCharacters(String fileName, Area area) {
+	public static void parseCharacters(String fileName, Area area, GameWorld world) {
 		Scanner scan = null;
 		try {
 			scan = new Scanner(new File(fileName));
@@ -34,7 +34,7 @@ public class CharacterParser {
 							"Parsing Characters: Expecting <Character>, got "
 									+ scan.next());
 				}
-				parseCharacterType(scan, area);
+				parseCharacterType(scan, area, world);
 
 				if (!gobble(scan, "</Character>")) {
 					throw new ParserError(
@@ -47,11 +47,11 @@ public class CharacterParser {
 		}
 	}
 
-	private static void parseCharacterType(Scanner scan, Area area) {
+	private static void parseCharacterType(Scanner scan, Area area, GameWorld world) {
 		try {
 
 			if (gobble(scan, "<Player>")) {
-				parsePlayer(scan, area);
+				parsePlayer(scan, area, world);
 				return;
 			} else if (gobble(scan, "<Enemy>")) {
 				parseEnemy(scan, area);
@@ -104,7 +104,7 @@ public class CharacterParser {
 		}
 	}
 
-	private static void parsePlayer(Scanner scan, Area area) {
+	private static void parsePlayer(Scanner scan, Area area, GameWorld world) {
 		try {
 			int x = parseInt(scan, "XPos");
 			int y = parseInt(scan, "YPos");
@@ -119,6 +119,7 @@ public class CharacterParser {
 								+ scan.next());
 			}
 			area.addPlayer(player);
+			world.addPlayer(player);
 		} catch (ParserError e) {
 			e.printStackTrace();
 		}
