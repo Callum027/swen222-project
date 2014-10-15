@@ -2,9 +2,12 @@ package game.control;
 
 import game.exceptions.GameException;
 import game.net.GamePacket;
+import game.net.packets.JoinPacket;
 import game.world.GameEvent;
 import game.world.GameEventBroadcaster;
 import game.world.GameEventListener;
+import game.world.Position;
+import game.world.characters.classes.GameClass;
 
 import java.io.IOException;
 import java.net.ConnectException;
@@ -21,6 +24,7 @@ import java.net.UnknownHostException;
  *
  */
 public class Client extends NetIOController implements GameEventListener {
+	private int playerID = -1;
 	private Socket socket = null;
 	public GameEventBroadcaster geb = new GameEventBroadcaster();
 
@@ -120,6 +124,29 @@ public class Client extends NetIOController implements GameEventListener {
 						break;
 				}
 			}
+		}
+	}
+	
+	/**
+	 * Get the client's player ID. Returns -1 if the client does not have one yet.
+	 * @return
+	 */
+	public int getPlayerID() {
+		return playerID;
+	}
+	
+	/**
+	 * Join the current game run by the server, with the given parameters for the
+	 * new player.
+	 * 
+	 * @param position Position to spawn at
+	 * @param name Player name
+	 * @param playerClass Player class
+	 * @throws GameException
+	 */
+	public void join(Position position, String name, GameClass.CharacterClass playerClass) throws GameException {
+		if (playerID < 0) {
+			write(socket, new GamePacket(GamePacket.Type.JOIN, new JoinPacket(position, name, playerClass)));
 		}
 	}
 
