@@ -386,6 +386,30 @@ public class Area  implements Streamable{
 	}
 
 	/**
+	 * Returns a set of the neighbouring positions from the specified position.
+	 * will only add a neighbouring position if it is able to be moved to.
+	 *
+	 * @param p
+	 * 			--- the point to find neighbours for
+	 * @return
+	 * 			--- a set of neighbouring positions
+	 */
+	public Set<Position> getNeighbours(Position p){
+		Set<Position> neighbours = new HashSet<Position>();
+		neighbours.add(new Position(p.getX() - 1, p.getY()));
+		neighbours.add(new Position(p.getX() + 1, p.getY()));
+		neighbours.add(new Position(p.getX(), p.getY() - 1));
+		neighbours.add(new Position(p.getX(), p.getY() + 1));
+		Set<Position> moveable = new HashSet<Position>();
+		for(Position pos : neighbours){
+			if(isMoveablePosition(pos)){
+				moveable.add(pos);
+			}
+		}
+		return moveable;
+	}
+
+	/**
 	 * A version of the A* search algorithm to find the shortest path between a start and goal position.
 	 * This is implemented by the Area class to find the path between where the player currently is and
 	 * the position that they wish to move to.
@@ -444,30 +468,6 @@ public class Area  implements Streamable{
 			}
 			// at this point the fringe is empty and no path was found
 			return null;
-		}
-
-		/**
-		 * Returns a set of the neighbouring positions from the specified position.
-		 * will only add a neighbouring position if it is able to be moved to.
-		 *
-		 * @param p
-		 * 			--- the point to find neighbours for
-		 * @return
-		 * 			--- a set of neighbouring positions
-		 */
-		private Set<Position> getNeighbours(Position p){
-			Set<Position> neighbours = new HashSet<Position>();
-			neighbours.add(new Position(p.getX() - 1, p.getY()));
-			neighbours.add(new Position(p.getX() + 1, p.getY()));
-			neighbours.add(new Position(p.getX(), p.getY() - 1));
-			neighbours.add(new Position(p.getX(), p.getY() + 1));
-			Set<Position> moveable = new HashSet<Position>();
-			for(Position pos : neighbours){
-				if(isMoveablePosition(pos)){
-					moveable.add(pos);
-				}
-			}
-			return moveable;
 		}
 
 		/**
