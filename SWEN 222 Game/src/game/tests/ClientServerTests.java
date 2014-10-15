@@ -19,47 +19,35 @@ import org.junit.Test;
 public class ClientServerTests {
 
 	private MoveEvent getTestMoveEvent() {
-		return new MoveEvent(new Position(1, 1), new Player(new Position(0, 0), "test", 0, GameClass.CharacterClass.ROGUE));
+		return new MoveEvent(new Position(1, 1), new Player(new Position(0, 0),
+				"test", 0, GameClass.CharacterClass.ROGUE));
 	}
 
-	/*@Test
-	public void singleProcessTest() {
-		Client client = new Client();
-		Server server = new Server();
-
-		System.out.println("binding server");
-
-		server.bind();
-		server.start();
-
-		try {
-			Thread.sleep(100);
-		}
-		catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		System.out.println("connecting client");
-
-		client.connect();
-		client.start();
-
-		System.out.println("generating game event");
-		client.gameEventOccurred(new MoveEvent(new Position(1, 1), new Player(new Position(0, 0), "test", 0, GameClass.playerClass.ROGUE)));
-
-		try {
-			Thread.sleep(1000);
-		}
-		catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		System.out.println("disconnecting hosts");
-		client.close();
-		server.close();
-	}*/
+	/*
+	 * @Test public void singleProcessTest() { Client client = new Client();
+	 * Server server = new Server();
+	 *
+	 * System.out.println("binding server");
+	 *
+	 * server.bind(); server.start();
+	 *
+	 * try { Thread.sleep(100); } catch (InterruptedException e) { // TODO
+	 * Auto-generated catch block e.printStackTrace(); }
+	 *
+	 * System.out.println("connecting client");
+	 *
+	 * client.connect(); client.start();
+	 *
+	 * System.out.println("generating game event"); client.gameEventOccurred(new
+	 * MoveEvent(new Position(1, 1), new Player(new Position(0, 0), "test", 0,
+	 * GameClass.playerClass.ROGUE)));
+	 *
+	 * try { Thread.sleep(1000); } catch (InterruptedException e) { // TODO
+	 * Auto-generated catch block e.printStackTrace(); }
+	 *
+	 * System.out.println("disconnecting hosts"); client.close();
+	 * server.close(); }
+	 */
 
 	@Test
 	public void clientTest() {
@@ -67,8 +55,7 @@ public class ClientServerTests {
 
 		try {
 			Thread.sleep(1000);
-		}
-		catch (InterruptedException e) {
+		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -90,8 +77,7 @@ public class ClientServerTests {
 
 		try {
 			Thread.sleep(2000);
-		}
-		catch (InterruptedException e) {
+		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

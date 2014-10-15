@@ -57,42 +57,31 @@ public class AreaParser {
 	 * @return Area parsed in from file.
 	 * @throws ParserError
 	 */
-	public static Area parseArea(String filename, Map<Integer, Tile> tileMap)
-			throws ParserError {
-		Scanner scan = null;
-		try {
-			scan = new Scanner(new File(filename));
-		} catch (IOException e) {
-			e.printStackTrace();
+	public static Area parseArea(String filename) throws ParserError,
+			IOException {
+		Scanner scan = new Scanner(new File(filename));
+		Map<Integer, Tile> tileMap = createTileMap(TILES_FILE);
+		if (!gobble(scan, "<Area>")) {
+			throw new ParserError("Parsing Area: Expecting <Area>, got "
+					+ scan.next());
 		}
 
-		try {
-			if (!gobble(scan, "<Area>")) {
-				throw new ParserError("Parsing Area: Expecting <Area>, got "
-						+ scan.next());
-			}
+		int ID = parseInt(scan, "ID");
+		int width = parseInt(scan, "Width");
+		int height = parseInt(scan, "Height");
+		Tile[][] floor = parse2DTileArray(scan, "Floor", width, height, tileMap);
+		Tile[][][] walls = new Tile[4][][];
+		walls[0] = parse2DTileArray(scan, "NorthWall", width, 3, tileMap);
+		walls[1] = parse2DTileArray(scan, "EastWall", height, 3, tileMap);
+		walls[2] = parse2DTileArray(scan, "SouthWall", width, 3, tileMap);
+		walls[3] = parse2DTileArray(scan, "WestWall", height, 3, tileMap);
 
-			int ID = parseInt(scan, "ID");
-			int width = parseInt(scan, "Width");
-			int height = parseInt(scan, "Height");
-			Tile[][] floor = parse2DTileArray(scan, "Floor", width, height,
-					tileMap);
-			Tile[][][] walls = new Tile[4][][];
-			walls[0] = parse2DTileArray(scan, "NorthWall", width, 3, tileMap);
-			walls[1] = parse2DTileArray(scan, "EastWall", height, 3, tileMap);
-			walls[2] = parse2DTileArray(scan, "SouthWall", width, 3, tileMap);
-			walls[3] = parse2DTileArray(scan, "WestWall", height, 3, tileMap);
-
-			if (!gobble(scan, "</Area>")) {
-				throw new ParserError("Parsing Area: Expecting </Area>, got "
-						+ scan.next());
-			}
-			scan.close();
-			return new Area(floor, walls, ID);
-		} catch (ParserError error) {
-			error.printStackTrace();
-			throw error;
+		if (!gobble(scan, "</Area>")) {
+			throw new ParserError("Parsing Area: Expecting </Area>, got "
+					+ scan.next());
 		}
+		scan.close();
+		return new Area(floor, walls, ID);
 	}
 
 	/**

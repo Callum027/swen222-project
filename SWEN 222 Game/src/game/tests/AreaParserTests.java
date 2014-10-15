@@ -15,7 +15,7 @@ import org.junit.Test;
  * @author Chris Allen
  *
  */
-public class ParserTests {
+public class AreaParserTests {
 	// filepath to the test xml files.
 	private static final String FILE_PATH = "src" + File.separatorChar + "game"
 			+ File.separatorChar + "tests" + File.separatorChar
@@ -26,7 +26,7 @@ public class ParserTests {
 	 * error.
 	 */
 	@Test
-	public void validAreasParserTest0() {
+	public void validAreasParserTest() {
 		try {
 			AreaParser.parseAreas(FILE_PATH + "ValidAreasTest0.xml");
 		} catch (IOException e) {
@@ -35,6 +35,46 @@ public class ParserTests {
 		} catch (ParserError e) {
 			e.printStackTrace();
 			fail("Shouldnt have thrown :" + e.getMessage());
+		}
+	}
+
+	/**
+	 * Test to see if ParseArea using a fileName works, shouldn't throw an
+	 * error.
+	 */
+	@Test
+	public void validAreaParserTest() {
+		try {
+			AreaParser.parseArea(FILE_PATH + "ValidAreaTest0.xml");
+		} catch (IOException e) {
+			e.printStackTrace();
+			fail("Shouldnt have thrown a IOError");
+		} catch (ParserError e) {
+			e.printStackTrace();
+			fail("Shouldnt have thrown :" + e.getMessage());
+		}
+	}
+
+	/**
+	 * Test to see if AreaParser can handle missing lines, should throw an
+	 * error.
+	 */
+	@Test
+	public void invalidAreaParserTest0() {
+		try {
+			AreaParser.parseArea(FILE_PATH + "InvalidAreaTest0.xml");
+			// if it gets this far fail, because it should throw an error.
+			fail("Should have thrown a ParserError for the <Area> missing");
+		} catch (ParserError e) {
+			if (!e.getMessage().equals(
+					"Parsing Area: Expecting <Area>, got <NotArea>")) {
+				fail("Error message should be: Parsing Area: Expecting <Area>, got <NotArea>");
+			}
+		} catch (IOException e) {
+			// shouldnt get here, but im bad at implementing parsers, so it
+			// might
+			fail("IOException, check file is valid");
+			e.printStackTrace();
 		}
 	}
 
