@@ -3,7 +3,7 @@ swen222-project
 
 SWEN 222 - Excellent Adventure!
 
-The aim of the game is to collect cats, there might be more later. Need to change.
+Must run from the Main class
 
 CONTROLS:
 
