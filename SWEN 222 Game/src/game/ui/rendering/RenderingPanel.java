@@ -471,7 +471,8 @@ public class RenderingPanel extends JPanel implements GameComponent {
 			else if(drawable instanceof Container){
 				Container cont = (Container) drawable;
 				frame.setStatsVisible(false);
-				frame.addChestContents(cont.getLoot(), cont);
+				frame.setCont(cont);
+				frame.addChestContents(cont.getLoot());
 				//cont.setLoot(new ArrayList<MoveableItem>(Arrays.asList(frame.getChestItems())));
 				frame.setChestVisible(true);
 

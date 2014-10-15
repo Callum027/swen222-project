@@ -9,6 +9,7 @@ import game.world.events.ConsumeEvent;
 import game.world.events.DropItemEvent;
 import game.world.events.EquipEvent;
 import game.world.events.InteractEvent;
+import game.world.events.InventoryEvent;
 import game.world.events.MoveEvent;
 import game.world.events.PickUpEvent;
 import game.world.events.TransferEvent;
@@ -21,6 +22,7 @@ import game.world.items.Item;
 import game.world.items.MoveableItem;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -217,7 +219,12 @@ public class GameWorld implements GameEventListener{
 		if (ge instanceof TransferEvent){
 			transferEvent(ge);
 		}
+		if(ge instanceof InventoryEvent){
+			inventoryEvent(ge);
+		}
 	}
+
+
 
 
 
@@ -310,7 +317,24 @@ public class GameWorld implements GameEventListener{
 		int playerID = transfer.getPlayerID();
 		Player player = players.get(playerID);
 		MoveableItem item = transfer.getItem();
-		Container cont = transfer.getCont();
-		//List<MoveableItem> loot
+		int cont = transfer.getCont();
+		Container container = (Container) items.get(cont);
+		List<MoveableItem> loot = container.getLoot();
+		loot.add(item);
+		container.setLoot(loot);
+		player.removeItem(item);
+	}
+
+	public void inventoryEvent(GameEvent ge) {
+		InventoryEvent transfer = (InventoryEvent) ge;
+		int playerID = transfer.getPlayerID();
+		Player player = players.get(playerID);
+		MoveableItem item = transfer.getItem();
+		int cont = transfer.getCont();
+		Container container = (Container) items.get(cont);
+		List<MoveableItem> loot = container.getLoot();
+		loot.remove(item);
+		container.setLoot(loot);
+		player.addItem(item);
 	}
 }

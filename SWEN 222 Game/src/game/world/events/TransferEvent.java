@@ -14,15 +14,13 @@ public class TransferEvent extends GameEvent {
 
 	private MoveableItem item;
 	private int playerID;
-	private Container cont;
+	private int containerID;
 
-	public TransferEvent(MoveableItem item, int playerID, Container cont){
+	public TransferEvent(MoveableItem item, int playerID, int containerID){
 		if (item == null)
 			throw new IllegalArgumentException("item is null");
-		if(cont == null){
-			throw new IllegalArgumentException("Container is null");
-		}
-		this.cont=cont;
+
+		this.containerID=containerID;
 		this.item = item;
 		this.playerID = playerID;
 
@@ -41,8 +39,8 @@ public class TransferEvent extends GameEvent {
 		return playerID;
 	}
 
-	public Container getCont(){
-		return cont;
+	public int getCont(){
+		return containerID;
 	}
 
 	/**
@@ -55,8 +53,8 @@ public class TransferEvent extends GameEvent {
 	public static TransferEvent read(InputStream is) throws IOException, GameException {
 		MoveableItem item = MoveableItem.read(is);
 		int playerID = NetIO.readInt(is);
-		Container cont = Container.read(is);
-		return new TransferEvent(item, playerID, cont);
+		int containerID = NetIO.readInt(is);
+		return new TransferEvent(item, playerID, containerID);
 	}
 
 	public void write(OutputStream os) throws IOException {
@@ -65,7 +63,7 @@ public class TransferEvent extends GameEvent {
 		// Write the changes this event causes to the output stream.
 		item.write(os);
 		NetIO.writeInt(os, playerID);
-		cont.write(os);
+		NetIO.writeInt(os, containerID);
 	}
 
 }

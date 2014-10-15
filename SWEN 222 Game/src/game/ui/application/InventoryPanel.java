@@ -4,6 +4,8 @@ import game.Main;
 import game.ui.GameComponent;
 import game.ui.GameFrame;
 import game.world.Position;
+import game.world.events.InventoryEvent;
+import game.world.items.Container;
 import game.world.items.Equipment;
 import game.world.items.MoveableItem;
 
@@ -42,6 +44,8 @@ public class InventoryPanel extends JPanel implements GameComponent {
 	private MoveableItem itemSelected;
 	private int previousSlot = -1;
 	private Image background;
+
+	private Container cont;
 
 	/**
 	 * Makes a new InventoryPanel which extends JPanel and sets the width and
@@ -285,6 +289,7 @@ public class InventoryPanel extends JPanel implements GameComponent {
 				frame.setFrom(this);
 				itemSelected = frame.getSelectedItem();
 				addItem(itemSelected);
+				InventoryEvent inv = new InventoryEvent(itemSelected, frame.getPlayerID(), cont.getID());
 				frame.setSelectedItem(null);
 				itemSelected = null;
 			}
@@ -311,5 +316,13 @@ public class InventoryPanel extends JPanel implements GameComponent {
 			}
 			repaint();
 		}
+	}
+
+	public Container getCont() {
+		return cont;
+	}
+
+	public void setCont(Container cont) {
+		this.cont = cont;
 	}
 }
