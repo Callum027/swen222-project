@@ -33,6 +33,7 @@ import java.util.Stack;
 
 import javax.swing.JPanel;
 
+
 public class RenderingPanel extends JPanel implements GameComponent {
 
 	private static final long serialVersionUID = 1L;

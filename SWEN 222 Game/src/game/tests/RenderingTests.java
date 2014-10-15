@@ -10,15 +10,11 @@ import org.junit.Test;
 
 import game.ui.GameFrame;
 import game.ui.rendering.RenderingPanel;
-import game.world.Area;
 import game.world.Drawable;
 import game.world.Position;
 import game.world.items.Container;
 import game.world.items.Equipment;
 import game.world.items.Furniture;
-import game.world.tiles.FloorTile;
-import game.world.tiles.Tile;
-import game.world.tiles.WallTile;
 
 /**
  * Runs tests that determine that Drawable objects are being sorted so that
