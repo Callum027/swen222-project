@@ -8,6 +8,7 @@ import game.net.packets.ErrPacket;
 import game.net.packets.HelloPacket;
 import game.net.packets.PlayerPacket;
 import game.net.packets.QuitPacket;
+import game.net.packets.TestPacket;
 import game.world.GameEvent;
 
 import java.io.IOException;
@@ -92,6 +93,8 @@ public class GamePacket implements Streamable {
 			/*case STATE:
 				s = GameState.read(is);
 				break;*/
+			case TEST:
+				s = TestPacket.read(is);
 			default:
 				throw new UnsupportedGamePacketException(t);
 		}
@@ -129,7 +132,9 @@ public class GamePacket implements Streamable {
 		// Game state transfers.
 		STATE(5),
 		// Game event updates.
-		EVENT(6);
+		EVENT(6),
+		// Test packet. Used to test things!
+		TEST(7);
 
 		// The unique ID of the packet.
 		private final byte id;
