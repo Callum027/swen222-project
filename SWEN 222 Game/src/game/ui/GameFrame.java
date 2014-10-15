@@ -276,6 +276,12 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener,
 			try {
 				client.join(1, new Position(0, 0), "Frank",
 						GameClass.CharacterClass.WARRIOR);
+				try {
+					Thread.sleep(50);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				playerID = client.getPlayerID();
 				Main.getClient().connect();
 				changeState(State.IN_GAME);

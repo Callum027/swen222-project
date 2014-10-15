@@ -5,6 +5,7 @@ import game.exceptions.ErrPacketException;
 import game.exceptions.GameException;
 import game.net.GamePacket;
 import game.net.packets.JoinPacket;
+import game.net.packets.PlayerPacket;
 import game.world.GameEvent;
 import game.world.GameEventBroadcaster;
 import game.world.GameEventListener;
@@ -131,6 +132,15 @@ public class Client extends NetIOController implements GameEventListener {
 								jp.getPlayerClass());
 						
 						Main.getGameWorld().getArea(jp.getAreaID()).addPlayer(player);
+						break;
+					case PLAYER:
+						System.out.println("client: getting our local player ID");
+						if (gettingPlayerID) {
+							PlayerPacket pp = (PlayerPacket)gp.getPayload();
+							playerID = pp.getID();
+							gettingPlayerID = false;
+						}
+						break;
 					case QUIT:
 						System.out.println("client: read QUIT packet, closing connection");
 						close();
@@ -147,6 +157,7 @@ public class Client extends NetIOController implements GameEventListener {
 	 * @return
 	 */
 	public int getPlayerID() {
+		while (gettingPlayerID);
 		return playerID;
 	}
 	
@@ -167,7 +178,6 @@ public class Client extends NetIOController implements GameEventListener {
 				write(socket, new GamePacket(GamePacket.Type.JOIN, new JoinPacket(areaID, position, name, playerClass)));
 			}
 			catch (ErrPacketException e) {
-				gettingPlayerID = false;
 				throw e;
 			}
 		}

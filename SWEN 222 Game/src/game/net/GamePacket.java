@@ -91,6 +91,7 @@ public class GamePacket implements Streamable {
 				break;
 			case PLAYER:
 				s = PlayerPacket.read(is);
+				break;
 			case QUIT:
 				s = QuitPacket.read(is);
 				break;
@@ -134,11 +135,11 @@ public class GamePacket implements Streamable {
 		// Player number.
 		PLAYER(5),
 		// Game state transfers.
-		STATE(5),
+		STATE(6),
 		// Game event updates.
-		EVENT(6),
+		EVENT(7),
 		// Test packet. Used to test things!
-		TEST(7);
+		TEST(8);
 
 		// The unique ID of the packet.
 		private final byte id;
