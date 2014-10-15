@@ -14,7 +14,6 @@ import game.world.events.InteractEvent;
 import game.world.events.MoveEvent;
 import game.world.items.Container;
 import game.world.items.Door;
-import game.world.items.Furniture;
 import game.world.items.Item;
 import game.world.items.MoveableItem;
 import game.world.tiles.FloorTile;
@@ -55,19 +54,19 @@ public class RenderingPanel extends JPanel implements GameComponent {
 	private int direction;
 
 	private Player player;
-	private Furniture shelf;
 
 	/**
 	 * Constructor:
+	 * Constructs an instance of RenderingPanel
 	 *
+	 * @param
+	 * 		--- the directon of the game view
 	 */
 	public RenderingPanel(int direction) {
 		super();
 		this.direction = direction;
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		player = new Player(new Position(0,0), "Frank", 1, GameClass.playerClass.WARRIOR);
-		shelf = new Furniture(new Position(5, 5), 2, 1, "shelf", null);
-
 	}
 
 	/**
@@ -79,7 +78,6 @@ public class RenderingPanel extends JPanel implements GameComponent {
 	 */
 	public void setArea(Area area) {
 		this.area = area;
-		area.addItem(shelf);
 		calculateConstants();
 	}
 
@@ -98,43 +96,12 @@ public class RenderingPanel extends JPanel implements GameComponent {
 		}
 	}
 
-	/**
-	 * Calculates the constant values that are used regularly in rendering the
-	 * Area view.
-	 */
-	private void calculateConstants() {
-		areaLength = (area.getTiles().length + area.getTiles()[0].length) - 1;
-		areaWidth = (((areaLength - 1) * ((FloorTile.WIDTH / 2) + 1)))
-				+ FloorTile.WIDTH;
-		areaHeight = ((areaLength - 1) * (FloorTile.HEIGHT / 2)) - 135;
-		startX = (WIDTH - areaWidth) / 2;
-		// adjust start x so that the rendered outcome is centered in the
-		// graphics pane
-		if (direction == GameFrame.NORTH || direction == GameFrame.SOUTH) {
-			startX += ((area.getTiles().length - 1) * DX);
-		} else if (direction == GameFrame.EAST || direction == GameFrame.WEST) {
-			startX += ((area.getTiles()[0].length - 1) * DX);
+	@Override
+	public void repaint() {
+		if (area != null) {
+			calculateConstants();
 		}
-		startY = (HEIGHT - areaHeight) / 2;
-	}
-
-	/**
-	 * Find the position in the area that the player has clicked on, based on
-	 * the coordinates of their click. Returns null if they have not clicked in
-	 * the area.
-	 *
-	 * @param p
-	 * 		---the point where the mouse click occurred
-	 * @return
-	 * 		---the position that the click corresponds to, null if not in area
-	 */
-	public Position findPosition(Position p) {
-		for (BoundingBox box : tileBoundingBoxes) {
-			if (box.contains(new Point(p.getX(), p.getY()))) {
-				return box.getPosition();
-			}
-		}
-		return null;
+		super.repaint();
 	}
 
 	/**
@@ -154,69 +121,6 @@ public class RenderingPanel extends JPanel implements GameComponent {
 			toDraw.addAll(players);
 			drawFloors(g, tiles, items);
 			drawDrawableObjects(g, toDraw, tiles);
-		}
-	}
-
-	private void sortDrawableObjects(List<Drawable> drawable, int width, int height){
-		// sort toDraw based on the current direction
-		Comparator<Drawable> comp = null;
-		if(direction == GameFrame.NORTH){
-			comp = new NorthComparator(height, width);
-		}
-		else if(direction == GameFrame.EAST){
-			comp = new EastComparator(height, width);
-		}
-		else if(direction == GameFrame.SOUTH){
-			comp = new SouthComparator(height, width);
-		}
-		else if(direction == GameFrame.WEST){
-			comp = new WestComparator(height, width);
-		}
-		Collections.sort(drawable, comp);
-	}
-
-	private void drawDrawableObjects(Graphics g, List<Drawable> toDraw, Tile[][] tiles) {
-		// sort toDraw based on the current direction
-		sortDrawableObjects(toDraw, tiles[0].length, tiles.length);
-
-		drawableBoundingBoxes = new ArrayList<BoundingBox>();
-
-		int width = area.getTiles()[0].length - 1;
-		int height = area.getTiles().length - 1;
-		// start iteration from back to draw items further away first
-		for(int i = toDraw.size() - 1; i >= 0; i--){
-		//for(int i = 0; i < toDraw.size(); i++){
-			Drawable d = toDraw.get(i);
-			int x = 0;
-			int y = 0;
-			int yOffset = d.getHeight() * FloorTile.HEIGHT;
-			Position p = d.getPosition();
-			if (direction == GameFrame.NORTH) {
-				x = startX + DX * (p.getX() - p.getY());
-				y = startY + DY * (p.getX() + p.getY()) - yOffset;
-			}
-			else if (direction == GameFrame.EAST) {
-				x = startX + DX * (p.getY() - (width - p.getX()));
-				y = startY + DY * ((width - p.getX()) + (p.getY())) - yOffset;
-			}
-			else if (direction == GameFrame.SOUTH) {
-				x = startX + DX * (p.getY() - p.getX());
-				y = startY + DY * ((width - p.getX()) + (height - p.getY())) - yOffset;
-			}
-			else if (direction == GameFrame.WEST) {
-				x = startX + DX * ((width - p.getX()) - p.getY());
-				y = startY + DY * (p.getX() + (height - p.getY())) - yOffset;
-			}
-
-			d.draw(g, x, y, direction);
-			drawableBoundingBoxes.add(d.getBoundingBox(x, y, p));
-		}
-	}
-
-	public void drawBoundingBoxes(Graphics g){
-		g.setColor(Color.cyan);
-		for(BoundingBox b : drawableBoundingBoxes){
-			g.fillPolygon(b);
 		}
 	}
 
@@ -328,18 +232,120 @@ public class RenderingPanel extends JPanel implements GameComponent {
 			}
 		}
 	}
-	@Override
-	public void repaint() {
-		if (area != null) {
-			calculateConstants();
+
+	private void sortDrawableObjects(List<Drawable> drawable, int width, int height){
+		// sort toDraw based on the current direction
+		Comparator<Drawable> comp = null;
+		if(direction == GameFrame.NORTH){
+			comp = new NorthComparator(height, width);
 		}
-		super.repaint();
+		else if(direction == GameFrame.EAST){
+			comp = new EastComparator(height, width);
+		}
+		else if(direction == GameFrame.SOUTH){
+			comp = new SouthComparator(height, width);
+		}
+		else if(direction == GameFrame.WEST){
+			comp = new WestComparator(height, width);
+		}
+		Collections.sort(drawable, comp);
 	}
 
-	// comparators for sorting items
+	/**
+	 * Draws all the Drawable objects in the area to the RenderingPanel and calculates
+	 * BoundingBoxes for each object.
+	 *
+	 * @param g
+	 * 		--- graphics object to draw on
+	 * @param toDraw
+	 * 		--- list of drawable objects
+	 * @param tiles
+	 * 		--- 2D array of tiles
+	 */
+	private void drawDrawableObjects(Graphics g, List<Drawable> toDraw, Tile[][] tiles) {
+		// sort toDraw based on the current direction
+		sortDrawableObjects(toDraw, tiles[0].length, tiles.length);
 
+		drawableBoundingBoxes = new ArrayList<BoundingBox>();
+
+		int width = area.getTiles()[0].length - 1;
+		int height = area.getTiles().length - 1;
+		// start iteration from back to draw items further away first
+		for(int i = toDraw.size() - 1; i >= 0; i--){
+			Drawable d = toDraw.get(i);
+			int x = 0;
+			int y = 0;
+			int yOffset = d.getHeight() * FloorTile.HEIGHT;
+			Position p = d.getPosition();
+			if (direction == GameFrame.NORTH) {
+				x = startX + DX * (p.getX() - p.getY());
+				y = startY + DY * (p.getX() + p.getY()) - yOffset;
+			}
+			else if (direction == GameFrame.EAST) {
+				x = startX + DX * (p.getY() - (width - p.getX()));
+				y = startY + DY * ((width - p.getX()) + (p.getY())) - yOffset;
+			}
+			else if (direction == GameFrame.SOUTH) {
+				x = startX + DX * (p.getY() - p.getX());
+				y = startY + DY * ((width - p.getX()) + (height - p.getY())) - yOffset;
+			}
+			else if (direction == GameFrame.WEST) {
+				x = startX + DX * ((width - p.getX()) - p.getY());
+				y = startY + DY * (p.getX() + (height - p.getY())) - yOffset;
+			}
+
+			d.draw(g, x, y, direction);
+			drawableBoundingBoxes.add(d.getBoundingBox(x, y, p));
+		}
+	}
+
+	/**
+	 * Calculates the constant values that are used regularly in rendering the
+	 * Area view.
+	 */
+	private void calculateConstants() {
+		areaLength = (area.getTiles().length + area.getTiles()[0].length) - 1;
+		areaWidth = (((areaLength - 1) * ((FloorTile.WIDTH / 2) + 1)))
+				+ FloorTile.WIDTH;
+		areaHeight = ((areaLength - 1) * (FloorTile.HEIGHT / 2)) - 135;
+		startX = (WIDTH - areaWidth) / 2;
+		// adjust start x so that the rendered outcome is centered in the
+		// graphics pane
+		if (direction == GameFrame.NORTH || direction == GameFrame.SOUTH) {
+			startX += ((area.getTiles().length - 1) * DX);
+		} else if (direction == GameFrame.EAST || direction == GameFrame.WEST) {
+			startX += ((area.getTiles()[0].length - 1) * DX);
+		}
+		startY = (HEIGHT - areaHeight) / 2;
+	}
+
+	/**
+	 * Find the position in the area that the player has clicked on, based on
+	 * the coordinates of their click. Returns null if they have not clicked in
+	 * the area.
+	 *
+	 * @param p
+	 * 		---the point where the mouse click occurred
+	 * @return
+	 * 		---the position that the click corresponds to, null if not in area
+	 */
+	public Position findPosition(Position p) {
+		for (BoundingBox box : tileBoundingBoxes) {
+			if (box.contains(new Point(p.getX(), p.getY()))) {
+				return box.getPosition();
+			}
+		}
+		return null;
+	}
+
+	// methods inherited from GameComponent
+
+	/**
+	 * Deals with mouse events when the mouse  is clicked the RenderingPanel.
+	 */
 	@Override
 	public void mouseClicked(GameFrame frame, MouseEvent e) {
+		// check whether the left or right mouse button was clicked
 		if (e.getButton() == MouseEvent.BUTTON3) {
 			mouseRightClicked(frame, e);
 		}
@@ -348,12 +354,96 @@ public class RenderingPanel extends JPanel implements GameComponent {
 		}
 	}
 
+	/**
+	 * Deals with mouse events when the mouse is pressed on RenderingPanel.
+	 */
+	@Override
+	public void mousePressed(GameFrame frame, MouseEvent e) {
+		int x = e.getX();
+		int y = e.getY();
+		Position pressed = new Position(x, y);
+		Position p = findPosition(pressed);
+		for(Item item : area.getItems().values()){
+			if(item.getPosition().equals(p) && item instanceof MoveableItem){
+				// NEEDS TO BE A GAME EVENT
+				frame.setSelectedItem((MoveableItem)item);
+				frame.append(frame.getSelectedItem().toString());
+				area.removeItem(item);
+				repaint();
+				break;
+			}
+		}
+	}
+
+	/**
+	 * Deals with mouse events when the mouse is released on RenderingPanel.
+	 */
+	@Override
+	public void mouseReleased(GameFrame frame, MouseEvent e) {
+		// only
+		if(frame.getSelectedItem() != null){
+			Position release = new Position(e.getX(), e.getY());
+			Position p = findPosition(release);
+			if(p == null){
+				return;
+			}
+			// check to make sure that the position is clear before dropping item
+			boolean positionClear = true;
+			for(Item item : area.getItems().values()){
+				if(item.getPosition().equals(p)){
+					positionClear = false;
+					break;
+				}
+			}
+			if(positionClear){
+				DropItemEvent drop = new DropItemEvent(frame.getSelectedItem(), p, area.getID());
+				frame.broadcastGameEvent(drop);
+				frame.setSelectedItem(null);
+				repaint();
+			}
+		}
+	}
+
+	/**
+	 * Helper method for mouseClicked that deals with left mouse button clicks.
+	 * Finds the drawable object that was clicked on, if any.
+	 *
+	 * @param frame
+	 * 		--- the game frame
+	 * @param e
+	 * 		--- the generated mouse event
+	 */
 	private void mouseLeftClicked(GameFrame frame, MouseEvent e){
 		for(BoundingBox b : drawableBoundingBoxes){
 			if(b.contains(new Point(e.getX(), e.getY()))){
 				Drawable drawable = area.getDrawableObject(b.getPosition());
 				interact(frame, drawable);
 			}
+		}
+	}
+
+	/**
+	 * Helper method for mouseClicked that deals with right mouse button clicks.
+	 *
+	 *
+	 * @param frame
+	 * 		--- the game frame
+	 * @param e
+	 * 		--- the generated mouse event
+	 */
+	private void mouseRightClicked(GameFrame frame, MouseEvent e){
+		Position p = findPosition(new Position(e.getX(), e.getY()));
+		if (p != null) {
+			Position current = player.getPosition();
+			Stack<Position> moves = area.findPath(current, p);
+			if(!moves.isEmpty()){
+				moves.pop();
+			}
+			if(!moves.isEmpty()){
+				MoveEvent move = new MoveEvent(moves.pop(), player);
+				frame.broadcastGameEvent(move);
+			}
+			repaint();
 		}
 	}
 
@@ -378,64 +468,6 @@ public class RenderingPanel extends JPanel implements GameComponent {
 
 			// Broadcast the game event to all other peers.
 			frame.broadcastGameEvent(new InteractEvent(player, ((Item)drawable)));
-		}
-	}
-
-	private void mouseRightClicked(GameFrame frame, MouseEvent e){
-		Position p = findPosition(new Position(e.getX(), e.getY()));
-		if (p != null) {
-			frame.append("Clicked at position: "+p);
-			Position current = player.getPosition();
-			Stack<Position> moves = area.findPath(current, p);
-			if(!moves.isEmpty()){
-				moves.pop();
-			}
-			if(!moves.isEmpty()){
-				MoveEvent move = new MoveEvent(moves.pop(), player);
-				frame.broadcastGameEvent(move);
-			}
-			repaint();
-		}
-	}
-
-	@Override
-	public void mouseReleased(GameFrame frame, MouseEvent e) {
-		if(frame.getSelectedItem() != null){
-			Position release = new Position(e.getX(), e.getY());
-			Position p = findPosition(release);
-			if(p == null){
-				return;
-			}
-			boolean positionClear = true;
-			for(Item item : area.getItems().values()){
-				if(item.getPosition().equals(p)){
-					positionClear = false;
-					break;
-				}
-			}
-			if(positionClear){
-				DropItemEvent drop = new DropItemEvent(frame.getSelectedItem(), p, area.getID());
-				frame.broadcastGameEvent(drop);
-				frame.setSelectedItem(null);
-				repaint();
-			}
-		}
-	}
-
-	@Override
-	public void mousePressed(GameFrame frame, MouseEvent e) {
-		int x = e.getX();
-		int y = e.getY();
-		Position pressed = new Position(x, y);
-		Position p = findPosition(pressed);
-		for(Item item : area.getItems().values()){
-			if(item.getPosition().equals(p) && item instanceof MoveableItem){
-				frame.setSelectedItem((MoveableItem)item);
-				frame.append(frame.getSelectedItem().toString());
-				area.removeItem(item);
-				repaint();
-				break;
-			}
 		}
 	}
 
