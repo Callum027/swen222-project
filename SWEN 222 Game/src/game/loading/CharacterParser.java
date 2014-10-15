@@ -3,6 +3,7 @@ package game.loading;
 import game.world.GameWorld;
 import game.world.Position;
 import game.world.characters.Enemy;
+import game.world.characters.Merchant;
 import game.world.characters.Player;
 import game.world.characters.classes.GameClass;
 
@@ -12,7 +13,7 @@ import java.util.Scanner;
 
 public class CharacterParser {
 
-	public static void ParseCharacter(String fileName, GameWorld world) {
+	public static void parseCharacters(String fileName, GameWorld world) {
 		Scanner scan = null;
 		try {
 			scan = new Scanner(new File(fileName));
@@ -23,20 +24,20 @@ public class CharacterParser {
 			if (!gobble(scan, "<CharList>")) {
 
 				throw new ParserError(
-						"Parsing Character: Expecting <CharList>, got "
+						"Parsing Characters: Expecting <CharList>, got "
 								+ scan.next());
 			}
 			while (!gobble(scan, "</CharList>")) {
 				if (!gobble(scan, "<Character>")) {
 					throw new ParserError(
-							"Parsing Character: Expecting <Character>, got "
+							"Parsing Characters: Expecting <Character>, got "
 									+ scan.next());
 				}
 				parseCharacterType(scan, world);
 
 				if (!gobble(scan, "</Character>")) {
 					throw new ParserError(
-							"Parsing Character: Expecting </Character>, got "
+							"Parsing Characters: Expecting </Character>, got "
 									+ scan.next());
 				}
 			}
@@ -68,7 +69,18 @@ public class CharacterParser {
 	}
 
 	private static void parseMerchant(Scanner scan, GameWorld world) {
-		// TODO Auto-generated method stub
+		try {
+			int AreaID = parseInt(scan, "AreaID");
+			int x = parseInt(scan, "XPos");
+			int y = parseInt(scan, "YPos");
+			Position pos = new Position(x, y);
+			String name = parseString(scan, "Name");
+			int id = parseInt(scan, "ID");
+			Merchant merchant = new Merchant(pos, name, id);
+			world.getArea(AreaID).addMerchant(merchant);
+		} catch (ParserError e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -80,15 +92,14 @@ public class CharacterParser {
 			Position pos = new Position(x, y);
 			String name = parseString(scan, "Name");
 			int id = parseInt(scan, "ID");
-			Enemy enemy  = new Enemy(pos, name, id,
+			Enemy enemy = new Enemy(pos, name, id,
 					GameClass.playerClass.WARRIOR);
 			if (!gobble(scan, "</Enemy>")) {
-				throw new ParserError(
-						"Parsing Enemy: Expecting </Enemy>, got "
-								+ scan.next());
+				throw new ParserError("Parsing Enemy: Expecting </Enemy>, got "
+						+ scan.next());
 			}
 			world.getArea(AreaID).addEnemy(enemy);
-			
+
 		} catch (ParserError e) {
 			e.printStackTrace();
 		}
