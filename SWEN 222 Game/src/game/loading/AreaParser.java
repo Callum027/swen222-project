@@ -13,17 +13,30 @@ import java.util.Map;
 import java.util.Scanner;
 
 /**
- * Game Parser class, to be used in parsing objects in from an xml file.
+ * Static class to get Areas from an XML file, will be called by main to get an
+ * Area that can be added to the GameWorld.
  *
  * @author Chris Allen
  *
  */
 public class AreaParser {
+	// field to hold the map of tiles to int. should probably be an xml file,
+	// but seems easier with limited time
 	private static final String[] TILES_FILE = new String[] {
 			"1, FloorTile, floor_tile3", "2, FloorTile, Carpet_Centre" };
 
+	/**
+	 * returns a map of areas with their id, should be called with a valid
+	 * filename
+	 *
+	 * @param filename
+	 * @return
+	 * @throws ParserError
+	 * @throws FileNotFoundException
+	 */
 	public static Map<Integer, Area> parseAreas(String filename)
 			throws ParserError, FileNotFoundException {
+		// create the tilepMap, areaMap and scanner
 		Map<Integer, Tile> tileMap = createTileMap(TILES_FILE);
 		Map<Integer, Area> areaMap = new HashMap<Integer, Area>();
 		Scanner scan = null;
@@ -33,6 +46,7 @@ public class AreaParser {
 				throw new ParserError("Parsing Areas: Expecting <Areas>, got "
 						+ scan.next());
 			}
+			// loop until the <Areas> declaration is closed
 			while (!gobble(scan, "</Areas>")) {
 				Area area = parseArea(scan, tileMap);
 				areaMap.put(area.getID(), area);
@@ -59,18 +73,22 @@ public class AreaParser {
 	 */
 	public static Area parseArea(String filename) throws ParserError,
 			IOException {
+		// create the scanner and TileMap
 		Scanner scan = new Scanner(new File(filename));
 		Map<Integer, Tile> tileMap = createTileMap(TILES_FILE);
 		if (!gobble(scan, "<Area>")) {
 			throw new ParserError("Parsing Area: Expecting <Area>, got "
 					+ scan.next());
 		}
-
+		// parse all the ints
 		int ID = parseInt(scan, "ID");
 		int width = parseInt(scan, "Width");
 		int height = parseInt(scan, "Height");
+		// parse floor tiles
 		Tile[][] floor = parse2DTileArray(scan, "Floor", width, height, tileMap);
+		// create a 3d tile array to hold the 4 wall tile 2d arrays
 		Tile[][][] walls = new Tile[4][][];
+		// parse the walls in
 		walls[0] = parse2DTileArray(scan, "NorthWall", width, 3, tileMap);
 		walls[1] = parse2DTileArray(scan, "EastWall", height, 3, tileMap);
 		walls[2] = parse2DTileArray(scan, "SouthWall", width, 3, tileMap);
@@ -133,6 +151,18 @@ public class AreaParser {
 		return value;
 	}
 
+	/**
+	 * Parses a 2d array of integers from an xml file and returns a 2d array of
+	 * tiles
+	 *
+	 * @param scan
+	 * @param type
+	 * @param width
+	 * @param height
+	 * @param tileMap
+	 * @return
+	 * @throws ParserError
+	 */
 	private static Tile[][] parse2DTileArray(Scanner scan, String type,
 			int width, int height, Map<Integer, Tile> tileMap)
 			throws ParserError {
@@ -187,6 +217,14 @@ public class AreaParser {
 		return tileMap;
 	}
 
+	/**
+	 * helper method for parses, checks if the next string matches s, and
+	 * returns the result.
+	 *
+	 * @param scan
+	 * @param s
+	 * @return
+	 */
 	private static boolean gobble(Scanner scan, String s) {
 		if (scan.hasNext(s)) {
 			scan.next();
