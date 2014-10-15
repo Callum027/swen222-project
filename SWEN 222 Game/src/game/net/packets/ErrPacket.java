@@ -9,14 +9,25 @@ import game.net.NetIO;
 import game.net.Streamable;
 
 public class ErrPacket implements Streamable {
-	private boolean resendPacket;
+	private final boolean resendPacket;
+	private final String errorMessage;
 	
 	public ErrPacket(boolean rp) {
 		resendPacket = rp;
+		errorMessage = "";
+	}
+	
+	public ErrPacket(boolean rp, String em) {
+		resendPacket = rp;
+		errorMessage = (em != null) ? em : "";
 	}
 	
 	public boolean shouldResendPacket() {
 		return resendPacket;
+	}
+	
+	public String getErrorMessage() {
+		return errorMessage;
 	}
 	
 	/**
@@ -27,11 +38,12 @@ public class ErrPacket implements Streamable {
 	 * @throws IOException
 	 */
 	public static ErrPacket read(InputStream is) throws IOException, GameException {
-		return new ErrPacket(NetIO.readBoolean(is));
+		return new ErrPacket(NetIO.readBoolean(is), NetIO.readString(is));
 	}
 
 	public void write(OutputStream os) throws IOException {
 		NetIO.writeBoolean(os, resendPacket);
+		NetIO.writeString(os, errorMessage);
 	}
 
 }

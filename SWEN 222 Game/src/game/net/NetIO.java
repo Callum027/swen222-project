@@ -126,11 +126,65 @@ public class NetIO {
 			throw new EOFException("reached end of input stream in readByteArray(bytes)");
 	}
 
+	/**
+	 * Read a byte array from the input stream. This only reads as many bytes as the given length, and
+	 * starts from the given offset.
+	 *
+	 * @param is Input stream
+	 * @param bytes Byte array object to read into
+	 * @param off Offset to start reading into
+	 * @param len Length to read
+	 * @throws IOException
+	 */
 	public static void readByteArray(InputStream is, byte[] bytes, int off, int len) throws IOException {
 		int i = is.read(bytes, off, len);
 
 		if (i == -1)
 			throw new EOFException("reached end of input stream in readByteArray(bytes, off, len)");
+	}
+	
+	/**
+	 * Read a character from the input stream.
+	 * 
+	 * @param is Input stream
+	 * @return Character
+	 * @throws IOException
+	 */
+	public static char readChar(InputStream is) throws IOException {
+		int c = is.read();
+		
+		if (c == -1)
+			throw new EOFException("reached end of input stream in readChar");
+		
+		return (char)c;
+	}
+	
+	/**
+	 * Read a String from the input stream.
+	 * @param is Input stream
+	 * @return String
+	 * @throws IOException
+	 */
+	public static String readString(InputStream is) throws IOException {
+		int l;
+		StringBuilder sb = new StringBuilder();
+		
+		// Read the length of the string. We don't use null terminators,
+		// to avoid problems related to buffer overflow exploits.
+		l = readInt(is);
+		
+		// Read the number of characters from the given input stream.
+		for (int i = 0; i < l; i++)
+		{
+			char c = readChar(is);
+			
+			if (c == -1)
+				throw new EOFException("reached end of input stream in readString");
+			
+			sb.append(c);
+		}
+		
+		return sb.toString();
 	}
 
 	/**
@@ -209,5 +263,30 @@ public class NetIO {
 		bytes[7] = (byte)l;
 
 		os.write(bytes);
+	}
+	
+	/**
+	 * Write a char to the output stream.
+	 * 
+	 * @param os Output stream
+	 * @param c Character
+	 * @throws IOException
+	 */
+	public static void writeChar(OutputStream os, char c) throws IOException {
+		os.write(c);
+	}
+	
+	/**
+	 * Write a String to the output stream.
+	 * 
+	 * @param os Output stream
+	 * @param s String
+	 * @throws IOException
+	 */
+	public static void writeString(OutputStream os, String s) throws IOException {
+		writeInt(os, s.length());
+		
+		for (char c: s.toCharArray())
+			writeChar(os, c);
 	}
 }

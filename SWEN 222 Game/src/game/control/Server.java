@@ -1,5 +1,6 @@
 package game.control;
 
+import game.exceptions.GameException;
 import game.net.GamePacket;
 import game.world.GameEvent;
 import game.world.GameEventBroadcaster;
@@ -213,7 +214,13 @@ public class Server extends Thread {
 							System.out.println("server: GameEvent type is: " + ge.getType());
 
 							// Update the game world.
-							serverBroadcaster.broadcastGameEvent(ge);
+							try {
+								serverBroadcaster.broadcastGameEvent(ge);
+							}
+							catch (GameException e) {
+								System.err.println("client: unexpected GameException");
+								e.printStackTrace();
+							}
 
 							// Send the updated game state to the rest of the clients.
 							// Not the best solution for this since it doesn't use
@@ -222,8 +229,18 @@ public class Server extends Thread {
 							// on an array that is being changed outside its scope.
 							synchronized (serverConnections) {
 								for (ServerConnection sc: serverConnections)
+								{
 									if (sc != this)
-										sc.gameEventOccurred(ge);
+									{
+										try {
+											sc.gameEventOccurred(ge);
+										}
+										catch (GameException e) {
+											System.err.println("server: unexpected GameException when broadcasting game event");
+											e.printStackTrace();
+										}
+									}
+								}
 							}
 							break;
 						case QUIT:
@@ -237,7 +254,7 @@ public class Server extends Thread {
 			}
 		}
 		
-		public void gameEventOccurred(GameEvent ge) {
+		public void gameEventOccurred(GameEvent ge) throws GameException {
 			System.out.println("server: sending a GameEvent of type " + ge.getType() + " to the client");
 			write(clientSocket, new GamePacket(GamePacket.Type.EVENT, ge));
 		}

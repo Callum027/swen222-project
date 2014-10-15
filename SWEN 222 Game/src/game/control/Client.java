@@ -1,5 +1,7 @@
 package game.control;
 
+import game.exceptions.ErrPacketException;
+import game.exceptions.GameException;
 import game.net.GamePacket;
 import game.world.GameEvent;
 import game.world.GameEventBroadcaster;
@@ -103,7 +105,13 @@ public class Client extends NetIOController implements GameEventListener {
 				switch (gp.getType()) {
 					case EVENT:
 						System.out.println("client: broadcasting game event to listeners");
-						geb.broadcastGameEvent((GameEvent)gp.getPayload());
+						try {
+							geb.broadcastGameEvent((GameEvent)gp.getPayload());
+						}
+						catch (GameException e) {
+							System.err.println("client: unexpected GameException");
+							e.printStackTrace();
+						}
 						break;
 					case QUIT:
 						System.out.println("client: read QUIT packet, closing connection");
@@ -119,7 +127,7 @@ public class Client extends NetIOController implements GameEventListener {
 	/**
 	 * Update the server when a game events happens.
 	 */
-	public void gameEventOccurred(GameEvent ge) {
+	public void gameEventOccurred(GameEvent ge) throws GameException {
 		System.out.println("client: sending a GameEvent of type " + ge.getType() + " to the server");
 		write(socket, new GamePacket(GamePacket.Type.EVENT, ge));
 		System.out.println("client: done sending");

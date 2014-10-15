@@ -1,5 +1,6 @@
 package game.control;
 
+import game.exceptions.ErrPacketException;
 import game.exceptions.GameException;
 import game.net.GamePacket;
 import game.net.packets.AckPacket;
@@ -151,7 +152,7 @@ public abstract class NetIOController extends Thread {
 	 * @param socket Socket to write to
 	 * @param gp GamePacket
 	 */
-	protected void write(Socket socket, GamePacket gp) {
+	protected void write(Socket socket, GamePacket gp) throws GameException {
 		if (socket != null && !closing) {
 			try {
 				synchronized (socket) {
@@ -192,7 +193,7 @@ public abstract class NetIOController extends Thread {
 										resendPacket = true;
 									}
 									else
-										System.out.println("NetIOController.write: NOT resending packet");
+										throw new ErrPacketException(ep, "received ERR in NetIOController.write");
 									break;
 								default:
 									System.out.println("NetIOController.write: ERROR: illegal state: received " + reply.getType() + " packet in ACK/ERR check, resending");

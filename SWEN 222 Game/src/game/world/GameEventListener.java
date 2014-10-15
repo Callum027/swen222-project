@@ -1,5 +1,7 @@
 package game.world;
 
+import game.exceptions.GameException;
+
 import java.util.EventListener;
 
 public interface GameEventListener extends EventListener {
@@ -8,5 +10,5 @@ public interface GameEventListener extends EventListener {
 	 * 
 	 * @param ge GameEvent representing occured event
 	 */
-	public void gameEventOccurred(GameEvent ge);
+	public void gameEventOccurred(GameEvent ge) throws GameException;
 }

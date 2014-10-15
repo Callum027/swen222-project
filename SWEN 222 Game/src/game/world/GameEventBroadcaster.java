@@ -1,5 +1,7 @@
 package game.world;
 
+import game.exceptions.GameException;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,7 +27,7 @@ public class GameEventBroadcaster {
 	 * Broadcast the given game event to all listeners.
 	 * @param ge Game event listener
 	 */
-	public synchronized void broadcastGameEvent(GameEvent ge) {
+	public synchronized void broadcastGameEvent(GameEvent ge) throws GameException {
 		for (GameEventListener gel: gameEventListeners)
 			gel.gameEventOccurred(ge);
 	}
