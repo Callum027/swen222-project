@@ -5,6 +5,7 @@ import game.control.Server;
 import game.loading.AreaParser;
 import game.loading.CharacterParser;
 import game.loading.ItemParser;
+import game.loading.ParserError;
 import game.ui.GameFrame;
 import game.world.Area;
 import game.world.GameWorld;
@@ -23,11 +24,19 @@ import javax.imageio.ImageIO;
 public class Main {
 
 	/** Constants used internally in the Main class. */
-	private static final String IMAGE_PATH = "src" + File.separatorChar + "game" + File.separatorChar + "ui" + File.separatorChar + "images";
-	private static final String AREA_FILE = "src" + File.separatorChar + "game" + File.separatorChar + "loading" + File.separatorChar + "Areas.xml";
-	private static final String ITEMS_FILE = "src" + File.separatorChar + "game" + File.separatorChar + "loading" + File.separatorChar + "Items1.xml";
-	private static final String CHARACTER_FILE = "src" + File.separatorChar + "game" + File.separatorChar + "loading" + File.separatorChar + "characters.xml";
-	private static final String[] TILES_FILE = new String[] { "1, FloorTile, floor_tile3", "2, FloorTile, Carpet_Centre" };
+	private static final String IMAGE_PATH = "src" + File.separatorChar
+			+ "game" + File.separatorChar + "ui" + File.separatorChar
+			+ "images";
+	private static final String AREA_FILE = "src" + File.separatorChar + "game"
+			+ File.separatorChar + "loading" + File.separatorChar + "Areas.xml";
+	private static final String ITEMS_FILE = "src" + File.separatorChar
+			+ "game" + File.separatorChar + "loading" + File.separatorChar
+			+ "Items1.xml";
+	private static final String CHARACTER_FILE = "src" + File.separatorChar
+			+ "game" + File.separatorChar + "loading" + File.separatorChar
+			+ "characters.xml";
+	private static final String[] TILES_FILE = new String[] {
+			"1, FloorTile, floor_tile3", "2, FloorTile, Carpet_Centre" };
 
 	/** Game mode: client, server, or client and server. */
 	private static GameMode mode = GameMode.CLIENTANDSERVER;
@@ -52,7 +61,8 @@ public class Main {
 	/**
 	 * Quick'n'dirty processing of command line arguments.
 	 *
-	 * @param args Command-line arguments
+	 * @param args
+	 *            Command-line arguments
 	 * @return true if operation succeeded
 	 */
 	private static boolean processArgs(String[] args) {
@@ -67,18 +77,24 @@ public class Main {
 			if (a.equals("--server") || a.equals("-s"))
 				mode = GameMode.SERVER;
 			// This instance is a client program.
-			else if (a.equals("--client") || a.equals("-c") || a.equals("--join") || a.equals("-j"))
+			else if (a.equals("--client") || a.equals("-c")
+					|| a.equals("--join") || a.equals("-j"))
 				mode = GameMode.CLIENT;
 			// Get the port to connect to.
-			else if (connectPort == 0 && i > 0 && (args[i-1].equals("--port") || args[i-1].equals("--p")) && a.matches("\\d+"))
+			else if (connectPort == 0
+					&& i > 0
+					&& (args[i - 1].equals("--port") || args[i - 1]
+							.equals("--p")) && a.matches("\\d+"))
 				connectPort = Integer.parseInt(a);
 			// Get address the client is to connect to.
-			else if (mode == GameMode.CLIENT && (args[i-1].equals("--join") || args[i-1].equals("--j")) && clientConnectAddr == null)
+			else if (mode == GameMode.CLIENT
+					&& (args[i - 1].equals("--join") || args[i - 1]
+							.equals("--j")) && clientConnectAddr == null)
 				clientConnectAddr = a;
 			// Ignore. Processing is done later.
-			else if (a.equals("--port") || a.equals("-p"));
-			else
-			{
+			else if (a.equals("--port") || a.equals("-p"))
+				;
+			else {
 				System.err.println("main: invalid argument: " + a);
 				return false;
 			}
@@ -97,46 +113,49 @@ public class Main {
 		synchronized (gameWorldSetUp) {
 			if (gameWorldSetUp)
 				return true;
+			try {
+				// Load the tile map and the game world areas.
+				tileMap = createTileMap(TILES_FILE);
+				// area = AreaParser.parseArea(AREA_FILE, tileMap);
+				areaMap = AreaParser.parseAreas(AREA_FILE, tileMap);
+				area = areaMap.get(1);
+				ItemParser.parseItemList(ITEMS_FILE, area);
 
-			// Load the tile map and the game world areas.
-			tileMap = createTileMap(TILES_FILE);
-			//area = AreaParser.parseArea(AREA_FILE, tileMap);
-			areaMap = AreaParser.parseAreas(AREA_FILE, tileMap);
-			area = areaMap.get(1);
-			ItemParser.parseItemList(ITEMS_FILE, area);
+				// Add the main area to the game world, but only if the area
+				// successfully loaded.
+				if (!areaMap.isEmpty()) {
+					gameWorld = new GameWorld();
+					gameWorld.addAreas(areaMap);
+					CharacterParser.parseCharacters(CHARACTER_FILE, area,
+							gameWorld);
+				} else {
+					System.err
+							.println("main: ERROR: could not load game world area");
+					return false;
+				}
 
-
-
-			// Add the main area to the game world, but only if the area
-			// successfully loaded.
-			if (!areaMap.isEmpty())
-			{
-				gameWorld = new GameWorld();
-				gameWorld.addAreas(areaMap);
-				CharacterParser.parseCharacters(CHARACTER_FILE, area, gameWorld);
+				gameWorldSetUp = true;
+				return true;
+			} catch (ParserError e) {
+				e.printStackTrace();
 			}
-			else
-			{
-				System.err.println("main: ERROR: could not load game world area");
-				return false;
-			}
-
-			gameWorldSetUp = true;
-			return true;
 		}
+		return false;
 	}
 
 	/**
 	 * Set up the server, binding to a specific TCP port.
 	 *
-	 * @param port port to listen on
+	 * @param port
+	 *            port to listen on
 	 * @return true if operation succeeded
 	 */
 	private static boolean setupServer(int port) {
 		// Set up the game world if it has not been set up already.
 		setupGameWorld();
 
-		// Create the server, and add the game world as a listener for game events.
+		// Create the server, and add the game world as a listener for game
+		// events.
 		server = new Server();
 		server.addGameEventListener(gameWorld);
 
@@ -154,15 +173,18 @@ public class Main {
 	/**
 	 * Set up the client, connecting to either the local server or a remote one.
 	 *
-	 * @param addr Address to connect to
-	 * @param port Port to connect to
+	 * @param addr
+	 *            Address to connect to
+	 * @param port
+	 *            Port to connect to
 	 * @return true if operation succeeded
 	 */
 	private static boolean setupClient(String addr, int port) {
 		// Set up the game world if it has not been set up already.
 		setupGameWorld();
 
-		// Create a new client object, and make this client listen to game events from the GUI.
+		// Create a new client object, and make this client listen to game
+		// events from the GUI.
 		client = new Client();
 
 		// Connect the client to the server.
@@ -225,7 +247,7 @@ public class Main {
 		// Render the area.
 		gameWindow.getRender().setArea(area);
 		gameWindow.getRender().repaint();
-		
+
 		// Add the client as a game event listener to this game window.
 		gameWindow.addGameEventListener(client);
 		// Only do this if the brown stuff hits the fan!
@@ -253,7 +275,7 @@ public class Main {
 		for (int i = 0; i < data.length; i++) {
 			String[] line = data[i].split(", ");
 			int id = Integer.parseInt(line[0]);
-			//Image image = getImage(line[2]);
+			// Image image = getImage(line[2]);
 			Tile tile = null;
 			if (line[1].equals("FloorTile")) {
 				tile = new FloorTile(line[2]);
@@ -268,12 +290,14 @@ public class Main {
 	/**
 	 * Get an Image instance for a given file name.
 	 *
-	 * @param filename File name
+	 * @param filename
+	 *            File name
 	 * @return Image
 	 */
 	public static Image getImage(String filename) {
 		try {
-			Image image = ImageIO.read(new File(IMAGE_PATH  + File.separatorChar + filename));
+			Image image = ImageIO.read(new File(IMAGE_PATH + File.separatorChar
+					+ filename));
 			return image;
 		} catch (IOException e) {
 			System.err.println("main: getImage: " + filename + ": ERROR: " + e);
@@ -297,7 +321,8 @@ public class Main {
 	/**
 	 * Start the game, with added command-line arguments.
 	 *
-	 * @param args Command-line arguments
+	 * @param args
+	 *            Command-line arguments
 	 */
 	public static void main(String args[]) {
 		if (!processArgs(args))
@@ -307,23 +332,22 @@ public class Main {
 			System.exit(2);
 
 		// Do different actions, depending on the given arguments.
-		switch (mode)
-		{
-			// Self-contained client and server, all in one.
-			case CLIENTANDSERVER:
-				if (!setupClientAndServer())
-					System.exit(3);
-				break;
-			// Dedicated server.
-			case SERVER:
-				if (!setupDedicatedServer())
-					System.exit(4);
-				break;
-			// Dedicated client, who connects to a remote server.
-			case CLIENT:
-				if (!setupDedicatedClient())
-					System.exit(5);
-				break;
+		switch (mode) {
+		// Self-contained client and server, all in one.
+		case CLIENTANDSERVER:
+			if (!setupClientAndServer())
+				System.exit(3);
+			break;
+		// Dedicated server.
+		case SERVER:
+			if (!setupDedicatedServer())
+				System.exit(4);
+			break;
+		// Dedicated client, who connects to a remote server.
+		case CLIENT:
+			if (!setupDedicatedClient())
+				System.exit(5);
+			break;
 		}
 
 		if (!setupGameWindow())
@@ -331,15 +355,13 @@ public class Main {
 	}
 
 	/**
-	 * Quick'n'dirty private enum determining what kind of instance
-	 * this game is.
+	 * Quick'n'dirty private enum determining what kind of instance this game
+	 * is.
 	 *
 	 * @author dickincall
 	 *
 	 */
 	private enum GameMode {
-		CLIENT,
-		SERVER,
-		CLIENTANDSERVER
+		CLIENT, SERVER, CLIENTANDSERVER
 	}
 }
