@@ -276,6 +276,24 @@ public class Main {
 	public static GameWorld getGameWorld() {
 		return gameWorld;
 	}
+	
+	/**
+	 * Return the client for this game.
+	 * 
+	 * @return Server
+	 */
+	public static Client getClient() {
+		return client;
+	}
+	
+	/**
+	 * Return the server for this game.
+	 * 
+	 * @return Server
+	 */
+	public static Server getServer() {
+		return server;
+	}
 
 	/**
 	 * Start the game, with added command-line arguments.
