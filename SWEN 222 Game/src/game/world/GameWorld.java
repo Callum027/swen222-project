@@ -148,6 +148,17 @@ public class GameWorld implements GameEventListener{
 
 		return false;
 	}
+	
+	/**
+	 * Remove an item from the game world.
+	 * 
+	 * @param i Item ID to remove
+	 * @return true if removed
+	 */
+	public boolean removeItem(Item i){
+		items.remove(i.getID());
+		return true;
+	}
 
 	/**
 	 * Get the next unique ID

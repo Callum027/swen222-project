@@ -1,5 +1,17 @@
 package game.world;
 
+import game.Main;
+import game.exceptions.AreaIDNotFoundException;
+import game.exceptions.GameException;
+import game.net.NetIO;
+import game.net.Streamable;
+import game.world.characters.Enemy;
+import game.world.characters.Merchant;
+import game.world.characters.Player;
+import game.world.items.Item;
+import game.world.items.MoveableItem;
+import game.world.tiles.Tile;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -12,18 +24,6 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
-
-import game.Main;
-import game.exceptions.AreaIDNotFoundException;
-import game.exceptions.GameException;
-import game.net.NetIO;
-import game.net.Streamable;
-import game.world.characters.Enemy;
-import game.world.characters.Merchant;
-import game.world.characters.Player;
-import game.world.items.Item;
-import game.world.items.MoveableItem;
-import game.world.tiles.Tile;
 
 /**
  * An area of the Game world
@@ -126,6 +126,7 @@ public class Area  implements Streamable{
 	 * 		--- returns the previous item associated with the ID or null if there was no previous mapping of the ID
 	 */
 	public Item addItem(Item item){
+		Main.getGameWorld().addItem(item);
 		return items.put(item.getID(), item);
 	}
 
@@ -139,6 +140,7 @@ public class Area  implements Streamable{
 	 * 		---	the previous item associated with the ID, or null if there was no mapping for the ID.
 	 */
 	public Item removeItem(Item item){
+		Main.getGameWorld().removeItem(item);
 		return items.remove(item.getID());
 	}
 
@@ -337,9 +339,6 @@ public class Area  implements Streamable{
 	 * 		--- true if the position is moveable, false otherwise
 	 */
 	public boolean isMoveablePosition(Position p){
-		if(p == null){
-			return false;
-		}
 		// if position is outside the bounds of the area return false
 		if(p.getX() < 0 || p.getX() >= tiles[0].length || p.getY() < 0 || p.getY() >= tiles.length){
 			return false;
@@ -384,33 +383,6 @@ public class Area  implements Streamable{
 		int width = Math.abs(p1.getX() - p2.getX());
 		int height = Math.abs(p1.getY() - p2.getY());
 		return Math.sqrt((width*width) + (height*height));
-	}
-
-	/**
-	 * Returns a set of the neighbouring positions from the specified position.
-	 * will only add a neighbouring position if it is able to be moved to.
-	 *
-	 * @param p
-	 * 			--- the point to find neighbours for
-	 * @return
-	 * 			--- a set of neighbouring positions
-	 */
-	public Set<Position> getNeighbours(Position p){
-		if(p == null){
-			return null;
-		}
-		Set<Position> neighbours = new HashSet<Position>();
-		neighbours.add(new Position(p.getX() - 1, p.getY()));
-		neighbours.add(new Position(p.getX() + 1, p.getY()));
-		neighbours.add(new Position(p.getX(), p.getY() - 1));
-		neighbours.add(new Position(p.getX(), p.getY() + 1));
-		Set<Position> moveable = new HashSet<Position>();
-		for(Position pos : neighbours){
-			if(isMoveablePosition(pos)){
-				moveable.add(pos);
-			}
-		}
-		return moveable;
 	}
 
 	/**
@@ -472,6 +444,30 @@ public class Area  implements Streamable{
 			}
 			// at this point the fringe is empty and no path was found
 			return null;
+		}
+
+		/**
+		 * Returns a set of the neighbouring positions from the specified position.
+		 * will only add a neighbouring position if it is able to be moved to.
+		 *
+		 * @param p
+		 * 			--- the point to find neighbours for
+		 * @return
+		 * 			--- a set of neighbouring positions
+		 */
+		private Set<Position> getNeighbours(Position p){
+			Set<Position> neighbours = new HashSet<Position>();
+			neighbours.add(new Position(p.getX() - 1, p.getY()));
+			neighbours.add(new Position(p.getX() + 1, p.getY()));
+			neighbours.add(new Position(p.getX(), p.getY() - 1));
+			neighbours.add(new Position(p.getX(), p.getY() + 1));
+			Set<Position> moveable = new HashSet<Position>();
+			for(Position pos : neighbours){
+				if(isMoveablePosition(pos)){
+					moveable.add(pos);
+				}
+			}
+			return moveable;
 		}
 
 		/**
