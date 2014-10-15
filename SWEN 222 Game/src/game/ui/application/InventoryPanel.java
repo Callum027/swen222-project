@@ -293,6 +293,7 @@ public class InventoryPanel extends JPanel implements GameComponent {
 			 * place the item. Otherwise it adds the item into the correct slot
 			 */
 			if (frame.getSelectedItem() != null) {
+				frame.setFrom(this);
 				itemSelected = frame.getSelectedItem();
 				addItem(itemSelected);
 				frame.setSelectedItem(null);

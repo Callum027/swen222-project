@@ -1,5 +1,6 @@
 package game.ui;
 
+import game.exceptions.GameException;
 import game.ui.application.*;
 import game.ui.rendering.RenderingPanel;
 import game.world.GameEvent;
@@ -65,6 +66,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener,
 	private JPanel renderPane;
 	private JPanel appPane;
 
+	private GameComponent from;
 	private MoveableItem selectedItem;
 	/*
 	 * selectedItem is the item that has been selected in one of the panels and
@@ -338,7 +340,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener,
 		return null;
 	}
 
-	public void broadcastGameEvent(GameEvent ge) {
+	public void broadcastGameEvent(GameEvent ge) throws GameException {
 		geb.broadcastGameEvent(ge);
 	}
 
@@ -430,6 +432,21 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener,
 	 */
 	public void setChestVisible(boolean b) {
 		chest.setVisible(b);
+	}
+
+	public void returnItem() {
+		if(from !=null){
+			from.addItem(selectedItem);
+		}
+		from = null;
+	}
+
+	public GameComponent getFrom() {
+		return from;
+	}
+
+	public void setFrom(GameComponent from) {
+		this.from = from;
 	}
 
 }

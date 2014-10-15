@@ -1,5 +1,6 @@
 package game.ui.rendering;
 
+import game.exceptions.GameException;
 import game.ui.GameComponent;
 import game.ui.GameFrame;
 import game.world.Area;
@@ -379,7 +380,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 	 * Deals with mouse events when the mouse is released on RenderingPanel.
 	 */
 	@Override
-	public void mouseReleased(GameFrame frame, MouseEvent e) {
+	public void mouseReleased(GameFrame frame, MouseEvent e){
 		// only
 		if(frame.getSelectedItem() != null){
 			Position release = new Position(e.getX(), e.getY());
@@ -397,8 +398,15 @@ public class RenderingPanel extends JPanel implements GameComponent {
 			}
 			if(positionClear){
 				DropItemEvent drop = new DropItemEvent(frame.getSelectedItem(), p, area.getID());
+				try{
 				frame.broadcastGameEvent(drop);
-				frame.setSelectedItem(null);
+				} catch (GameException e1){
+					frame.returnItem();
+				}
+				finally{
+					frame.setSelectedItem(null);
+					frame.setFrom(null);
+				}
 				repaint();
 			}
 		}

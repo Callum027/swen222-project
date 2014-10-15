@@ -196,6 +196,7 @@ public class ChestPanel extends JPanel implements GameComponent {
 	private void selectItem(GameFrame frame, int inv) {
 		if (inv >= 0 && inv < chest.length) {
 			itemSelected = chest[inv]; // gets the item from the array
+			frame.setFrom(this);
 			frame.setSelectedItem(itemSelected);
 			chest[inv] = null;
 			/*

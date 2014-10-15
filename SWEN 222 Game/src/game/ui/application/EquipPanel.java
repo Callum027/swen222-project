@@ -6,6 +6,7 @@ import game.ui.GameFrame;
 import game.world.Position;
 import game.world.items.Equipment;
 import game.world.items.EquippedItems;
+import game.world.items.MoveableItem;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -452,7 +453,9 @@ public class EquipPanel extends JPanel implements GameComponent {
 	 * @return The int related to the slot of the equipment. Returns -1 if there
 	 *         was no room to equip it
 	 */
-	public int addEquip(Equipment equipment) {
+	public int addItem(MoveableItem item) {
+		if(item instanceof Equipment){
+			Equipment equipment = (Equipment) item;
 		int slot = equipment.getSlot();
 		switch (slot) {
 		case HEAD_SLOT:
@@ -500,6 +503,8 @@ public class EquipPanel extends JPanel implements GameComponent {
 		}
 
 		return -1;
+		}
+		return -1;
 	}
 
 	/**
@@ -536,6 +541,7 @@ public class EquipPanel extends JPanel implements GameComponent {
 				if (frame.getSelectedItem() instanceof Equipment) {
 					equipSelected = (Equipment) frame.getSelectedItem();
 					dropEquip(equip);
+					frame.setFrom(this);
 					frame.setSelectedItem(null);
 					equipSelected = null;
 				}
