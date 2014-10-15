@@ -42,7 +42,7 @@ public abstract class NetIOController extends Thread {
 				try {
 					GamePacket gp = null;
 
-					System.out.println("read: reading packet from peer");
+					System.out.println("NetIOController.read: listening for packets from peer");
 
 					// Read a game packet from the server. Keep trying to read a packet
 					// until we get one.
@@ -71,6 +71,8 @@ public abstract class NetIOController extends Thread {
 						catch (InterruptedException e1) {
 						}
 					}
+					
+					System.out.println("NetIOController.read: received packet from peer");
 
 					// Check the incoming packet to see what type of packet it is,
 					// and respond to the server accordingly.
@@ -81,14 +83,14 @@ public abstract class NetIOController extends Thread {
 						switch (gp.getType()) {
 							case ACK:
 							case ERR:
-								System.out.println("read: received " + gp.getType() + " from peer??? This should not be handled here");
+								System.out.println("NetIOController.read: received " + gp.getType() + " from peer??? This should not be handled here");
 								break;
 							case QUIT:
-								System.out.println("read: received QUIT, closing connection");
+								System.out.println("NetIOController.read: received QUIT, closing connection");
 								socket.close();
 								break;
 							default:
-								System.out.println("read: sending ACK to peer");
+								System.out.println("NetIOController.read: sending ACK to peer");
 								write(socket.getOutputStream(), new GamePacket(GamePacket.Type.ACK, new AckPacket()));
 								break;
 						}
@@ -101,7 +103,7 @@ public abstract class NetIOController extends Thread {
 					InputStream is = socket.getInputStream();
 					OutputStream os = socket.getOutputStream();
 					
-					System.out.println("read: while reading packet from peer: " + e);
+					System.out.println("NetIOController.read: while reading packet from peer: " + e);
 
 					// Drop the rest of the packet from the input stream.
 					is.skip(is.available());
@@ -111,11 +113,11 @@ public abstract class NetIOController extends Thread {
 				}
 			}
 			catch (SocketException e) {
-				System.out.println("read: closing connection: " + e.getMessage());
+				System.out.println("NetIOController.read: closing connection: " + e.getMessage());
 				close(socket);
 			}
 			catch (IOException e) {
-				System.out.println("read: unhandled, unknown IOException");
+				System.out.println("NetIOController.read: unhandled, unknown IOException");
 				e.printStackTrace();
 				close(socket);
 			}
@@ -157,13 +159,13 @@ public abstract class NetIOController extends Thread {
 					// with the server.
 					pauseMainLoop = true;
 
-					while (resendPacket) {
-						System.out.println("write: sending GamePacket to peer");
+					do {
+						System.out.println("NetIOController.write: sending GamePacket to peer");
 						
 						// Send the packet to the output stream!
 						write(socket.getOutputStream(), gp);
 
-						System.out.println("write: waiting for reply from peer");
+						System.out.println("NetIOController.write: waiting for reply from peer");
 
 						// Wait for a reply from the server.
 						try {
@@ -176,42 +178,42 @@ public abstract class NetIOController extends Thread {
 							// Check if this reply is an ACK or ERR, and if so, handle accordingly.
 							switch (reply.getType()) {
 								case ACK:
-									System.out.println("write: received ACK from peer");
+									System.out.println("NetIOController.write: received ACK from peer");
 									break;
 								case ERR:
-									System.out.println("write: received ERR from peer");
+									System.out.println("NetIOController.write: received ERR from peer");
 									ErrPacket ep = (ErrPacket)reply.getPayload();
 									
 									if (ep.shouldResendPacket())
 									{
-										System.out.println("write: resending packet");
+										System.out.println("NetIOController.write: resending packet");
 										resendPacket = true;
 									}
 									else
-										System.out.println("write: NOT resending packet");
+										System.out.println("NetIOController.write: NOT resending packet");
 									break;
 								default:
-									System.out.println("write: ERROR: illegal state: received " + reply.getType() + " packet in ACK/ERR check, resending");
+									System.out.println("NetIOController.write: ERROR: illegal state: received " + reply.getType() + " packet in ACK/ERR check, resending");
 									resendPacket = true;
 									break;
 							}
 						}
 						catch (GameException e) {
-							System.err.println("write: unexpected GameException thrown");
+							System.err.println("NetIOController.write: unexpected GameException thrown");
 							e.printStackTrace();
 						}
-					}
+					} while (resendPacket);
 					
 					// Unpause the main loop, let it start reading packets again.
 					pauseMainLoop = false;
 				}
 			}
 			catch (SocketException e) {
-				System.err.println("write: closing connection: " + e.getMessage());
+				System.err.println("NetIOController.write: closing connection: " + e.getMessage());
 				close(socket);
 			}
 			catch (IOException e) {
-				System.err.println("write: unhandled, unknown IOException");
+				System.err.println("NetIOController.write: unhandled, unknown IOException");
 				e.printStackTrace();
 				close(socket);
 			}
@@ -225,10 +227,17 @@ public abstract class NetIOController extends Thread {
 	protected void close(Socket socket) {
 			closing = true;
 			try {
-				write(socket.getOutputStream(), new GamePacket(GamePacket.Type.QUIT, new QuitPacket()));
-				socket.close();
+				if (!socket.isClosed())
+				{
+					write(socket.getOutputStream(), new GamePacket(GamePacket.Type.QUIT, new QuitPacket()));
+					socket.close();
+				}
+			}
+			catch (SocketException e) {
+				System.out.println("NetIOController.close: socket error while closing: " + e.getMessage());
 			}
 			catch (IOException e) {
+				System.err.println("NetIOController.close: unexpected IOException");
 				e.printStackTrace();
 			}
 	}

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -21,6 +22,9 @@ import java.util.List;
  *
  */
 public class Server extends Thread {
+	private static final int SERVER_SOCKET_TIMEOUT = 50; // 50ms
+	private static final int MAIN_LOOP_COOLDOWN = 50; // 50ms
+	
 	/** The default port the server listens on, if none is specified. */
 	public static final int DEFAULT_PORT = 19642;
 
@@ -87,8 +91,28 @@ public class Server extends Thread {
 		// as they come.
 		try {
 			while (!closing) {
-				// Accept a new client connection.
-				Socket clientSocket = serverSocket.accept();
+				Socket clientSocket = null;
+				
+				// Try to accept a new client connection.
+				while (clientSocket == null) {
+					synchronized (serverSocket) {
+						// If the closing state has changed since we
+						// acquired a lock on serverSocket, break out of the loop.
+						if (closing)
+							return;
+						
+						try {
+						serverSocket.setSoTimeout(SERVER_SOCKET_TIMEOUT);
+						clientSocket = serverSocket.accept();
+						}
+						catch (SocketTimeoutException e) {
+							// Do nothing, try accepting again...
+						}
+					}
+				}
+				
+				// Create a new ServerConnection for the client socket.
+				// This will manage the connection in a separate thread.
 				ServerConnection sc = new ServerConnection(clientSocket);
 
 				// When the server connection is constructed, it will automatically
@@ -103,18 +127,7 @@ public class Server extends Thread {
 		}
 
 		// We have exited the main server loop. This only happens when
-		// someone calls close() on the server. Start shutting things down.
-
-		// Stop accepting new connections, by closing the server socket.
-		try {
-			serverSocket.close();
-		}
-		catch (IOException e) {
-			System.err.println("server: unhandled, unknown IOException");
-			e.printStackTrace();
-		}
-
-		close();
+		// someone calls close() on the server.
 	}
 
 	/**
@@ -123,6 +136,17 @@ public class Server extends Thread {
 	 */
 	public void close() {
 		closing = true;
+		
+		synchronized (serverSocket) {
+			// Stop accepting new connections, by closing the server socket.
+			try {
+				serverSocket.close();
+			}
+			catch (IOException e) {
+				System.err.println("server: unhandled, unknown IOException");
+				e.printStackTrace();
+			}
+		}
 
 		// Close all client connections.
 		synchronized (serverConnections) {
@@ -204,8 +228,6 @@ public class Server extends Thread {
 							break;
 					}
 				}
-				else
-					System.out.println("server: timed out, attempting another read from client");
 			}
 		}
 		
