@@ -5,6 +5,7 @@ import game.exceptions.InvalidGamePacketException;
 import game.exceptions.UnsupportedGamePacketException;
 import game.net.packets.AckPacket;
 import game.net.packets.ErrPacket;
+import game.net.packets.HelloPacket;
 import game.net.packets.PlayerPacket;
 import game.net.packets.QuitPacket;
 import game.world.GameEvent;
@@ -71,6 +72,9 @@ public class GamePacket implements Streamable {
 		// according to the packet type.
 		switch (t)
 		{
+			case HELLO:
+				s = HelloPacket.read(is);
+				break;
 			case EVENT:
 				s = GameEvent.read(is);
 				break;

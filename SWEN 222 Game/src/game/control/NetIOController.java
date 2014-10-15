@@ -201,6 +201,9 @@ public abstract class NetIOController extends Thread {
 									break;
 							}
 						}
+						catch (ErrPacketException e) {
+							throw e;
+						}
 						catch (GameException e) {
 							System.err.println("NetIOController.write: unexpected GameException thrown");
 							e.printStackTrace();
