@@ -84,7 +84,7 @@ public class CharacterParser {
 		Position pos = new Position(x, y);
 		String name = parseString(scan, "Name");
 		int id = parseInt(scan, "ID");
-		Enemy enemy = new Enemy(pos, name, id, GameClass.playerClass.WARRIOR);
+		Enemy enemy = new Enemy(pos, name, id, GameClass.CharacterClass.WARRIOR);
 		if (!gobble(scan, "</Enemy>")) {
 			throw new ParserError("Parsing Enemy: Expecting </Enemy>, got "
 					+ scan.next());
@@ -99,7 +99,7 @@ public class CharacterParser {
 		Position pos = new Position(x, y);
 		String name = parseString(scan, "Name");
 		int id = parseInt(scan, "ID");
-		Player player = new Player(pos, name, id, GameClass.playerClass.WARRIOR);
+		Player player = new Player(pos, name, id, GameClass.CharacterClass.WARRIOR);
 		if (!gobble(scan, "</Player>")) {
 			throw new ParserError("Parsing Player: Expecting </Player>, got "
 					+ scan.next());

@@ -46,7 +46,7 @@ public class Player extends GameCharacter implements Streamable, Attackable{
 	 * @param uid the unique identifier of our player
 	 * @param playerClass the class of our player
 	 */
-	public Player(Position position, String name, int uid, GameClass.playerClass playerClass){
+	public Player(Position position, String name, int uid, GameClass.CharacterClass playerClass){
 		super(position, name, uid);
 		assignClass(playerClass); //gives the player a class (behaviour)
 		setStats();
@@ -58,7 +58,7 @@ public class Player extends GameCharacter implements Streamable, Attackable{
 	 * Gives the player a behaviour (class)
 	 * @param playerClass the enum that identifies the player's class
 	 */
-	public void assignClass(GameClass.playerClass playerClass){
+	public void assignClass(GameClass.CharacterClass playerClass){
 		switch (playerClass){
 			case WARRIOR:
 				gameClass = new WarriorClass(this);

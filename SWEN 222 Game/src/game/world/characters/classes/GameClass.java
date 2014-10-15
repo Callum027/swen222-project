@@ -12,7 +12,7 @@ public interface GameClass {
 	/**
 	 * makes it easier to assign the classes within the context classes
 	 */
-	public enum playerClass{
+	public enum CharacterClass{
 		WARRIOR, MAGE, ROGUE
 	}
 

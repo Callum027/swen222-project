@@ -43,20 +43,20 @@ public class Enemy extends GameCharacter implements Attackable{
 	 * @param position the position the enemy is spawned at
 	 * @param name the name of the enemy
 	 * @param uid the unique identifier  that is assigned to this enemy
-	 * @param playerClass the class of the enemy. This is to identify the different strategies of the enemy
+	 * @param characterClass the class of the enemy. This is to identify the different strategies of the enemy
 	 */
-	public Enemy(Position position, String name, int uid, GameClass.playerClass playerClass){
+	public Enemy(Position position, String name, int uid, GameClass.CharacterClass characterClass){
 		super(position, name, uid);
-		assignClass(playerClass); //gives the player a class (behaviour)
+		assignClass(characterClass); //gives the player a class (behaviour)
 		images = new Image[]{Main.getImage("SpriteTEST.png")};
 	}
 
 	/**
 	 * Gives the enemy a behaviour (class)
-	 * @param playerClass the enum that identifies the player's class
+	 * @param characterClass the enum that identifies the enemy's class
 	 */
-	public void assignClass(GameClass.playerClass playerClass){
-		switch (playerClass){
+	public void assignClass(GameClass.CharacterClass characterClass){
+		switch (characterClass){
 			case WARRIOR:
 				gameClass = new WarriorClass(this);
 				break;

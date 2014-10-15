@@ -66,7 +66,7 @@ public class RenderingPanel extends JPanel implements GameComponent {
 		super();
 		this.direction = direction;
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
-		player = new Player(new Position(0,0), "Frank", 1, GameClass.playerClass.WARRIOR);
+		player = new Player(new Position(0,0), "Frank", 1, GameClass.CharacterClass.WARRIOR);
 	}
 
 	/**
