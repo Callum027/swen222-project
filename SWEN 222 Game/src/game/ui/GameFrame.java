@@ -417,11 +417,23 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener,
 		text.append(message + "\n");
 	}
 
+	/**
+	 * Used to set the stats panel visible or invisible
+	 *
+	 * @param b
+	 *            Where true sets it visible and false sets in invisible
+	 */
 	public void setStatsVisible(boolean b) {
 		stats.setVisible(b);
 
 	}
 
+	/**
+	 * Used to set the chest panel visible or invisible
+	 *
+	 * @param b
+	 *            Where true sets it visible and false sets in invisible
+	 */
 	public void setChestVisible(boolean b) {
 		chest.setVisible(b);
 

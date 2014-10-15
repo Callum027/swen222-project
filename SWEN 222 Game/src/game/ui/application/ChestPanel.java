@@ -14,6 +14,14 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JPanel;
 
+/**
+ * Another JPanel that is used to represent the chest inventory. Pretty much
+ * works the same as the players inventory, however it is smaller but most of
+ * the methods have been copied from inventory.
+ *
+ * @author Harry
+ *
+ */
 public class ChestPanel extends JPanel implements GameComponent {
 
 	private static final long serialVersionUID = 1L;
@@ -35,6 +43,16 @@ public class ChestPanel extends JPanel implements GameComponent {
 	private int cats;
 	private int previousSlot;
 
+	/**
+	 * Sets up the panel, adds in cats that have been passed to it as a
+	 * container contains a set amount of cats, which can't be added to. Cats
+	 * have to be taken when a player clicks on the chest and they can't only
+	 * take a part of them, they have to take them all. Also cats can't be
+	 * stored in a chest.
+	 *
+	 * @param cats
+	 *            The amount of cats that is stored in the chest.
+	 */
 	public ChestPanel(int cats) {
 		this.cats = cats;
 		addItem(new MoveableItem(new Position(0, 0), 1, 90, "key", 0));
@@ -78,6 +96,15 @@ public class ChestPanel extends JPanel implements GameComponent {
 		}
 	}
 
+	/**
+	 * Adds a MoveableItem to the container, used for when an item is dragged
+	 * down to the panel from anywhere
+	 *
+	 * @param item
+	 *            The item to be added to the panel
+	 * @return The index that the item was saved in, if it returns -1 there was
+	 *         no room left for it in the array.
+	 */
 	public int addItem(MoveableItem item) {
 		for (int i = 0; i < chest.length; i++) {
 			// checks if the item in the slot is not full
